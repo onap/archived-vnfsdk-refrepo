@@ -1,0 +1,8 @@
+[
+{"id":"vnf.cn.cscf","name":"CSCF"},
+{"id":"ns.cn.epc","name":"EPC"},
+{"id":"vnf.cn.cscf1","name":"CSCF1"},
+{"id":"ns.cn.epc2","name":"EPC1"},
+{"id":"vnf.cn.cscf23","name":"CSCF2"},
+{"id":"ns.cn.epcf","name":"EPC2"}
+]

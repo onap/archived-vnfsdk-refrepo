@@ -1,0 +1,86 @@
+{
+  "chartTypes": {
+    "stackChart": {
+      "typeId": "stackChart",
+      "imageURL": "/web/newict/framework/thirdparty/dashboard/images/CPU统计.png",
+      "plotLabel": "堆积图",
+      "placeholderId": "placeholderStack",
+      "plotCallbackName": "Demo_StackChart",
+      "plotSize": "size21"
+    },
+    "alarmCounts": {
+      "typeId": "alarmCounts",
+      "imageURL": "/web/newict/framework/thirdparty/dashboard/images/告警统计.png",
+      "plotLabel": "告警统计",
+      "placeholderId": "placeholderAlarmCounts",
+      "plotCallbackName": "AlarmCounts",
+      "plotSize": "size21"
+    },
+    "logCounts": {
+      "typeId": "logCounts",
+      "imageURL": "/web/newict/framework/thirdparty/dashboard/images/日志统计.png",
+      "plotLabel": "日志统计",
+      "placeholderId": "placeholderPie",
+      "plotCallbackName": "Demo_PieChart",
+      "plotSize": "size21"
+    },
+    "ictCPULine": {
+      "typeId": "ictCPULine",
+      "imageURL": "/web/newict/framework/thirdparty/dashboard/images/性能统计A.png",
+      "plotLabel": "性能统计A",
+      "placeholderId": "placeholderCPU",
+      "plotCallbackName": "ICT_CPU_UsageLine",
+      "plotSize": "size21"
+    },
+    "alarmChart": {
+      "typeId": "alarmChart",
+      "imageURL": "/web/newict/framework/thirdparty/dashboard/images/性能统计B.png",
+      "plotLabel": "性能统计B",
+      "placeholderId": "placeholderAlarm",
+      "plotCallbackName": "AlarmCount_BarChart",
+      "plotSize": "size21"
+    },
+    "c3Chart": {
+      "typeId": "c3Chart",
+      "imageURL": "/web/newict/framework/thirdparty/dashboard/images/性能统计C.png",
+      "plotLabel": "性能统计C",
+      "placeholderId": "placeholderC3Demo",
+      "plotCallbackName": "c3ChartDemo",
+      "plotSize": "size21",
+      "plotControlCallback": "true"
+    },
+    "ictCPULineC3": {
+      "typeId": "ictCPULineC3",
+      "imageURL": "/web/newict/framework/thirdparty/dashboard/images/性能统计C.png",
+      "plotLabel": "ICT服务器CPU使用率",
+      "placeholderId": "placeholderC3_CPU",
+      "plotCallbackName": "ICT_CPU_UsageLine_C3",
+      "plotSize": "size21"
+    },
+    "currentAlarm": {
+      "typeId": "currentAlarm",
+      "imageURL": "/web/newict/framework/thirdparty/dashboard/images/性能统计C.png",
+      "plotLabel": "当前告警",
+      "placeholderId": "placeholderC3_Alarm",
+      "plotCallbackName": "AlarmCount_BarChart_C3",
+      "plotSize": "size21"
+    },
+    "zzz": {
+      "typeId": "zzz",
+      "chartType": "prototype",
+      "imageURL": "/web/newict/framework/thirdparty/dashboard/images/性能统计C.png",
+      "plotLabel": "性能统计HTML片段",
+      "placeholderId": "placeholderC3_Demo",
+      "plotCallbackName": "c3ChartDemo",
+      "arguments": "line",
+      "htmlSrc": "srcInclude.html",
+      "plotSize": "size21"
+    }
+  },
+  "initPlots": [
+    "ictCPULineC3",
+    "c3Chart",
+    "zzz"
+  ],
+  "languages": {}
+}

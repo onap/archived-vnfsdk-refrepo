@@ -1,0 +1,33 @@
+{
+  "chartTypes": {
+    "c3Chart": {
+      "typeId": "c3Chart",
+      "imageURL": "images/性能统计C.png",
+      "plotLabel": "性能统计C",
+      "placeholderId": "placeholderC3",
+      "plotCallbackName": "c3ChartDemo",
+      "plotSize": "size21",
+      "plotControlCallback": "true"
+    },
+    "ictCPULineC3": {
+      "typeId": "ictCPULineC3",
+      "imageURL": "images/性能统计C.png",
+      "plotLabel": "ICT服务器CPU使用率",
+      "placeholderId": "placeholderC3_1",
+      "plotCallbackName": "ICT_CPU_UsageLine_C3",
+      "plotSize": "size21"
+    },
+    "currentAlarm": {
+      "typeId": "currentAlarm",
+      "imageURL": "images/性能统计C.png",
+      "plotLabel": "当前告警",
+      "placeholderId": "placeholderC3_2",
+      "plotCallbackName": "AlarmCount_BarChart_C3",
+      "plotSize": "size21"
+    }
+  },
+  "initPlots": [
+    "c3Chart"
+  ],
+  "languages": {}
+}

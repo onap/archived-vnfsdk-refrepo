@@ -1,0 +1,155 @@
+.flot-placeholder {
+    margin-left: 0%;
+    margin-top: 1%;
+    margin-bottom: 2%;
+    width: 100%;
+    height: 90%;
+    font-size: 14px;
+    line-height: 1.2em;
+    background: #fff;
+}
+
+.flot-placeholder-high {
+    margin-left: 2%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    width: 100%;
+    height: 93%;
+    font-size: 14px;
+    line-height: 1.2em;
+    background: #fff;
+}
+
+.flot-placeholder-expand {
+    /*margin-left:2%;
+    margin-top:2%;*/
+    margin: 1%;
+    width: 98%;
+    height: 480px;
+    font-size: 14px;
+    line-height: 1.2em;
+    background: #fff;
+}
+
+.flot-placeholder-wrapper-portlet {
+    padding-top: 1%;
+    margin-left: 0%;
+    margin-top: 10%;
+    width: 98%;
+    height: 220px;
+    font-size: 14px;
+    line-height: 1.2em;
+}
+
+.flot-placeholder-wrapper-portlet-wide {
+    /*top: 32px;*/
+    padding-top: 0.5%;
+    margin-left: 0%;
+    margin-top: 2%;
+    width: 98%;
+    /*height:238px;*/
+    font-size: 14px;
+    line-height: 1.2em;
+    clear: both;
+    position: relative;
+}
+
+.flot-placeholder-wrapper {
+    position: fixed;
+    margin-left: 2%;
+    margin-top: 2%;
+    left: 0px;
+    top: 0px;
+    width: 230px;
+    height: 180px;
+    font-size: 14px;
+    line-height: 1.2em;
+}
+
+.flot-placeholder-wrapper-1 {
+    position: fixed;
+    margin-left: 2%;
+    margin-top: 2%;
+    left: 0px;
+    top: 200px;
+    width: 230px;
+    height: 180px;
+    font-size: 14px;
+    line-height: 1.2em;
+}
+
+.flot-placeholder-wrapper-2 {
+    position: fixed;
+    margin-left: 2%;
+    margin-top: 2%;
+    left: 0px;
+    top: 400px;
+    width: 230px;
+    height: 180px;
+    font-size: 14px;
+    line-height: 1.2em;
+}
+
+.flot-placeholder-wrapper-3 {
+    position: fixed;
+    margin-left: 2%;
+    margin-top: 2%;
+    left: 300px;
+    top: 0px;
+    width: 230px;
+    height: 180px;
+    font-size: 14px;
+    line-height: 1.2em;
+}
+
+.contentWrapper {
+    width: 100%;
+    height: 100%;
+    float: left;
+    /*overflow-y: hidden;*/
+    overflow: hidden;
+    /*padding-right: 10px;*/
+}
+
+.plotsWrapper {
+    /*position:fixed;*/
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin-top: 0px;
+    /*margin-left: 182px;*/
+    margin-left: 158px;
+    margin-right: 0px;
+    /*padding-top:10px;
+    padding-left:10px;
+    padding-right: 20px;*/
+    height: 100%;
+}
+
+.stackControlButtons {
+    position: fixed;
+    margin-left: 2%;
+    margin-top: 2%;
+    left: 300px;
+    top: 200px;
+    width: 230px;
+    height: 180px;
+    font-size: 14px;
+    line-height: 1.2em;
+}
+
+.stackControlButtons-portlet {
+    margin-left: 2%;
+    margin-top: 2%;
+    width: 230px;
+    height: 180px;
+    font-size: 14px;
+    line-height: 1.2em;
+}
+
+.contentWide {
+    width: 980px !important;
+}
+
+.c3 svg {
+    overflow: visible !important;
+}

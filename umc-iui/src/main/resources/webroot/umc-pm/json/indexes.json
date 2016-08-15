@@ -1,0 +1,50 @@
+﻿{
+  "status": 0,
+  "content": [
+    {
+      "id": "001",
+      "name": "test指标1",
+      "indexDes": "这是一个测试指标1",
+      "strExpresstion": "vnf.runtimeInfo.averageCpuUsage+1",
+      "dataType": "STRING",
+      "resourceType": {
+        "id": "vnf.cn.cscf",
+        "name": "CSCF"
+      },
+      "moType": {
+        "id": "vnf.cn.cscf.metrictype",
+        "name": "性能KPI-3"
+      }
+    },
+    {
+      "id": "002",
+      "name": "test指标2",
+      "indexDes": "这是一个测试指标2",
+      "strExpresstion": "vnf.runtimeInfo.averageCpuUsage+2",
+      "dataType": "STRING",
+      "resourceType": {
+        "id": "vnf.cn.cscf",
+        "name": "CSCF"
+      },
+      "moType": {
+        "id": "vnf.cn.cscf.metrictype",
+        "name": "性能KPI-3"
+      }
+    },
+    {
+      "id": "003",
+      "name": "test指标3",
+      "indexDes": "这是一个测试指标3",
+      "strExpresstion": "vnf.runtimeInfo.averageCpuUsage+3",
+      "dataType": "STRING",
+      "resourceType": {
+        "id": "vnf.cn.cscf",
+        "name": "CSCF"
+      },
+      "moType": {
+        "id": "vnf.cn.cscf.metrictype",
+        "name": "性能KPI-3"
+      }
+    }
+  ]
+}

@@ -1,0 +1,173 @@
+<!--
+
+    Copyright (C) 2015 ZTE, Inc. and others. All rights reserved. (ZTE)
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title></title>
+<link href="../component/thirdparty/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link href="../component/thirdparty/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+<link href="../component/thirdparty/uniform/css/uniform.default.min.css" rel="stylesheet" type="text/css"/>
+<link href="../component/css/ZteIctIcons/style.css" rel="stylesheet" type="text/css"/>
+<link href="../framework/css/ngict-component.css" rel="stylesheet" type="text/css"/>
+<link href="../vendor/animate/animate.min.css" rel="stylesheet" type="text/css"/>
+<link href="css/sdn.css" rel="stylesheet" type="text/css"/>
+<style>
+.ms-controller {
+	visibility: hidden
+}
+</style>
+
+</head>
+<body>
+	<div class="ms-controller container-fluid" ms-controller="sdnController" >
+	<div id="addSdnDlg" class="modal  fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+		<div class="modal-dialog">
+			<div class="modal-content Changepasswd">
+				<div class="content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						<h4 id="myModalLabel">{{addSdn.title}}</h4>
+					</div>
+					<div class="modal-body">
+					<form class="form-horizontal" id="sdn_form" role="form">
+						<input type="hidden" ms-duplex="addSdn.sdnId"  name="sdnId" class="form-control" />
+						<div class="form-group">
+							<label class="control-label col-sm-3">
+								<span id="roc-sdn-iui-text-name" name_i18n="org_openo_nfv_roc_ui_i18n"></span>
+								<span class="required" aria-required="true">*</span>
+							</label>
+						 	<div class="col-sm-7">
+								<input type="text" ms-duplex="addSdn.name"  name="name" class="form-control"/>
+								<span class="help-block"></span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-3">
+								<span id="roc-sdn-iui-text-type" name_i18n="org_openo_nfv_roc_ui_i18n"></span>
+								<span class="required" aria-required="true">*</span>
+							</label>
+                            <div class="col-sm-7">
+                                <select class="form-control" id="type" ms-each="$sdnType.selectItems" ms-duplex="addSdn.type" ms-attr-disabled="addSdn.typeDisabled">
+                                    <option ms-attr-value='el.cond_value'>{{el.name}}</option>
+                                </select>
+                                <span class="help-block"></span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-3">
+								<span>URL</span>
+								<span class="required" aria-required="true">*</span>
+							</label>
+							<div class="col-sm-7">
+								<input type="text" ms-duplex="addSdn.url" name="url" class="form-control" 
+									ms-attr-placeholder="addSdn.urlTip"/> 
+								<span class="help-block"></span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-3">
+								<span id="roc-sdn-iui-text-userName" name_i18n="org_openo_nfv_roc_ui_i18n"></span>
+                                <span class="required" aria-required="true">*</span>
+							</label>
+							<div class="col-sm-7">
+								<input type="text" ms-duplex="addSdn.userName" name="userName" class="form-control" /> 
+								<span class="help-block"></span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-3">
+								<span id="roc-sdn-iui-text-password" name_i18n="org_openo_nfv_roc_ui_i18n"></span>
+                                <span class="required" aria-required="true">*</span>
+							</label>
+							<div class="col-sm-7">
+								<input type="password" ms-duplex="addSdn.password" name="password" class="form-control" /> 
+								<span class="help-block"></span>
+							</div>
+						</div>
+					</form>
+					</div>
+					<div class="modal-footer">
+						<button class="btn" data-dismiss="modal" aria-hidden="true" id="roc-sdn-iui-text-cancelBtn" name_i18n="org_openo_nfv_roc_ui_i18n"></button>
+						<button class="btn btn-primary" type="submit" ms-click="$saveSdn" id="roc-sdn-iui-text-saveBtn" name_i18n="org_openo_nfv_roc_ui_i18n"></button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row-fluid" data-name="cond_zone">
+		<div class="col-md-12">
+			<button class="btn white radius_l" id="app-new-btn" ms-click="$showSdnTable" >
+		        <i class="ict-new"></i> <span id="roc-sdn-iui-text-registerBtn" name_i18n="org_openo_nfv_roc_ui_i18n"></span>
+		    </button>
+		</div>
+	</div>
+
+	<div class="col-sm-12 sdn-padding" ms-each-el="sdnInfo">
+
+		<div class="col-sm-4 animated-panel zoomIn" style="-webkit-animation-delay: 0.1s;">
+            <div class="hpanel stats" >
+                <div class="panel-body h-200"  ms-hover="hpanel_show" >
+                    <div class="pull-left">
+                        <span class="label label-success" id="roc-sdn-iui-text-status-normal" name_i18n="org_openo_nfv_roc_ui_i18n"></span>
+                    </div>
+                    <div class="stats-icon pull-right">
+                        <i class="fa fa-server  fa-5x color_cloud"></i>
+                    </div>
+                    <div class="m-t-xl">
+                        <h3 ms-text="el.name"></h3>   
+                        <div><span id="roc-sdn-iui-text-type" name_i18n="org_openo_nfv_roc_ui_i18n"></span> : <span ms-text="el.controllerType"></span></div>
+                        <div>URL : <span ms-text="el.url"></span></div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div  class="pull-right">
+                        <a class="btn btn-default btn-sm" ms-click="sdnUtil.updateSdn(el.$model)"><i class="fa fa-pencil-square-o fa-lg"></i></a>
+                        <a class="btn btn-default btn-sm" ms-click="sdnUtil.delSdn(el)"><i class="fa fa-trash-o fa-lg"> </i></a>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="pull-left text-muted">
+        	<small><span id="roc-sdn-iui-text-total" name_i18n="org_openo_nfv_roc_ui_i18n"></span> <span class="blue-font" ms-text="sdnInfo.size()"></span> <span id="roc-sdn-iui-text-total-sdn" name_i18n="org_openo_nfv_roc_ui_i18n"></span></small>
+        </div>  
+	</div>
+	</div>
+	<script type="text/javascript" src="../component/thirdparty/jquery/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="../component/thirdparty/jquery.i18n/jquery.i18n.properties-1.0.9.js"></script>
+	<script type="text/javascript" src="../component/thirdparty/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../component/thirdparty/bootbox/bootbox.min.js"></script>
+	<script type="text/javascript" src="../component/thirdparty/jquery-validation/js/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="../component/thirdparty/jquery-validation/js/additional-methods.min.js"></script>
+	
+	<script type="text/javascript" src="../vendor/bootstrap-growl/bootstrap-growl.min.js"></script>
+	<script type="text/javascript" src="../vendor/cometd/cometd.js"></script>
+	<script type="text/javascript" src="../vendor/cometd/jquery.cometd.js"></script>
+	<script type="text/javascript" src="../vendor/avalon/avalon.js"></script>
+
+	<script type="text/javascript" src="../framework/js/tools.js"></script>
+	
+	<script type="text/javascript" src="./i18n/loadi18nApp.js"></script> 
+	
+	<script type="text/javascript" src="./js/sdn-validate.js"></script>
+	<script type="text/javascript" src="./js/sdnUtil.js"></script>
+	<script type="text/javascript" src="./js/sdnController.js"></script>
+</body>
+</html>

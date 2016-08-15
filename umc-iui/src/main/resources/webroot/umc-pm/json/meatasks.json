@@ -1,0 +1,97 @@
+{
+    "status": 0,
+    "content": [
+        {
+            "id": "10001",
+            "name": "CSCF性能任务",
+            "resourceType": {
+                "id": "",
+                "name": ""
+            },
+            "moType": {
+                "id": "vnf.cn.cscf.metrictype",
+                "name": "性能KPI"
+            },
+            "resources": [
+                {
+                    "id": "vnf.cn.cscf.001",
+                    "name": "cscf001",
+                    "resType": "vnf.cn.cscf"
+                }
+            ],
+            "activeStatus": 0,
+            "granularity": 900,
+            "beginTime": 1447980721729,
+            "endTime": 1447980721729
+        },
+        {
+            "id": "10002",
+            "name": "CSCF性能任务",
+            "resourceType": {
+                "id": "",
+                "name": ""
+            },
+            "moType": {
+                "id": "vnf.cn.cscf.metrictype",
+                "name": "性能KPI"
+            },
+            "resources": [
+                {
+                    "id": "vnf.cn.cscf.002",
+                    "name": "cscf002",
+                    "resType": "vnf.cn.cscf"
+                }
+            ],
+            "activeStatus": 0,
+            "granularity": 300,
+            "beginTime": 1447980721729,
+            "endTime": 1447980721729
+        },
+        {
+            "id": "003",
+            "name": "IMS性能任务",
+            "resourceType": {
+                "id": "",
+                "name": ""
+            },
+            "moType": {
+                "id": "ns.cn.ims.metrictype",
+                "name": "性能KPI"
+            },
+            "resources": [
+                {
+                    "id": "ns.cn.ims.001",
+                    "name": "ims001",
+                    "resType": "ns.cn.ims"
+                }
+            ],
+            "activeStatus": 0,
+            "granularity": 300,
+            "beginTime": 1447980721729,
+            "endTime": 1447980721729
+        },
+        {
+            "id": "004",
+            "name": "EPC性能任务",
+            "resourceType": {
+                "id": "",
+                "name": ""
+            },
+            "moType": {
+                "id": "ns.cn.epc.metrictype",
+                "name": "性能KPI"
+            },
+            "resources": [
+                {
+                    "id": "ns.cn.epc.002",
+                    "name": "epc002",
+                    "resType": "ns.cn.epc"
+                }
+            ],
+            "activeStatus": 0,
+            "granularity": 900,
+            "beginTime": 1447980721729,
+            "endTime": 1447980721729
+        }
+    ]
+}

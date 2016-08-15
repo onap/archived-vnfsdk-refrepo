@@ -1,0 +1,115 @@
+﻿{
+  "status": 0,
+  "content": [
+    {
+      "id": "ns.cn.ims.000",
+      "name": "ims000",
+      "resType": "ns.cn.ims"
+    },
+    {
+      "id": "ns.cn.ims.001",
+      "name": "ims001",
+      "resType": "ns.cn.ims"
+    },
+    {
+      "id": "ns.cn.ims.002",
+      "name": "ims002",
+      "resType": "ns.cn.ims"
+    },
+    {
+      "id": "ns.cn.ims.003",
+      "name": "ims003",
+      "resType": "ns.cn.ims"
+    },
+    {
+      "id": "ns.cn.ims.004",
+      "name": "ims004",
+      "resType": "ns.cn.ims"
+    },
+    {
+      "id": "ns.cn.ims.005",
+      "name": "ims005",
+      "resType": "ns.cn.ims"
+    },
+    {
+      "id": "ns.cn.ims.006",
+      "name": "ims006",
+      "resType": "ns.cn.ims"
+    },
+    {
+      "id": "ns.cn.ims.007",
+      "name": "ims007",
+      "resType": "ns.cn.ims"
+    },
+    {
+      "id": "ns.cn.ims.008",
+      "name": "ims008",
+      "resType": "ns.cn.ims"
+    },
+    {
+      "id": "ns.cn.ims.009",
+      "name": "ims009",
+      "resType": "ns.cn.ims"
+    },
+    {
+      "id": "ns.cn.ims.010",
+      "name": "ims010",
+      "resType": "ns.cn.ims"
+    },
+    {
+      "id": "ns.cn.ims.011",
+      "name": "ims011",
+      "resType": "ns.cn.ims"
+    },
+    {
+      "id": "ns.cn.ims.012",
+      "name": "ims012",
+      "resType": "ns.cn.ims"
+    },
+    {
+      "id": "ns.cn.ims.013",
+      "name": "ims013",
+      "resType": "ns.cn.ims"
+    },
+    {
+      "id": "ns.cn.ims.014",
+      "name": "ims014",
+      "resType": "ns.cn.ims"
+    },
+    {
+      "id": "ns.cn.ims.015",
+      "name": "ims015",
+      "resType": "ns.cn.ims"
+    },
+    {
+      "id": "ns.cn.ims.016",
+      "name": "ims016",
+      "resType": "ns.cn.ims"
+    },
+    {
+      "id": "ns.cn.ims.017",
+      "name": "ims017",
+      "resType": "ns.cn.ims"
+    },
+    {
+      "id": "ns.cn.ims.018",
+      "name": "ims018",
+      "resType": "ns.cn.ims"
+    },
+    {
+      "id": "ns.cn.ims.019",
+      "name": "ims019",
+      "resType": "ns.cn.ims"
+    },
+    {
+      "id": "ns.cn.ims.020",
+      "name": "ims020",
+      "resType": "ns.cn.ims"
+    },
+    {
+      "id": "ns.cn.ims.021",
+      "name": "ims021",
+      "resType": "ns.cn.ims"
+    }
+  ]
+}

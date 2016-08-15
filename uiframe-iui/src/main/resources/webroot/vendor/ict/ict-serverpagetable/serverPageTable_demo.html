@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="/ngict/iui/component/thirdparty/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="../../thirdparty/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="serverpagetable.css" rel="stylesheet"/>
+    <script src="../../thirdparty/jquery/jquery-1.10.2.min.js"></script>
+    <script src="../../thirdparty/data-tables/jquery.dataTables.js"></script>
+    <script src="serverPageTable.js"></script>
+</head>
+<body>
+<div id="ict_serverPage_div" style="width:95%;margin-left:25px;"></div>
+<script>
+    var setting = {};
+
+    setting.language = {
+        "sLengthMenu": "每页 _MENU_ 条结果",
+        "sZeroRecords": "没有匹配结果",
+        "sInfo": "<span class='seperator'>  </span>" + "总共找到 _TOTAL_ 条结果",
+        "sInfoEmpty": "共 0 项",
+        //"sGroupActions": $.i18n.prop("ngict-log-iui-table-sGroupActions"),
+        //"sAjaxRequestGeneralError": $.i18n.prop("ngict-log-iui-table-sAjaxRequestGeneralError"),
+        //"sEmptyTable": $.i18n.prop("ngict-log-iui-table-sEmptyTable"),
+        "oPaginate": {
+            "sPrevious": "前页",
+            "sNext": "后页",
+            "sPage": "第",
+            "sPageOf": "页，总页数"
+        }
+    };
+    setting.columns = [
+        {"mData": null, name: "", "sClass": 'details-control', "sWidth": '8%'},
+        {"mData": "id", name: "ID", "bVisible": false},
+        {"mData": "operate", name: "日志名称"},
+        {"mData": "userName", name: "用户名称"},
+        {"mData": "host", name: "主机地址"},
+        {"mData": "logDate", name: "时间"},
+        {"mData": "detail", name: "详细信息", "bVisible": false}
+    ];
+    setting.restUrl = '/ngict/rest/log/info/secLog';
+    setting.tableId = "ict_log_table_seclog";
+    var cond = {};
+    cond.startTime = 1437053600000;
+    cond.endTime = 1448358399999;
+    var pageInfo = null;
+    serverPageTable.initDataTable(setting, cond, 'ict_serverPage_div', pageInfo);
+</script>
+</body>
+</html>

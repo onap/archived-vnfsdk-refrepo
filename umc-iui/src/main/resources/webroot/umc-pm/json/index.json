@@ -1,0 +1,18 @@
+[
+  {
+    "id": "10000",
+    "name": "指标一",
+    "indexDes": "具体信息",
+    "strExpression": "a+b",
+    "resourceType": 
+      {
+        "id": "vnf.cn.cscf",
+        "name": "CSCF"
+      },
+	"moType": {
+      "id": "ns.cn.epc.metrictype",
+      "name": "性能KPI"
+    },
+    "dataType": "0"
+  }
+]

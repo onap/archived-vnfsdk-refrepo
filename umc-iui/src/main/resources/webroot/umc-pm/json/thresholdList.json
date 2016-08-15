@@ -1,0 +1,116 @@
+[
+  {
+    "id": "10000",
+    "name": "EPC性能任务",
+    "resources": [
+      {
+        "id": "ns.cn.epc.001",
+        "name": "epc001",
+        "resType": "ns.cn.epc"
+      }
+    ],
+	"threshholdValue": {   
+		"direction": "up",
+		"warning": {
+			"threshold": "20",
+			"delta": "5"
+		},
+		"minor": {
+			"threshold": "20",
+			"delta": "5"
+		},
+		"major": {
+			"threshold": "20",
+			"delta": "5"
+		},
+		"critical": {
+			"threshold": "20",
+			"delta": "5"
+		}		
+	},
+    "metricType": {
+      "id": "ns.cn.epc.metrictype",
+      "name": "性能KPI"
+    },
+    "status": 0,
+    "granularity": 900,
+    "beginTime": 1441036800000,
+    "endTime": 1577808000000
+  },
+  {
+    "id": "10001",
+    "name": "001",
+    "resources": [
+      {
+        "id": "ns.cn.ims.001",
+        "name": "ims001",
+        "resType": "ns.cn.ims"
+      }
+    ],
+	"threshholdValue": {   
+		"direction": "up",
+		"warning": {
+			"threshold": "20",
+			"delta": "5"
+		},
+		"minor": {
+			"threshold": "20",
+			"delta": "5"
+		},
+		"major": {
+			"threshold": "20",
+			"delta": "5"
+		},
+		"critical": {
+			"threshold": "20",
+			"delta": "5"
+		}		
+	},
+    "metricType": {
+      "id": "ns.cn.ims.metrictype",
+      "name": "性能KPI"
+    },
+    "status": 0,
+    "granularity": 900,
+    "beginTime": 1441036800000,
+    "endTime": 1577808000000
+  },
+  {
+    "id": "10002",
+    "name": "123",
+    "resources": [
+      {
+        "id": "vnf.cn.cscf.001",
+        "name": "cscf001",
+        "resType": "vnf.cn.cscf"
+      }
+    ],
+	"threshholdValue": {   
+		"direction": "up",
+		"warning": {
+			"threshold": "20",
+			"delta": "5"
+		},
+		"minor": {
+			"threshold": "20",
+			"delta": "5"
+		},
+		"major": {
+			"threshold": "20",
+			"delta": "5"
+		},
+		"critical": {
+			"threshold": "20",
+			"delta": "5"
+		}		
+	},
+    "metricType": {
+      "id": "vnf.cn.cscf.metrictype",
+      "name": "性能KPI"
+    },
+    "status": 0,
+    "granularity": 900,
+    "beginTime": 1441036800000,
+    "endTime": 1577808000000
+  }
+]

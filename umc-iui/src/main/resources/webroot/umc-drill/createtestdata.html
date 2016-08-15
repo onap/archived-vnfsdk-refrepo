@@ -1,0 +1,618 @@
+<!--
+
+    Copyright (C) 2015 ZTE, Inc. and others. All rights reserved. (ZTE)
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<!DOCTYPE html>
+<html>
+<head>
+	<title>模拟分层钻取相关结点</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../component/thirdparty/font-awesome/css/font-awesome.min.css" id="font_awesome"/>
+	<link rel="stylesheet" type="text/css" href="../component/thirdparty/bootstrap/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="../component/thirdparty/uniform/css/uniform.default.css" />
+</head>
+<body>
+
+	<ul id="myTab" class="nav nav-tabs">
+		<li class="active navbar-header"><a class="navbar-brand" href="#home" data-toggle="tab">Data Maker</a></li>
+			<li><a href="#hostpanel" data-toggle="tab" onclick="updateSelectForAddHOST()">增加Host</a></li>
+			<li><a href="#vnfpanel" data-toggle="tab" onclick="updateSelectForAddVNF()">增加VNF</a></li>
+			<li><a href="#vdupanel" data-toggle="tab" onclick="updateSelectForAddVDU()">增加VDU</a></li>
+			<li><a href="#vnfcpanel" data-toggle="tab" onclick="updateSelectForAddVNFC()">增加VNFC</a></li>
+			<li><a href="#nspanel" data-toggle="tab" onclick="updateSelectForAddNS()">编排NS</a></li>
+			<!--
+			<li class="dropdown"><a href="#" id="myTabDrop1"
+				class="dropdown-toggle" data-toggle="dropdown">Java <b
+				class="caret"></b>
+			</a>
+			<ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
+				<li><a href="#jmeter" tabindex="-1" data-toggle="tab">jmeter</a></li>
+				<li><a href="#ejb" tabindex="-1" data-toggle="tab">ejb</a></li>
+			</ul></li>
+		    -->
+		</ul>
+
+		<div id="bodyContent" class="tab-content"
+		ms-controller="mockdataController">
+
+		<div class="alert alert-info" ms-visible="server_rtn.info_block"
+		ms-html="server_rtn.info_text"></div>
+		<div class="alert alert-danger "
+		ms-visible="server_rtn.warning_block"
+		ms-html="server_rtn.warning_text"></div>
+
+		<div id="myTabContent" class="tab-content">
+			<div class="tab-pane fade in active" id="home">
+				<h4 id="notes">
+				功能介绍:<br><br>
+				主要用于模拟分层钻取相关的各层数据！
+				<br>
+				<br>
+                建议创建顺序为：VNFM->VIM->Host->VNF->VDU->VNFC->NS,其中VNFM和VIM要首先创建！
+				</h4>
+			</div>
+
+			<div class="tab-pane fade" id="hostpanel">
+				<div class="modal-header">
+					<h4 id="addVNFLabel" ms-text="$addHOSTtitleName"></h4>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>名称</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="HOSTInfo.name" name="name"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>moc</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="HOSTInfo.moc" name="moc"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>IP地址</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="HOSTInfo.ipAddress" name="ipAddress"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>user</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="HOSTInfo.user" name="user"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>password</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="HOSTInfo.password" name="password"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>protocol</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="HOSTInfo.protocol" name="protocol"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>port</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="HOSTInfo.port" name="port"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>所属VIM</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<select id="host-vimSelect" ms-duplex="HOSTInfo.vimId">
+							<option ms-repeat="vimList" ms-attr-value="el.oid">{{el.name}}</option>
+						</select> <span class="help-block"></span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>type</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="HOSTInfo.type" name="type"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>version</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="HOSTInfo.version" name="version"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>vendor</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="HOSTInfo.vendor" name="vendor"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+				<button class="btn btn-primary" type="button" ms-click="$addHost()">保存</button>
+				<input class="btn btn-primary" type="button" ms-attr-title="$mockAlarmTooltip"  ms-duplex="HOSTInfo.alarmbtnvalue"  ms-attr-disabled="HOSTInfo.alarmbtndisabled" ms-click="$raiseAlarm(HOSTInfo.oid,HOSTInfo.name)"/>
+				<h4 ms-html="$mockAlarmRemark"></h4>
+			</div>
+
+
+
+			<div class="tab-pane fade" id="vnfpanel">
+				<div class="modal-header">
+					<h4 id="addVNFLabel" ms-text="$addVNFtitleName"></h4>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>名称</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="VNFInfo.name" name="name"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>vnfd名称</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="VNFInfo.vnfd" name="vnfd"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>状态</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="VNFInfo.status" name="status"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>所属VNFM</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<select id="vnf-vnfmSelect" ms-duplex="VNFInfo.vnfmid">
+							<option ms-repeat="vnfmList" ms-attr-value="el.oid">{{el.name}}</option>
+						</select> <span class="help-block"></span>
+					</div>
+
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>所属VIM</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<select id="vnf-vimSelect" ms-duplex="VNFInfo.vimId">
+							<option ms-repeat="vimList" ms-attr-value="el.oid">{{el.name}}</option>
+						</select> <span class="help-block"></span>
+					</div>
+
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>moc</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="VNFInfo.moc" name="moc"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>localization</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="VNFInfo.localization" name="localization"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>flavourId</span>
+						<span class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="VNFInfo.flavourId" name="flavourId"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>type</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="VNFInfo.type" name="type"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>version</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="VNFInfo.version" name="version"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>vendor</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="VNFInfo.vendor" name="vendor"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+				<button class="btn btn-primary" type="button" ms-click="$addVNF()">保存</button>
+				<input class="btn btn-primary" type="button" ms-attr-title="$mockAlarmTooltip"  ms-duplex="VNFInfo.alarmbtnvalue"  ms-attr-disabled="VNFInfo.alarmbtndisabled" ms-click="$raiseAlarm(VNFInfo.oid,VNFInfo.name)"/>
+				<h4 ms-html="$mockAlarmRemark"></h4>
+			</div>
+
+
+			<div class="tab-pane fade" id="vdupanel">
+				<div class="modal-header">
+					<h4 id="addVDULabel" ms-text="$addVDUtitleName"></h4>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>名称</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="VDUInfo.name" name="name"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>vdu镜像</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="VDUInfo.vduImage"
+						placeholder="参考格式：http://xx.xx.xx.xx:5000/v2.0" name="vduImage"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>IP地址</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="VDUInfo.ipAddress" name="ipAddress"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>所属VNF</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<select id="vdu-vnfSelect" ms-duplex="VDUInfo.vnfId">
+							<option ms-repeat="vnfList" ms-attr-value="el.oid">{{el.name}}</option>
+						</select> <span class="help-block"></span>
+					</div>
+
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>所属VIM</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<select id="vdu-vimSelect" ms-duplex="VDUInfo.vimId">
+							<option ms-repeat="vimList" ms-attr-value="el.oid">{{el.name}}</option>
+						</select> <span class="help-block"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>所属Host</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<select id="vdu-hostSelect" ms-duplex="VDUInfo.hostId">
+							<option ms-repeat="hostList" ms-attr-value="el.oid">{{el.name}}</option>
+						</select> <span class="help-block"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>moc</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="VDUInfo.moc" name="moc"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>flavourId</span>
+						<span class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="VDUInfo.flavourId" name="flavourId"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>type</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="VDUInfo.type" name="type"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>version</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="VDUInfo.version" name="version"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>vendor</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="VDUInfo.vendor" name="vendor"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+				<button class="btn btn-primary" type="button" ms-click="$addVDU()">保存</button>
+				<input class="btn btn-primary" type="button" ms-attr-title="$mockAlarmTooltip"  ms-duplex="VDUInfo.alarmbtnvalue"  ms-attr-disabled="VDUInfo.alarmbtndisabled" ms-click="$raiseAlarm(VDUInfo.oid,VDUInfo.name)"/>
+				<h4 ms-html="$mockAlarmRemark"></h4>
+			</div>
+
+			<div class="tab-pane fade" id="vnfcpanel">
+				<div class="modal-header">
+					<h4 id="addVDULabel" ms-text="$addVNFCtitleName"></h4>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>名称</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="VNFCInfo.name" name="name"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>所属VNF</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<select id="vnfc-vnfSelect" ms-duplex="VNFCInfo.vnfId">
+							<option ms-repeat="vnfList" ms-attr-value="el.oid">{{el.name}}</option>
+						</select> <span class="help-block"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>所属VDU</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<select id="vnfc-vduSelect" ms-duplex="VNFCInfo.vduId">
+							<option ms-repeat="vduList" ms-attr-value="el.oid">{{el.name}}</option>
+						</select> <span class="help-block"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>moc</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="VNFCInfo.moc" name="moc"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>IP地址</span> 
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="VNFCInfo.ipAddress" name="ipAddress"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>type</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="VNFCInfo.type" name="type"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>version</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="VNFCInfo.version" name="version"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>vendor</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="VNFCInfo.vendor" name="vendor"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+				<button class="btn btn-primary" type="button" ms-click="$addVNFC()">保存</button>
+				<input class="btn btn-primary" type="button" ms-attr-title="$mockAlarmTooltip"  ms-duplex="VNFCInfo.alarmbtnvalue"  ms-attr-disabled="VNFCInfo.alarmbtndisabled" ms-click="$raiseAlarm(VNFCInfo.oid,VNFCInfo.name)"/>
+				<h4 ms-html="$mockAlarmRemark"></h4>
+			</div>
+
+
+
+
+            <div class="tab-pane fade" id="nspanel">
+				<div class="modal-header">
+					<h4 id="addNSLabel" ms-text="$addNStitleName"></h4>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>名称</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="NSInfo.name" name="name"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>moc</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="NSInfo.moc" name="moc"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+                <div class="form-group">
+					<label class="control-label col-sm-3"> <span>nsd</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="NSInfo.nsd" name="nsd"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+
+                <div class="form-group">
+					<label class="control-label col-sm-3"> <span>包含的VNF</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<span ms-repeat="vnfList" >
+							<input type="checkbox" ms-attr-value="el.oid" ms-duplex="NSInfo.vnfIds">{{el.name}}
+						</span>
+						<span class="help-block"></span>
+					</div>
+				</div>
+				
+                <div class="form-group">
+					<label class="control-label col-sm-3"> <span>autoScalePolicy</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="NSInfo.autoScalePolicy" name="autoScalePolicy"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>status</span> <span
+						class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="NSInfo.status" name="status"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>flavour</span>
+						<span class="required" aria-required="true">*</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="NSInfo.flavour" name="flavourId"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>type</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="NSInfo.type" name="type"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>version</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="NSInfo.version" name="version"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-3"> <span>vendor</span>
+					</label>
+					<div class="col-sm-7">
+						<input type="text" ms-duplex="NSInfo.vendor" name="vendor"
+						class="form-control" /> <span class="help-block"></span>
+					</div>
+				</div>
+				<button class="btn btn-primary" type="button" ms-click="$addNS()">保存</button>
+				<input class="btn btn-primary" type="button" ms-attr-title="$mockAlarmTooltip"  ms-duplex="NSInfo.alarmbtnvalue"  ms-attr-disabled="NSInfo.alarmbtndisabled" ms-click="$raiseAlarm(NSInfo.oid,NSInfo.name)"/>
+				<h4 ms-html="$mockAlarmRemark"></h4>
+			</div>
+
+
+			<div class="tab-pane fade" id="jmeter">
+				<p>jMeter 是一款开源的测试软件。它是 100% 纯 Java 应用程序，用于负载和性能测试。</p>
+			</div>
+			<div class="tab-pane fade" id="ejb">
+				<p>Enterprise Java
+					Beans（EJB）是一个创建高度可扩展性和强大企业级应用程序的开发架构，部署在兼容应用程序服务器（比如 JBOSS、Web Logic
+					等）的 J2EE 上。</p>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="../component/thirdparty/jquery/jquery-1.10.2.min.js"></script>
+		<script type="text/javascript" src="../component/thirdparty/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../vendor/bootstrap-daterangepicker/daterangepicker.js"></script>
+		<script src="js/commonUtil.js"></script>
+		<script src="js/avalon.modern.js"></script>
+		<script src="js/mockdataController.js"></script>
+</body>
+</html>

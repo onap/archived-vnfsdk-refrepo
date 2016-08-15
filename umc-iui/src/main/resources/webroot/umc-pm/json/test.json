@@ -1,0 +1,152 @@
+{
+  "10001":{
+    "id": "10001",
+    "name": "测试门限任务1",
+    "resourceType": {
+      "id": "vnf.cn.cscf",
+      "name": "CSCF"
+    },
+    "moType": {
+      "id": "vnf.cn.cscf.metrictype",
+      "name": "性能KPI"
+    },
+    "threshholdValue": {
+      "indexOrCounterId": "vnf.runtimeInfo.averageMemoryUsage",
+      "indexOrCounterName": "测试指标1",
+      "criticalValue": {
+        "value": "10",
+        "delta": "1"
+      },
+      "majorValue": {
+        "value": "20",
+        "delta": "2"
+      },
+      "minorValue": {
+        "value": "30",
+        "delta": "3"
+      },
+      "warnValue": {
+        "value": "40",
+        "delta": "4"
+      },
+      "alarmType": "0"
+    },
+    "resources": [
+      {
+        "id": "vnf.cn.cscf.001",
+        "name": "cscf001",
+		"value": "SSS"
+      },
+	  {
+        "id": "vnf.cn.cscf.002",
+        "name": "cscf002",
+		"value": "TTT"
+      },
+	  {
+        "id": "vnf.cn.cscf.003",
+        "name": "cscf003",
+		"value": "ZZZ"
+      },
+	  {
+        "id": "vnf.cn.cscf.004",
+        "name": "cscf004",
+		"value": "SSS"
+      },
+	  {
+        "id": "vnf.cn.cscf.005",
+        "name": "cscf005",
+		"value": "TTT"
+      },
+	  {
+        "id": "vnf.cn.cscf.006",
+        "name": "cscf006",
+		"value": "ZZZ"
+      },
+	  {
+        "id": "vnf.cn.cscf.007",
+        "name": "cscf007",
+		"value": "SSS"
+      },
+	  {
+        "id": "vnf.cn.cscf.008",
+        "name": "cscf008",
+		"value": "TTT"
+      },
+	  {
+        "id": "vnf.cn.cscf.009",
+        "name": "cscf009",
+		"value": "ZZZ"
+      },
+	   {
+        "id": "vnf.cn.cscf.010",
+        "name": "cscf010",
+		"value": "SSS"
+      },
+	  {
+        "id": "vnf.cn.cscf.011",
+        "name": "cscf011",
+		"value": "TTT"
+      },
+	  {
+        "id": "vnf.cn.cscf.012",
+        "name": "cscf012",
+		"value": "ZZZ"
+      },
+	   {
+        "id": "vnf.cn.cscf.013",
+        "name": "cscf013",
+		"value": "SSS"
+      },
+	  {
+        "id": "vnf.cn.cscf.014",
+        "name": "cscf014",
+		"value": "TTT"
+      },
+	  {
+        "id": "vnf.cn.cscf.015",
+        "name": "cscf015",
+		"value": "ZZZ"
+      }
+    ]
+  },
+   "10002": {
+    "id": "10002",
+    "name": "这是一个测试门限任务2",
+    "resourceType": {
+      "id": "vnf.cn.cscf",
+      "name": "CSCF"
+    },
+    "moType": {
+      "id": "vnf.cn.cscf.metrictype",
+      "name": "性能KPI"
+    },
+    "threshholdValue": {
+      "indexOrCounterId": "8000",
+      "indexOrCounterName": "测试指标2",
+      "criticalValue": {
+        "value": "10",
+        "delta": "1"
+      },
+      "majorValue": {
+        "value": "20",
+        "delta": "2"
+      },
+      "minorValue": {
+        "value": "30",
+        "delta": "3"
+      },
+      "warnValue": {
+        "value": "40",
+        "delta": "4"
+      },
+      "alarmType": "0"
+    },
+    "resources": [
+      {
+        "id": "vnf.cn.cscf.002",
+        "name": "cscf002",
+		"value": "YYY"
+      }
+    ]
+  }
+}

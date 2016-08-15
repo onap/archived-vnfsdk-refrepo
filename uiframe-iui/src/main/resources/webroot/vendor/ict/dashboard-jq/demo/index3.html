@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html ng-app="graphApp">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <SCRIPT SRC="debug.js"></SCRIPT>
+    <SCRIPT>
+        if (typeof(parent.loadJsFromIndex) == "undefined" || !parent.loadJsFromIndex) {
+            var jqueryJsPath = "/web/res/web-common/comp/jquery.js";
+            document.write("<" + "SCRIPT SRC=" + jqueryJsPath + "><" + "/SCRIPT>");
+            var frameworkJsPath = "/web/res/web-framework/js/framework.js";
+            document.write("<" + "SCRIPT SRC=" + frameworkJsPath + "><" + "/SCRIPT>");
+        }
+    </SCRIPT>
+    <SCRIPT>
+        if (typeof ($userFrameDir) == 'undefined') {
+            $userFrameDir = "/web/res/web-common/comp/";
+        }
+        var toolUrl = $userFrameDir + "tools.js";
+        document.write("<" + "SCRIPT SRC=" + toolUrl + "><" + "/SCRIPT>");
+    </SCRIPT>
+</head>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+</style>
+<link rel="stylesheet" href="/web/newict/framework/thirdparty/jquery-ui/jquery-ui-1.10.3.custom.min.css">
+<link href="/web/newict/framework/thirdparty/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="/web/newict/framework/thirdparty/dashboard/assets/css/facebox.css" media="screen" rel="stylesheet"
+      type="text/css"/>
+<link type="text/css" href="/web/newict/framework/thirdparty/dashboard/assets/css/ict-chart-dashboard.css"
+      rel="stylesheet">
+<link type="text/css" href="/web/newict/framework/thirdparty/dashboard/assets/css/components.css" rel="stylesheet">
+<link rel="stylesheet" href="/web/res/web-common/css/ZteIctIcons/style.css"/>
+<link rel="stylesheet" href="/web/newict/framework/thirdparty/font-awesome/css/font-awesome.min.css"/>
+<link type="text/css" href="/web/newict/framework/thirdparty/dashboard/assets/css/transition.css" rel="stylesheet">
+<link type="text/css" href="/web/newict/framework/thirdparty/dashboard/DashboardICT.css" rel="stylesheet">
+<link href="/web/newict/framework/thirdparty/uniform/css/uniform.default.css" rel="stylesheet" type="text/css">
+<link href="/web/newict/framework/thirdparty/dashboard/assets/css/c3.css" rel="stylesheet" type="text/css">
+<body ng-controller="GraphCtrl">
+<div class="dashBoardHeader">
+    <div id="cf5" class="hover sidebar-toggler">
+        <img class="top shadow" src="images/open.png"/>
+        <img class="bottom shadow" src="images/shrink.png"/>
+    </div>
+    <!-- <button id="savePlots">Save</button> -->
+    <div id="deleteIcon" class="hover delete-icon">
+        <img class="top shadow" src="images/remove.png"/>
+        <img class="bottom shadow deleteIconHidden" src="images/remove_red.png"/>
+    </div>
+</div>
+<div class="plotItemsSelectionWrapper"></div>
+<div class="dashBoardBody">
+    <div class="contentWrapper">
+        <div class="plotsWrapper">
+            <div class="row ui-sortable" id="sortable_portlets_added">
+                <div class="col-md-6 column sortable col-padding-adjust">
+                    <div id="droppable" class="portlet portlet-sortable light bg-inverse droppable"
+                         style="display: block;"></div>
+                    <div class="portlet portlet-sortable-empty"></div>
+                </div>
+                <div class="col-md-6 column sortable col-padding-adjust">
+                    <div id="droppable1" class="portlet portlet-sortable light bg-inverse droppable"
+                         style="display: block;"></div>
+                    <div class="portlet portlet-sortable-empty"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- </div> -->
+<script type="text/javascript" src="/web/newict/framework/thirdparty/jquery-1.10.2.min.js"></script>
+<script src="/web/newict/framework/thirdparty/jquery-ui/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="/web/newict/framework/thirdparty/dashboard/assets/js/d3.min.js" charset="utf-8"></script>
+<script src="/web/newict/framework/thirdparty/dashboard/assets/js/c3.js"></script>
+<!--图例-->
+<SCRIPT SRC="/web/newict/framework/thirdparty/dashboard/demo/ict-linechart-c3.js"></SCRIPT>
+<SCRIPT SRC="/web/newict/framework/thirdparty/dashboard/demo/ict-barchart-c3.js"></SCRIPT>
+<!--demo-->
+<SCRIPT SRC="/web/newict/framework/thirdparty/dashboard/demo/demo-barchart-c3.js"></SCRIPT>
+<SCRIPT SRC="/web/newict/framework/thirdparty/dashboard/demo/demo-linechart-c3.js"></SCRIPT>
+<!--facebox-->
+<script src="/web/newict/framework/thirdparty/dashboard/assets/js/facebox.js"></script>
+<!--portlet-->
+<script src="/web/newict/framework/thirdparty/dashboard/assets/js/portlet-draggable-jq.js"
+        type="text/javascript"></script>
+<script src="/web/newict/framework/thirdparty/bootstrap/js/bootstrap.min.js"></script>
+<script src="/web/newict/framework/thirdparty/jquery-slimscroll/jquery.slimscroll.min.js"
+        type="text/javascript"></script>
+<!-- <script type="text/javascript" src="js/freewall.js"></script> -->
+<script src="/web/newict/framework/thirdparty/dashboard/demo/c3Chart.js"></script>
+<script type="text/javascript" src="/web/newict/framework/thirdparty/uniform/jquery.uniform.min.js"></script>
+<script type="text/javascript" src="/web/newict/framework/thirdparty/dashboard/DashboardICT-jq.js"></script>
+<script>
+    jQuery(document).ready(function () {
+
+        var c3ChartControlHtmlFrag =
+                '<div class="legendC3">' +
+                '<span id="c3-line" data-id="data1" style="background-color: rgb(31, 119, 180);">Line</span>' +
+                '<span id="c3-bar" data-id="data2" style="background-color: rgb(255, 127, 14);">Bar</span>' +
+                '<span id="c3-step" data-id="data3" style="background-color: rgb(44, 160, 44);">Step</span>' +
+                '</div>';
+        DashboardICT.addPlotControlHtmlFrags("c3Chart", c3ChartControlHtmlFrag);
+
+        var c3PlotControlCallback = function (plotCallback, placeholderId) {
+            $("#c3-line").click(function () {
+                plotCallback(placeholderId, "line");
+                var args = [placeholderId, "line"];
+                $.facebox.flotRedrawCallbackObjs[placeholderId] = {
+                    callback: plotCallback,
+                    arguments: args
+                }
+            });
+            $("#c3-bar").click(function () {
+                plotCallback(placeholderId, "bar");
+                var args = [placeholderId, "bar"];
+                $.facebox.flotRedrawCallbackObjs[placeholderId] = {
+                    callback: plotCallback,
+                    arguments: args
+                }
+            });
+            $("#c3-step").click(function () {
+                plotCallback(placeholderId, "step");
+                var args = [placeholderId, "step"];
+                $.facebox.flotRedrawCallbackObjs[placeholderId] = {
+                    callback: plotCallback,
+                    arguments: args
+                }
+            });
+        }
+        DashboardICT.addPlotControlCallbacks("c3Chart", c3PlotControlCallback);
+
+        DashboardICT.init();
+        $("#savePlots").click(function () {
+            var savedPlots = DashboardICT.saveSelectedPlots();
+        });
+
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+﻿<div class="container-fluid form-horizontal" id="new_index_body"
+     style="height:100%;background-color:#FFF;overflow-x:hidden;overflow-y:auto">
+    <div class="row creat-index">
+        <div class="col-xs-6 left-form">
+            <div id="action" class="group ">
+
+           
+                    <div class="form-group checkbox-list" id="email">
+                        <label class="control-label col-xs-3">
+                              
+										<span id="com_zte_ums_ict_pm_index_resourceType"
+                                              name_i18n="com_zte_ums_ngict_pm_index">
+										</span>
+                        </label>
+
+                        <div class="col-xs-9">
+                            <select id="resourceTypes" ms-duplex-String="selectedResourceType" class="selector-class"
+                                    ms-change="resTypeSelectAction()">
+                                <option ms-repeat-el="resTypeArray">{{el.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" id="message">
+                        <label class="control-label col-xs-3">
+                                
+										<span id="com_zte_ums_ict_pm_index_moType"
+                                              name_i18n="com_zte_ums_ngict_pm_index">
+										
+										</span>
+                        </label>
+
+                        <div class="col-xs-9">
+                            <div class="box">
+                                <div class="type-list" ms-repeat-el="moTypeArray">
+                                    <input type="radio"
+                                           ms-click="moTypeSelectAction(this)" ms-attr-value={{el.id}}
+                                           name="moType"/><span> {{el.name}}<span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" id="counterDiv">
+                        <label class="control-label col-xs-3">
+                              
+										<span id="com_zte_ums_ict_pm_index_counter"
+                                              name_i18n="com_zte_ums_ngict_pm_index">
+										
+										</span>
+                        </label>
+
+                        <div class="col-xs-9 ">
+                            <div class="box">
+                                <div ms-if="counterArray.length==0"><span class="tip" id="com_zte_ums_ict_pm_index_selectCounter"
+                                              name_i18n="com_zte_ums_ngict_pm_index" ><span></div>
+                                <div  class="type-list" ms-repeat-el="counterArray">
+                                    <input type="radio" ms-attr-value={{el.id}} ms-click="counterSelectAction(this)" name="counter"/><span> {{el.name}}<span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+               
+
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="fixed_side">       
+
+                    <div class="form-group " id="indexName">
+                        <label class="control-label col-xs-3 col-md-3 col-lg-2">
+										<span id="com_zte_ums_ict_pm_index_indexName"
+                                              name_i18n="com_zte_ums_ngict_pm_index">
+										
+										</span>
+									<span class="required">
+									*
+									</span>
+                        </label>
+
+                        <div class="col-xs-9 col-md-8 col-lg-8">
+                            <input type="text" ms-duplex-string="indexName" class="form-control" name="name"
+                                   id="ruleId"/>
+                        </div>
+                    </div>
+                    <div class="form-group" id="usernameDiv">
+                        <label class="control-label col-xs-3 col-md-3 col-lg-2">
+										<span id="com_zte_ums_ict_pm_index_dataType"
+                                              name_i18n="com_zte_ums_ngict_pm_index">
+										
+										</span>
+                        </label>
+
+                        <div class="col-xs-9 col-md-8 col-lg-8">
+                            <select class="selector-class" ms-duplex-String="selectedDataType">
+                                <option ms-repeat-el="dataTypeArray"><!--{{el.id}}-->{{el.name}}</option>
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="form-group" id="status">
+                        <label class="control-label col-xs-3 col-md-3 col-lg-2">
+										<span id="com_zte_ums_ict_pm_index_indexDes"
+                                              name_i18n="com_zte_ums_ngict_pm_index">
+									
+										</span>
+                        </label>
+
+                        <div id="state" class="col-xs-9 col-md-8 col-lg-8 btn-group btn-group-circle"
+                             data-toggle="buttons">
+                            <input type="text" ms-duplex-string="indexDescription" class="form-control" name="name"
+                                   id="ruleId"/>
+                        </div>
+                    </div>
+                    <div class="form-group" id="ipInfos">
+                        <label class="control-label col-xs-3 col-md-3 col-lg-2">
+                                        <span id="com_zte_ums_ict_pm_index_strExpresstion"
+                                              name_i18n="com_zte_ums_ngict_pm_index">
+                                        
+                                        </span>
+
+                        </label>
+
+                        <div class="col-xs-9 col-md-8 col-lg-8">
+                            <textarea rows="5" ms-duplex-string="strExpresstion" class="form-control" name="name"
+                                   id="ruleId"></textarea>
+
+                        </div>
+                    </div>
+                    <div class="countTable form-group">
+
+                        <div class="col-xs-offset-3 col-md-offset-3 col-lg-offset-2 col-xs-9 col-md-8 col-lg-8 calculator">
+                            <table class="table  table-bordered " cellpadding="0"
+                                   cellspacing="0" border="0">
+                                <tbody>
+                                <tr ms-repeat-el="countArray">
+                                    <td ms-repeat-elem="el.count" width="20%"><button ms-attr-value={{elem}} ms-click="countClick(this)">{{elem}}</button></td>
+                                    <td ms-if="$index==0" rowspan=4><button  ms-click="countDel(this)">Del</button></td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                
+                <div class="col-xs-offset-3 col-md-offset-3 col-lg-offset-2 col-xs-9 col-md-8 col-lg-8 btnGroup submBtn">
+  
+                    <span class="indexConfirm inlineBlock" ms-click="submit()" ms-visible="!rtnVisible"><a
+                                class="btn blue1 radius_l" id="opsetChange">提交</a></span>
+                    <span class="indexConfirm inlineBlock" ms-click="returnListPage()"><a
+                            id="opsetBack">返回</a></span>
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+

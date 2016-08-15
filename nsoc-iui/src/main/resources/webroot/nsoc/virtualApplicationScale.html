@@ -1,0 +1,152 @@
+<!--
+
+    Copyright (C) 2015 ZTE, Inc. and others. All rights reserved. (ZTE)
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<div id="scaleModal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true" data-modal-overflow="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3><span ms-text="vmAppScaleDialog.scaleTitle"></span></h3>
+    </div>
+    <div class="modal-body">
+    	<form id="vnfForm" class="form-horizontal" role="form">
+			<div class="form-group">
+				<label class="col-sm-3 control-label">
+					<span id="nfv-virtualApplication-iui-text-scale-name" name_i18n="com_zte_nfv_nsoc_i18n"></span>
+				</label>
+				<div class="col-sm-7" style="padding-right : 0">
+					<select class="form-control" id="vnfType" name="vnfType" style="display:inline-block;">
+						<option ms-repeat-vnf="vmAppScaleDialog.vnfSelectItems" ms-attr-value="vnf.id" 
+						        ms-text="vnf.name" ms-attr-data-index="$index"></option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">
+					<span id="nfv-virtualApplication-iui-text-scale-oeprationType" name_i18n="com_zte_nfv_nsoc_i18n"></span>
+				</label>
+				<div class="col-sm-7">
+					<label style="margin-top:5px; margin-right:20px;">
+				      	<input type="radio" name="operationType" value="type" style="margin:0"
+				      		ms-attr-checked="vmAppScaleDialog.instanceType">
+				      	<span id="nfv-virtualApplication-iui-text-scale-oeprationType-type" name_i18n="com_zte_nfv_nsoc_i18n"></span>
+				   	</label>
+				   	<label style="margin-top:5px; margin-right:20px;">
+				      	<input type="radio" name="operationType" value="instance" style="margin:0" 
+				      		ms-attr-disabled="vmAppScaleDialog.instanceType" 
+				      	       ms-attr-checked="!vmAppScaleDialog.instanceType">
+				      	<span id="nfv-virtualApplication-iui-text-scale-oeprationType-instance" name_i18n="com_zte_nfv_nsoc_i18n"></span>
+				   	</label>
+				</div>
+				<div class="col-sm-1">
+					<button type="button" class="btn btn-default" ms-click="vmAppScaleDialog.$addVnf('add')" style="min-width:34px;font-size:14px;" 
+					        ms-attr-title="vmAppScaleDialog.btnTitle">
+				        <i class="fa fa-plus-circle"></i> 
+				    </button>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="tipArea" ms-visible="vmAppScaleDialog.titleVisible">
+					<span id="nfv-virtualApplication-iui-text-scale-vnf-title" name_i18n="com_zte_nfv_nsoc_i18n"></span>
+				</div>
+				<div class="col-sm-4" ms-repeat-vnf="vmAppScaleDialog.vnfDatas" data-repeat-rendered="includeRender">
+			        <div class="hpanel">
+			            <div class="panel-body h-200"  ms-hover="hpanel_show">
+			            	<div>
+			            		<span id="nfv-virtualApplication-iui-text-scale-vnf-name" name_i18n="com_zte_nfv_nsoc_i18n"></span>：
+			            		<span ms-text="vnf.name"></span>
+			            	</div>
+			            	<div ms-if="vnf.operationType=='type'" class="panel-info">
+			            		<div>
+			            			<span id="nfv-virtualApplication-iui-text-scale-vnf-vduType" name_i18n="com_zte_nfv_nsoc_i18n"></span>：
+			            			<span ms-text="vnf.vduTypeStr"></span>
+			            		</div>
+			                	<div>
+			                		<span id="nfv-virtualApplication-iui-text-scale-vnf-num" name_i18n="com_zte_nfv_nsoc_i18n"></span>：
+			                		<span ms-text="vnf.vduNumStr"></span>
+			                	</div>
+			                </div>
+			                <div ms-if="vnf.operationType=='instance'" class="panel-info">
+			                	<span id="nfv-virtualApplication-iui-text-scale-vnf-vduInstance" name_i18n="com_zte_nfv_nsoc_i18n"></span>：
+			                	<span ms-text="vnf.vduNameStr"></span>
+			                </div>
+			            </div>
+			            <div class="panel-footer">
+			                <div class="pull-right">
+			                	<a class="btn btn-default btn-sm" ms-click="vmAppScaleDialog.$addVnf('edit', vnf)">
+			                		<i class="fa fa-pencil-square-o fa-lg"></i>
+			                	</a>
+			                	<a class="btn btn-default btn-sm" ms-click="vmAppScaleDialog.$deleteVnf(vnf.id)"><i class="fa fa-trash-o fa-lg"> </i></a>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+		</form>
+    </div>          
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">
+        	<span id="nfv-virtualApplication-iui-text-scale-instance-cancelBtn" name_i18n="com_zte_nfv_nsoc_i18n"></span>
+        </button>
+        <button class="btn btn-primary" type="submit" ms-click="vmAppScaleDialog.$confirmBtnClick">
+        	<span id="nfv-virtualApplication-iui-text-scale-instance-confirmBtn" name_i18n="com_zte_nfv_nsoc_i18n"></span>
+        </button>
+    </div>
+</div><!--end scaleModal-->
+
+<div id="addVduModal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true" data-modal-overflow="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3><span ms-text="vmAppScaleDialog.title"></span></h3>
+    </div>
+    <div class="modal-body">
+    	<form id="vduForm" class="form-horizontal" role="form">
+	        <div class="form-group" ms-if="vmAppScaleDialog.typeVisible">
+				<label class="col-sm-2 control-label">
+					<span id="nfv-virtualApplication-iui-text-scale-vnf-vduType" name_i18n="com_zte_nfv_nsoc_i18n"></span>
+				</label>
+			 	<div class="col-sm-3" style="padding-right : 0">
+					<select class="form-control" id="vduType" name="vduType">
+						<option ms-repeat-vdu="vmAppScaleDialog.vduSelectItems" ms-attr-value="vdu.id" 
+						        ms-text="vdu.name"></option>
+					</select>
+				</div>
+				<div class="col-sm-2" style="padding-right : 0">
+					<input type="text" id="vduNum" name="vduNum" class="form-control" ms-attr-placeholder="vmAppScaleDialog.numTip"/>
+				</div>
+				<div class="col-sm-3">
+					<input type="text" id="vduName" name="vduName" class="form-control" ms-attr-placeholder="vmAppScaleDialog.nameTip"/>
+				</div>
+				<button type="button" class="btn btn-default" ms-click="vmAppScaleDialog.$addVduToTable" 
+					style="min-width:34px;font-size:14px;">
+			        <i class="fa fa-plus-circle"></i> 
+			    </button>
+			</div>
+			<div class="row-fluid" data-name="table_zone">
+				<div id="ict_vdu_table_div"></div>
+      		</div>
+		</form>
+    </div>          
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">
+        	<span id="nfv-virtualApplication-iui-text-scale-instance-cancelBtn" name_i18n="com_zte_nfv_nsoc_i18n"></span>
+        </button>
+        <button class="btn btn-primary" type="submit" ms-click="vmAppScaleDialog.$scaleConfirmClick">
+        	<span id="nfv-virtualApplication-iui-text-scale-instance-confirmBtn" name_i18n="com_zte_nfv_nsoc_i18n"></span>
+        </button>
+    </div>
+</div><!-- end addVduModal -->
