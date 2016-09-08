@@ -18,12 +18,13 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <groupId>org.openo.orchestrator</groupId>
-        <artifactId>openoparentpom</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+      <groupId>org.openo.oparent</groupId>
+      <artifactId>oparent</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+      <relativePath></relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.openo.orchestrator.openoiui</groupId>
+    <groupId>org.openo.gso.gui</groupId>
     <artifactId>openoiui-parent</artifactId>
     <packaging>pom</packaging>
     <name>openoiui</name>
@@ -32,11 +33,11 @@
         <openo.project.git.url>http://${openo.project.git.ip}/oipgit/Open-O/openoiui</openo.project.git.url>
     </properties>
 
-    <modules>
+    <!--modules>
         <module>uiframe-iui</module>
         <module>roc-iui</module>
         <module>umc-iui</module>
         <module>nsoc-iui</module>
         <module>openoiui-standlone</module>
-    </modules>
+    </modules-->
 </project>
