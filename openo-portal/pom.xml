@@ -27,8 +27,4 @@
     <artifactId>openo-portal</artifactId>
     <packaging>pom</packaging>
     <name>portal</name>
-
-    <!--modules>
-        <module>lifecyclemgr</module>
-    </modules-->
 </project>
