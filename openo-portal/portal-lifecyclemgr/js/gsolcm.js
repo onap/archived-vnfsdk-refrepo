@@ -14,8 +14,20 @@
  * limitations under the License.
  */
 var templateParameters = {
-    templateName: '',
-    parameters: []
+  templateName: '',
+  parameters: []
+};
+var lcmHandler = function(){
+  this._addOwnEvents();
+};
+
+lcmHandler.prototype = {
+  _addOwnEvents : function () {
+    $('a[data-toggle="tab"]').on('show.bs.tab', this.beforeParameterTabShow);
+  },
+  beforeParameterTabShow : function (event) {
+    renderTemplateParametersTab();
+  }
 };
 
 function renderTemplateParametersTab() {
@@ -25,7 +37,7 @@ function renderTemplateParametersTab() {
 }
 
 function fetchTemplateParameterDefinitions(parameters) {
-  var serviceTemplate = parameters.name;
+  var serviceTemplate = parameters.templateName;
   var currentServiceTemplate = $("#svcTempl").val();
   // Do not need to fetch template parameters if template do not change in UI.
   if(serviceTemplate === currentServiceTemplate) {
