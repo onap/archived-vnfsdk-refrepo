@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config name="version">
+    <param name="PLATFORM_VERSION">CloudSOP @{PLATFORM_VERSION}</param>
+    <param name="VERSION_TIME">@{VERSION_TIME}</param>
+</config>
