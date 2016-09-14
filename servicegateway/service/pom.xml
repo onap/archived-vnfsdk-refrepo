@@ -42,9 +42,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.openo.gso.commsvc</groupId>
+            <groupId>org.openo.gso</groupId>
             <artifactId>org.openo.gso.commsvc.common</artifactId>
-            <version>2.0-SNAPSHOT</version>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
