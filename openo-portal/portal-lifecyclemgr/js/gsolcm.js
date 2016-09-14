@@ -45,3 +45,67 @@ function createGsoServiceInstance(s1ServiceUrl, serviceInstance) {
     });
     return serviceInstanceId;
 }
+
+function createNfvoServiceInstance(s1ServiceUrl, serviceInstance) {
+    var nfvoLcmNsUrl = '/openoapi/nslcm/v1.0/ns';
+    createServiceInstance(s1ServiceUrl, nfvoLcmNsUrl, serviceInstance);
+}
+
+function createServiceInstance(s1ServiceUrl, gatewayUri, serviceInstance) {
+    var nsInstanceId = createNetworkService(s1ServiceUrl, gatewayUri, serviceInstance);
+    if(nsInstanceId === undefined) {
+        return;
+    }
+    instantiateNetworkService(gatewayUri, nsInstanceId, serviceInstance);
+}
+
+function createNetworkService(s1ServiceUrl, gatewayUri, serviceInstance) {
+    var parameter = {
+        'nsdId': serviceInstance.serviceTemplateId,
+        'nsName': serviceInstance.serviceName,
+        'description': serviceInstance.serviceDescription,
+        'gatewayUri': gatewayUri,
+        'parameters': serviceInstance.serviceParameters
+    };
+    var nsInstanceId;
+    $.ajax({
+        type : "POST",
+        async: false,
+        url : s1ServiceUrl,
+        contentType : "application/json",
+        dataType : "json",
+        data : JSON.stringify(parameter),
+        success : function(jsonResp) {
+            nsInstanceId = jsonResp.nsInstanceId;
+        },
+        error : function(xhr, ajaxOptions, thrownError) {
+            alert("Error on page : " + xhr.responseText);
+        }
+    });
+    return nsInstanceId;
+}
+
+function instantiateNetworkService(gatewayUri, nsInstanceId, serviceInstance) {
+    var initNsUrl = gatewayUri + '/' + nsInstanceId + '/Instantiate'
+    var parameter = {
+        'gatewayUri': initNsUrl,
+        'nsInstanceId': nsInstanceId,
+        'additionalParamForNs': serviceInstance.serviceParameters
+    };
+    var result = false;
+    $.ajax({
+        type : "POST",
+        async: false,
+        url : s1ServiceUrl,
+        contentType : "application/json",
+        dataType : "json",
+        data : JSON.stringify(parameter),
+        success : function(jsonResp) {
+            result = true;
+        },
+        error : function(xhr, ajaxOptions, thrownError) {
+            alert("Error on page : " + xhr.responseText);
+        }
+    });
+    return result;
+}
