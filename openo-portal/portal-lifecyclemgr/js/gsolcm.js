@@ -13,6 +13,73 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var templateParameters = {
+    templateName: '',
+    parameters: []
+};
+
+function renderTemplateParametersTab() {
+  templateParameters = fetchTemplateParameterDefinitions(templateParameters);
+  var components = transfromToComponents(templateParameters.parameters);
+  document.getElementById("parameterTab").innerHTML = components;
+}
+
+function fetchTemplateParameterDefinitions(parameters) {
+  var serviceTemplate = parameters.name;
+  var currentServiceTemplate = $("#svcTempl").val();
+  // Do not need to fetch template parameters if template do not change in UI.
+  if(serviceTemplate === currentServiceTemplate) {
+    return;
+  }
+  var queryParametersUri = '/openoapi/catalog/v1/servicetemplates/' + currentServiceTemplate + '/parameters';
+  var inputParameters = [];
+  $.ajax({
+    type : "GET",
+    async: false,
+    url : queryParametersUri,
+    contentType : "application/json",
+    dataType : "json",
+    success : function(jsonResp) {
+      var inputs = jsonResp.inputs;
+      var i;
+      for( i = 0; i < inputs.length; i += 1) {
+        inputParameters[i] = {
+          name: inputs[i].name,
+          type: inputs[i].type,
+          description: inputs[i].description,
+          defaultValue: inputs[i].defaultValue,
+          required: inputs[i].required,
+          id: 'parameter_' + i,
+          value: inputs[i].defaultValue
+        };
+      }
+    },
+    error : function(xhr, ajaxOptions, thrownError) {
+      alert("Error on page : " + xhr.responseText);
+    }
+  });
+  return { name: currentServiceTemplate, parameters: inputParameters };
+}
+
+function transfromToComponents(parameters) {
+  var components = '';
+  var i;
+  for( i = 0; i < parameters.length; i += 1) {
+    var component = '<div class="form-group">' +
+        '<label class="col-sm-3 control-label">' +
+            '<span>' + parameters[i].description + '</span>'+
+            generateRequiredLabel(parameters[i]) +
+        '</label>' +
+        '<div class="col-sm-7">' +
+            '<input type="text" id="'+ parameters[i].id +'" name="parameter description" class="form-control" placeholder="' +
+                parameters[i].description + '" value="'+ parameters[i].value +'" />' +
+       '</div></div>';
+
+       components = components + component;
+   }
+   return components;
+}
+
 function createGsoServiceInstance(s1ServiceUrl, serviceInstance) {
     var gsoLcmUri = '/openoapi/lifecyclemgr/v1/services';
     var parameter = {
