@@ -24,11 +24,80 @@ var lcmHandler = function(){
 lcmHandler.prototype = {
   _addOwnEvents : function () {
     $('a[data-toggle="tab"]').on('show.bs.tab', this.beforeParameterTabShow);
+    $('#createNS').click(this.okAction);
   },
   beforeParameterTabShow : function (event) {
     renderTemplateParametersTab();
+  },
+  okAction : function (event) {
+    var serviceInstance = {
+      serviceTemplateId: $('#svcTempl').val(),
+      serviceName: $('#svcName').val(),
+      serviceDescription: $('#svcDesc').val(),
+      serviceParameters: collectServiceParameters(templateParameters)
+    }
+    var s1ServiceUrl = '/openoapi/servicegateway/v1/services';
+    var serviceTemplate = fetchServiceTemplateBy(serviceInstance.serviceTemplateId);
+    if(serviceTemplate === undefined) {
+      return;
+    }
+    if(serviceTemplate.csarType === 'GSAR') {
+      serviceInstance.serviceInstanceId = createGsoServiceInstance(s1ServiceUrl, serviceInstance);
+    }else if(serviceTemplate.csarType === 'NSAR' || serviceTemplate.csarType === 'NFAR') {
+      serviceInstance.serviceInstanceId = createNfvoServiceInstance(s1ServiceUrl, serviceInstance);
+    }else if(serviceTemplate.csarType === 'SSAR') {
+      serviceInstance.serviceInstanceId = createSdnoServiceInstance(s1ServiceUrl, serviceInstance);
+    }
   }
 };
+
+function collectServiceParameters(parameters) {
+  var serviceParameters = {};
+  var i;
+  for( i = 0; i < parameters.length; i += 1) {
+    serviceParameters[parameters.name] = $('#' + parameters[i].id).val();
+  }
+  return serviceParameters;
+}
+
+function fetchServiceTemplateBy(templateId) {
+    var serviceTemplateUri = '/openoapi/catalog/v1/servicetemplates/'+ templateId;
+    var template;
+    $.ajax({
+        type : "GET",
+        async: false,
+        url : serviceTemplateUri,
+        contentType : "application/json",
+        dataType : "json",
+        success : function(jsonResp) {
+            template = {
+                name: jsonResp.templateName,
+                gsarId: jsonResp.csarId
+            }
+        },
+        error : function(xhr, ajaxOptions, thrownError) {
+            alert("Error on page : " + xhr.responseText);
+        }
+    });
+    if(template === undefined) {
+        return template;
+    }
+    var queryCsarUri = '/openoapi/catalog/v1/csars/' + template.gsarId;
+    $.ajax({
+        type : "GET",
+        async: false,
+        url : queryCsarUri,
+        contentType : "application/json",
+        dataType : "json",
+        success : function(jsonResp) {
+            template.csarType = jsonResp.type
+        },
+        error : function(xhr, ajaxOptions, thrownError) {
+            alert("Error on page : " + xhr.responseText);
+        }
+    });
+    return template;
+}
 
 function renderTemplateParametersTab() {
   templateParameters = fetchTemplateParameterDefinitions(templateParameters);
@@ -90,6 +159,14 @@ function transfromToComponents(parameters) {
        components = components + component;
    }
    return components;
+}
+
+function generateRequiredLabel(parameter) {
+  var requiredLabel = '';
+  if(parameter.required === 'true') {
+    requiredLabel = '<span class="required">*</span>';
+  }
+  return requiredLabel;
 }
 
 function createGsoServiceInstance(s1ServiceUrl, serviceInstance) {
