@@ -109,3 +109,8 @@ function instantiateNetworkService(gatewayUri, nsInstanceId, serviceInstance) {
     });
     return result;
 }
+
+function createSdnoServiceInstance(s1ServiceUrl, serviceInstance) {
+    var sdnoLcmNsUrl = '/openoapi/sdnonslcm/v1.0/ns';
+    createServiceInstance(s1ServiceUrl, sdnoLcmNsUrl, serviceInstance);
+}
