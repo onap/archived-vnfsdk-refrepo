@@ -17,6 +17,9 @@ var templateParameters = {
   templateName: '',
   parameters: []
 };
+
+var service_instance_insert_index = 0;
+
 var lcmHandler = function(){
   this._addOwnEvents();
 };
@@ -48,6 +51,10 @@ lcmHandler.prototype = {
     }else if(serviceTemplate.csarType === 'SSAR') {
       serviceInstance.serviceInstanceId = createSdnoServiceInstance(s1ServiceUrl, serviceInstance);
     }
+    if(serviceInstance.serviceInstanceId === undefined) {
+      return;
+    }
+    updateTable(serviceInstance);
   }
 };
 
@@ -61,42 +68,42 @@ function collectServiceParameters(parameters) {
 }
 
 function fetchServiceTemplateBy(templateId) {
-    var serviceTemplateUri = '/openoapi/catalog/v1/servicetemplates/'+ templateId;
-    var template;
-    $.ajax({
-        type : "GET",
-        async: false,
-        url : serviceTemplateUri,
-        contentType : "application/json",
-        dataType : "json",
-        success : function(jsonResp) {
-            template = {
-                name: jsonResp.templateName,
-                gsarId: jsonResp.csarId
-            }
-        },
-        error : function(xhr, ajaxOptions, thrownError) {
-            alert("Error on page : " + xhr.responseText);
-        }
-    });
-    if(template === undefined) {
-        return template;
+  var serviceTemplateUri = '/openoapi/catalog/v1/servicetemplates/'+ templateId;
+  var template;
+  $.ajax({
+    type : "GET",
+    async: false,
+    url : serviceTemplateUri,
+    contentType : "application/json",
+    dataType : "json",
+    success : function(jsonResp) {
+      template = {
+        name: jsonResp.templateName,
+        gsarId: jsonResp.csarId
+      }
+    },
+    error : function(xhr, ajaxOptions, thrownError) {
+      alert("Error on page : " + xhr.responseText);
     }
-    var queryCsarUri = '/openoapi/catalog/v1/csars/' + template.gsarId;
-    $.ajax({
-        type : "GET",
-        async: false,
-        url : queryCsarUri,
-        contentType : "application/json",
-        dataType : "json",
-        success : function(jsonResp) {
-            template.csarType = jsonResp.type
-        },
-        error : function(xhr, ajaxOptions, thrownError) {
-            alert("Error on page : " + xhr.responseText);
-        }
-    });
+  });
+  if(template === undefined) {
     return template;
+  }
+  var queryCsarUri = '/openoapi/catalog/v1/csars/' + template.gsarId;
+  $.ajax({
+    type : "GET",
+    async: false,
+    url : queryCsarUri,
+    contentType : "application/json",
+    dataType : "json",
+    success : function(jsonResp) {
+      template.csarType = jsonResp.type
+    },
+    error : function(xhr, ajaxOptions, thrownError) {
+      alert("Error on page : " + xhr.responseText);
+    }
+  });
+  return template;
 }
 
 function renderTemplateParametersTab() {
@@ -147,18 +154,16 @@ function transfromToComponents(parameters) {
   var i;
   for( i = 0; i < parameters.length; i += 1) {
     var component = '<div class="form-group">' +
-        '<label class="col-sm-3 control-label">' +
-            '<span>' + parameters[i].description + '</span>'+
-            generateRequiredLabel(parameters[i]) +
-        '</label>' +
-        '<div class="col-sm-7">' +
-            '<input type="text" id="'+ parameters[i].id +'" name="parameter description" class="form-control" placeholder="' +
-                parameters[i].description + '" value="'+ parameters[i].value +'" />' +
-       '</div></div>';
-
-       components = components + component;
-   }
-   return components;
+      '<label class="col-sm-3 control-label">' +
+        '<span>' + parameters[i].description + '</span>' + generateRequiredLabel(parameters[i]) +
+      '</label>' +
+      '<div class="col-sm-7">' +
+        '<input type="text" id="'+ parameters[i].id +'" name="parameter description" class="form-control" placeholder="' +
+              parameters[i].description + '" value="'+ parameters[i].value +'" />' +
+      '</div></div>';
+    components = components + component;
+  }
+  return components;
 }
 
 function generateRequiredLabel(parameter) {
@@ -170,103 +175,126 @@ function generateRequiredLabel(parameter) {
 }
 
 function createGsoServiceInstance(s1ServiceUrl, serviceInstance) {
-    var gsoLcmUri = '/openoapi/lifecyclemgr/v1/services';
-    var parameter = {
-        'name': serviceInstance.serviceName,
-        'description': serviceInstance.serviceDescription,
-        'serviceDefId': serviceTemplate.gsarId,
-        'templatedId': serviceInstance.serviceTemplateId,
-        'templateName': serviceTemplate.templateName,
-        'getewayUri': gsoLcmUrl,
-        'parameters': serviceInstance.serviceParameters
-    };
-    var serviceInstanceId;
-    $.ajax({
-        type : "POST",
-        async: false,
-        url : s1ServiceUrl,
-        contentType : "application/json",
-        dataType : "json",
-        data : JSON.stringify(parameter),
-        success : function(jsonResp) {
-            if(jsonResp.result.errorCode != '200') {
-                alert("Create service instance Error!");
-                return;
-            }
-            serviceInstanceId = jsonResp.serviceId;
-        },
-        error : function(xhr, ajaxOptions, thrownError) {
-            alert("Error on page : " + xhr.responseText);
-        }
-    });
-    return serviceInstanceId;
+  var gsoLcmUri = '/openoapi/lifecyclemgr/v1/services';
+  var parameter = {
+    'name': serviceInstance.serviceName,
+    'description': serviceInstance.serviceDescription,
+    'serviceDefId': serviceTemplate.gsarId,
+    'templatedId': serviceInstance.serviceTemplateId,
+    'templateName': serviceTemplate.templateName,
+    'getewayUri': gsoLcmUrl,
+    'parameters': serviceInstance.serviceParameters
+  };
+  var serviceInstanceId;
+  $.ajax({
+    type : "POST",
+    async: false,
+    url : s1ServiceUrl,
+    contentType : "application/json",
+    dataType : "json",
+    data : JSON.stringify(parameter),
+    success : function(jsonResp) {
+      if(jsonResp.result.errorCode != '200') {
+        alert("Create service instance Error!");
+        return;
+      }
+      serviceInstanceId = jsonResp.serviceId;
+    },
+    error : function(xhr, ajaxOptions, thrownError) {
+      alert("Error on page : " + xhr.responseText);
+    }
+  });
+  return serviceInstanceId;
 }
 
 function createNfvoServiceInstance(s1ServiceUrl, serviceInstance) {
-    var nfvoLcmNsUrl = '/openoapi/nslcm/v1.0/ns';
-    createServiceInstance(s1ServiceUrl, nfvoLcmNsUrl, serviceInstance);
+  var nfvoLcmNsUrl = '/openoapi/nslcm/v1.0/ns';
+  createServiceInstance(s1ServiceUrl, nfvoLcmNsUrl, serviceInstance);
 }
 
 function createServiceInstance(s1ServiceUrl, gatewayUri, serviceInstance) {
-    var nsInstanceId = createNetworkService(s1ServiceUrl, gatewayUri, serviceInstance);
-    if(nsInstanceId === undefined) {
-        return;
-    }
-    instantiateNetworkService(gatewayUri, nsInstanceId, serviceInstance);
+  var nsInstanceId = createNetworkService(s1ServiceUrl, gatewayUri, serviceInstance);
+  if(nsInstanceId === undefined) {
+    return;
+  }
+  instantiateNetworkService(gatewayUri, nsInstanceId, serviceInstance);
 }
 
 function createNetworkService(s1ServiceUrl, gatewayUri, serviceInstance) {
-    var parameter = {
-        'nsdId': serviceInstance.serviceTemplateId,
-        'nsName': serviceInstance.serviceName,
-        'description': serviceInstance.serviceDescription,
-        'gatewayUri': gatewayUri,
-        'parameters': serviceInstance.serviceParameters
-    };
-    var nsInstanceId;
-    $.ajax({
-        type : "POST",
-        async: false,
-        url : s1ServiceUrl,
-        contentType : "application/json",
-        dataType : "json",
-        data : JSON.stringify(parameter),
-        success : function(jsonResp) {
-            nsInstanceId = jsonResp.nsInstanceId;
-        },
-        error : function(xhr, ajaxOptions, thrownError) {
-            alert("Error on page : " + xhr.responseText);
-        }
-    });
-    return nsInstanceId;
+  var parameter = {
+    'nsdId': serviceInstance.serviceTemplateId,
+    'nsName': serviceInstance.serviceName,
+    'description': serviceInstance.serviceDescription,
+    'gatewayUri': gatewayUri,
+    'parameters': serviceInstance.serviceParameters
+  };
+  var nsInstanceId;
+  $.ajax({
+    type : "POST",
+    async: false,
+    url : s1ServiceUrl,
+    contentType : "application/json",
+    dataType : "json",
+    data : JSON.stringify(parameter),
+    success : function(jsonResp) {
+      nsInstanceId = jsonResp.nsInstanceId;
+    },
+    error : function(xhr, ajaxOptions, thrownError) {
+      alert("Error on page : " + xhr.responseText);
+    }
+  });
+  return nsInstanceId;
 }
 
 function instantiateNetworkService(gatewayUri, nsInstanceId, serviceInstance) {
-    var initNsUrl = gatewayUri + '/' + nsInstanceId + '/Instantiate'
-    var parameter = {
-        'gatewayUri': initNsUrl,
-        'nsInstanceId': nsInstanceId,
-        'additionalParamForNs': serviceInstance.serviceParameters
-    };
-    var result = false;
-    $.ajax({
-        type : "POST",
-        async: false,
-        url : s1ServiceUrl,
-        contentType : "application/json",
-        dataType : "json",
-        data : JSON.stringify(parameter),
-        success : function(jsonResp) {
-            result = true;
-        },
-        error : function(xhr, ajaxOptions, thrownError) {
-            alert("Error on page : " + xhr.responseText);
-        }
-    });
-    return result;
+  var initNsUrl = gatewayUri + '/' + nsInstanceId + '/Instantiate'
+  var parameter = {
+    'gatewayUri': initNsUrl,
+    'nsInstanceId': nsInstanceId,
+    'additionalParamForNs': serviceInstance.serviceParameters
+  };
+  var result = false;
+  $.ajax({
+    type : "POST",
+    async: false,
+    url : s1ServiceUrl,
+    contentType : "application/json",
+    dataType : "json",
+    data : JSON.stringify(parameter),
+    success : function(jsonResp) {
+      result = true;
+    },
+    error : function(xhr, ajaxOptions, thrownError) {
+      alert("Error on page : " + xhr.responseText);
+    }
+  });
+  return result;
 }
 
 function createSdnoServiceInstance(s1ServiceUrl, serviceInstance) {
-    var sdnoLcmNsUrl = '/openoapi/sdnonslcm/v1.0/ns';
-    createServiceInstance(s1ServiceUrl, sdnoLcmNsUrl, serviceInstance);
+  var sdnoLcmNsUrl = '/openoapi/sdnonslcm/v1.0/ns';
+  createServiceInstance(s1ServiceUrl, sdnoLcmNsUrl, serviceInstance);
+}
+
+function updateTable(serviceInstance) {
+  var index = service_instance_insert_index;
+  var creator = '';
+  $('#sai').append('<tr id="service_instance_' + index + '"></tr>');
+  $("#service_instance_" + index).html('<td><div class="DataTables_sort_wrapper openo-ellipsis "><span id="service_name" class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">'+ serviceInstance.serviceName + '</span></td>' +
+    '<td><span class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">'+ serviceInstance.templateName + '</span></td>' +
+    '<td class="service_template_id"><span class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">'+ serviceInstance.serviceTemplateId + '</span><input type="hidden" value="'+serviceInstance.serviceInstanceId+'"/></td>' +
+    '<td><span class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">'+ formatDate(new Date()) + '</span></td>' +
+    '<td><span class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">'+ creator + '</span></td>' +
+    '<td><button class="data_delete_action"><img id="delete_action" class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element " src="images/delete.png"></img></button></td>');
+  service_instance_insert_index += 1;
+}
+
+function formatDate(date) {
+  var year = date.getFullYear();
+  var month = date.getMonth() + 1;
+  var day = date.getDate();
+  var hh = date.getHours();
+  var mm = date.getMinutes();
+  var ss = date.getSeconds();
+  return year + "-" + month + "-" + day + " " + hh + ":" + mm + ":" + ss;
 }
