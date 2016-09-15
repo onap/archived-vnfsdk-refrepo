@@ -39,17 +39,17 @@ lcmHandler.prototype = {
       serviceDescription: $('#svcDesc').val(),
       serviceParameters: collectServiceParameters(templateParameters)
     }
-    var s1ServiceUrl = '/openoapi/servicegateway/v1/services';
+    var gatewayService = '/openoapi/servicegateway/v1/services';
     var serviceTemplate = fetchServiceTemplateBy(serviceInstance.serviceTemplateId);
     if(serviceTemplate === undefined) {
       return;
     }
     if(serviceTemplate.csarType === 'GSAR') {
-      serviceInstance.serviceInstanceId = createGsoServiceInstance(s1ServiceUrl, serviceInstance);
+      serviceInstance.serviceInstanceId = createGsoServiceInstance(gatewayService, serviceInstance);
     }else if(serviceTemplate.csarType === 'NSAR' || serviceTemplate.csarType === 'NFAR') {
-      serviceInstance.serviceInstanceId = createNfvoServiceInstance(s1ServiceUrl, serviceInstance);
+      serviceInstance.serviceInstanceId = createNfvoServiceInstance(gatewayService, serviceInstance);
     }else if(serviceTemplate.csarType === 'SSAR') {
-      serviceInstance.serviceInstanceId = createSdnoServiceInstance(s1ServiceUrl, serviceInstance);
+      serviceInstance.serviceInstanceId = createSdnoServiceInstance(gatewayService, serviceInstance);
     }
     if(serviceInstance.serviceInstanceId === undefined) {
       return;
@@ -174,7 +174,7 @@ function generateRequiredLabel(parameter) {
   return requiredLabel;
 }
 
-function createGsoServiceInstance(s1ServiceUrl, serviceInstance) {
+function createGsoServiceInstance(gatewayService, serviceInstance) {
   var gsoLcmUri = '/openoapi/lifecyclemgr/v1/services';
   var parameter = {
     'name': serviceInstance.serviceName,
@@ -189,7 +189,7 @@ function createGsoServiceInstance(s1ServiceUrl, serviceInstance) {
   $.ajax({
     type : "POST",
     async: false,
-    url : s1ServiceUrl,
+    url : gatewayService,
     contentType : "application/json",
     dataType : "json",
     data : JSON.stringify(parameter),
@@ -207,20 +207,20 @@ function createGsoServiceInstance(s1ServiceUrl, serviceInstance) {
   return serviceInstanceId;
 }
 
-function createNfvoServiceInstance(s1ServiceUrl, serviceInstance) {
+function createNfvoServiceInstance(gatewayService, serviceInstance) {
   var nfvoLcmNsUrl = '/openoapi/nslcm/v1.0/ns';
-  createServiceInstance(s1ServiceUrl, nfvoLcmNsUrl, serviceInstance);
+  createServiceInstance(gatewayService, nfvoLcmNsUrl, serviceInstance);
 }
 
-function createServiceInstance(s1ServiceUrl, gatewayUri, serviceInstance) {
-  var nsInstanceId = createNetworkService(s1ServiceUrl, gatewayUri, serviceInstance);
+function createServiceInstance(gatewayService, gatewayUri, serviceInstance) {
+  var nsInstanceId = createNetworkService(gatewayService, gatewayUri, serviceInstance);
   if(nsInstanceId === undefined) {
     return;
   }
   instantiateNetworkService(gatewayUri, nsInstanceId, serviceInstance);
 }
 
-function createNetworkService(s1ServiceUrl, gatewayUri, serviceInstance) {
+function createNetworkService(gatewayService, gatewayUri, serviceInstance) {
   var parameter = {
     'nsdId': serviceInstance.serviceTemplateId,
     'nsName': serviceInstance.serviceName,
@@ -232,7 +232,7 @@ function createNetworkService(s1ServiceUrl, gatewayUri, serviceInstance) {
   $.ajax({
     type : "POST",
     async: false,
-    url : s1ServiceUrl,
+    url : gatewayService,
     contentType : "application/json",
     dataType : "json",
     data : JSON.stringify(parameter),
@@ -257,7 +257,7 @@ function instantiateNetworkService(gatewayUri, nsInstanceId, serviceInstance) {
   $.ajax({
     type : "POST",
     async: false,
-    url : s1ServiceUrl,
+    url : gatewayService,
     contentType : "application/json",
     dataType : "json",
     data : JSON.stringify(parameter),
@@ -271,9 +271,9 @@ function instantiateNetworkService(gatewayUri, nsInstanceId, serviceInstance) {
   return result;
 }
 
-function createSdnoServiceInstance(s1ServiceUrl, serviceInstance) {
+function createSdnoServiceInstance(gatewayService, serviceInstance) {
   var sdnoLcmNsUrl = '/openoapi/sdnonslcm/v1.0/ns';
-  createServiceInstance(s1ServiceUrl, sdnoLcmNsUrl, serviceInstance);
+  createServiceInstance(gatewayService, sdnoLcmNsUrl, serviceInstance);
 }
 
 function updateTable(serviceInstance) {
@@ -325,44 +325,44 @@ function deleteServiceInstance(templateId, instanceId) {
     if(serviceTemplate === undefined) {
         return;
     }
-    var s1ServiceUrl = '/openoapi/servicegateway/v1/services';
+    var gatewayService = '/openoapi/servicegateway/v1/services';
     var result = false;
     if(serviceTemplate.csarType === 'GSAR') {
-        result = deleteGsoServiceInstance(s1ServiceUrl, instanceId);
+        result = deleteGsoServiceInstance(gatewayService, instanceId);
     }else if(serviceTemplate.csarType === 'NSAR' || serviceTemplate.csarType === 'NFAR') {
-        result = deleteNfvoServiceInstance(s1ServiceUrl, instanceId);
+        result = deleteNfvoServiceInstance(gatewayService, instanceId);
     }else if(serviceTemplate.csarType === 'SSAR') {
-        result = deleteSdnoServiceInstance(s1ServiceUrl, instanceId);
+        result = deleteSdnoServiceInstance(gatewayService, instanceId);
     }
     return result;
 }
 
-function deleteGsoServiceInstance(s1ServiceUrl, instanceId) {
+function deleteGsoServiceInstance(gatewayService, instanceId) {
     var gsoLcmUrl = '/openoapi/lifecyclemgr/v1/services/'+ instanceId;
-    return sendDeleteRequest(s1ServiceUrl, gsoLcmUrl);
+    return sendDeleteRequest(gatewayService, gsoLcmUrl);
 }
 
-function deleteNfvoServiceInstance(s1ServiceUrl, instanceId) {
+function deleteNfvoServiceInstance(gatewayService, instanceId) {
     var nfvoNsUrl = '/openoapi/nslcm/v1.0/ns/' + instanceId;
     var nfvoNsTerminateUrl = nfvoNsUrl +'/terminate';
-    var result = sendDeleteRequest(s1ServiceUrl, nfvoNsTerminateUrl);
+    var result = sendDeleteRequest(gatewayService, nfvoNsTerminateUrl);
     if(result) {
-        result = sendDeleteRequest(s1ServiceUrl, nfvoNsUrl);
+        result = sendDeleteRequest(gatewayService, nfvoNsUrl);
     }
     return result;
 }
 
-function deleteSdnoServiceInstance(s1ServiceUrl, instanceId) {
+function deleteSdnoServiceInstance(gatewayService, instanceId) {
     var sdnoNsUrl = '/openoapi/sdnonslcm/v1.0/ns/' + instanceId;
     var sdnoNsTerminateUrl = sdnoNsUrl + '/terminate';
-    var result = sendDeleteRequest(s1ServiceUrl, sdnoNsTerminateUrl);
+    var result = sendDeleteRequest(gatewayService, sdnoNsTerminateUrl);
     if(result) {
-        result = sendDeleteRequest(s1ServiceUrl, sdnoNsUrl);
+        result = sendDeleteRequest(gatewayService, sdnoNsUrl);
     }
     return result;
 }
 
-function sendDeleteRequest(s1ServiceUrl, url) {
+function sendDeleteRequest(gatewayService, url) {
     var parameter = {
         URL: url
     };
@@ -370,7 +370,7 @@ function sendDeleteRequest(s1ServiceUrl, url) {
     $.ajax({
         type : "DELETE",
         async: false,
-        url : s1ServiceUrl,
+        url : gatewayService,
         contentType : "application/json",
         dataType : "json",
         data : JSON.stringify(parameter),
