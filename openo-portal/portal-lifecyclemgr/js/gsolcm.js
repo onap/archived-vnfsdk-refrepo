@@ -277,6 +277,11 @@ function createSdnoServiceInstance(s1ServiceUrl, serviceInstance) {
 }
 
 function updateTable(serviceInstance) {
+  appendOenRow();
+  addDeleteEventRegistration();
+}
+
+function appendOenRow() {
   var index = service_instance_insert_index;
   var creator = '';
   $('#sai').append('<tr id="service_instance_' + index + '"></tr>');
@@ -297,4 +302,84 @@ function formatDate(date) {
   var mm = date.getMinutes();
   var ss = date.getSeconds();
   return year + "-" + month + "-" + day + " " + hh + ":" + mm + ":" + ss;
+}
+
+function addDeleteEventRegistration() {
+  $(".data_delete_action").click(function(event) {
+    var trElement = $(this).parents("tr")[0];
+    var tdElement = $(trElement).children("td.service_template_id")[0];
+    var spanElement = $(tdElement).children("span")[0];
+    var templateId = $(spanElement).text();
+    var inputElement = $(tdElement).children("input")[0];
+    var instanceId = $(inputElement).val();
+    var result = deleteServiceInstance(templateId, instanceId);
+    if(result) {
+      trElement.remove();
+      alert("Service instance deleted successfully!");
+    }
+  });
+}
+
+function deleteServiceInstance(templateId, instanceId) {
+    var serviceTemplate = fetchServiceTemplateBy(templateId);
+    if(serviceTemplate === undefined) {
+        return;
+    }
+    var s1ServiceUrl = '/openoapi/servicegateway/v1/services';
+    var result = false;
+    if(serviceTemplate.csarType === 'GSAR') {
+        result = deleteGsoServiceInstance(s1ServiceUrl, instanceId);
+    }else if(serviceTemplate.csarType === 'NSAR' || serviceTemplate.csarType === 'NFAR') {
+        result = deleteNfvoServiceInstance(s1ServiceUrl, instanceId);
+    }else if(serviceTemplate.csarType === 'SSAR') {
+        result = deleteSdnoServiceInstance(s1ServiceUrl, instanceId);
+    }
+    return result;
+}
+
+function deleteGsoServiceInstance(s1ServiceUrl, instanceId) {
+    var gsoLcmUrl = '/openoapi/lifecyclemgr/v1/services/'+ instanceId;
+    return sendDeleteRequest(s1ServiceUrl, gsoLcmUrl);
+}
+
+function deleteNfvoServiceInstance(s1ServiceUrl, instanceId) {
+    var nfvoNsUrl = '/openoapi/nslcm/v1.0/ns/' + instanceId;
+    var nfvoNsTerminateUrl = nfvoNsUrl +'/terminate';
+    var result = sendDeleteRequest(s1ServiceUrl, nfvoNsTerminateUrl);
+    if(result) {
+        result = sendDeleteRequest(s1ServiceUrl, nfvoNsUrl);
+    }
+    return result;
+}
+
+function deleteSdnoServiceInstance(s1ServiceUrl, instanceId) {
+    var sdnoNsUrl = '/openoapi/sdnonslcm/v1.0/ns/' + instanceId;
+    var sdnoNsTerminateUrl = sdnoNsUrl + '/terminate';
+    var result = sendDeleteRequest(s1ServiceUrl, sdnoNsTerminateUrl);
+    if(result) {
+        result = sendDeleteRequest(s1ServiceUrl, sdnoNsUrl);
+    }
+    return result;
+}
+
+function sendDeleteRequest(s1ServiceUrl, url) {
+    var parameter = {
+        URL: url
+    };
+    var result = false;
+    $.ajax({
+        type : "DELETE",
+        async: false,
+        url : s1ServiceUrl,
+        contentType : "application/json",
+        dataType : "json",
+        data : JSON.stringify(parameter),
+        success : function(jsonResp) {
+            result = true;
+        },
+        error : function(xhr, ajaxOptions, thrownError) {
+            alert("Error on page : " + xhr.responseText);
+        }
+    });
+    return result;
 }
