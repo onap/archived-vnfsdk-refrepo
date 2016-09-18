@@ -27,4 +27,9 @@
     <artifactId>openo-portal</artifactId>
     <packaging>pom</packaging>
     <name>portal</name>
+
+    <modules>
+      <module>portal-package</module>
+      <module>portal-common</module>
+    </modules>
 </project>
