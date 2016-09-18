@@ -37,7 +37,8 @@ lcmHandler.prototype = {
       serviceTemplateId: $('#svcTempl').val(),
       serviceName: $('#svcName').val(),
       serviceDescription: $('#svcDesc').val(),
-      serviceParameters: collectServiceParameters(templateParameters)
+      serviceParameters: collectServiceParameters(templateParameters),
+      vimLocation: $('#vim_location').val()
     }
     var gatewayService = '/openoapi/servicegateway/v1/services';
     var serviceTemplate = fetchServiceTemplateBy(serviceInstance.serviceTemplateId);
@@ -108,7 +109,8 @@ function fetchServiceTemplateBy(templateId) {
 
 function renderTemplateParametersTab() {
   templateParameters = fetchTemplateParameterDefinitions(templateParameters);
-  var components = transfromToComponents(templateParameters.parameters);
+  var vims = fetchVimInfo();
+  var components = transfromToComponents(templateParameters.parameters, vims);
   document.getElementById("parameterTab").innerHTML = components;
 }
 
@@ -149,7 +151,34 @@ function fetchTemplateParameterDefinitions(parameters) {
   return { name: currentServiceTemplate, parameters: inputParameters };
 }
 
-function transfromToComponents(parameters) {
+function fetchVimInfo() {
+  var result = [];
+  var vimQueryUri = '/openoapi/extsys/v1/vims';
+  $.ajax({
+    type : "GET",
+    async: false,
+    url : vimQueryUri,
+    contentType : "application/json",
+    dataType : "json",
+    success : function(jsonResp) {
+      var vims = jsonResp;
+      var i;
+      for( i = 0; i < vims.length; i += 1) {
+        var option = '<option value="' + vims[i].vimId + '">'+vims[i].name+'</option>';
+        result[i] = {
+          vimId: vims[i].vimId,
+          vimName: vims[i].name
+        }
+      }
+    },
+    error : function(xhr, ajaxOptions, thrownError) {
+      alert("Error on page : " + xhr.responseText);
+    }
+  });
+  return result;
+}
+
+function transfromToComponents(parameters, vims) {
   var components = '';
   var i;
   for( i = 0; i < parameters.length; i += 1) {
@@ -163,6 +192,7 @@ function transfromToComponents(parameters) {
       '</div></div>';
     components = components + component;
   }
+  components = components + generateLocationComponent(vims);
   return components;
 }
 
@@ -174,7 +204,33 @@ function generateRequiredLabel(parameter) {
   return requiredLabel;
 }
 
+function generateLocationComponent(vims) {
+  var component = '<div class="form-group">' +
+                    '<label class="col-sm-3 control-label">' +
+                      '<span>Location</span>' +
+                      '<span class="required">*</span>' +
+                    '</label>' +
+                    '<div class="col-sm-7">' +
+                      '<select class="form-control" style ="padding-top: 0px;padding-bottom: 0px;"' +
+                        ' id="vim_location" name="vim_location">' +
+                        transformToOptions(vims) +
+                        // '<option value="vimid">vim1 name</option>' +
+                      '</select></div></div>';
+  return component;
+}
+
+function transformToOptions(vims) {
+  var options = '';
+  var i;
+  for( i = 0; i < vims.length; i += 1) {
+    var option = '<option value="' + vims[i].vimId + '">'+vims[i].vimName+'</option>';
+    options = options + option; 
+  }
+  return options;
+}
+
 function createGsoServiceInstance(gatewayService, serviceInstance) {
+  serviceInstance.serviceParameters.location = serviceInstance.vimLocation;
   var gsoLcmUri = '/openoapi/lifecyclemgr/v1/services';
   var parameter = {
     'name': serviceInstance.serviceName,
@@ -209,6 +265,7 @@ function createGsoServiceInstance(gatewayService, serviceInstance) {
 
 function createNfvoServiceInstance(gatewayService, serviceInstance) {
   var nfvoLcmNsUrl = '/openoapi/nslcm/v1.0/ns';
+  serviceInstance.serviceParameters.location = serviceInstance.vimLocation;
   createServiceInstance(gatewayService, nfvoLcmNsUrl, serviceInstance);
 }
 
