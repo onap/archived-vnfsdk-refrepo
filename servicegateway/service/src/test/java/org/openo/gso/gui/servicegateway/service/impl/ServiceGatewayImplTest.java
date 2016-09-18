@@ -38,7 +38,6 @@ public class ServiceGatewayImplTest {
      */
     ServiceGatewayImpl serviceManager = new ServiceGatewayImpl();
 
-
     /**
      * Http request.
      */

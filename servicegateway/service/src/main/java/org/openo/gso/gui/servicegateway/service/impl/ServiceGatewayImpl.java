@@ -16,10 +16,19 @@
 
 package org.openo.gso.gui.servicegateway.service.impl;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.openo.baseservice.remoteservice.exception.ServiceException;
+import org.openo.baseservice.roa.util.restclient.RestfulFactory;
+import org.openo.baseservice.roa.util.restclient.RestfulParametes;
+import org.openo.baseservice.roa.util.restclient.RestfulResponse;
+import org.openo.gso.gui.servicegateway.constant.Constant;
 import org.openo.gso.gui.servicegateway.service.inf.IServiceGateway;
+import org.openo.gso.gui.servicegateway.util.json.JsonUtil;
+import org.openo.gso.gui.servicegateway.util.validate.ValidateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,10 +58,63 @@ public class ServiceGatewayImpl implements IServiceGateway {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public Object createService(String reqContent, HttpServletRequest httpRequest) throws ServiceException {
+    public String createService(String reqContent, HttpServletRequest httpRequest) throws ServiceException {
+    	// check the value
+    	if(StringUtils.isEmpty(reqContent))
+    	{
+    		LOGGER.error("ServiceGatewayImpl createService reqContent is null.");
+    		return null;
+    	}
+    	
+    	// Parse request
+        Map<String, Object> requestBody = JsonUtil.unMarshal(reqContent, Map.class);
+        Map<String, Object> service = (Map<String, Object>)requestBody.get(Constant.SERVICE_INDENTIFY);
+        if(null == service)
+        {
+        	service = requestBody;
+        }
+        ValidateUtil.assertObjectNotNull(requestBody);
 
+        // Validate data
+        String gatewayUri = (String)service.get(Constant.SERVICE_GATEWAY_URI);
+        ValidateUtil.assertStringNotNull(gatewayUri);
+        service.remove(Constant.SERVICE_GATEWAY_URI);
 
-        return null;
+        // call the restful 
+        String id = null;
+        try {
+        	RestfulResponse restfulRsp = RestfulFactory.getRestInstance("http").post(gatewayUri,
+                    getRestfulParameters(JsonUtil.marshal(requestBody)));
+            if (null != restfulRsp) {
+                // Record the result of registration
+                // (201:success;415:Invalid Parameter;500:Internal Server Error)
+                LOGGER.info("restful call result:", restfulRsp.getStatus());
+                id = restfulRsp.getRespHeaderStr(Constant.SERVICE_ID);
+                id = (null == id) ? restfulRsp.getRespHeaderStr(Constant.NS_INSTANCE_ID) : id;
+                id = (null == id) ? restfulRsp.getRespHeaderStr(Constant.JOB_ID) : id;
+            }
+        } catch(ServiceException e) {
+        	LOGGER.error("service gateway create restful call result:", e);
+            throw e;
+        }
+
+        return id;
+    }
+    
+    /**
+     * get the parameters for restful<br/>
+     * 
+     * @author
+     * @param bodyData
+     *            Json Body
+     * @return the RestfulParametes Instance
+     * @since GSO 0.5, 2016-8-9
+     */
+    private static RestfulParametes getRestfulParameters(final String bodyData) {
+        RestfulParametes param = new RestfulParametes();
+        param.putHttpContextHeader(Constant.HEAD_ERMAP_TYPE, Constant.HEAD_ERMAP_VALUE);
+        param.setRawData(bodyData);
+        return param;
     }
 
     /**

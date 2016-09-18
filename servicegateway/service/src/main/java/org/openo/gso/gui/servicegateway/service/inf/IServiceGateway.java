@@ -40,7 +40,7 @@ public interface IServiceGateway {
      * @throws ServiceException when operate DB or parameter is wrong.
      * @since GSO 0.5
      */
-    Object createService(String reqContent, HttpServletRequest httpRequest) throws ServiceException;
+	String createService(String reqContent, HttpServletRequest httpRequest) throws ServiceException;
 
     /**
      * Delete service instances.<br/>

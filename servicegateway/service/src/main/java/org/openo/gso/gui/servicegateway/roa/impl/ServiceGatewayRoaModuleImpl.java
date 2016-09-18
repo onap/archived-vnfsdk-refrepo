@@ -22,8 +22,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 
 import org.openo.baseservice.remoteservice.exception.ServiceException;
+import org.openo.baseservice.util.RestUtils;
+import org.openo.gso.gui.servicegateway.constant.Constant;
+import org.openo.gso.gui.servicegateway.exception.HttpCode;
 import org.openo.gso.gui.servicegateway.roa.inf.IServiceGatewayRoaModule;
+import org.openo.gso.gui.servicegateway.service.impl.ServiceGatewayImpl;
 import org.openo.gso.gui.servicegateway.service.inf.IServiceGateway;
+import org.openo.gso.gui.servicegateway.util.http.ResponseUtils;
+import org.openo.gso.gui.servicegateway.util.validate.ValidateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,21 +51,7 @@ public class ServiceGatewayRoaModuleImpl implements IServiceGatewayRoaModule {
     /**
      * Service manager.
      */
-    private IServiceGateway serviceManager;
-
-    /**
-     * @return Returns the serviceManager.
-     */
-    public IServiceGateway getServiceGateway() {
-        return serviceManager;
-    }
-
-    /**
-     * @param serviceManager The serviceManager to set.
-     */
-    public void setServicemanager(IServiceGateway serviceManager) {
-        this.serviceManager = serviceManager;
-    }
+    private IServiceGateway serviceGateway = new ServiceGatewayImpl();
 
     /**
      * Create service instance.<br/>
@@ -71,7 +63,28 @@ public class ServiceGatewayRoaModuleImpl implements IServiceGatewayRoaModule {
      */
     @Override
     public Response createService(HttpServletRequest servletReq) {
+    	Map<String, Object> operateStatus = null;
         Map<String, Object> result = null;
+        String serviceId = null;
+        try {
+            // 1. Check validation
+            String reqContent = RestUtils.getRequestBody(servletReq);
+            ValidateUtil.assertStringNotNull(reqContent);
+
+            // 2. Create service
+            serviceId = serviceGateway.createService(reqContent, servletReq);
+        } catch(ServiceException exception) {
+            LOGGER.error("Fail to create service instance.");
+            operateStatus = ResponseUtils.setOperateStatus(Constant.RESPONSE_STATUS_FAIL, exception,
+                    String.valueOf(exception.getHttpCode()));            
+            result = ResponseUtils.setResult(serviceId, operateStatus);
+
+            return Response.accepted().entity(result).build();
+        }
+
+        operateStatus = ResponseUtils.setOperateStatus(Constant.RESPONSE_STATUS_SUCCESS, null,
+                String.valueOf(HttpCode.RESPOND_OK));
+        result = ResponseUtils.setResult(serviceId, operateStatus);
 
         return Response.accepted().entity(result).build();
     }

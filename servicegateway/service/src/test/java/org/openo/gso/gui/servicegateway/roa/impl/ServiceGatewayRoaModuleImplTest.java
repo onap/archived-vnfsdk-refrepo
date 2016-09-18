@@ -16,25 +16,28 @@
 
 package org.openo.gso.gui.servicegateway.roa.impl;
 
-import static org.junit.Assert.assertNotNull;
-
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.Reader;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.jdbc.ScriptRunner;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openo.baseservice.remoteservice.exception.ServiceException;
+import org.openo.baseservice.roa.util.restclient.RestfulResponse;
+import org.openo.baseservice.util.RestUtils;
+import org.openo.gso.gui.servicegateway.exception.HttpCode;
 import org.openo.gso.gui.servicegateway.service.impl.ServiceGatewayImpl;
+import org.openo.gso.gui.servicegateway.util.http.HttpUtil;
+
+import mockit.Mock;
+import mockit.MockUp;
 
 /**
  * Test ServicemgrRoaModuleImpl class.<br/>
@@ -46,6 +49,11 @@ import org.openo.gso.gui.servicegateway.service.impl.ServiceGatewayImpl;
  */
 public class ServiceGatewayRoaModuleImplTest {
 
+	/**
+     * File path
+     */
+    private static final String FILE_PATH = "src/test/resources/json/";
+	
     /**
      * Service ROA.
      */
@@ -61,6 +69,11 @@ public class ServiceGatewayRoaModuleImplTest {
      * Http request.
      */
     HttpServletRequest httpRequest;
+    
+    /**
+     * Rest response.
+     */
+    RestfulResponse responseSuccess;
 
     /**
      * Before executing UT, start sql.<br/>
@@ -69,7 +82,8 @@ public class ServiceGatewayRoaModuleImplTest {
      */
     @Before
     public void start() throws IOException, SQLException {
-
+    	responseSuccess = new RestfulResponse();
+    	responseSuccess.setStatus(HttpCode.RESPOND_OK);
     }
 
 
@@ -92,7 +106,12 @@ public class ServiceGatewayRoaModuleImplTest {
      */
     @Test
     public void testCreateService() throws ServiceException {
+    	// mock request body
+        mockGetRequestBody(FILE_PATH + "createServiceInstance.json");
+        
+        mockPost(responseSuccess);
 
+        serviceRoa.createService(httpRequest);
     }
 
     /**
@@ -102,8 +121,63 @@ public class ServiceGatewayRoaModuleImplTest {
      * @since GSO 0.5
      */
     @Test
-    public void testTeleteService() throws ServiceException {
+    public void testDeleteService() throws ServiceException {
         serviceRoa.deleteService("1", httpRequest);
     }
 
+    /**
+     * Mock to get request body.<br/>
+     * 
+     * @param file json file path.
+     * @since GSO 0.5
+     */
+    private void mockGetRequestBody(final String file) {
+        new MockUp<RestUtils>() {
+
+            @Mock
+            public String getRequestBody(HttpServletRequest request) {
+                return getJsonString(file);
+            }
+        };
+    }
+    
+    /**
+     * Mock rest request for post.<br/>
+     * 
+     * @param response rest response
+     * @since GSO 0.5
+     */
+    private void mockPost(final RestfulResponse response) {
+        new MockUp<HttpUtil>() {
+
+            @Mock
+            public RestfulResponse post(final String url, Object sendObj, HttpServletRequest httpRequest) {
+                return response;
+            }
+        };
+    }
+    
+    /**
+     * Get json string from file.<br/>
+     * 
+     * @param file the path of file
+     * @return json string
+     * @throws IOException when fail to read
+     * @since GSO 0.5
+     */
+    private String getJsonString(final String file) {
+        if(StringUtils.isEmpty(file)) {
+            return "";
+        }
+
+        String json = null;
+        try {
+            FileInputStream fileStream = new FileInputStream(new File(file));
+            json = IOUtils.toString(fileStream);
+        } catch(Exception e) {
+            Assert.fail(e.getMessage());
+        }
+
+        return json;
+    }
 }
