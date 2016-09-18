@@ -26,16 +26,11 @@ package org.openo.gso.gui.servicegateway.constant;
  */
 public class Constant {
 
-    /**
-     * Service instance name.
+	 /**
+     * Service instance ID.
      */
-    public static final String SERVICE_NAME = "name";
-
-    /**
-     * Service instance description.
-     */
-    public static final String SERVICE_DESCRIPTION = "description";
-
+    public static final String SERVICE_INDENTIFY = "service";
+    
     /**
      * Service instance ID.
      */
@@ -47,19 +42,10 @@ public class Constant {
     public static final String SERVICE_DEF_ID = "serviceDefId";
 
     /**
-     * Service template ID.
+     * Service gateway URL.
      */
-    public static final String SERVICE_TEMPLATE_ID = "templateId";
+    public static final String SERVICE_GATEWAY_URI = "gatewayUri";
 
-    /**
-     * Service template name.
-     */
-    public static final String SERVICE_TEMPLATE_NAME = "templateName";
-
-    /**
-     * service parameters
-     */
-    public static final String SERVICE_PARAMETERS = "parameters";
 
     /**
      * Create workflow name.
@@ -112,19 +98,59 @@ public class Constant {
     public static final String RESPONSE_STATUS_FAIL = "fail";
 
     /**
-     * Identify of csar.
+     * ID of instance.
      */
-    public static final String CSAR_ID = "csarId";
+    public static final String NS_INSTANCE_ID = "nsInstanceId";
 
     /**
      * service identify.
      */
-    public static final String SERVICE_INDENTIFY = "service";
+    public static final String SERVICE_ID = "serviceId";
 
     /**
-     * Predefine parameter for service design
+     * job Id
      */
-    public static final String PREDEFINE_GSO_ID = "predefine_gsoId";
+    public static final String JOB_ID = "jobId";
+    
+    /**
+     * service file Path:etc
+     */
+    public static final String FILE_PATH_ETC = "etc";
+
+    /**
+     * service file Path:register
+     */
+    public static final String FILE_PATH_REGISTER = "register";
+
+    /**
+     * service file Path:file name
+     */
+    public static final String FILE_PATH_JSON = "service.json";
+    
+    /**
+     * the head type for Restful
+     */
+    public static final String HEAD_ERMAP_TYPE = "Content-Type";
+
+    /**
+     * the head value for Restful
+     */
+    public static final String HEAD_ERMAP_VALUE = "application/json;charset=UTF-8";
+    
+    /**
+     * the URL for Register service to the M-service Bus
+     */
+    public static final String M_BUS_REGISTER_URL = "/openoapi/microservices/v1/services";
+
+    /**
+     * the IP key for the service file
+     */
+    public static final String SERVICE_KEY_IP = "getInputIP";
+
+    /**
+     * constant:0
+     */
+    public static final int ZERO = 0;
 
     /**
      * Constructor<br/>

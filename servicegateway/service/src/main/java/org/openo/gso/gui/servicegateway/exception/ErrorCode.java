@@ -46,6 +46,21 @@ public class ErrorCode {
      * Package is being deleted.
      */
     public static final String SVCMGR_PACKAGE_BEING_DELETED = "servicemgr.package.beingDelete";
+    
+    /**
+     * operation fail
+     */
+    public static final int FAIL = 3;
+
+    /**
+     * operation partial success
+     */
+    public static final int PARTIAL_SUCCESS = 1;
+    
+    /**
+     * operation success
+     */
+    public static final int SUCCESS = 0;
 
     /**
      * Constructor<br/>

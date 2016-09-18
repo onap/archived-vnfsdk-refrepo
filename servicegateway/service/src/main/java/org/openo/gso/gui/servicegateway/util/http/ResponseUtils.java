@@ -155,4 +155,21 @@ public class ResponseUtils {
 
         return result;
     }
+    
+    /**
+     * Assemble operation result.<br/>
+     * 
+     * @param objectId instance ID
+     * @param operateCode operation result
+     * @return Response result
+     * @since GSO 0.5
+     */
+    public static Map<String, Object> setResult(String objectId, Object operateCode) {
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put(Constant.RESPONSE_RESULT, operateCode);
+        String serviceId = (null != objectId) ? objectId : null;
+        result.put(Constant.SERVICE_INSTANCE_ID, serviceId);
+
+        return result;
+    }
 }

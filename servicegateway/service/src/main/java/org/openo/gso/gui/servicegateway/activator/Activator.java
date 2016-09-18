@@ -20,6 +20,8 @@ import java.io.File;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openo.baseservice.util.impl.SystemEnvVariablesFactory;
+import org.openo.gso.gui.servicegateway.constant.Constant;
+import org.openo.gso.gui.servicegateway.util.register.RegisterUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +34,7 @@ import org.slf4j.LoggerFactory;
 public class Activator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Activator.class);
+
 
     /**
      * start operation by spring <br/>
@@ -55,18 +58,18 @@ public class Activator {
     private void registerService() {
         // get the jsonString form the service file
         String root = SystemEnvVariablesFactory.getInstance().getAppRoot();
-//        String serviceFilePath = root + File.separator + Constant.FILE_PATH_ETC + File.separator
-//                + Constant.FILE_PATH_REGISTER + File.separator + Constant.FILE_PATH_JSON;
-//        String jsonInfo = RegisterUtil.readFile(serviceFilePath);
-//
-//        // check the jsonInfo
-//        if(StringUtils.isEmpty(jsonInfo)) {
-//            LOGGER.error("GSO ReadFile  fail: jsonInfo is null. the serviceFilePath=" + serviceFilePath);
-//            return;
-//        }
+        String serviceFilePath = root + File.separator + Constant.FILE_PATH_ETC + File.separator
+                + Constant.FILE_PATH_REGISTER + File.separator + Constant.FILE_PATH_JSON;
+        String jsonInfo = RegisterUtil.readFile(serviceFilePath);
+
+        // check the jsonInfo
+        if(StringUtils.isEmpty(jsonInfo)) {
+            LOGGER.error("ServiceGateway ReadFile  fail: jsonInfo is null. the serviceFilePath=" + serviceFilePath);
+            return;
+        }
 
         // register service by the jsonInfo
-//        RegisterUtil.registerService(jsonInfo);
+        RegisterUtil.registerService(jsonInfo);
     }
 
     /**
