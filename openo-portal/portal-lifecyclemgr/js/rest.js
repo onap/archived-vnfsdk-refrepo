@@ -78,29 +78,4 @@ $(function(){
 			return o;
 			};
 	
-$('#createNS').click(function(){
-				var formData = JSON.stringify($("#neForm").serializeObject());
-				var jsonobj = JSON.parse(formData);
-		        var newJson = {"managedElement": jsonobj};
-		        formData = JSON.stringify(newJson);
-		        var requestUrl = "http://localhost:8080/org.openo.sdno.brs/openoapi/sdnobrs/v1/managed-elements";
-		        $
-				.ajax({
-					type : "POST",
-					url : requestUrl,
-					contentType : "application/json",
-					dataType : "json",
-					data : formData,
-					success : function(jsonResp) {
-						alert("NS saved successfully!!!");
-						jsonobj["id"]= jsonResp.managedElement.id;
-						$('#ne').bootstrapTable("append", jsonobj);
-						$('#vmAppDialog').removeClass('in').css('display','none');
-
-					},
-					error : function(xhr, ajaxOptions, thrownError) {
-						alert("Error on page : " + xhr.responseText); 	
-					}
-				});
-			});
 })
