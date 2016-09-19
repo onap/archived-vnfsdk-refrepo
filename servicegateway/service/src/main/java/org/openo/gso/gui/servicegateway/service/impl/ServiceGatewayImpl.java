@@ -25,6 +25,7 @@ import org.openo.baseservice.remoteservice.exception.ServiceException;
 import org.openo.baseservice.roa.util.restclient.RestfulFactory;
 import org.openo.baseservice.roa.util.restclient.RestfulParametes;
 import org.openo.baseservice.roa.util.restclient.RestfulResponse;
+import org.openo.baseservice.util.RestUtils;
 import org.openo.gso.gui.servicegateway.constant.Constant;
 import org.openo.gso.gui.servicegateway.service.inf.IServiceGateway;
 import org.openo.gso.gui.servicegateway.util.json.JsonUtil;
@@ -127,7 +128,43 @@ public class ServiceGatewayImpl implements IServiceGateway {
      */
     @Override
     public void deleteService(String serviceId, HttpServletRequest httpRequest) throws ServiceException {
+        // Parse request
+        String reqContent = RestUtils.getRequestBody(httpRequest);
+        Map<String, Object> requestBody = JsonUtil.unMarshal(reqContent, Map.class);
+        Map<String, Object> service = (Map<String, Object>)requestBody.get(Constant.SERVICE_INDENTIFY);
+        if(null == service)
+        {
+            service = requestBody;
+        }
+        ValidateUtil.assertObjectNotNull(requestBody);
 
+        // Validate data
+        String gatewayUri = (String)service.get(Constant.SERVICE_GATEWAY_URI);
+        ValidateUtil.assertStringNotNull(gatewayUri);
+        service.remove(Constant.SERVICE_GATEWAY_URI);
+
+        String operation = (String) service.get(Constant.SERVICE_OPERATION);
+        ValidateUtil.assertStringNotNull(operation);
+        service.remove(Constant.SERVICE_OPERATION);
+
+        // call the restful
+        String id = null;
+        try {
+            RestfulResponse restfulRsp = null;
+            if(Constant.SERVICE_DELETE_OPERATION.equalsIgnoreCase(operation)) {
+                restfulRsp = RestfulFactory.getRestInstance("http").delete(gatewayUri,
+                        getRestfulParameters(JsonUtil.marshal(requestBody)));
+            } else {
+                restfulRsp = RestfulFactory.getRestInstance("http").post(gatewayUri,
+                        getRestfulParameters(JsonUtil.marshal(requestBody)));
+            }
+            if (null != restfulRsp) {
+                LOGGER.info("restful call result:", restfulRsp.getStatus());
+            }
+        } catch(ServiceException e) {
+            LOGGER.error("service gateway delete restful call result:", e);
+            throw e;
+        }
     }
 
 }
