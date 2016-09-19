@@ -46,6 +46,15 @@ public class Constant {
      */
     public static final String SERVICE_GATEWAY_URI = "gatewayUri";
 
+    /**
+     * Service operation.
+     */
+    public static final String SERVICE_OPERATION = "operation";
+
+    /**
+     * Service delete operation.
+     */
+    public static final String SERVICE_DELETE_OPERATION = "delete";
 
     /**
      * Create workflow name.
