@@ -282,8 +282,7 @@ function createNetworkService(gatewayService, gatewayUri, serviceInstance) {
     'nsdId': serviceInstance.serviceTemplateId,
     'nsName': serviceInstance.serviceName,
     'description': serviceInstance.serviceDescription,
-    'gatewayUri': gatewayUri,
-    'parameters': serviceInstance.serviceParameters
+    'gatewayUri': gatewayUri
   };
   var nsInstanceId;
   $.ajax({
@@ -396,15 +395,27 @@ function deleteServiceInstance(templateId, instanceId) {
 
 function deleteGsoServiceInstance(gatewayService, instanceId) {
     var gsoLcmUrl = '/openoapi/lifecyclemgr/v1/services/'+ instanceId;
-    return sendDeleteRequest(gatewayService, gsoLcmUrl);
+    var operation = 'DELETE';
+    return sendDeleteRequest(operation, gatewayService, gsoLcmUrl);
 }
 
 function deleteNfvoServiceInstance(gatewayService, instanceId) {
     var nfvoNsUrl = '/openoapi/nslcm/v1.0/ns/' + instanceId;
     var nfvoNsTerminateUrl = nfvoNsUrl +'/terminate';
-    var result = sendDeleteRequest(gatewayService, nfvoNsTerminateUrl);
+    var terminateParameter = {
+      'nsInstanceId': instanceId,
+      'terminationType': "graceful",
+      'gracefulTerminationTimeout': "60",
+      'operation': "POST",
+      'gatewayUri': nfvoNsTerminateUrl
+    };
+    var result = sendRequest(gatewayService, terminateParameter);
     if(result) {
-        result = sendDeleteRequest(gatewayService, nfvoNsUrl);
+      var serviceParameter = {
+          'operation': "DELETE",
+          'gatewayUri': nfvoNsUrl
+      };
+      result = sendRequest(gatewayService, serviceParameter);
     }
     return result;
 }
@@ -412,17 +423,25 @@ function deleteNfvoServiceInstance(gatewayService, instanceId) {
 function deleteSdnoServiceInstance(gatewayService, instanceId) {
     var sdnoNsUrl = '/openoapi/sdnonslcm/v1.0/ns/' + instanceId;
     var sdnoNsTerminateUrl = sdnoNsUrl + '/terminate';
-    var result = sendDeleteRequest(gatewayService, sdnoNsTerminateUrl);
+    var terminateParameter = {
+      'nsInstanceId': instanceId,
+      'terminationType': "graceful",
+      'gracefulTerminationTimeout': "60",
+      'operation': "POST",
+      'gatewayUri': sdnoNsTerminateUrl
+    };
+    var result = sendDeleteRequest(gatewayService, terminateParameter);
     if(result) {
-        result = sendDeleteRequest(gatewayService, sdnoNsUrl);
+      var serviceParameter = {
+        'operation': "DELETE",
+        'gatewayUri': sdnoNsUrl
+      };
+      result = sendDeleteRequest(gatewayService, serviceParameter);
     }
     return result;
 }
 
-function sendDeleteRequest(gatewayService, url) {
-    var parameter = {
-        URL: url
-    };
+function sendDeleteRequest(gatewayService, parameter) {
     var result = false;
     $.ajax({
         type : "DELETE",
