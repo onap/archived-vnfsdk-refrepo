@@ -1,0 +1,90 @@
+<!--
+    Copyright 2016, CMCC Technologies Co., Ltd.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<div class="content">
+	<form class="login-form" id="fm1" action="javascript:;" method="post">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+			</button>
+			<h4 class="modal-title" id="com_zte_ums_ict_sm_user_modify_current_password"
+			name_i18n="com_zte_ums_ict_framework_ui_i18n">
+				当前用户密码设置
+			</h4>
+		</div>
+		<!--div class="modal-body"-->
+		<div class="alert display-hide" id="nameOrpwdError">
+			<button class="close" data-close="alert">
+			</button>
+			<span id="com_zte_ums_ict_portal_login_nameOrpwdError" name_i18n="com_zte_ums_ict_framework_ui_i18n">
+				原始密码错误
+			</span>
+		</div>
+		<div class="form-group">
+			<label class="control-label visible-ie8 visible-ie9" id="com_zte_ums_ict_sm_user_old_password"
+			name_i18n="com_zte_ums_ict_framework_ui_i18n">
+				旧密码
+			</label>
+			<div class="input-icon">
+				<i class="fa fa-lock">
+				</i>
+				<input type="password" class="form-control placeholder-no-fix" id="oldpassword"
+				autocomplete="off" placeholder="旧密码" name="oldpassword" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label visible-ie8 visible-ie9" id="com_zte_ums_ict_sm_user_password"
+			name_i18n="com_zte_ums_ict_framework_ui_i18n">
+				新密码
+			</label>
+			<div class="input-icon">
+				<i class="fa fa-lock">
+				</i>
+				<input type="password" class="form-control placeholder-no-fix" id="password"
+				autocomplete="off" placeholder="新密码" name="password" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label visible-ie8 visible-ie9" id="com_zte_ums_ict_sm_user_confirmpassword"
+			name_i18n="com_zte_ums_ict_framework_ui_i18n">
+				确认新密码
+			</label>
+			<div class="controls">
+				<div class="input-icon">
+					<i class="fa fa-check">
+					</i>
+					<input type="password" class="form-control placeholder-no-fix" id="rpassword"
+					autocomplete="off" placeholder="确认新密码" name="rpassword" />
+				</div>
+			</div>
+		</div>
+		<!--/div-->
+		<div class="form-actions">
+			<div class="modal-footer">
+				<button data-dismiss="modal" aria-hidden="true" id="cancelBtn" class="btn default ">
+					<span id="com_zte_ums_ict_sm_user_cancel_button" name_i18n="com_zte_ums_ict_framework_ui_i18n">
+						取消
+					</span>
+				</button>
+				<button type="submit" id="submitBtn" class="btn blue">
+					<span id="com_zte_ums_ict_sm_user_ok" name_i18n="com_zte_ums_ict_framework_ui_i18n">
+						确定
+					</span>
+					<i class="m-icon-swapright m-icon-white">
+					</i>
+				</button>
+			</div>
+		</div>
+	</form>
+</div>
