@@ -1,9 +1,9 @@
-/**
- * @author zhixin wen <wenzhixin2010@gmail.com>
- * version: 1.11.1
- * https://github.com/wenzhixin/bootstrap-table/
- */
-
+/*
+* bootstrap-table - v1.11.0 - 2016-07-02
+* https://github.com/wenzhixin/bootstrap-table
+* Copyright (c) 2016 zhixin wen
+* Licensed MIT License
+*/
 (function ($) {
     'use strict';
 
