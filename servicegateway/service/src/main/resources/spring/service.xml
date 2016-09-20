@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- /* * Copyright (c) 2016, Huawei Technologies Co., Ltd. * * Licensed under the Apache License, Version 2.0 (the "License"); 
-    * you may not use this file except in compliance with the License. * You may obtain a copy of the License at * * http://www.apache.org/licenses/LICENSE-2.0 
-    * * Unless required by applicable law or agreed to in writing, software * distributed under the License is distributed on 
-    an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. * See the License for the specific 
-    language governing permissions and * limitations under the License. */ -->
+<!--
+  Copyright 2016 Huawei Technologies Co., Ltd.
+ 
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+ 
+      http://www.apache.org/licenses/LICENSE-2.0
+ 
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:ctx="http://www.springframework.org/schema/context" xmlns:context="http://www.springframework.org/schema/context"
     xmlns:oms="http://www.huawei.com/schema/oms"
@@ -50,47 +60,14 @@
         <constructor-arg index="0" ref="sessionFactory" />
     </bean>
 
-    <bean class="org.openo.gso.servicemgr.activator.Activator"></bean>
+    <bean class="org.openo.gso.gui.servicegateway.activator.Activator"></bean>
     
-    <bean id="Activator" class="org.openo.gso.servicemgr.activator.Activator" init-method="start" destroy-method="stop">
+    <bean id="Activator" class="org.openo.gso.gui.servicegateway.activator.Activator" init-method="start" destroy-method="stop">
     </bean>
     
-    <bean id="ServicemgrRoaModuleImpl" class="org.openo.gso.servicemgr.roa.impl.ServicemgrRoaModuleImpl">
+    <bean id="ServicGatewayRoaModuleImpl" class="org.openo.gso.gui.servicegateway.roa.impl.ServicGatewayRoaModuleImpl">
         <property name="ServiceGateway" ref="ServiceGateway"></property>
     </bean>    
     
-    <bean id="ServiceGateway" class="org.openo.gso.servicemgr.service.impl.ServiceGatewayImpl">
-        <property name="serviceModelDao" ref="serviceModelDao"></property>
-        <property name="subServiceDao" ref="subServiceDao"></property>
-        <property name="servicePackageDao" ref="servicePackageDao"></property>
-        <property name="catalogProxy" ref="catalogProxy"></property>
-        <property name="wsoProxy" ref="wsoProxy"></property>
-    </bean>
-    
-    <bean id="ServicePackageModuleImpl" class="org.openo.gso.servicemgr.roa.impl.ServicePackageModuleImpl">
-        <property name="packageMgr" ref="packageMgr"></property>
-    </bean>
-    
-    <bean id="packageMgr" class="org.openo.gso.servicemgr.service.impl.PackageManagerImpl">
-        <property name="servicePackageDao" ref="servicePackageDao"></property>
-        <property name="catalogProxy" ref="catalogProxy"></property>
-    </bean>
-
-    <bean id="serviceModelDao" class="org.openo.gso.servicemgr.dao.impl.ServiceModelDaoImpl">
-        <property name="session" ref="session" />
-    </bean>
-    
-    <bean id="servicePackageDao" class="org.openo.gso.servicemgr.dao.impl.ServicePackageDaoImpl">
-        <property name="session" ref="session" />
-    </bean>
-
-    <bean id="subServiceDao" class="org.openo.gso.servicemgr.dao.impl.SubServiceDaoImpl">
-        <property name="session" ref="session" />
-    </bean>
-    
-    <bean id="catalogProxy" class="org.openo.gso.servicemgr.restproxy.impl.CatalogProxyImpl">
-    </bean>
-    
-    <bean id="wsoProxy" class="org.openo.gso.servicemgr.restproxy.impl.WsoProxyImpl">
     </bean>
 </beans>
