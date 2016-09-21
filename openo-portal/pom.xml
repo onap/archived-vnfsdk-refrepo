@@ -31,5 +31,6 @@
     <modules>
       <module>portal-package</module>
       <module>portal-common</module>
+      <module>portal-auth</module>
     </modules>
 </project>
