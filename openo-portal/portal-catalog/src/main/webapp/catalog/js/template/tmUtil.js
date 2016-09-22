@@ -20,10 +20,15 @@ tmUtil.nameRender = function(obj) {
         + '\',' + obj.iDataRow + ')">' + obj.aData.templateName + '</a>';
 }
 
-tmUtil.elasticRender = function(obj) {
-    return null;
+tmUtil.topoRender = function(obj) {
+    return '<a href="#" onclick="vm.$openTopoDetail(\'' + obj.aData.serviceTemplateId
+    + '\',' + obj.iDataRow + ')">' + obj.aData.templateName + '</a>';
 }
 
+tmUtil.nodesRender = function(obj) {
+    return '<a href="#" onclick="vm.$openNodesDetail(\'' + obj.aData.serviceTemplateId
+        + '\',' + obj.iDataRow + ')">' + obj.aData.templateName + '</a>';
+}
 /*tmUtil.openDetail = function(obj) {
     if (obj) {
         var framework;

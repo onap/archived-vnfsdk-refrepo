@@ -24,13 +24,12 @@ var vm = avalon.define({
 		table: [
             {"mData": "serviceTemplateId", name: "ID", "bVisible": false},
             {"mData": "templateName", name: $.i18n.prop("nfv-template-iui-field-templatename"), "fnRender" : tmUtil.nameRender},
-           // {"mData": "producttype", name: $.i18n.prop("nfv-template-iui-field-producttype")},
+            //{"mData": "templateName", name: $.i18n.prop("nfv-template-iui-field-templatename-topo"), "fnRender" : tmUtil.topoRender},
+            //{"mData": "templateName", name: $.i18n.prop("nfv-template-iui-field-templatename-nodes"), "fnRender" : tmUtil.nodesRender},
             {"mData": "vendor", name: $.i18n.prop("nfv-template-iui-field-vendor")},
             {"mData": "version", name: $.i18n.prop("nfv-template-iui-field-version")},
             {"mData":"csarId", name: "packageID","bVisible": false},
             {"mData": "type", name: $.i18n.prop("nfv-template-iui-field-type")},
-            //{"mData":"downloadUri", name: $.i18n.prop("nfv-template-iui-field-download-uri")},
-            //{"mData": "inputs", name: $.i18n.prop("nfv-template-iui-field-inputs"), "fnRender" : tmUtil.inputsRender}
 		]
 	},
     $language: {
@@ -76,6 +75,22 @@ var vm = avalon.define({
         }
         window.open("./templateDetail.html?templateId="+templateId+"&flavor="+flavor,"_self");
     },
+    $openTopoDetail : function(templateId, rowId) {
+        var oSelect = $("tbody tr select").eq(rowId);
+        var flavor = "";
+        if(oSelect.length) {
+            oSelect.find("option:selected").val();
+        }
+        window.open("./topologyDetail.html?templateId="+templateId+"&flavor="+flavor,"_self");
+    },
+    $openNodesDetail : function(templateId, rowId) {
+        var oSelect = $("tbody tr select").eq(rowId);
+        var flavor = "";
+        if(oSelect.length) {
+            oSelect.find("option:selected").val();
+        }
+        window.open("./nodesDetail.html?templateId="+templateId+"&flavor="+flavor,"_self");
+    }
 });
 avalon.scan();
 vm.$initTable();
