@@ -14,33 +14,32 @@
  * limitations under the License.
  */
 body {
-  color: #333;
-  font-family: "Microsoft yahei", Verdana, Arial, Helvetica, sans-serif !important;
-  padding: 0px !important;
-  margin: 0px !important;
-  direction: ltr;
-  background-color: #f1f3fa !important; 
+    color: #333;
+    font-family: "Microsoft yahei", Verdana, Arial, Helvetica, sans-serif !important;
+    padding: 0px !important;
+    margin: 0px !important;
+    direction: ltr;
+    background-color: #f1f3fa !important;
 }
 
-.row{
-     margin-left: 0px; 
-  margin-right: 0px; 
+.row {
+    margin-left: 0px;
+    margin-right: 0px;
 }
 
 select {
-  border-width: 1px;
-  padding: 4px 1px;
-  border-radius: 4px;
+    border-width: 1px;
+    padding: 4px 1px;
+    border-radius: 4px;
 }
 
 .container-fluid {
-  background-color: #fff;
+    background-color: #fff;
 }
 
-
 .titlefont {
-  font-size: 16px;
-   margin-left: 10px;
+    font-size: 16px;
+    margin-left: 10px;
 }
 
 .separator-line {

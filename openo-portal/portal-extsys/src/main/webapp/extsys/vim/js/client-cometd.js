@@ -16,48 +16,48 @@
 /**
  * Created by 10184303 on 15-11-17.
  */
- 	
-$(function(){
-    var registerCometdMessage = function(url, callback) {
-        var cometd = new $.Cometd(); 
+
+$(function () {
+    var registerCometdMessage = function (url, callback) {
+        var cometd = new $.Cometd();
         var cometdURL = location.protocol + "//" + location.host + "/api/nsocnotification/v1";
         cometd.configure({
-            url : cometdURL,
-            logLevel : "debug"
+            url: cometdURL,
+            logLevel: "debug"
         });
 
-        cometd.addListener("/meta/handshake", function(handshake){
-            if(handshake.successful === true) {
-                cometd.batch(function(){
-                    cometd.subscribe(url, function(message){
+        cometd.addListener("/meta/handshake", function (handshake) {
+            if (handshake.successful === true) {
+                cometd.batch(function () {
+                    cometd.subscribe(url, function (message) {
                         callback.call(this, message.data);
                     });
                 });
             }
         });
         cometd.handshake();
-}
-    registerCometdMessage("/VIMstatus", function(data){
-                    var alarmArray= JSON.parse(data.greeting);
-                    console.log(data.greeting);
-                    for(var i=0;i<alarmArray.length;i++){
-						vm.vimStatusTime = alarmArray[i].checkTime;
-                        for(var n=0;n<vm.vimInfo.length;n++){
-                            if(alarmArray[i].id==vm.vimInfo[n].oid && alarmArray[i].hostStorageInfo == ""){
-                                vm.vimInfo[n].status=alarmArray[i].status;
-                                vm.vimInfo[n].errorInfo=alarmArray[i].alarmContent;
-                                break;
-                            } 
-							if(alarmArray[i].id==vm.vimInfo[n].oid && alarmArray[i].hostStorageInfo.length != ""){
-								vm.vimInfo[n].status= "inactive";
-                                vm.vimInfo[n].errorInfo = alarmArray[i].hostStorageInfo;
-                                break;
-							}
+    }
+    registerCometdMessage("/VIMstatus", function (data) {
+        var alarmArray = JSON.parse(data.greeting);
+        console.log(data.greeting);
+        for (var i = 0; i < alarmArray.length; i++) {
+            vm.vimStatusTime = alarmArray[i].checkTime;
+            for (var n = 0; n < vm.vimInfo.length; n++) {
+                if (alarmArray[i].id == vm.vimInfo[n].oid && alarmArray[i].hostStorageInfo == "") {
+                    vm.vimInfo[n].status = alarmArray[i].status;
+                    vm.vimInfo[n].errorInfo = alarmArray[i].alarmContent;
+                    break;
+                }
+                if (alarmArray[i].id == vm.vimInfo[n].oid && alarmArray[i].hostStorageInfo.length != "") {
+                    vm.vimInfo[n].status = "inactive";
+                    vm.vimInfo[n].errorInfo = alarmArray[i].hostStorageInfo;
+                    break;
+                }
 
-                        }
-                    }
+            }
+        }
 
-                    setTimeout('resUtil.tooltipVimStatus()',5000);
-     });
+        setTimeout('resUtil.tooltipVimStatus()', 5000);
+    });
 });
 

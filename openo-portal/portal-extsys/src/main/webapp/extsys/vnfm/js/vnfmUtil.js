@@ -15,63 +15,63 @@
  */
 var vnfmUtil = {};
 
-vnfmUtil.delVnfm = function(vnfmId) {
-	bootbox.confirm($.i18n.prop("nfv-vnfm-iui-message-delete-confirm"), function(result){
-		if(result){
-			$.ajax({
-				type : "DELETE",
-				url : vm.$restUrl.delVnfmInfoUrl + vnfmId,
-				dataType : "json",
-				success : function(data,statusText,jqXHR) {
-					if(jqXHR.status=="204") {
-					   	for(var i=0;i<vm.vnfmInfo.length;i++){
-	                        if(vnfmId == vm.vnfmInfo[i].vnfmId){
-	                        	//delete the vnfm object from vnfm array
-	                            vm.vnfmInfo.splice(i, 1);
-	                            break;
-	                        }
-	                    }
-	                    commonUtil.showMessage($.i18n.prop("nfv-vnfm-iui-message-delete-success"), "success");
-					} else {
-						commonUtil.showMessage($.i18n.prop("nfv-vnfm-iui-message-delete-fail"), "warning");
-					}
-				}, 
-				error : function() {
-					commonUtil.showMessage($.i18n.prop("nfv-vnfm-iui-message-delete-fail"), "warning");
-				}
-			});
-	    }
-	});
+vnfmUtil.delVnfm = function (vnfmId) {
+    bootbox.confirm($.i18n.prop("nfv-vnfm-iui-message-delete-confirm"), function (result) {
+        if (result) {
+            $.ajax({
+                type: "DELETE",
+                url: vm.$restUrl.delVnfmInfoUrl + vnfmId,
+                dataType: "json",
+                success: function (data, statusText, jqXHR) {
+                    if (jqXHR.status == "204") {
+                        for (var i = 0; i < vm.vnfmInfo.length; i++) {
+                            if (vnfmId == vm.vnfmInfo[i].vnfmId) {
+                                //delete the vnfm object from vnfm array
+                                vm.vnfmInfo.splice(i, 1);
+                                break;
+                            }
+                        }
+                        commonUtil.showMessage($.i18n.prop("nfv-vnfm-iui-message-delete-success"), "success");
+                    } else {
+                        commonUtil.showMessage($.i18n.prop("nfv-vnfm-iui-message-delete-fail"), "warning");
+                    }
+                },
+                error: function () {
+                    commonUtil.showMessage($.i18n.prop("nfv-vnfm-iui-message-delete-fail"), "warning");
+                }
+            });
+        }
+    });
 }
 
-vnfmUtil.updateVnfm = function(data) {
-	vm.addVnfm.vnfmId = data.vnfmId;
-	vm.addVnfm.name = data.name;
-	//vm.addVnfm.moc = data.moc;
-	//vm.addVnfm.mocDisabled = true;
-	vm.addVnfm.vendor = data.vendor;
-	vm.addVnfm.version = data.version;
-	vm.addVnfm.description = data.description;
-	vm.addVnfm.type = data.type;
-	vm.addVnfm.vimId = data.vimId;
-	vm.addVnfm.url = data.url;
-	vm.addVnfm.userName = data.userName;
-	vm.addVnfm.password = data.password;
-	vm.addVnfm.saveType = "update";
-	vm.addVnfm.title = $.i18n.prop("nfv-vnfm-iui-test-update");
-	vm.server_rtn.info_block=false;
-	vm.server_rtn.warning_block=false;
-	//vm.$initMoc();
-	vm.$initVim();
+vnfmUtil.updateVnfm = function (data) {
+    vm.addVnfm.vnfmId = data.vnfmId;
+    vm.addVnfm.name = data.name;
+    //vm.addVnfm.moc = data.moc;
+    //vm.addVnfm.mocDisabled = true;
+    vm.addVnfm.vendor = data.vendor;
+    vm.addVnfm.version = data.version;
+    vm.addVnfm.description = data.description;
+    vm.addVnfm.type = data.type;
+    vm.addVnfm.vimId = data.vimId;
+    vm.addVnfm.url = data.url;
+    vm.addVnfm.userName = data.userName;
+    vm.addVnfm.password = data.password;
+    vm.addVnfm.saveType = "update";
+    vm.addVnfm.title = $.i18n.prop("nfv-vnfm-iui-test-update");
+    vm.server_rtn.info_block = false;
+    vm.server_rtn.warning_block = false;
+    //vm.$initMoc();
+    vm.$initVim();
 
-	$(".form-group").each(function () {
-		$(this).removeClass('has-success');
-		$(this).removeClass('has-error');
-		$(this).find(".help-block[id]").remove();
-	});
-	$("#addVnfmDlg").modal("show");
+    $(".form-group").each(function () {
+        $(this).removeClass('has-success');
+        $(this).removeClass('has-error');
+        $(this).find(".help-block[id]").remove();
+    });
+    $("#addVnfmDlg").modal("show");
 }
 
-vnfmUtil.tooltipVnfmStatus = function() {
- 	$("[data-toggle='tooltip']").tooltip();
+vnfmUtil.tooltipVnfmStatus = function () {
+    $("[data-toggle='tooltip']").tooltip();
 }

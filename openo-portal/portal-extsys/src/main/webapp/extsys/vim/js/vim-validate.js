@@ -27,33 +27,33 @@ form.validate({
     rules: {
         url: {
             required: true,
-            url:true,
-            maxlength:50
+            url: true,
+            maxlength: 50
             //,repeatedName: true
         },
-        vimName:{
+        vimName: {
             required: true,
-            maxlength:20
+            maxlength: 20
         },
-        version:{
+        version: {
             required: true,
-            maxlength:20
+            maxlength: 20
         },
-        vendor:{
+        vendor: {
             required: true,
-            maxlength:20
+            maxlength: 20
         },
-        userName:{
+        userName: {
             required: true,
-            maxlength:20
+            maxlength: 20
         },
-        password:{
+        password: {
             required: true,
-            maxlength:20
+            maxlength: 20
         },
-        tenant:{
+        tenant: {
             required: true,
-            maxlength:20
+            maxlength: 20
         }
     },
     messages: {
@@ -62,22 +62,22 @@ form.validate({
             required: $.i18n.prop('com_zte_ums_eco_roc_vim_auth_url_require_message'),
             url: $.i18n.prop('com_zte_ums_eco_roc_vim_auth_url_alarm_message')
         },
-        vimName:{
+        vimName: {
             required: $.i18n.prop('com_zte_ums_eco_roc_vim_name_alarm_message')
         },
-        userName:{
+        userName: {
             required: $.i18n.prop('com_zte_ums_eco_roc_vim_username_alarm_message')
         },
-        password:{
+        password: {
             required: $.i18n.prop('com_zte_ums_eco_roc_vim_password_alarm_message')
         },
-         version:{
+        version: {
             required: $.i18n.prop('com_zte_ums_eco_roc_vim_version_alarm_message')
         },
-         vendor:{
+        vendor: {
             required: $.i18n.prop('com_zte_ums_eco_roc_vim_vendor_alarm_message')
         },
-        tenant:{
+        tenant: {
             required: $.i18n.prop('com_zte_ums_eco_roc_vim_tenant_alarm_message')
         }
     },

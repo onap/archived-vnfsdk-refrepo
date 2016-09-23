@@ -15,31 +15,31 @@
  */
 var resUtil = {};
 
-resUtil.tooltipVimStatus=function(){
- $("[data-toggle='tooltip']").tooltip();
+resUtil.tooltipVimStatus = function () {
+    $("[data-toggle='tooltip']").tooltip();
 
 }
 
-resUtil.growl=function(message,type){
+resUtil.growl = function (message, type) {
     $.growl({
         icon: "fa fa-envelope-o fa-lg",
         title: "&nbsp;&nbsp;Notice: ",
-        message: message+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-    },{
+        message: message + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+    }, {
         type: type
     });
     /*
-    $.bootstrapGrowl(message, {
-        ele: 'body', // which element to append to
-        type: type, // (null, 'info', 'danger', 'success')
-        offset: {from: 'bottom', amount: 20}, // 'top', or 'bottom'
-        align: 'right', // ('left', 'right', or 'center')
-        width: 'auto', // (integer, or 'auto')
-        delay: 3000, // Time while the message will be displayed. It's not equivalent to the *demo* timeOut!
-        allow_dismiss: false, // If true then will display a cross to close the popup.
-        stackup_spacing: 10 // spacing between consecutively stacked growls.
-    });
-    */
+     $.bootstrapGrowl(message, {
+     ele: 'body', // which element to append to
+     type: type, // (null, 'info', 'danger', 'success')
+     offset: {from: 'bottom', amount: 20}, // 'top', or 'bottom'
+     align: 'right', // ('left', 'right', or 'center')
+     width: 'auto', // (integer, or 'auto')
+     delay: 3000, // Time while the message will be displayed. It's not equivalent to the *demo* timeOut!
+     allow_dismiss: false, // If true then will display a cross to close the popup.
+     stackup_spacing: 10 // spacing between consecutively stacked growls.
+     });
+     */
 }
 
 

@@ -13,25 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-function loadPropertiesSideMenu(lang, propertiesFileNamePrefix, propertiesFilePath){
+function loadPropertiesSideMenu(lang, propertiesFileNamePrefix, propertiesFilePath) {
     jQuery.i18n.properties({
-        language:lang,
-        name:propertiesFileNamePrefix,
-        path:propertiesFilePath, // 资源文件路径
-        mode:'map', // 用 Map 的方式使用资源文件中的值
-        callback: function() {// 加载成功后设置显示内容
+        language: lang,
+        name: propertiesFileNamePrefix,
+        path: propertiesFilePath, // 资源文件路径
+        mode: 'map', // 用 Map 的方式使用资源文件中的值
+        callback: function () {// 加载成功后设置显示内容
             var i18nItems = $('[name_i18n=com_zte_conductor_ui_i18n]');
-            for(var i=0;i<i18nItems.length;i++){
+            for (var i = 0; i < i18nItems.length; i++) {
                 var $item = $(i18nItems.eq(i));
                 var itemId = $item.attr('id_i18n');
                 var itemTitle = $item.attr('title');
                 /** id存在时元素内容需要国际化，title存在时元素title需要国际化 */
-                if(typeof($item.attr("title")) == "string"){
+                if (typeof($item.attr("title")) == "string") {
                     $item.attr("title", ($.i18n.prop(itemTitle)));
                 }
-                if(undefined != itemId && typeof($item.attr("placeholder"))=="undefined"){
+                if (undefined != itemId && typeof($item.attr("placeholder")) == "undefined") {
                     $item.text($.i18n.prop(itemId));
-                }else if(undefined != itemId && typeof($item.attr("placeholder"))!="undefined"){
+                } else if (undefined != itemId && typeof($item.attr("placeholder")) != "undefined") {
                     $item.attr("placeholder", $.i18n.prop(itemId));
                 }
             }

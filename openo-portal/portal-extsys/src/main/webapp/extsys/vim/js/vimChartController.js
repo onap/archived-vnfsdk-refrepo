@@ -14,149 +14,147 @@
  * limitations under the License.
  */
 var vm = avalon
-		.define({
-			$id : "vimChartController",
-			$vimChartUrl : '../../api/vim/v1/{vim_id}/resource',
-			$tenantChartUrl : '../../api/vim/v1/{vim_id}/resource/{tenant_name}',
-			$tenantListUrl : '../../api/vim/v1/{vim_id}/tenants',
-			$tenantRoleUrl : '../../api/vim/v1/{vim_id}/roles',
-			vimInfo:{
-				name:name,
-				id:id,
-				tenant:tenant,
-				isAdmin:true
-			},	
-			tenantSelectList:  {
-					condName : $.i18n.prop("com_zte_ums_eco_roc_vim_type"),
-					component_type : 'select',
-					selectItems : []
-			},
-			initChart : function() {
+    .define({
+        $id: "vimChartController",
+        $vimChartUrl: '../../api/vim/v1/{vim_id}/resource',
+        $tenantChartUrl: '../../api/vim/v1/{vim_id}/resource/{tenant_name}',
+        $tenantListUrl: '../../api/vim/v1/{vim_id}/tenants',
+        $tenantRoleUrl: '../../api/vim/v1/{vim_id}/roles',
+        vimInfo: {
+            name: name,
+            id: id,
+            tenant: tenant,
+            isAdmin: true
+        },
+        tenantSelectList: {
+            condName: $.i18n.prop("com_zte_ums_eco_roc_vim_type"),
+            component_type: 'select',
+            selectItems: []
+        },
+        initChart: function () {
 
-				//判断租户是否有admin权限
-				var tenantRoleUrl=vm.$tenantRoleUrl.replace("{vim_id}",vm.vimInfo.id); 
-				 $.ajax({
-	                "type": 'get',
-	                "url": tenantRoleUrl,
-	                "dataType": "json",
-	                success: function (resp) {  
-	                     vm.vimInfo.isAdmin= (resp==null)?false:resp.isAdminRole; 
-	                                  	
-	                },
-	                 error: function(XMLHttpRequest, textStatus, errorThrown) {
-						   vimChart.growl("get [tenant Role] is error ："+textStatus+":"+errorThrown,"danger"); 
-	                 },
-	                  complete: function() { 
-	                  	if(vm.vimInfo.isAdmin==true){
+            //判断租户是否有admin权限
+            var tenantRoleUrl = vm.$tenantRoleUrl.replace("{vim_id}", vm.vimInfo.id);
+            $.ajax({
+                "type": 'get',
+                "url": tenantRoleUrl,
+                "dataType": "json",
+                success: function (resp) {
+                    vm.vimInfo.isAdmin = (resp == null) ? false : resp.isAdminRole;
 
-	                  		//获取全部资源使用情况 
-	                  		vm.vimChartLoad();
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    vimChart.growl("get [tenant Role] is error ：" + textStatus + ":" + errorThrown, "danger");
+                },
+                complete: function () {
+                    if (vm.vimInfo.isAdmin == true) {
 
-	                  		 //获取租户列表
-	                  		vm.vimListLoad();
-	                  	}
+                        //获取全部资源使用情况 
+                        vm.vimChartLoad();
 
-	                 }
-	            });
-				//获取租户资源使用情况 
-				vm.tenantChartLoad();
-			},
-			gotoVimPage:function(){
-					window.parent.ZteFrameWork.goToURLByIDAndNewAction('eco_roc_vimmgr');
-			},
-			vimListLoad:function(){
-				 var tenantListUrl=vm.$tenantListUrl.replace("{vim_id}",vm.vimInfo.id); 
-				 $.ajax({
-	                "type": 'get',
-	                "url": tenantListUrl,
-	                "dataType": "json",
-	                success: function (resp) {  
-	                      vm.tenantSelectList.selectItems= (resp==null)?[]:resp;               	
-	                },
-	                 error: function(XMLHttpRequest, textStatus, errorThrown) {
-						    vimChart.growl("get [tenant List] is error ："+textStatus+":"+errorThrown,"danger"); 
-	                 }
-	            });
-			},
-			vimChartLoad:function(){
-				var viminitData={
-					    "resource": {
-					        "cpu": 0,
-					        "memoryMb": 503,
-					        "diskGb": 9.8
-					    },
-					    "usage": {
-					        "cpu": 0,
-					        "memoryMb": 0,
-					        "diskGb": 0
-					    }
-					}
+                        //获取租户列表
+                        vm.vimListLoad();
+                    }
 
-				  vimChart.vimPieChartInit();
+                }
+            });
+            //获取租户资源使用情况 
+            vm.tenantChartLoad();
+        },
+        gotoVimPage: function () {
+            window.parent.ZteFrameWork.goToURLByIDAndNewAction('eco_roc_vimmgr');
+        },
+        vimListLoad: function () {
+            var tenantListUrl = vm.$tenantListUrl.replace("{vim_id}", vm.vimInfo.id);
+            $.ajax({
+                "type": 'get',
+                "url": tenantListUrl,
+                "dataType": "json",
+                success: function (resp) {
+                    vm.tenantSelectList.selectItems = (resp == null) ? [] : resp;
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    vimChart.growl("get [tenant List] is error ：" + textStatus + ":" + errorThrown, "danger");
+                }
+            });
+        },
+        vimChartLoad: function () {
+            var viminitData = {
+                "resource": {
+                    "cpu": 0,
+                    "memoryMb": 503,
+                    "diskGb": 9.8
+                },
+                "usage": {
+                    "cpu": 0,
+                    "memoryMb": 0,
+                    "diskGb": 0
+                }
+            }
 
-				  var vimChartUrl=vm.$vimChartUrl.replace("{vim_id}",vm.vimInfo.id); 
-				  
+            vimChart.vimPieChartInit();
 
-				 
-				 $.ajax({
-	                "type": 'get',
-	                "url": vimChartUrl,
-	                "dataType": "json",
-	                success: function (resp) {  
-	                     var vimData= (resp==null)?viminitData:resp;  
-	                     vimChart.vimPieChart(vimData);                	
-	                },
-	                 error: function(XMLHttpRequest, textStatus, errorThrown) {
-						   vimChart.growl("get [virtual machine manager resource using status] is error ："+textStatus+":"+errorThrown,"danger"); 
-	                 }
-	            });
-	
-			},
-			tenantChartLoad:function(){
-				 var tenantChartUrl=vm.$tenantChartUrl.replace("{vim_id}",vm.vimInfo.id).replace("{tenant_name}",vm.vimInfo.tenant);
+            var vimChartUrl = vm.$vimChartUrl.replace("{vim_id}", vm.vimInfo.id);
 
-				var tenantinitData={
-						    "tenant_name": "",
-							"errormsg":"",
-						    "quota": {
-						        "cpu": 0,
-						        "memoryMb": 0,
-						        "instances": 0,
-						        "floatingIps": 0,
-						        "securityGroups": 0,
-						        "volumeStorage": 0,
-						        "volumes": 0
-						    },
-						    "usage": {
-						        "cpu": 0,
-						        "memoryMb": 0,
-						        "instances": 0,
-						        "floatingIps": 0,
-						        "securityGroups": 0,
-						        "volumeStorage": 0,
-								"volumes": 0
-						    }
-						};
-				vimChart.tenantPieChartInit();
-				 $.ajax({
-	                "type": 'get',
-	                "url": tenantChartUrl,
-	                "dataType": "json",
-	                success: function (resp) {  
-	                     var tenantData= (resp==null)?tenantinitData:resp;  
-						 if(tenantData.errormsg!=null)
-						 {
-						   vimChart.growl(tenantData.errormsg,"danger");
-						 }
-	                      vimChart.tenantPieChart(tenantData);                	
-	                },
-	                 error: function(XMLHttpRequest, textStatus, errorThrown) {
-						   vimChart.growl("get [tenant quota using status] occur error ："+textStatus+":"+errorThrown,"danger"); 
-	                 }
-	            });
 
-			}
+            $.ajax({
+                "type": 'get',
+                "url": vimChartUrl,
+                "dataType": "json",
+                success: function (resp) {
+                    var vimData = (resp == null) ? viminitData : resp;
+                    vimChart.vimPieChart(vimData);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    vimChart.growl("get [virtual machine manager resource using status] is error ：" + textStatus + ":" + errorThrown, "danger");
+                }
+            });
 
-});
+        },
+        tenantChartLoad: function () {
+            var tenantChartUrl = vm.$tenantChartUrl.replace("{vim_id}", vm.vimInfo.id).replace("{tenant_name}", vm.vimInfo.tenant);
+
+            var tenantinitData = {
+                "tenant_name": "",
+                "errormsg": "",
+                "quota": {
+                    "cpu": 0,
+                    "memoryMb": 0,
+                    "instances": 0,
+                    "floatingIps": 0,
+                    "securityGroups": 0,
+                    "volumeStorage": 0,
+                    "volumes": 0
+                },
+                "usage": {
+                    "cpu": 0,
+                    "memoryMb": 0,
+                    "instances": 0,
+                    "floatingIps": 0,
+                    "securityGroups": 0,
+                    "volumeStorage": 0,
+                    "volumes": 0
+                }
+            };
+            vimChart.tenantPieChartInit();
+            $.ajax({
+                "type": 'get',
+                "url": tenantChartUrl,
+                "dataType": "json",
+                success: function (resp) {
+                    var tenantData = (resp == null) ? tenantinitData : resp;
+                    if (tenantData.errormsg != null) {
+                        vimChart.growl(tenantData.errormsg, "danger");
+                    }
+                    vimChart.tenantPieChart(tenantData);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    vimChart.growl("get [tenant quota using status] occur error ：" + textStatus + ":" + errorThrown, "danger");
+                }
+            });
+
+        }
+
+    });
 avalon.scan();
 vm.initChart();
