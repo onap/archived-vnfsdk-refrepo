@@ -12,24 +12,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+ 
 var icon = {
-    type1: "js/topo/img/NEUP.png",
-    type2: "js/topo/img/NETWORK.png",
-    type3: "js/topo/img/site.png"
+	device_icon : "images/topo/NEUP.png",
+  sfc_device_icon : "images/topo/OTHER_3.png",
+	network_icon : "images/topo/NETWORK.png"
 }
 function Node(id, label, size, type, x, y) {
-    this.id = id;
-    this.label = label;
-    this.type = "square";
-    this.x = x;
-    this.y = y;
-    this.size = size;
-    this.color = "white";
-    this.borderColor = "white";
-    this.image = {
-        url: icon[type],
-        scale: 1.0,
-        clip: 1.0
-    };
+	this.id = id;
+	this.label = label;
+	this.type = "square";
+	this.x = x;
+	this.y = y;
+	this.size = size;
+	this.color = "white";
+	this.borderColor = "white";
+	this.image = {
+		url : icon[type],
+		scale : 1.0,
+		clip : 1.0
+	};
 }
