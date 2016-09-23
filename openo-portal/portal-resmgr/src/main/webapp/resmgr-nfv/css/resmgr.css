@@ -1,20 +1,24 @@
-fieldset{    width: 680px;    }
+fieldset {
+    width: 680px;
+}
 
-legend{    margin-left: 8px;    }
+legend {
+    margin-left: 8px;
+}
 
-.item{
+.item {
     height: 56px;
     line-height: 36px;
     margin: 10px;
 }
 
-.item .item-label{
+.item .item-label {
     float: left;
     width: 80px;
     text-align: right;
 }
 
-.item-text{
+.item-text {
     float: left;
     width: 244px;
     height: 16px;
@@ -24,7 +28,7 @@ legend{    margin-left: 8px;    }
     overflow: hidden;
 }
 
-.item-select{
+.item-select {
     float: left;
     height: 34px;
     border: 1px solid #ccc;
@@ -33,19 +37,19 @@ legend{    margin-left: 8px;    }
     padding: 6px 0px;
 }
 
-.item-submit{
+.item-submit {
     margin-left: 88px;
 }
 
-input.error{
+input.error {
     border: 1px solid #E6594E;
 }
 
-input.highlight{
+input.highlight {
     border: 1px solid #7abd54;
 }
 
-label.error,label.tip{
+label.error, label.tip {
     float: left;
     height: 32px;
     line-height: 32px;
@@ -57,12 +61,12 @@ label.error,label.tip{
     background: url('error.png') no-repeat left center;
 }
 
-label.tip{
+label.tip {
     color: #aaa;
     background: url('tip.png') no-repeat left center;
 }
 
-label.valid{
+label.valid {
     background: url('valid.png') no-repeat left center;
     width: 32px;
 }
