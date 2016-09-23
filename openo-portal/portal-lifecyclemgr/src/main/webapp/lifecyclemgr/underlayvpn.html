@@ -19,207 +19,253 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<head lang="en">
-	<meta charset="UTF-8">
-	<title></title>
-	<link href="css/bootstrap.min.css" rel="stylesheet" />
-	<link href="css/jquery.dataTables.min.css" rel="stylesheet" />
-	<link href="css/VMMain.css" rel="stylesheet" />
-	<link href="css/bootstrap-table.min.css" rel="stylesheet" />
-	<script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
-	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/brs.js"></script>
-    <script type="text/javascript" src="js/underlay.js"></script>
-    <script type="text/javascript" src="js/bootstrap-table.min.js"></script>
-	<style type="text/css">
-	hr {
-  ##-moz-border-bottom-colors: none;
-  -moz-border-image: none;
-  -moz-border-left-colors: none;
-  -moz-border-right-colors: none;
-  -moz-border-top-colors: none;
-  ##border-color: #EEEEEE -moz-use-text-color #FFFFFF;
-  border-style: solid none;
-  border-width: 1px 0;
-  margin: 50px 0;
-}
-	</style>
-	<script type="text/javascript">
-	$(document).ready(function() {
- 
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title></title>
+        <link href="css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="css/jquery.dataTables.min.css" rel="stylesheet"/>
+        <link href="css/VMMain.css" rel="stylesheet"/>
+        <link href="css/bootstrap-table.min.css" rel="stylesheet"/>
+        <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/brs.js"></script>
+        <script type="text/javascript" src="js/underlay.js"></script>
+        <script type="text/javascript" src="js/bootstrap-table.min.js"></script>
+        <style type="text/css">
+            hr {
+                # #-moz-border-bottom-colors: none;
+                -moz-border-image: none;
+                -moz-border-left-colors: none;
+                -moz-border-right-colors: none;
+                -moz-border-top-colors: none;
+                # #border-color: #EEEEEE -moz-use-text-color #FFFFFF;
+                border-style: solid none;
+                border-width: 1px 0;
+                margin: 50px 0;
+            }
+        </style>
+        <script type="text/javascript">
+            $(document).ready(function () {
 
-var jsondata =loadUnderlayData();
-		$('#tbl_overlay').bootstrapTable({
-		//Assigning data to table
-			data: jsondata
-		});
-		$('#underlayTpDataTable').bootstrapTable({
-			//Assigning data to table
-				data: {}
-			});
-    });
-	function operateFormatter(value, row, index) {
-        return [
-            '<img class="siteDeleteImg" src="images/delete.png" href="javascript:void(0)" style="cursor: pointer" name="title" title="Delete" />'
-        ].join('');
-        
-    }
-	 window.operateEvents = {
-         'click .siteDeleteImg': function (e, value, row, index) {
-             // TO DO ajex call for delete
-             console.log(value, row, index);
-         }
-     };
 
-	 
-	 function nameFormatter(value, row) {
-		jsonForTP = row.json.data;
-		var name=JSON.stringify(row.json.data);
-	  	var temp = "<a class='underlayNameLink' onclick='getMethod(this)' name='"+ name + "' data-events='operateEventsU'>" + value + "</a>";
-        return temp;
-    }
-	 function getMethod(obj){
-		 //Update the lower table here
-		 
-		 $('#underlayTpDataTable').bootstrapTable(
-			//Assigning data to table
-				"append", JSON.parse(obj.name)
-			);
-	 }
-	</script>
-</head>
+                var jsondata = loadUnderlayData();
+                $('#tbl_overlay').bootstrapTable({
+                    //Assigning data to table
+                    data: jsondata
+                });
+                $('#underlayTpDataTable').bootstrapTable({
+                    //Assigning data to table
+                    data: {}
+                });
+            });
+            function operateFormatter(value, row, index) {
+                return [
+                    '<img class="siteDeleteImg" src="images/delete.png" href="javascript:void(0)" style="cursor: pointer" name="title" title="Delete" />'
+                ].join('');
+
+            }
+            window.operateEvents = {
+                'click .siteDeleteImg': function (e, value, row, index) {
+                    // TO DO ajex call for delete
+                    console.log(value, row, index);
+                }
+            };
+
+
+            function nameFormatter(value, row) {
+                jsonForTP = row.json.data;
+                var name = JSON.stringify(row.json.data);
+                var temp = "<a class='underlayNameLink' onclick='getMethod(this)' name='" + name + "' data-events='operateEventsU'>" + value + "</a>";
+                return temp;
+            }
+            function getMethod(obj) {
+                //Update the lower table here
+
+                $('#underlayTpDataTable').bootstrapTable(
+                        //Assigning data to table
+                        "append", JSON.parse(obj.name)
+                );
+            }
+        </script>
+    </head>
 <body id="open_base_vpn_cotentBody" class="cotentBody ng-scope">
-	<div class="container-fluid ms-controller">
-				<h3>Underlay VPN</h3>
-		<div class="row-fluid" data-name="table_zone">
-			<div id='ict_virtualApplication_table_div'>
-                <div>
-                    <div class="top">
-                        <table id="tbl_overlay" data-pagination="true" data-page-size="5" data-pagination-first-text="First" data-pagination-pre-text="Previous" data-pagination-next-text="Next" data-pagination-last-text="Last">
-                            <thead id="sunderlayTable_thead" class="openo-table-thead">
-								<tr class="active">
-								
-		
-									<th class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign" data-formatter="nameFormatter" data-field="underlayName" data-sortable="true">
-										<div class="openo-table-th-border"></div>
-										<div class="DataTables_sort_wrapper openo-ellipsis ">
-											<span id="underlayName_sorticon" class="openo-table-th-sorticon overflow_elip openoTable_sortable leftHeaderAlign  openo-table-disable-element ">Name
+<div class="container-fluid ms-controller">
+    <h3>Underlay VPN</h3>
+    <div class="row-fluid" data-name="table_zone">
+        <div id='ict_virtualApplication_table_div'>
+            <div>
+                <div class="top">
+                    <table id="tbl_overlay" data-pagination="true" data-page-size="5" data-pagination-first-text="First"
+                           data-pagination-pre-text="Previous" data-pagination-next-text="Next"
+                           data-pagination-last-text="Last">
+                        <thead id="sunderlayTable_thead" class="openo-table-thead">
+                        <tr class="active">
+
+
+                            <th class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign"
+                                data-formatter="nameFormatter" data-field="underlayName" data-sortable="true">
+                                <div class="openo-table-th-border"></div>
+                                <div class="DataTables_sort_wrapper openo-ellipsis ">
+											<span id="underlayName_sorticon"
+                                                  class="openo-table-th-sorticon overflow_elip openoTable_sortable leftHeaderAlign  openo-table-disable-element ">Name
                     </span>
-					</div>
-					</th>
-					<th class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign" data-field="underlayTenantName" data-sortable="true">
-					    <div class="openo-table-th-border"></div>
-						<div class="DataTables_sort_wrapper openo-ellipsis ">
-						    <span id="underlayTenantName_sorticon" class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">State
+                                </div>
+                            </th>
+                            <th class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign"
+                                data-field="underlayTenantName" data-sortable="true">
+                                <div class="openo-table-th-border"></div>
+                                <div class="DataTables_sort_wrapper openo-ellipsis ">
+						    <span id="underlayTenantName_sorticon"
+                                  class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">State
                             </span>
-						</div>
-					</th>
-					<th class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign" data-field="underlayType" data-sortable="true">
-						<div class="openo-table-th-border"></div>
-						<div class="DataTables_sort_wrapper openo-ellipsis ">
-							<span id="underlayType_sorticon" class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element " >Description
-                    </span></div></th>
-					<th class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign" data-field="underlayDescription" align="center" data-formatter = "operateFormatter" data-events="operateEvents">
-					   <div class="openo-table-th-border"></div><div class="DataTables_sort_wrapper openo-ellipsis ">
-					      <span id="underlayDescription_sorticon" class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">Action
+                                </div>
+                            </th>
+                            <th class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign"
+                                data-field="underlayType" data-sortable="true">
+                                <div class="openo-table-th-border"></div>
+                                <div class="DataTables_sort_wrapper openo-ellipsis ">
+							<span id="underlayType_sorticon"
+                                  class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">Description
+                    </span></div>
+                            </th>
+                            <th class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign"
+                                data-field="underlayDescription" align="center" data-formatter="operateFormatter"
+                                data-events="operateEvents">
+                                <div class="openo-table-th-border"></div>
+                                <div class="DataTables_sort_wrapper openo-ellipsis ">
+					      <span id="underlayDescription_sorticon"
+                                class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">Action
                           </span>
-					   </div>
-					</th>
-					<!-- <th style="display: none;" class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign" data-field="underlayTenantName">
-	                    <div class="openo-table-th-border"></div>
-		                    <div class="DataTables_sort_wrapper openo-ellipsis ">
-		                        <span id="underlayObjId_sorticon" class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">ID
-                                </span>
-	                    </div>
-	                </th>
-									<th style="display: none;" class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign" data-field="underlayTenantName">
-					                    <div class="openo-table-th-border"></div>
-						                    <div class="DataTables_sort_wrapper openo-ellipsis ">
-						                        <span id="underlayObjData_sorticon" class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">Data
-                                                </span>
-						                    </div>
-					                </th> -->
-					</tr>
-					</thead>
-						    <!-- <tbody>
-								<tr style="display: none;">
-									<td colspan="7" style="text-align: center;">NULL</td>
-								</tr>
-								<tr class="odd  openo-table-tr openo-table-disable-element" data-rowid="0" data-tableid="underlayTable">
-								
-									<td class="openo-table-disable-element openo-table-td overflow_elip leftDataAlign tableHeaderTDTopBorderColor" data-colid="underlayName" data-tableid="underlayTable">
-										<div class="openo-table-disable-element overflow_elip leftDataAlign">
-											<a class="underlayNameLink" href="javascript:void(0)" id="underlayTable_0_underlayName_link">underlay1</a>
-										</div>
-									</td>
-									<td class="openo-table-disable-element openo-table-td overflow_elip leftDataAlign tableHeaderTDTopBorderColor" data-colid="underlayType" data-tableid="underlayTable">
-									    <div class="overflow_elip leftDataAlign openo-table-custom-el openo-table-disable-element" id="underlayTable_0_underlayType_custom_el">underlay 101</div>
-                                    </td>
-                                    <td class="openo-table-disable-element openo-table-td overflow_elip leftDataAlign tableHeaderTDTopBorderColor" data-colid="underlayTenantName" data-tableid="underlayTable">
-									    <div class="overflow_elip leftDataAlign openo-table-custom-el openo-table-disable-element" id="underlayTable_0_underlayTenantName_custom_el">chaxuanyue</div>
-                                    </td>
-                                    <td class="openo-table-disable-element openo-table-td overflow_elip leftDataAlign tableHeaderTDTopBorderColor" data-colid="underlayOperation" data-tableid="underlayTable">
-                                        <div class="openo-table-disable-element overflow_elip leftDataAlign openo-table-custom-el" id="underlayTable_0_underlayOperation_custom_el">
-										    <div>
-											    <img src="images/delete.png" href="javascript:void(0)" onclick="deleteUnderlayData('this')" opertype="underlayDelete" style="cursor: pointer" title="Delete" id="bac4ff3c-d693-4f54-86cd-25af1ea22f59" rowid="0/">
-											</div>
-										</div>
-									</td>
-									<td style="display: none;" class="openo-table-disable-element openo-table-td overflow_elip leftDataAlign tableHeaderTDTopBorderColor" data-colid="underlayType" data-tableid="underlayTable">
-									    <div class="overflow_elip leftDataAlign openo-table-custom-el openo-table-disable-element" id="underlayTable_0_underlayType_custom_el">ID12345</div>
-                                    </td>
-									<td style="display: none;" class="openo-table-disable-element openo-table-td overflow_elip leftDataAlign tableHeaderTDTopBorderColor" data-colid="underlayType" data-tableid="underlayTable">
-									    <div class="overflow_elip leftDataAlign openo-table-custom-el openo-table-disable-element" id="underlayTable_0_underlayType_custom_el">[{"tpName":"tp345","peName":"pe123","vlanId":"12344","siteCidr":"tettd","ip":"1.1.1.1"},{"tpName":"tp345","peName":"8xzxze123","vlanId":"234","siteCidr":"tettd","ip":"10.10.1.10"}]</div>
-                                    </td>
-								</tr>
-							</tbody> -->
-                        </table>
-                    </div>
+                                </div>
+                            </th>
+                            <!-- <th style="display: none;" class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign" data-field="underlayTenantName">
+                                <div class="openo-table-th-border"></div>
+                                    <div class="DataTables_sort_wrapper openo-ellipsis ">
+                                        <span id="underlayObjId_sorticon" class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">ID
+                                        </span>
+                                </div>
+                            </th>
+                                            <th style="display: none;" class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign" data-field="underlayTenantName">
+                                                <div class="openo-table-th-border"></div>
+                                                    <div class="DataTables_sort_wrapper openo-ellipsis ">
+                                                        <span id="underlayObjData_sorticon" class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">Data
+                                                        </span>
+                                                    </div>
+                                            </th> -->
+                        </tr>
+                        </thead>
+                        <!-- <tbody>
+                            <tr style="display: none;">
+                                <td colspan="7" style="text-align: center;">NULL</td>
+                            </tr>
+                            <tr class="odd  openo-table-tr openo-table-disable-element" data-rowid="0" data-tableid="underlayTable">
+
+                                <td class="openo-table-disable-element openo-table-td overflow_elip leftDataAlign tableHeaderTDTopBorderColor" data-colid="underlayName" data-tableid="underlayTable">
+                                    <div class="openo-table-disable-element overflow_elip leftDataAlign">
+                                        <a class="underlayNameLink" href="javascript:void(0)" id="underlayTable_0_underlayName_link">underlay1</a>
+                                    </div>
+                                </td>
+                                <td class="openo-table-disable-element openo-table-td overflow_elip leftDataAlign tableHeaderTDTopBorderColor" data-colid="underlayType" data-tableid="underlayTable">
+                                    <div class="overflow_elip leftDataAlign openo-table-custom-el openo-table-disable-element" id="underlayTable_0_underlayType_custom_el">underlay 101</div>
+                                </td>
+                                <td class="openo-table-disable-element openo-table-td overflow_elip leftDataAlign tableHeaderTDTopBorderColor" data-colid="underlayTenantName" data-tableid="underlayTable">
+                                    <div class="overflow_elip leftDataAlign openo-table-custom-el openo-table-disable-element" id="underlayTable_0_underlayTenantName_custom_el">chaxuanyue</div>
+                                </td>
+                                <td class="openo-table-disable-element openo-table-td overflow_elip leftDataAlign tableHeaderTDTopBorderColor" data-colid="underlayOperation" data-tableid="underlayTable">
+                                    <div class="openo-table-disable-element overflow_elip leftDataAlign openo-table-custom-el" id="underlayTable_0_underlayOperation_custom_el">
+                                        <div>
+                                            <img src="images/delete.png" href="javascript:void(0)" onclick="deleteUnderlayData('this')" opertype="underlayDelete" style="cursor: pointer" title="Delete" id="bac4ff3c-d693-4f54-86cd-25af1ea22f59" rowid="0/">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="display: none;" class="openo-table-disable-element openo-table-td overflow_elip leftDataAlign tableHeaderTDTopBorderColor" data-colid="underlayType" data-tableid="underlayTable">
+                                    <div class="overflow_elip leftDataAlign openo-table-custom-el openo-table-disable-element" id="underlayTable_0_underlayType_custom_el">ID12345</div>
+                                </td>
+                                <td style="display: none;" class="openo-table-disable-element openo-table-td overflow_elip leftDataAlign tableHeaderTDTopBorderColor" data-colid="underlayType" data-tableid="underlayTable">
+                                    <div class="overflow_elip leftDataAlign openo-table-custom-el openo-table-disable-element" id="underlayTable_0_underlayType_custom_el">[{"tpName":"tp345","peName":"pe123","vlanId":"12344","siteCidr":"tettd","ip":"1.1.1.1"},{"tpName":"tp345","peName":"8xzxze123","vlanId":"234","siteCidr":"tettd","ip":"10.10.1.10"}]</div>
+                                </td>
+                            </tr>
+                        </tbody> -->
+                    </table>
                 </div>
             </div>
-		</div>
-		<hr>
-		<h3>TP Details</h3>
-		<div class="row-fluid" data-name="table_zone">
-			<div id='ict_virtualApplication_table_div'>
-                <div>
-                    <div class="top">
-                        <table id="underlayTpDataTable" data-pagination="true" data-page-size="5" data-pagination-first-text="First" data-pagination-pre-text="Previous" data-pagination-next-text="Next" data-pagination-last-text="Last">
-                            <thead id="underlayTable_thead" class="openo-table-thead">
-								<tr class="active">
-									<th class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign" data-field="underlayName">
-										<div class="openo-table-th-border"></div>
-										<div class="DataTables_sort_wrapper openo-ellipsis ">
-											<span id="underlayName_sorticon" class="openo-table-th-sorticon overflow_elip openoTable_sortable leftHeaderAlign  openo-table-disable-element ">TP Name
+        </div>
+    </div>
+    <hr>
+    <h3>TP Details</h3>
+    <div class="row-fluid" data-name="table_zone">
+        <div id='ict_virtualApplication_table_div'>
+            <div>
+                <div class="top">
+                    <table id="underlayTpDataTable" data-pagination="true" data-page-size="5"
+                           data-pagination-first-text="First" data-pagination-pre-text="Previous"
+                           data-pagination-next-text="Next" data-pagination-last-text="Last">
+                        <thead id="underlayTable_thead" class="openo-table-thead">
+                        <tr class="active">
+                            <th class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign"
+                                data-field="underlayName">
+                                <div class="openo-table-th-border"></div>
+                                <div class="DataTables_sort_wrapper openo-ellipsis ">
+											<span id="underlayName_sorticon"
+                                                  class="openo-table-th-sorticon overflow_elip openoTable_sortable leftHeaderAlign  openo-table-disable-element ">TP Name
                     </span>
-					</div>
-					</th>
-					<th class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign" data-field="underlayType">
-						<div class="openo-table-th-border"></div>
-						<div class="DataTables_sort_wrapper openo-ellipsis ">
-							<span id="underlayType_sorticon" class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">PE Name
-                    </span></div></th>
-					<th class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign" data-field="underlayTenantName">
-					<div class="openo-table-th-border"></div><div class="DataTables_sort_wrapper openo-ellipsis ">
-					<span id="underlayTenantName_sorticon" class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">VLAN ID
-                    </span></div></th>
-					<th class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign" data-field="underlayTenantunderlayName" >
-					<div class="openo-table-th-border"></div><div class="DataTables_sort_wrapper openo-ellipsis ">
-					<span id="underlayTenantunderlayName_sorticon" class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">Site CIDR
-                    </span></div></th>
-					<th class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign" data-field="underlayTenantunderlayIP">
-					<div class="openo-table-th-border"></div><div class="DataTables_sort_wrapper openo-ellipsis ">
-					<span id="underlayTenantunderlayName_sorticon" class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">IP
-                    </span></div></th>
-					</tr></thead>
-							<!-- <tbody>
-							</tbody> -->
-                        </table>
-                    </div>
+                                </div>
+                            </th>
+                            <th class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign"
+                                data-field="underlayType">
+                                <div class="openo-table-th-border"></div>
+                                <div class="DataTables_sort_wrapper openo-ellipsis ">
+							<span id="underlayType_sorticon"
+                                  class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">PE Name
+                    </span></div>
+                            </th>
+                            <th class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign"
+                                data-field="underlayTenantName">
+                                <div class="openo-table-th-border"></div>
+                                <div class="DataTables_sort_wrapper openo-ellipsis ">
+					<span id="underlayTenantName_sorticon"
+                          class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">VLAN ID
+                    </span></div>
+                            </th>
+                            <th class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign"
+                                data-field="underlayTenantunderlayName">
+                                <div class="openo-table-th-border"></div>
+                                <div class="DataTables_sort_wrapper openo-ellipsis ">
+					<span id="underlayTenantunderlayName_sorticon"
+                          class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">Site CIDR
+                    </span></div>
+                            </th>
+                            <th class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign"
+                                data-field="underlayTenantunderlayIP">
+                                <div class="openo-table-th-border"></div>
+                                <div class="DataTables_sort_wrapper openo-ellipsis ">
+					<span id="underlayTenantunderlayName_sorticon"
+                          class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">IP
+                    </span></div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <!-- <tbody>
+                        </tbody> -->
+                    </table>
                 </div>
             </div>
-		</div>
-	</div>
-	<div id="filterTpLogicalType_select_popupcontainer" class="openo openo-select-popup-container openo-hide" style="width: 155px; max-height: 130px; left: 628px; top: 104px; z-index: 1761;"><div class="openo-select-item openo-ellipsis  " id="filterTpLogicalType_openo-select-id_0"><label class="openo-ellipsis openo-select-blank-item" style="width: 100%; display: block; height: 20px;"></label></div><div class="openo-select-item openo-ellipsis  " id="filterTpLogicalType_openo-select-id_1"><label class="openo-ellipsis " style="width: 100%; display: block; height: 20px;">ETH</label></div><div class="openo-select-item openo-ellipsis  " id="filterTpLogicalType_openo-select-id_2"><label class="openo-ellipsis " style="width: 100%; display: block; height: 20px;" title="POS">POS</label></div><div class="openo-select-item openo-ellipsis  " id="filterTpLogicalType_openo-select-id_3"><label class="openo-ellipsis " style="width: 100%; display: block; height: 20px;">Trunk</label></div><div class="openo-select-item openo-ellipsis  " id="filterTpLogicalType_openo-select-id_4"><label class="openo-ellipsis " style="width: 100%; display: block; height: 20px;">Loopback</label></div></div>
+        </div>
+    </div>
+</div>
+<div id="filterTpLogicalType_select_popupcontainer" class="openo openo-select-popup-container openo-hide"
+     style="width: 155px; max-height: 130px; left: 628px; top: 104px; z-index: 1761;">
+    <div class="openo-select-item openo-ellipsis  " id="filterTpLogicalType_openo-select-id_0"><label
+            class="openo-ellipsis openo-select-blank-item" style="width: 100%; display: block; height: 20px;"></label>
+    </div>
+    <div class="openo-select-item openo-ellipsis  " id="filterTpLogicalType_openo-select-id_1"><label
+            class="openo-ellipsis " style="width: 100%; display: block; height: 20px;">ETH</label></div>
+    <div class="openo-select-item openo-ellipsis  " id="filterTpLogicalType_openo-select-id_2"><label
+            class="openo-ellipsis " style="width: 100%; display: block; height: 20px;" title="POS">POS</label></div>
+    <div class="openo-select-item openo-ellipsis  " id="filterTpLogicalType_openo-select-id_3"><label
+            class="openo-ellipsis " style="width: 100%; display: block; height: 20px;">Trunk</label></div>
+    <div class="openo-select-item openo-ellipsis  " id="filterTpLogicalType_openo-select-id_4"><label
+            class="openo-ellipsis " style="width: 100%; display: block; height: 20px;">Loopback</label></div>
+</div>
 </body>
 </html>
