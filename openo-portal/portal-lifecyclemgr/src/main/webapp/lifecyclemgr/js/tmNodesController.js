@@ -53,9 +53,9 @@ var vm = avalon.define({
                        resp.nsState
                     ];
                     var tableData = [
-                        [resp.vnfInfoId],
-                        [resp.vlInfo.vldId],
-                        [resp.vnffgInfo.vnffgInstanceId]
+                        [resp.vnfInfoId, 'vnf'],
+                        [resp.vlInfo.vldId, 'vl'],
+                        [resp.vnffgInfo.vnffgInstanceId, 'vnffg']
                     ];
                     vm.$initNfvNodesTab();
                     vm.nodesList.nodesData = tableData;
@@ -116,19 +116,14 @@ var vm = avalon.define({
             +'</tbody>'
             +'</table>';
         $('#'+ divId).append(tableEleStr);
-        //$('#'+ tableId).append(' <thead><tr role="row" class="heading" ></tr></thead><tbody></tbody>');
         var trEle = $('#'+ tableId  + ' > thead >tr');
-        //var dataTableColumn = [];
         for ( var one in column){
             var th = '<th>' + column[one].name + '</th>';
             trEle.append(th);
         }
         var table = $("#" + tableId).dataTable({
-            //"sDom" : "tr<'row'<'col-md-6 col-sm-12'><'col-md-6 col-sm-12'pli>>", // datatable layout
-            //"sDom" : "<'row'<'col-md-12 col-sm-12'lip>r><'table-scrollable't>>",
             "sDom": '<"top"rt><"bottom"lip>',
             "oLanguage": setting.language,//language
-            //"bJQueryUI": true,
             "bPaginate": setting.paginate,// page button
             "bFilter": false,// search bar
             "bAutoWidth":true,//automatically set colum width
@@ -161,7 +156,8 @@ var vm = avalon.define({
         $nodesTabFields : {// table columns
             table: [
                 {"mData": "id", name: "ID", "bVisible": false},
-                {"mData": "instanceId", name: "Instance Id"}
+                {"mData": "instanceId", name: "Instance Id"},
+                {"mData": "nodeType", name: "Node Type"}
             ]
         },
         $initNodesTable: function () {
@@ -176,7 +172,7 @@ var vm = avalon.define({
     }
 });
 
-var initParam = function() { //initialize template detail params
+var initParam = function() {
     var paramStr = window.location.search.substring(1);
     if(paramStr.length > 0) {
         avalon.scan();
@@ -188,4 +184,5 @@ var initParam = function() { //initialize template detail params
         vm.$init();
     }
 };
+
 initParam();
