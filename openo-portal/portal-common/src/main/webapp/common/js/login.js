@@ -186,9 +186,9 @@ var Login = function () {
             handleForgetPassword();
 	       
 	       	$.backstretch([
-		        "img/integration/zte_bg_1.jpg",
-		        "img/integration//zte_bg_2.jpg",
-		        "img/integration//zte_bg_3.jpg"
+		        "image/integration/zte_bg_1.jpg",
+		        "image/integration//zte_bg_2.jpg",
+		        "image/integration//zte_bg_3.jpg"
 		        ], {
 		          fade: 500,
 		          duration: 15000

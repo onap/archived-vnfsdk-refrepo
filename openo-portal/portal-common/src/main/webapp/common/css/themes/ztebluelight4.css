@@ -83,7 +83,7 @@ Header Search
 }
 
 .header .search-form .submit {
-    background: url(../../img/search-icon.png);
+    background: url(../../image/search-icon.png);
 }
 
 /***
@@ -127,7 +127,7 @@ Hor menu
 }
 
 .header .hor-menu .hor-menu-search-form-toggler.off {
-    background: #4f4f4f url(../../img/hor-menu-search-close-white.png) no-repeat center;
+    background: #4f4f4f url(../../image/hor-menu-search-close-white.png) no-repeat center;
 }
 
 .header .hor-menu .search-form {
@@ -140,7 +140,7 @@ Hor menu
 
 .header .hor-menu .search-form .btn {
     color: #ccc;
-    background: url(../../img/search-icon-white.png) no-repeat center;
+    background: url(../../image/search-icon-white.png) no-repeat center;
 }
 
 .header .hor-menu .search-form form input::-webkit-input-placeholder {
@@ -256,13 +256,13 @@ ul.page-sidebar-menu > li.active > a:hover {
   top:0px;
   width: 7px;
   height: 39px;
-  background-image: url("../../img/sidebar-menu-arrow-green.png");*/
+  background-image: url("../../image/sidebar-menu-arrow-green.png");*/
     }
 
 .page-sidebar-reversed ul.page-sidebar-menu > li.active > a .selected {
     right: auto;
     left: -7px;
-    background-image: url("../../img/sidebar-menu-arrow-green-reverse.png");
+    background-image: url("../../image/sidebar-menu-arrow-green-reverse.png");
 }
 
 /*ul.page-sidebar-menu > li.active i {
@@ -356,14 +356,14 @@ ul.page-sidebar-menu > li.active > a:hover {
 }
 
 .page-sidebar .sidebar-search .submit {
-    background-image: url(../../img/search-icon-white.png);
+    background-image: url(../../image/search-icon-white.png);
 }
 
 /***
 Sidebar toggler
 ***/
 .sidebar-toggler {
-    background-image: url(../../img/sidebar-toggler-light.jpg);
+    background-image: url(../../image/sidebar-toggler-light.jpg);
     background-color: #333;
 }
 
@@ -373,7 +373,7 @@ Sidebar toggler
 }
 
 .page-sidebar-closed .page-sidebar .sidebar-search.open .form-container .remove {
-    background-image: url("../../img/sidebar-search-close-light.png");
+    background-image: url("../../image/sidebar-search-close-light.png");
 }
 
 /* sub menu bg color on hover menu item */

@@ -26,14 +26,14 @@
 		<meta content="zte" name="author" />
 		<script type="text/javascript" src="./js/core/const.js"></script>
 		<script type="text/javascript" src="./js/core/hk.min.js"></script>	
-		<link href="../component/thirdparty/fakeLoader/fakeLoader.css" rel="stylesheet" type="text/css" />	
-		<script type="text/javascript" src="../component/thirdparty/jquery/jquery-1.10.2.min.js"></script>		
-		<script type="text/javascript" src="../component/thirdparty/fakeLoader/fakeLoader.min.js"></script>				
-		<link href="../component/thirdparty/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" id="font_awesome" />
-		<link href="../component/thirdparty/bootstrap/css/bootstrap.min.css"	rel="stylesheet" type="text/css" />
-		<link href="../component/thirdparty/uniform/css/uniform.default.css"	rel="stylesheet" type="text/css" />
-		<link rel="stylesheet" type="text/css" href="../component/thirdparty/select2/select2.css"/>
-		<link rel="stylesheet" type="text/css" href="../component/thirdparty/select2/select2-custom.css"/>
+		<link href="thirdparty/fakeLoader/fakeLoader.css" rel="stylesheet" type="text/css" />	
+		<script type="text/javascript" src="thirdparty/jquery/jquery-1.10.2.min.js"></script>		
+		<script type="text/javascript" src="thirdparty/fakeLoader/fakeLoader.min.js"></script>				
+		<link href="thirdparty/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" id="font_awesome" />
+		<link href="thirdparty/bootstrap/css/bootstrap.min.css"	rel="stylesheet" type="text/css" />
+		<link href="thirdparty/uniform/css/uniform.default.css"	rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" type="text/css" href="thirdparty/select2/select2.css"/>
+		<link rel="stylesheet" type="text/css" href="thirdparty/select2/select2-custom.css"/>
         <link href="./css/style-custom.css" rel="stylesheet" type="text/css" />
 		<link href="./css/style.css" rel="stylesheet" type="text/css"/>
 		<link href="./css/frame-style.css" rel="stylesheet"	type="text/css" />
@@ -41,7 +41,7 @@
 		<link href="./css/plugins.css" rel="stylesheet" type="text/css"	/>
 		<link href="" rel="stylesheet" type="text/css" id="style_color" />
 		<link href="./css/changepwd.css" rel="stylesheet"	type="text/css" />
-		<link rel="shortcut icon" href="./img/integration/zte_logo_16.gif"	/>
+		<link rel="shortcut icon" href="./image/integration/zte_logo_16.gif"	/>
 		<link rel="stylesheet" type="text/css" href="./css/style.css"/>
 		<link rel="stylesheet" type="text/css" href="../component/css/ZteIctIcons/style.css"/>		
 	</head>
@@ -53,7 +53,7 @@
 		<div class="header navbar navbar-fixed-top mega-menu">
 			<div class="header-inner">
 				<a class="navbar-brand zte-navbar-brand hidden-sm hidden-xs" href="./main-page.html">
-					<img id="com_zte_ums_ict_framework_img_netnumenLogo" src="./img/integration/netnumenLogo.png"
+					<img id="com_zte_ums_ict_framework_img_netnumenLogo" src="./image/integration/netnumenLogo.png"
 					name_img="com_zte_ums_ict_framework_img" alt="logo" style="display:none"/>
 					<span id="com_zte_ums_ict_framework_ui_main_title" name_i18n="com_zte_ums_ict_framework_ui_i18n"
 					class="zte-brand-text" style="display:none">
@@ -68,7 +68,7 @@
 				<ul class="nav navbar-nav pull-right">
 					<div>
 						<a href="javascript:;" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" onclick="handleMavToggle(this);" navtoggledispattr="hidden">
-							<img src="./img/menu-toggler.png" alt="" />
+							<img src="./image/menu-toggler.png" alt="" />
 						</a>
 					</div>
 					<div class="zte-theme-panel ">
@@ -270,7 +270,7 @@
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
 						data-close-others="true">
 							<span>
-								<img alt="" width=26 height=26 src="./img/user.png"
+								<img alt="" width=26 height=26 src="./image/user.png"
 								/>
 							</span>
 							<span class="username" id="currentUser">
@@ -344,7 +344,7 @@
 		<div class="modal fade" tabindex="-1" id="changepwdDlg" style="display:none" role="dialog"
 		aria-hidden="true">
 			<div class="page-loading page-loading-boxed">
-				<img src="./img/loading-spinner-grey.gif" alt="" class="loading">
+				<img src="./image/loading-spinner-grey.gif" alt="" class="loading">
 				<span>
 					&nbsp;&nbsp;Loading...
 				</span>
@@ -357,7 +357,7 @@
         <div class="modal fade" tabindex="-1" id="aboutDlg" role="dialog"
              aria-hidden="true">
             <div class="page-loading page-loading-boxed">
-                <img src="img/loading-spinner-grey.gif" alt="" class="loading">
+                <img src="image/loading-spinner-grey.gif" alt="" class="loading">
 				<span>
 					&nbsp;&nbsp;Loading...
 				</span>
@@ -457,33 +457,33 @@
 		</script-->
 		<!-- 重要! 加载botstrap.min.js之前请先加载jquery-ui-1.10.3.custom.min.js以避免bootstrap的tooltip与jquery
 		ui的tooltip发生冲突 -->
-		<!--script type="text/javascript" src="../component/thirdparty/jquery-ui/jquery-ui-1.10.3.custom.min.js">
+		<!--script type="text/javascript" src="thirdparty/jquery-ui/jquery-ui-1.10.3.custom.min.js">
 		</script-->
-		<script type="text/javascript" src="../component/thirdparty/bootstrap/js/bootstrap.min.js">
+		<script type="text/javascript" src="thirdparty/bootstrap/js/bootstrap.min.js">
 		</script>
-		<script type="text/javascript" src="../component/thirdparty/jquery-validation/js/jquery.validate.min.js">
+		<script type="text/javascript" src="thirdparty/jquery-validation/js/jquery.validate.min.js">
 		</script>
-		<script type="text/javascript" src="../component/thirdparty/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js">
+		<script type="text/javascript" src="thirdparty/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js">
 		</script>
-		<script type="text/javascript" src="../component/thirdparty/jquery-blockui/jquery.blockui.min.js">
+		<script type="text/javascript" src="thirdparty/jquery-blockui/jquery.blockui.min.js">
 		</script>
-		<script type="text/javascript" src="../component/thirdparty/jquery-cokie/jquery.cokie.min.js">
+		<script type="text/javascript" src="thirdparty/jquery-cokie/jquery.cokie.min.js">
 		</script>
-		<script type="text/javascript" src="../component/thirdparty/uniform/jquery.uniform.min.js">
+		<script type="text/javascript" src="thirdparty/uniform/jquery.uniform.min.js">
 		</script>
 		<!-- 重要! 加载ict-cometd.js之前必须先加载cometd.js和jquery.cometd.js以避免cometd的ict-cometd发生内存溢出
 		-->
-		<script type="text/javascript" src="../component/thirdparty/cometd/cometd.js">
+		<script type="text/javascript" src="thirdparty/cometd/cometd.js">
 		</script>
-		<script type="text/javascript" src="../component/thirdparty/cometd/jquery/jquery.cometd.js">
+		<script type="text/javascript" src="thirdparty/cometd/jquery/jquery.cometd.js">
 		</script>
-		<script type="text/javascript" src="../component/thirdparty/select2/select2.min.js">
+		<script type="text/javascript" src="thirdparty/select2/select2.min.js">
 		</script>
-		<script type="text/javascript" src="../component/thirdparty/bootbox/bootbox.min.js">
+		<script type="text/javascript" src="thirdparty/bootbox/bootbox.min.js">
 		</script>
 		<script src="./js/moreOperation.js"></script>
 		<script src="./js/tools.js"></script> 
-		<script type="text/javascript" src="../component/thirdparty/jquery.i18n/jquery.i18n.properties-1.0.9.js">
+		<script type="text/javascript" src="thirdparty/jquery.i18n/jquery.i18n.properties-1.0.9.js">
 		</script>
 		<script type="text/javascript" src="./js/international/loadi18n.js">
 		</script>
@@ -531,7 +531,7 @@
 		</script>
 		<script type="text/javascript" src="./js/security/changepwd.js">
 		</script>
-        <script type="text/javascript" src="../component/thirdparty/data-tables/jquery.dataTables.min.js">
+        <script type="text/javascript" src="thirdparty/data-tables/jquery.dataTables.min.js">
         </script>
         <script src="js/mainpage/about.js"></script>
 		<script>

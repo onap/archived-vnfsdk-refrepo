@@ -57,7 +57,7 @@ Header Search
 }
 
 .header .search-form .submit {  
-  background: url(../../img/search-icon-light.png);
+  background: url(../../image/search-icon-light.png);
 }
 /***
 Hor menu
@@ -94,7 +94,7 @@ Hor menu
 }
 
 .header .hor-menu .hor-menu-search-form-toggler.off {
-   background: #616161 url(../../img/hor-menu-search-close-white.png) no-repeat center;
+   background: #616161 url(../../image/hor-menu-search-close-white.png) no-repeat center;
 }
 
 .header .hor-menu .search-form {  
@@ -107,7 +107,7 @@ Hor menu
 
 .header .hor-menu .search-form .btn {
   color: #ccc;
-  background: url(../../img/search-icon-white.png) no-repeat center;
+  background: url(../../image/search-icon-white.png) no-repeat center;
 }
 
 .header .hor-menu .search-form form input::-webkit-input-placeholder { /* WebKit browsers */
@@ -223,13 +223,13 @@ ul.page-sidebar-menu > li.active > a .arrow.open:before {
   border-bottom: 1px solid #a6a6a6 !important;
 }
 .page-sidebar .sidebar-search .submit {
-  background-image: url(../../img/search-icon.png);
+  background-image: url(../../image/search-icon.png);
 }
 /***
 Sidebar toggler
 ***/
 .sidebar-toggler {
-  background-image: url(../../img/sidebar-toggler.jpg);
+  background-image: url(../../image/sidebar-toggler.jpg);
   background-color: #4d4d4d;
 }
 /* search box bg color on expanded */
@@ -237,7 +237,7 @@ Sidebar toggler
   background-color: #666666 !important;
 }
 .page-sidebar-closed .page-sidebar .sidebar-search.open .form-container .remove {
-  background-image: url("../../img/sidebar-search-close.png");
+  background-image: url("../../image/sidebar-search-close.png");
 }
 /* sub menu bg color on hover menu item */
 .page-sidebar-closed ul.page-sidebar-menu > li:hover .sub-menu {

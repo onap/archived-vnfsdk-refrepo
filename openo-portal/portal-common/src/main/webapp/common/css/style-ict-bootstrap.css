@@ -714,7 +714,7 @@ body{
 	background: linear-gradient(to bottom right,#bca374, #d9cf7a);
 }
 .manLieONCloud-image{
-	background-image: url('../img/mainpage/pic/1.png');
+	background-image: url('../image/mainpage/pic/1.png');
 }
 .orange-mainpage{
 	background-image: -moz-linear-gradient(left top, #f09c0a, #f4be35);
@@ -729,10 +729,10 @@ body{
 	background: linear-gradient(to bottom right,#e03655, #ef3a5b);
 }
 .magicCube-image{
-	background-image: url('../img/mainpage/pic/4.png');
+	background-image: url('../image/mainpage/pic/4.png');
 }
 .magicThought-image{
-	background-image: url('../img/mainpage/pic/5.png');
+	background-image: url('../image/mainpage/pic/5.png');
 }
 .grassGreen-mainpage{
 	background-image: -moz-linear-gradient(left top, #008b04, #03a501);
@@ -741,48 +741,48 @@ body{
 	background: linear-gradient(to bottom right,#008b04, #03a501);
 }
 .meeting-image{
-	background-image: url('../img/mainpage/pic/3.png');	
+	background-image: url('../image/mainpage/pic/3.png');	
 }
 .earth-image{
-	background-image: url('../img/mainpage/pic/2.png');
+	background-image: url('../image/mainpage/pic/2.png');
 }
 .toolsImageBrokenLine{
-	background-image: url('../img/mainpage/icon/1.png');
+	background-image: url('../image/mainpage/icon/1.png');
 	height: 150px;
 	width: 120px;
 	margin-top: 15%;
 	margin-left:-5px;
 }
 .toolsImageHierachy{
-	background-image: url('../img/mainpage/icon/2.png');
+	background-image: url('../image/mainpage/icon/2.png');
 	height: 150px;
 	width: 120px;
 	margin-top: 15%;
 	margin-left:-5px;
 }
 .toolsImageGear{
-	background-image: url('../img/mainpage/icon/3.png');
+	background-image: url('../image/mainpage/icon/3.png');
 	height: 150px;
 	width: 120px;
 	margin-top: 15%;
 	margin-left:-5px;
 }
 .toolsImagePresent{
-	background-image: url('../img/mainpage/icon/4.png');
+	background-image: url('../image/mainpage/icon/4.png');
 	height: 150px;
 	width: 120px;
 	margin-top: 15%;
 	margin-left:-5px;
 }
 .toolsImageFile{
-	background-image: url('../img/mainpage/icon/5.png');
+	background-image: url('../image/mainpage/icon/5.png');
 	height: 150px;
 	width: 120px;
 	margin-top: 15%;
 	margin-left:-5px;
 }
 .toolsImageBriefcase{
-	background-image: url('../img/mainpage/icon/6.png');
+	background-image: url('../image/mainpage/icon/6.png');
 	height: 150px;
 	width: 120px;
 	margin-top: 15%;

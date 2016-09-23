@@ -16,7 +16,7 @@
 {
 	"propertiesFileNamePrefix":"web-framework-integration-i18n",
 	"productName":"Net Numen ICT",
-	"productImage":"img/integration/zte_logo_white.png",
+	"productImage":"image/integration/zte_logo_white.png",
 	"modules":[
 		{
 			"cover":"com_zte_ums_ict_framework_main_page_dashboard",

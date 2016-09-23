@@ -60,7 +60,7 @@ Header Search
 }
 
 .header .search-form .submit {  
-  background: url(../../img/search-icon-purple.png);
+  background: url(../../image/search-icon-purple.png);
 }
 /***
 Hor menu
@@ -97,7 +97,7 @@ Hor menu
 }
 
 .header .hor-menu .hor-menu-search-form-toggler.off {
-   background: #69147b url(../../img/hor-menu-search-close-white.png) no-repeat center;
+   background: #69147b url(../../image/hor-menu-search-close-white.png) no-repeat center;
 }
 
 .header .hor-menu .search-form {  
@@ -110,7 +110,7 @@ Hor menu
 
 .header .hor-menu .search-form .btn {
   color: #ccc;
-  background: url(../../img/search-icon-white.png) no-repeat center;
+  background: url(../../image/search-icon-white.png) no-repeat center;
 }
 
 .header .hor-menu .search-form form input::-webkit-input-placeholder { /* WebKit browsers */
@@ -226,13 +226,13 @@ ul.page-sidebar-menu > li.active > a .arrow.open:before {
   border-bottom: 1px solid #a93bc1 !important;
 }
 .page-sidebar .sidebar-search .submit {
-  background-image: url(../../img/search-icon-purple.png);
+  background-image: url(../../image/search-icon-purple.png);
 }
 /***
 Sidebar toggler
 ***/
 .sidebar-toggler {
-  background-image: url(../../img/sidebar-toggler-purple.jpg);
+  background-image: url(../../image/sidebar-toggler-purple.jpg);
   background-color: #4b0e58;
 }
 /* search box bg color on expanded */
@@ -240,7 +240,7 @@ Sidebar toggler
   background-color: #701584 !important;
 }
 .page-sidebar-closed .page-sidebar .sidebar-search.open .form-container .remove {
-  background-image: url("../../img/sidebar-search-close-purple.png");
+  background-image: url("../../image/sidebar-search-close-purple.png");
 }
 /* sub menu bg color on hover menu item */
 .page-sidebar-closed ul.page-sidebar-menu > li:hover .sub-menu {
