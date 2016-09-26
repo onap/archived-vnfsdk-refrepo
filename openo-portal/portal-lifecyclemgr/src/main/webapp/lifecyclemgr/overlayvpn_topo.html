@@ -19,24 +19,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <style type="text/css">
-        #container {
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            position: absolute;
-        }
-    </style>
+<style type="text/css">
+  #container {
+      top: 55px;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      position: absolute;
+  }
+  #title {
+      font-size: 30px;
+      text-align: center;
+  }
+</style>
 </head>
+
 <body>
+<div id="title"></div>
+<hr/>
 <div id="container"></div>
+
+
+<script src="js/jquery-1.11.2.min.js"></script>
+
 <script src="js/topo/sigma/sigma.min.js"></script>
-<script src="js/topo/sigma/jquery-3.1.0.min.js"></script>
-<script src="js/topo/sigma/plugins/sigma.renderers.customShapes.min.js"></script>
-<script src="js/topo/sigma/plugins/sigma.renderers.edgeLabels.min.js"></script>
+<script src="js/topo/sigma/sigma.renderers.customShapes.min.js"></script>
+<script src="js/topo/sigma/sigma.renderers.edgeLabels.min.js"></script>
+
 <script src="js/topo/Node.js"></script>
 <script src="js/topo/Edge.js"></script>
-<script src="js/topo/Topology.js"></script>
+<script src="js/topo/OverlayTopology.js"></script>
+
+<!-- Update the title with the id of Overlay VPN -->
+<script language="JavaScript">
+  var id = extractOverlayVPNId();
+  var titleStr = "Topology of Overlay VPN : ".concat("<b>", id, "</b>");
+  document.getElementById("title").innerHTML = titleStr;
+</script>
 </body>
+
 </html>
