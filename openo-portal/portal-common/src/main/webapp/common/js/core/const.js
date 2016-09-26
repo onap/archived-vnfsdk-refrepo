@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 var fMenuSiderDivId = 'page-f-sidebar-menu';
-var ICTFRAME_CONST_SPINNER_GIF_PATH="../../iui/framework/image/loading-spinner-grey.gif";
+var ICTFRAME_CONST_SPINNER_GIF_PATH="../../openoui/common/image/loading-spinner-grey.gif";
 var ICTFRAME_CONST_IFRAME_HEIGHT_AJUST = 10;
 var ICTFRAME_CONST_IFRAME_HEIGHT_AJUST_IE = 5;
 var ICTFRAME_CONST_THEME_COLOR_CSS_PREFFIX = "css/themes/";
