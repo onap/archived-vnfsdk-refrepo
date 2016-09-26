@@ -297,7 +297,7 @@ div.separator-line {
 	margin-bottom: 10px
 }
 
-/*����daterangepicker��css*/
+/*increase daterangepicker's css*/
 input[name="daterange"] {
 	width: 220px;
 	line-height: 0;
@@ -452,7 +452,6 @@ td .icheckbox_square-aero {
 	margin-right: 0;
 }
 
-/*卡片面板样式*/
 .hpanel {
 	background-color: none;
 	border: none;

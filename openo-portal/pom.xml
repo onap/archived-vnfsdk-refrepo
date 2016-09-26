@@ -35,5 +35,6 @@
       <module>portal-extsys</module>
       <module>portal-auth</module>
       <module>portal-lifecyclemgr</module>
+      <module>portal-catalog</module>
     </modules>
 </project>
