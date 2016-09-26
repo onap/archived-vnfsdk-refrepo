@@ -124,4 +124,15 @@ public class ServiceGatewayRoaModuleImpl implements IServiceGatewayRoaModule {
 
         return Response.accepted().entity(result).build();
     }
+
+	public IServiceGateway getServiceGateway() 
+	{
+		return serviceGateway;
+	}
+
+	public void setServiceGateway(IServiceGateway serviceGateway) 
+	{
+		this.serviceGateway = serviceGateway;
+	}
+    
 }

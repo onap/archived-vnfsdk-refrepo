@@ -26,7 +26,6 @@
     http://www.huawei.com/schema/oms/oms.xsd
     http://cxf.apache.org/jaxrs 
     http://cxf.apache.org/schemas/jaxrs.xsd">
-
     <!-- these are included in the dependency jar -->
     <import resource="classpath:META-INF/cxf/cxf.xml" />
     <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
@@ -35,8 +34,7 @@
     <jaxrs:server id="sampleServer" address="/">    
         <!-- registering beans -->
         <jaxrs:serviceBeans>
-            <ref bean="ServicemgrRoaModuleImpl"></ref>
-            <ref bean="ServicePackageModuleImpl"></ref>
+            <ref bean="serviceGatewayRoaModuleImpl"></ref>            
         </jaxrs:serviceBeans>
         <!-- registering providers -->
         <jaxrs:providers>
@@ -65,9 +63,10 @@
     <bean id="Activator" class="org.openo.gso.gui.servicegateway.activator.Activator" init-method="start" destroy-method="stop">
     </bean>
     
-    <bean id="ServicGatewayRoaModuleImpl" class="org.openo.gso.gui.servicegateway.roa.impl.ServicGatewayRoaModuleImpl">
-        <property name="ServiceGateway" ref="ServiceGateway"></property>
+    <bean id="serviceGatewayRoaModuleImpl" class="org.openo.gso.gui.servicegateway.roa.impl.ServiceGatewayRoaModuleImpl">
+        <property name="serviceGateway" ref="serviceGateway"></property>
     </bean>    
-    
-    </bean>
+	
+	<bean id="serviceGateway" class="org.openo.gso.gui.servicegateway.service.impl.ServiceGatewayImpl">        
+    </bean>  
 </beans>
