@@ -149,7 +149,6 @@ topoUtil.getInstanceNum = function(nodeTemplate, nodeInstanceData) {
 	var num = 0;
 	var id;
 	if(nodeTemplate.properties && nodeTemplate.properties.vnfdid) {
-		//ns嵌套vnf，ns中vnf的nodetemplate的属性vnfdid才是嵌套vnf的真实id
 		id = nodeTemplate.properties.vnfdid;
 	} else {
 		id = nodeTemplate.id;

@@ -436,7 +436,7 @@ serverPageTable.initDataTableForEvent = function( setting ,cond , divId) {
         "bAutoWidth":true,//automatically set the column width
         "bLengthChange": true,// record number in each row
         "iDisplayLength": 10,// row number in each page
-        "bSort": setting.sort ? true : false,// 排序
+        "bSort": setting.sort ? true : false,
         "bInfo": setting.info,// Showing 1 to 10 of 23 entries 
         "bWidth": true,
         "bScrollCollapse": true,

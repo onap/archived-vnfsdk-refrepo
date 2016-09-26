@@ -306,7 +306,7 @@ div.separator-line {
 	margin-bottom: 10px
 }
 
-/*增加daterangepicker的css*/
+/*increase daterangepicker's css*/
 input[name="daterange"] {
 	width: 220px;
 	line-height: 0;

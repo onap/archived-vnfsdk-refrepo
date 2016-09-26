@@ -302,7 +302,7 @@ div.separator-line {
 	margin-bottom: 10px
 }
 
-/*增加daterangepicker的css*/
+/*increase daterangepicker's css*/
 input[name="daterange"] {
 	width: 220px;
 	line-height: 0;
@@ -408,7 +408,6 @@ input.pagination-panel-input {
 }
 
 
-/*卡片面板样式*/
 .animated-panel {
   -webkit-animation-duration: .5s;
   animation-duration: .5s;
