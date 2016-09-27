@@ -17,15 +17,14 @@ function loadPropertiesSideMenu(lang, propertiesFileNamePrefix, propertiesFilePa
     jQuery.i18n.properties({
         language: lang,
         name: propertiesFileNamePrefix,
-        path: propertiesFilePath, // 资源文件路径
-        mode: 'map', // 用 Map 的方式使用资源文件中的值
-        callback: function () {// 加载成功后设置显示内容
+        path: propertiesFilePath, // resource path
+        mode: 'map', 
+        callback: function () {
             var i18nItems = $('[name_i18n=com_zte_conductor_ui_i18n]');
             for (var i = 0; i < i18nItems.length; i++) {
                 var $item = $(i18nItems.eq(i));
                 var itemId = $item.attr('id_i18n');
-                var itemTitle = $item.attr('title');
-                /** id存在时元素内容需要国际化，title存在时元素title需要国际化 */
+                var itemTitle = $item.attr('title');                
                 if (typeof($item.attr("title")) == "string") {
                     $item.attr("title", ($.i18n.prop(itemTitle)));
                 }

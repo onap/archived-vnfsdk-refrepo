@@ -23,8 +23,7 @@ var labelTop = {
             position: 'outer',
             formatter: function (params) {
                 var total = params.series.data[1].value + params.series.data[0].value;
-                var util = params.series.data[0].util;
-                // return total+util+"中的"+"\n"+params.value+util+"已使用" ;
+                var util = params.series.data[0].util;                
                 return $.i18n.prop('com_zte_ums_eco_roc_vim_resource_chart_used') + params.value + util + "\n" +
                     $.i18n.prop('com_zte_ums_eco_roc_vim_resource_chart_total') + total + util;
             },
@@ -175,7 +174,7 @@ vimChart.vimPieChart = function (data) {
     };
 
 
-    // 为echarts对象加载数据 
+     
     vimPieChart.hideLoading();
     vimPieChart.setOption(option);
     window.onresize = vimPieChart.resize;
@@ -411,7 +410,7 @@ vimChart.tenantPieChart = function (data) {
     };
 
 
-    // 为echarts对象加载数据 
+  
     tenantPieChart.hideLoading();
     tenantPieChart.setOption(option);
     window.onresize = tenantPieChart.resize;

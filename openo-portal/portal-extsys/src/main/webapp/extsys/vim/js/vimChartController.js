@@ -33,7 +33,7 @@ var vm = avalon
         },
         initChart: function () {
 
-            //判断租户是否有admin权限
+            //has admin role
             var tenantRoleUrl = vm.$tenantRoleUrl.replace("{vim_id}", vm.vimInfo.id);
             $.ajax({
                 "type": 'get',
@@ -49,16 +49,16 @@ var vm = avalon
                 complete: function () {
                     if (vm.vimInfo.isAdmin == true) {
 
-                        //获取全部资源使用情况 
+                        //get all resource 
                         vm.vimChartLoad();
 
-                        //获取租户列表
+                        //get tenant list
                         vm.vimListLoad();
                     }
 
                 }
             });
-            //获取租户资源使用情况 
+            //get resource of tenant 
             vm.tenantChartLoad();
         },
         gotoVimPage: function () {

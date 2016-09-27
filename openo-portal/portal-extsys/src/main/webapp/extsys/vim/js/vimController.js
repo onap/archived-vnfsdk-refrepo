@@ -37,10 +37,10 @@ var vm = avalon
         },
         isSave: true,
         action: {ADD: 'add', UPDATE: 'update'},
-        $queryVimInfoUrl: '../../openoapi/extsys/v1/vims',
-        $addVimInfoUrl: '../../openoapi/extsys/v1/vims/',
-        $updateVimInfoUrl: '../../openoapi/extsys/v1/vims/',
-        $delVimInfoUrl: '../../openoapi/extsys/v1/vims/{vim_id}',
+        $queryVimInfoUrl: '/openoapi/extsys/v1/vims',
+        $addVimInfoUrl: '/openoapi/extsys/v1/vims/',
+        $updateVimInfoUrl: '/openoapi/extsys/v1/vims/',
+        $delVimInfoUrl: '/openoapi/extsys/v1/vims/{vim_id}',
         $initTable: function () {
             $.ajax({
                 "type": 'get',
@@ -94,7 +94,8 @@ var vm = avalon
             saveType: "add",
             description: "",
             vimType: "openstack",
-            vendor: ""
+            vendor: "",
+            version: ""
         },
         $showVimTable: function (el, action) {
             vm.isSave = false;
@@ -125,6 +126,7 @@ var vm = avalon
                 vm.addVim.titleName = $.i18n.prop('com_zte_ums_eco_roc_vim_modify_info');
                 vm.addVim.vimType = el.type;
                 vm.addVim.vendor = el.vendor;
+                vm.addVim.version = el.version;
             }
             vm.executeError.visible = false;
             vm.executeWait.visible = false;
@@ -146,8 +148,7 @@ var vm = avalon
             }
             vm.executeWait.visible = true;
             vm.executeError.visible = false;
-            if (vm.addVim.saveType == "add") {
-                //不能重复添加
+            if (vm.addVim.saveType == "add") {               
                 /*
                  for( var i = 0; i < vm.vimInfo.length; i ++ ){
                  if(vm.addVim.url == vm.vimInfo[i].url){
@@ -162,7 +163,7 @@ var vm = avalon
                 vm.updateVim();
             }
         },
-        //新增vim
+        //add vim
         persistVim: function () {
             $.ajax({
                 type: "Post",
@@ -208,7 +209,7 @@ var vm = avalon
                 }
             });
         },
-        //更新vim
+        //update vim
         updateVim: function () {
             $.ajax({
                 type: "Put",
@@ -242,6 +243,8 @@ var vm = avalon
                                 vm.vimInfo[i].domain = vm.addVim.domain;
                                 vm.vimInfo[i].description = vm.addVim.description;
                                 vm.vimInfo[i].type = vm.addVim.vimType;
+                                vm.vimInfo[i].version=vm.addVim.version;
+                                vm.vimInfo[i].vendor=vm.addVim.vendor;
                             }
                         }
                         $('#addVimDlg').modal('hide');
