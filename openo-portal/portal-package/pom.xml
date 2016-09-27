@@ -17,7 +17,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
-    <groupId>org.openo.gso.gui</groupId>
+    <groupId>org.openo.portal</groupId>
     <artifactId>openo-portal</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
@@ -28,27 +28,45 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.openo.gso.gui</groupId>
+      <groupId>org.openo.portal</groupId>
       <artifactId>portal-common</artifactId>
       <version>1.0.0-SNAPSHOT</version>
       <type>war</type>
     </dependency>
     <dependency>
-      <groupId>org.openo.gso.gui</groupId>
+      <groupId>org.openo.portal</groupId>
+      <artifactId>portal-resmgr</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+      <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>org.openo.portal</groupId>
       <artifactId>portal-extsys</artifactId>
       <version>1.0.0-SNAPSHOT</version>
       <type>war</type>
     </dependency>
     <dependency>
-      <groupId>org.openo.gso.gui</groupId>
+      <groupId>org.openo.portal</groupId>
       <artifactId>portal-catalog</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+      <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>org.openo.portal</groupId>
+      <artifactId>portal-auth</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+      <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>org.openo.portal</groupId>
+      <artifactId>portal-lifecyclemgr</artifactId>
       <version>1.0.0-SNAPSHOT</version>
       <type>war</type>
     </dependency>
   </dependencies>
 
   <build>
-    <finalName>open-portal</finalName>
+    <finalName>openo-portal</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -57,16 +75,28 @@
           <packagingExcludes>WEB-INF/web.xml</packagingExcludes>
           <overlays>
             <overlay>
-              <groupId>org.openo.gso.gui</groupId>
+              <groupId>org.openo.portal</groupId>
               <artifactId>portal-common</artifactId>
             </overlay>
             <overlay>
-              <groupId>org.openo.gso.gui</groupId>
+              <groupId>org.openo.portal</groupId>
+              <artifactId>portal-resmgr</artifactId>
+            </overlay>
+            <overlay>
+              <groupId>org.openo.portal</groupId>
               <artifactId>portal-extsys</artifactId>
             </overlay>
             <overlay>
-              <groupId>org.openo.gso.gui</groupId>
+              <groupId>org.openo.portal</groupId>
               <artifactId>portal-catalog</artifactId>
+            </overlay>
+            <overlay>
+              <groupId>org.openo.portal</groupId>
+              <artifactId>portal-auth</artifactId>
+            </overlay>
+            <overlay>
+              <groupId>org.openo.portal</groupId>
+              <artifactId>portal-lifecyclemgr</artifactId>
             </overlay>
           </overlays>
         </configuration>

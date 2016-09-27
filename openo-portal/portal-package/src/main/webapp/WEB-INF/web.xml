@@ -16,4 +16,7 @@
 -->
 <web-app>
   <display-name>OPEN-O Web Application</display-name>
+  <welcome-file-list>
+    <welcome-file>common/login.html</welcome-file>
+  </welcome-file-list>
 </web-app>
