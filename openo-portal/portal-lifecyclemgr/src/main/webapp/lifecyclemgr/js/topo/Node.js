@@ -16,11 +16,16 @@
 var icon = {
 	device_icon : "images/topo/NEUP.png",
   sfc_device_icon : "images/topo/OTHER_3.png",
+  site_icon : "images/topo/site.png",
 	network_icon : "images/topo/NETWORK.png"
 }
-function Node(id, label, size, type, x, y) {
+
+/* when node is clicked, details will be displayed in the label. */
+function Node(id, label, details, size, type, x, y) {
 	this.id = id;
 	this.label = label;
+  this.brief = label;
+  this.details = details;
 	this.type = "square";
 	this.x = x;
 	this.y = y;
