@@ -108,73 +108,61 @@ function fetchServiceTemplateBy(templateId) {
 }
 
 function renderTemplateParametersTab() {
-    templateParameters = fetchTemplateParameterDefinitions(templateParameters);
-    var vims = fetchVimInfo();
-    var components = transfromToComponents(templateParameters.parameters, vims);
-    document.getElementById("parameterTab").innerHTML = components;
+    $.when(
+        fetchTemplateParameterDefinitions(templateParameters),
+        fetchVimInfo2()
+    ).then(function(templateParameterResponse, vimsInfoResponse) {
+        templateParameters = translateToTemplateParameters(templateParameterResponse[0].inputs);
+        var vims = translateToVimInfo(vimsInfoResponse[0]);
+        var components = transfromToComponents(templateParameters.parameters, vims);
+        document.getElementById("parameterTab").innerHTML = components;
+    })
 }
 
 function fetchTemplateParameterDefinitions(parameters) {
-    var serviceTemplate = parameters.templateName;
     var currentServiceTemplate = $("#svcTempl").val();
-    // Do not need to fetch template parameters if template do not change in UI.
-    if (serviceTemplate === currentServiceTemplate) {
-        return;
-    }
-    var queryParametersUri = '/openoapi/catalog/v1/servicetemplates/' + currentServiceTemplate + '/parameters';
-    var inputParameters = [];
-    $.ajax({
+    var queryParametersUri = 'http://localhost:8080/openoapi/catalog/v1/servicetemplates/' + currentServiceTemplate + '/parameters';
+    return $.ajax({
         type: "GET",
-        async: false,
-        url: queryParametersUri,
-        contentType: "application/json",
-        dataType: "json",
-        success: function (jsonResp) {
-            var inputs = jsonResp.inputs;
-            var i;
-            for (i = 0; i < inputs.length; i += 1) {
-                inputParameters[i] = {
-                    name: inputs[i].name,
-                    type: inputs[i].type,
-                    description: inputs[i].description,
-                    defaultValue: inputs[i].defaultValue,
-                    required: inputs[i].required,
-                    id: 'parameter_' + i,
-                    value: inputs[i].defaultValue
-                };
-            }
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            alert("Error on page : " + xhr.responseText);
-        }
+        url: queryParametersUri
     });
-    return {name: currentServiceTemplate, parameters: inputParameters};
 }
 
-function fetchVimInfo() {
-    var result = [];
-    var vimQueryUri = '/openoapi/extsys/v1/vims';
-    $.ajax({
+function fetchVimInfo2() {
+    var vimQueryUri = 'http://localhost:8080/openoapi/extsys/v1/vims';
+    return $.ajax({
         type: "GET",
-        async: false,
-        url: vimQueryUri,
-        contentType: "application/json",
-        dataType: "json",
-        success: function (jsonResp) {
-            var vims = jsonResp;
-            var i;
-            for (i = 0; i < vims.length; i += 1) {
-                var option = '<option value="' + vims[i].vimId + '">' + vims[i].name + '</option>';
-                result[i] = {
-                    vimId: vims[i].vimId,
-                    vimName: vims[i].name
-                }
-            }
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            alert("Error on page : " + xhr.responseText);
-        }
+        url: vimQueryUri
     });
+}
+
+function translateToTemplateParameters(inputs) {
+    var inputParameters = [];
+    var i;
+    for (i = 0; i < inputs.length; i += 1) {
+        inputParameters[i] = {
+            name: inputs[i].name,
+            type: inputs[i].type,
+            description: inputs[i].description,
+            defaultValue: inputs[i].defaultValue,
+            required: inputs[i].required,
+            id: 'parameter_' + i,
+            value: inputs[i].defaultValue
+        };
+    }
+    return {name: $("#svcTempl").val(), parameters: inputParameters};
+}
+
+function translateToVimInfo(vims) {
+    var result = [];
+    var i;
+    for (i = 0; i < vims.length; i += 1) {
+        var option = '<option value="' + vims[i].vimId + '">' + vims[i].name + '</option>';
+        result[i] = {
+            vimId: vims[i].vimId,
+            vimName: vims[i].name
+        }
+    }
     return result;
 }
 
@@ -214,7 +202,6 @@ function generateLocationComponent(vims) {
         '<select class="form-control" style ="padding-top: 0px;padding-bottom: 0px;"' +
         ' id="vim_location" name="vim_location">' +
         transformToOptions(vims) +
-        // '<option value="vimid">vim1 name</option>' +
         '</select></div></div>';
     return component;
 }
