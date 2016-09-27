@@ -33,8 +33,8 @@
       <module>portal-common</module>
       <module>portal-resmgr</module>
       <module>portal-extsys</module>
+      <module>portal-catalog</module>
       <module>portal-auth</module>
       <module>portal-lifecyclemgr</module>
-      <module>portal-catalog</module>
     </modules>
 </project>
