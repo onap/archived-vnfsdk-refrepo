@@ -110,13 +110,13 @@ function fetchServiceTemplateBy(templateId) {
 function renderTemplateParametersTab() {
     $.when(
         fetchTemplateParameterDefinitions(templateParameters),
-        fetchVimInfo2()
+        fetchVimInfo()
     ).then(function(templateParameterResponse, vimsInfoResponse) {
         templateParameters = translateToTemplateParameters(templateParameterResponse[0].inputs);
         var vims = translateToVimInfo(vimsInfoResponse[0]);
         var components = transfromToComponents(templateParameters.parameters, vims);
         document.getElementById("parameterTab").innerHTML = components;
-    })
+    });
 }
 
 function fetchTemplateParameterDefinitions(parameters) {
@@ -128,7 +128,7 @@ function fetchTemplateParameterDefinitions(parameters) {
     });
 }
 
-function fetchVimInfo2() {
+function fetchVimInfo() {
     var vimQueryUri = 'http://localhost:8080/openoapi/extsys/v1/vims';
     return $.ajax({
         type: "GET",
