@@ -56,6 +56,7 @@ lcmHandler.prototype = {
             return;
         }
         updateTable(serviceInstance);
+        $('#vmAppDialog').removeClass('in').css('display', 'none');
     }
 };
 
