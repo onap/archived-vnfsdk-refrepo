@@ -78,4 +78,79 @@ $(function () {
         return o;
     };
 
+    $('#createNS').click(function(){
+        var formData = JSON.stringify($("#neForm").serializeObject());
+        var jsonobj = JSON.parse(formData);
+        var newJson = {"managedElement": jsonobj};
+        formData = JSON.stringify(newJson);
+        var requestUrl = "http://localhost:8080/org.openo.sdno.brs/openoapi/sdnobrs/v1/managed-elements";
+        $
+            .ajax({
+                type : "POST",
+                url : requestUrl,
+                contentType : "application/json",
+                dataType : "json",
+                data : formData,
+                success : function(jsonResp) {
+                    alert("NS saved successfully!!!");
+                    jsonobj["id"]= jsonResp.managedElement.id;
+                    $('#ne').bootstrapTable("append", jsonobj);
+                    $('#vmAppDialog').removeClass('in').css('display','none');
+
+                },
+                error : function(xhr, ajaxOptions, thrownError) {
+                    alert("Error on page : " + xhr.responseText);
+                }
+            });
+    });
 })
+
+/*******************************************Get Service**********************************************/
+function loadGetServiceData(url){
+    return JSON.parse('[{"serviceId":"1111","serviceName":"siteToDC","description":"siteToDC","createTime":"xxxxxx","creator":"XXXX","serviceType":"GSO","templateName":"xxxxxx","inputParameters":{"POP-1-0-0.vFW-moc":"xxx","POP-1-0-0.vCPE-moc":"xxx"}},{"serviceId":"2222","serviceName":"siteToDC","description":"siteToDC","createTime":"xxxxxx","creator":"XXXX","serviceType":"GSO","templateName":"xxxxxx","inputParameters":{"POP-1-0-0.vFW-moc":"xxx1","POP-1-0-0.vCPE-moc":"xxx1"}}]');
+
+    // TODO authenticate the url.
+    var requestUrl = url + "/openoapi/sdnobrs/v1/topological-links";
+    $
+        .ajax({
+            type : "GET",
+            url : requestUrl,
+            contentType : "application/json",
+            success : function(jsonobj) {
+                // TODO return according to the json data received.
+                return jsonobj;
+            },
+            error : function(xhr, ajaxOptions, thrownError) {
+                alert("Error on getting link data : " + xhr.responseText);
+            }
+        });
+}
+
+/*********************************************Get Service Details********************************************/
+function loadServiceDetails(url, serviceId){
+    return JSON.parse('[{"id":"12345", "name":"sdno"}, {"id":"23456", "name":"gso"},{"id":"12345", "name":"nfvo"}]');
+    //return JSON.parse('{"sdno":[{"id":"12345", "name":"SDNO"}], "nfvo":[{"id":"12345", "name":"SDNO"}]}');
+    //return JSON.parse('"nfvo":[{"id":"12345", "name":"SDNO"}]}');
+    // TODO authenticate the url.
+    var requestUrl = url + "/openoapi/lifecyclemgr/v1/services/toposequence/" + serviceId;
+    $
+        .ajax({
+            type : "GET",
+            url : requestUrl,
+            contentType : "application/json",
+            success : function(jsonobj) {
+                // TODO return according to the json data received.
+                return jsonobj;
+            },
+            error : function(xhr, ajaxOptions, thrownError) {
+                alert("Error on getting link data : " + xhr.responseText);
+            }
+        });
+}
+
+function anchorClick(serviceId){
+    var url = "";
+    var jsonData = loadServiceDetails(url, serviceId);
+    //TODO populate the modal according to json response
+    return true;
+}

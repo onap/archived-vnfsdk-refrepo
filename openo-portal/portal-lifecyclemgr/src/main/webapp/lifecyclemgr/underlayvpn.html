@@ -31,18 +31,37 @@
         <script type="text/javascript" src="js/brs.js"></script>
         <script type="text/javascript" src="js/underlay.js"></script>
         <script type="text/javascript" src="js/bootstrap-table.min.js"></script>
-        <style type="text/css">
-            hr {
-                # #-moz-border-bottom-colors: none;
-                -moz-border-image: none;
-                -moz-border-left-colors: none;
-                -moz-border-right-colors: none;
-                -moz-border-top-colors: none;
-                # #border-color: #EEEEEE -moz-use-text-color #FFFFFF;
-                border-style: solid none;
-                border-width: 1px 0;
-                margin: 50px 0;
-            }
+    <style>
+        .fixed-table-container tbody td .th-inner,
+        .fixed-table-container thead th .th-inner {
+            line-height: 4px;
+        }
+
+        .fixed-table-pagination .pagination-info {
+            display: none !important;
+        }
+
+        .table tbody tr:hover td,
+        .table tbody tr.odd:hover td {
+            background-color: #e6fbe0 !important;
+        }
+
+        .delete-btn {
+            background: url(delete.png) no-repeat !important;
+            width: 16px;
+            height: 16px;
+            border: none;
+        }
+
+        table tr.openoTable_row_selected td {
+            background: #e8f8fe !important;
+            border-bottom: 1px solid #e8e8e8 !important;
+        }
+
+        .container-fluid {
+            padding-left: 10px;
+            padding-right: 0px;
+        }
         </style>
         <script type="text/javascript">
             $(document).ready(function () {
@@ -57,6 +76,9 @@
                     //Assigning data to table
                     data: {}
                 });
+            $('.table tbody tr').click(function () {
+                $(this).addClass('openoTable_row_selected').siblings().removeClass('openoTable_row_selected');
+            })
             });
             function operateFormatter(value, row, index) {
                 return [
@@ -95,10 +117,10 @@
         <div id='ict_virtualApplication_table_div'>
             <div>
                 <div class="top">
-                    <table id="tbl_overlay" data-pagination="true" data-page-size="5" data-pagination-first-text="First"
-                           data-pagination-pre-text="Previous" data-pagination-next-text="Next"
-                           data-pagination-last-text="Last">
-                        <thead id="sunderlayTable_thead" class="openo-table-thead">
+                    <table class="table table-striped" id="tbl_overlay" data-pagination="true" data-page-size="5"
+                           data-pagination-first-text="First" data-pagination-pre-text="Previous"
+                           data-pagination-next-text="Next" data-pagination-last-text="Last">
+                        <thead id="sunderlayTable_thead" class="openo-table-thead" style="background:#ECECEC">
                         <tr class="active">
 
 
