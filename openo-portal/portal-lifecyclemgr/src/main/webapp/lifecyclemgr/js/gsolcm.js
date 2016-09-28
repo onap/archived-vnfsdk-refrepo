@@ -45,6 +45,7 @@ lcmHandler.prototype = {
         if (serviceTemplate === undefined) {
             return;
         }
+        serviceInstance.templateName = serviceTemplate.name;
         if (serviceTemplate.csarType === 'GSAR') {
             serviceInstance.serviceInstanceId = createGsoServiceInstance(gatewayService, serviceInstance, serviceTemplate);
         } else if (serviceTemplate.csarType === 'NSAR' || serviceTemplate.csarType === 'NFAR') {
