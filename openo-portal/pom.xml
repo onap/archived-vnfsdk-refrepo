@@ -23,7 +23,6 @@
         <relativePath>..</relativePath>
     </parent>
 
-    <groupId>org.openo.portal</groupId>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>openo-portal</artifactId>
     <version>1.0.0-SNAPSHOT</version>
