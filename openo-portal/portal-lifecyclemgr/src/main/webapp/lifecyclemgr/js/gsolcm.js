@@ -46,7 +46,7 @@ lcmHandler.prototype = {
             return;
         }
         if (serviceTemplate.csarType === 'GSAR') {
-            serviceInstance.serviceInstanceId = createGsoServiceInstance(gatewayService, serviceInstance);
+            serviceInstance.serviceInstanceId = createGsoServiceInstance(gatewayService, serviceInstance, serviceTemplate);
         } else if (serviceTemplate.csarType === 'NSAR' || serviceTemplate.csarType === 'NFAR') {
             serviceInstance.serviceInstanceId = createNfvoServiceInstance(gatewayService, serviceInstance);
         } else if (serviceTemplate.csarType === 'SSAR') {
@@ -216,7 +216,7 @@ function transformToOptions(vims) {
     return options;
 }
 
-function createGsoServiceInstance(gatewayService, serviceInstance) {
+function createGsoServiceInstance(gatewayService, serviceInstance, serviceTemplate) {
     serviceInstance.serviceParameters.location = serviceInstance.vimLocation;
     var gsoLcmUri = '/openoapi/lifecyclemgr/v1/services';
     var parameter = {
