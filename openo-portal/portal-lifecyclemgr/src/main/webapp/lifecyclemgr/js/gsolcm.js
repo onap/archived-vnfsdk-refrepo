@@ -40,7 +40,7 @@ lcmHandler.prototype = {
             serviceParameters: collectServiceParameters(templateParameters),
             vimLocation: $('#vim_location').val()
         }
-        var gatewayService = '/openoapi/servicegateway/v1/services';
+        var gatewayService = 'http://localhost:8080/openoapi/servicegateway/v1/services';
         var serviceTemplate = fetchServiceTemplateBy(serviceInstance.serviceTemplateId);
         if (serviceTemplate === undefined) {
             return;
@@ -69,7 +69,7 @@ function collectServiceParameters(parameters) {
 }
 
 function fetchServiceTemplateBy(templateId) {
-    var serviceTemplateUri = '/openoapi/catalog/v1/servicetemplates/' + templateId;
+    var serviceTemplateUri = 'http://localhost:8080/openoapi/catalog/v1/servicetemplates/' + templateId;
     var template;
     $.ajax({
         type: "GET",
@@ -90,7 +90,7 @@ function fetchServiceTemplateBy(templateId) {
     if (template === undefined) {
         return template;
     }
-    var queryCsarUri = '/openoapi/catalog/v1/csars/' + template.gsarId;
+    var queryCsarUri = 'http://localhost:8080/openoapi/catalog/v1/csars/' + template.gsarId;
     $.ajax({
         type: "GET",
         async: false,
@@ -320,11 +320,11 @@ function createSdnoServiceInstance(gatewayService, serviceInstance) {
 }
 
 function updateTable(serviceInstance) {
-    appendOenRow();
+    appendOenRow(serviceInstance);
     addDeleteEventRegistration();
 }
 
-function appendOenRow() {
+function appendOenRow(serviceInstance) {
     var index = service_instance_insert_index;
     var creator = '';
     $('#sai').append('<tr id="service_instance_' + index + '"></tr>');
