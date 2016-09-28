@@ -225,7 +225,7 @@ function createGsoServiceInstance(gatewayService, serviceInstance) {
         'serviceDefId': serviceTemplate.gsarId,
         'templatedId': serviceInstance.serviceTemplateId,
         'templateName': serviceTemplate.templateName,
-        'getewayUri': gsoLcmUrl,
+        'getewayUri': gsoLcmUri,
         'parameters': serviceInstance.serviceParameters
     };
     var serviceInstanceId;
@@ -289,7 +289,7 @@ function createNetworkService(gatewayService, gatewayUri, serviceInstance) {
     return nsInstanceId;
 }
 
-function instantiateNetworkService(gatewayUri, nsInstanceId, serviceInstance) {
+function instantiateNetworkService(gatewayService, nsInstanceId, serviceInstance) {
     var initNsUrl = gatewayUri + '/' + nsInstanceId + '/Instantiate'
     var parameter = {
         'gatewayUri': initNsUrl,
