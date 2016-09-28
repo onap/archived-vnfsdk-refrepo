@@ -255,23 +255,24 @@ function createGsoServiceInstance(gatewayService, serviceInstance, serviceTempla
 function createNfvoServiceInstance(gatewayService, serviceInstance) {
     var nfvoLcmNsUrl = '/openoapi/nslcm/v1.0/ns';
     serviceInstance.serviceParameters.location = serviceInstance.vimLocation;
-    createServiceInstance(gatewayService, nfvoLcmNsUrl, serviceInstance);
+    return createServiceInstance(gatewayService, nfvoLcmNsUrl, serviceInstance);
 }
 
-function createServiceInstance(gatewayService, gatewayUri, serviceInstance) {
-    var nsInstanceId = createNetworkService(gatewayService, gatewayUri, serviceInstance);
+function createServiceInstance(gatewayService, nsUri, serviceInstance) {
+    var nsInstanceId = createNetworkService(gatewayService, nsUri, serviceInstance);
     if (nsInstanceId === undefined) {
         return;
     }
-    instantiateNetworkService(gatewayUri, nsInstanceId, serviceInstance);
+    instantiateNetworkService(gatewayService, nsUri,nsInstanceId, serviceInstance);
+    return nsInstanceId;
 }
 
-function createNetworkService(gatewayService, gatewayUri, serviceInstance) {
+function createNetworkService(gatewayService, nsUrl, serviceInstance) {
     var parameter = {
         'nsdId': serviceInstance.serviceTemplateId,
         'nsName': serviceInstance.serviceName,
         'description': serviceInstance.serviceDescription,
-        'gatewayUri': gatewayUri
+        'gatewayUri': nsUrl
     };
     var nsInstanceId;
     $.ajax({
@@ -291,8 +292,8 @@ function createNetworkService(gatewayService, gatewayUri, serviceInstance) {
     return nsInstanceId;
 }
 
-function instantiateNetworkService(gatewayService, nsInstanceId, serviceInstance) {
-    var initNsUrl = gatewayUri + '/' + nsInstanceId + '/Instantiate'
+function instantiateNetworkService(gatewayService, nsUri, nsInstanceId, serviceInstance) {
+    var initNsUrl = nsUri + '/' + nsInstanceId + '/Instantiate'
     var parameter = {
         'gatewayUri': initNsUrl,
         'nsInstanceId': nsInstanceId,
@@ -318,7 +319,7 @@ function instantiateNetworkService(gatewayService, nsInstanceId, serviceInstance
 
 function createSdnoServiceInstance(gatewayService, serviceInstance) {
     var sdnoLcmNsUrl = '/openoapi/sdnonslcm/v1.0/ns';
-    createServiceInstance(gatewayService, sdnoLcmNsUrl, serviceInstance);
+    return createServiceInstance(gatewayService, sdnoLcmNsUrl, serviceInstance);
 }
 
 function updateTable(serviceInstance) {
