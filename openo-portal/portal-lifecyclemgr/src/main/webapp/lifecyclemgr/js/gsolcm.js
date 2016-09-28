@@ -37,77 +37,25 @@ lcmHandler.prototype = {
             serviceTemplateId: $('#svcTempl').val(),
             serviceName: $('#svcName').val(),
             serviceDescription: $('#svcDesc').val(),
-            serviceParameters: collectServiceParameters(templateParameters),
+            serviceParameters: collectServiceParameters(templateParameters.parameters),
             vimLocation: $('#vim_location').val()
-        }
+        };
         var gatewayService = 'http://localhost:8080/openoapi/servicegateway/v1/services';
-        var serviceTemplate = fetchServiceTemplateBy(serviceInstance.serviceTemplateId);
-        if (serviceTemplate === undefined) {
-            return;
-        }
-        serviceInstance.templateName = serviceTemplate.name;
-        if (serviceTemplate.csarType === 'GSAR') {
-            serviceInstance.serviceInstanceId = createGsoServiceInstance(gatewayService, serviceInstance, serviceTemplate);
-        } else if (serviceTemplate.csarType === 'NSAR' || serviceTemplate.csarType === 'NFAR') {
-            serviceInstance.serviceInstanceId = createNfvoServiceInstance(gatewayService, serviceInstance);
-        } else if (serviceTemplate.csarType === 'SSAR') {
-            serviceInstance.serviceInstanceId = createSdnoServiceInstance(gatewayService, serviceInstance);
-        }
-        if (serviceInstance.serviceInstanceId === undefined) {
-            return;
-        }
-        updateTable(serviceInstance);
-        $('#vmAppDialog').removeClass('in').css('display', 'none');
+        $.when(
+            fetchServiceTemplateBy2(serviceInstance.serviceTemplateId)
+        ).then(
+            function(template) {
+                serviceInstance.templateName = template.name;
+                return createNetworkServiceInstance(template, serviceInstance, gatewayService);
+            }
+        ).then(
+            function(serviceInstance) {
+                updateTable(serviceInstance);
+                $('#vmAppDialog').removeClass('in').css('display', 'none');
+            }
+        );
     }
 };
-
-function collectServiceParameters(parameters) {
-    var serviceParameters = {};
-    var i;
-    for (i = 0; i < parameters.length; i += 1) {
-        serviceParameters[parameters.name] = $('#' + parameters[i].id).val();
-    }
-    return serviceParameters;
-}
-
-function fetchServiceTemplateBy(templateId) {
-    var serviceTemplateUri = 'http://localhost:8080/openoapi/catalog/v1/servicetemplates/' + templateId;
-    var template;
-    $.ajax({
-        type: "GET",
-        async: false,
-        url: serviceTemplateUri,
-        contentType: "application/json",
-        dataType: "json",
-        success: function (jsonResp) {
-            template = {
-                name: jsonResp.templateName,
-                gsarId: jsonResp.csarId
-            }
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            alert("Error on page : " + xhr.responseText);
-        }
-    });
-    if (template === undefined) {
-        return template;
-    }
-    var queryCsarUri = 'http://localhost:8080/openoapi/catalog/v1/csars/' + template.gsarId;
-    $.ajax({
-        type: "GET",
-        async: false,
-        url: queryCsarUri,
-        contentType: "application/json",
-        dataType: "json",
-        success: function (jsonResp) {
-            template.csarType = jsonResp.type
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            alert("Error on page : " + xhr.responseText);
-        }
-    });
-    return template;
-}
 
 function renderTemplateParametersTab() {
     $.when(
@@ -218,7 +166,48 @@ function transformToOptions(vims) {
     return options;
 }
 
+function fetchServiceTemplateBy2(templateId) {
+    var defer = $.Deferred();
+    var serviceTemplateUri = 'http://localhost:8080/openoapi/catalog/v1/servicetemplates/' + templateId;
+    var template = {};
+    $.when(
+        $.ajax({
+            type: "GET",
+            url: serviceTemplateUri,
+            contentType: "application/json"
+        })
+    ).then(
+        function(response) {
+            template.name = response.templateName;
+            template.gsarId = response.csarId;
+            var queryCsarUri = 'http://localhost:8080/openoapi/catalog/v1/csars/' + template.gsarId;
+            return $.ajax({
+                type: "GET",
+                url: queryCsarUri,
+                contentType: "application/json"
+            });
+        }
+    ).then(
+        function(response) {
+            template.csarType = response.type;
+            defer.resolve(template)
+        }
+    );
+    return defer;
+}
+
+function createNetworkServiceInstance(template, serviceInstance, gatewayService) {
+    if (template.csarType === 'GSAR') {
+        return createGsoServiceInstance(gatewayService, serviceInstance, template);
+    } else if (template.csarType === 'NSAR' || template.csarType === 'NFAR') {
+        return createNfvoServiceInstance(gatewayService, serviceInstance);
+    } else if (template.csarType === 'SSAR') {
+        return createSdnoServiceInstance(gatewayService, serviceInstance);
+    }
+}
+
 function createGsoServiceInstance(gatewayService, serviceInstance, serviceTemplate) {
+    var defer = $.Deferred();
     serviceInstance.serviceParameters.location = serviceInstance.vimLocation;
     var gsoLcmUri = '/openoapi/lifecyclemgr/v1/services';
     var parameter = {
@@ -230,26 +219,17 @@ function createGsoServiceInstance(gatewayService, serviceInstance, serviceTempla
         'getewayUri': gsoLcmUri,
         'parameters': serviceInstance.serviceParameters
     };
-    var serviceInstanceId;
-    $.ajax({
+    $.when($.ajax({
         type: "POST",
-        async: false,
         url: gatewayService,
         contentType: "application/json",
         dataType: "json",
-        data: JSON.stringify(parameter),
-        success: function (jsonResp) {
-            if (jsonResp.result.errorCode != '200') {
-                alert("Create service instance Error!");
-                return;
-            }
-            serviceInstanceId = jsonResp.serviceId;
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            alert("Error on page : " + xhr.responseText);
-        }
-    });
-    return serviceInstanceId;
+        data: JSON.stringify(parameter)
+    })).then(function(response) {
+        serviceInstance.serviceInstanceId = response.serviceId;
+        defer.resolve(serviceInstance);
+    })
+    return defer;
 }
 
 function createNfvoServiceInstance(gatewayService, serviceInstance) {
@@ -258,68 +238,93 @@ function createNfvoServiceInstance(gatewayService, serviceInstance) {
     return createServiceInstance(gatewayService, nfvoLcmNsUrl, serviceInstance);
 }
 
-function createServiceInstance(gatewayService, nsUri, serviceInstance) {
-    var nsInstanceId = createNetworkService(gatewayService, nsUri, serviceInstance);
-    if (nsInstanceId === undefined) {
-        return;
-    }
-    instantiateNetworkService(gatewayService, nsUri,nsInstanceId, serviceInstance);
-    return nsInstanceId;
-}
-
-function createNetworkService(gatewayService, nsUrl, serviceInstance) {
-    var parameter = {
-        'nsdId': serviceInstance.serviceTemplateId,
-        'nsName': serviceInstance.serviceName,
-        'description': serviceInstance.serviceDescription,
-        'gatewayUri': nsUrl
-    };
-    var nsInstanceId;
-    $.ajax({
-        type: "POST",
-        async: false,
-        url: gatewayService,
-        contentType: "application/json",
-        dataType: "json",
-        data: JSON.stringify(parameter),
-        success: function (jsonResp) {
-            nsInstanceId = jsonResp.nsInstanceId;
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            alert("Error on page : " + xhr.responseText);
-        }
-    });
-    return nsInstanceId;
-}
-
-function instantiateNetworkService(gatewayService, nsUri, nsInstanceId, serviceInstance) {
-    var initNsUrl = nsUri + '/' + nsInstanceId + '/Instantiate'
-    var parameter = {
-        'gatewayUri': initNsUrl,
-        'nsInstanceId': nsInstanceId,
-        'additionalParamForNs': serviceInstance.serviceParameters
-    };
-    var result = false;
-    $.ajax({
-        type: "POST",
-        async: false,
-        url: gatewayService,
-        contentType: "application/json",
-        dataType: "json",
-        data: JSON.stringify(parameter),
-        success: function (jsonResp) {
-            result = true;
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            alert("Error on page : " + xhr.responseText);
-        }
-    });
-    return result;
-}
-
 function createSdnoServiceInstance(gatewayService, serviceInstance) {
     var sdnoLcmNsUrl = '/openoapi/sdnonslcm/v1.0/ns';
     return createServiceInstance(gatewayService, sdnoLcmNsUrl, serviceInstance);
+}
+
+function createServiceInstance(gatewayService, nsUri, serviceInstance) {
+    var defer = $.Deferred();
+    var sParameter = {
+        'nsdId': serviceInstance.serviceTemplateId,
+        'nsName': serviceInstance.serviceName,
+        'description': serviceInstance.serviceDescription,
+        'gatewayUri': nsUri
+    };
+    $.when($.ajax({
+        type: "POST",
+        url: gatewayService,
+        contentType: "application/json",
+        dataType: "json",
+        data: JSON.stringify(sParameter)
+    })).then(function(response) {
+        var nsInstanceId = response[0].nsInstanceId;
+        var initNsUrl = nsUri + '/' + nsInstanceId + '/Instantiate'
+        var parameter = {
+            'gatewayUri': initNsUrl,
+            'nsInstanceId': nsInstanceId,
+            'additionalParamForNs': serviceInstance.serviceParameters
+        };
+        return $.ajax({
+            type: "POST",
+            url: gatewayService,
+            contentType: "application/json",
+            dataType: "json",
+            data: JSON.stringify(parameter)
+        });
+    }).then(function(response) {
+        defer.resolve(serviceInstance);
+    });
+    return defer;
+}
+
+
+function collectServiceParameters(parameters) {
+    var serviceParameters = {};
+    var i;
+    for (i = 0; i < parameters.length; i += 1) {
+        serviceParameters[parameters[i].name] = $('#' + parameters[i].id).val();
+    }
+    return serviceParameters;
+}
+
+function fetchServiceTemplateBy(templateId) {
+    var serviceTemplateUri = 'http://localhost:8080/openoapi/catalog/v1/servicetemplates/' + templateId;
+    var template;
+    $.ajax({
+        type: "GET",
+        async: false,
+        url: serviceTemplateUri,
+        contentType: "application/json",
+        dataType: "json",
+        success: function (jsonResp) {
+            template = {
+                name: jsonResp.templateName,
+                gsarId: jsonResp.csarId
+            }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert("Error on page : " + xhr.responseText);
+        }
+    });
+    if (template === undefined) {
+        return template;
+    }
+    var queryCsarUri = 'http://localhost:8080/openoapi/catalog/v1/csars/' + template.gsarId;
+    $.ajax({
+        type: "GET",
+        async: false,
+        url: queryCsarUri,
+        contentType: "application/json",
+        dataType: "json",
+        success: function (jsonResp) {
+            template.csarType = jsonResp.type
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert("Error on page : " + xhr.responseText);
+        }
+    });
+    return template;
 }
 
 function updateTable(serviceInstance) {
