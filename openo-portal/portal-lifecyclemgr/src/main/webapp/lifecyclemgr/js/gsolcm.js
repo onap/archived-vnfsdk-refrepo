@@ -42,7 +42,7 @@ lcmHandler.prototype = {
         };
         var gatewayService = 'http://localhost:8080/openoapi/servicegateway/v1/services';
         $.when(
-            fetchServiceTemplateBy2(serviceInstance.serviceTemplateId)
+            fetchServiceTemplateBy(serviceInstance.serviceTemplateId)
         ).then(
             function(template) {
                 serviceInstance.templateName = template.name;
@@ -65,7 +65,7 @@ function renderTemplateParametersTab() {
         templateParameters = translateToTemplateParameters(templateParameterResponse[0].inputs);
         var vims = translateToVimInfo(vimsInfoResponse[0]);
         var components = transfromToComponents(templateParameters.parameters, vims);
-		
+
 		//TODO need to address the issue of the dynamic loading of parameter tab,,,
      //   document.getElementById("parameterTab").innerHTML = components;
     });
@@ -168,7 +168,7 @@ function transformToOptions(vims) {
     return options;
 }
 
-function fetchServiceTemplateBy2(templateId) {
+function fetchServiceTemplateBy(templateId) {
     var defer = $.Deferred();
     var serviceTemplateUri = 'http://localhost:8080/openoapi/catalog/v1/servicetemplates/' + templateId;
     var template = {};
@@ -290,45 +290,6 @@ function collectServiceParameters(parameters) {
     return serviceParameters;
 }
 
-function fetchServiceTemplateBy(templateId) {
-    var serviceTemplateUri = 'http://localhost:8080/openoapi/catalog/v1/servicetemplates/' + templateId;
-    var template;
-    $.ajax({
-        type: "GET",
-        async: false,
-        url: serviceTemplateUri,
-        contentType: "application/json",
-        dataType: "json",
-        success: function (jsonResp) {
-            template = {
-                name: jsonResp.templateName,
-                gsarId: jsonResp.csarId
-            }
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            alert("Error on page : " + xhr.responseText);
-        }
-    });
-    if (template === undefined) {
-        return template;
-    }
-    var queryCsarUri = 'http://localhost:8080/openoapi/catalog/v1/csars/' + template.gsarId;
-    $.ajax({
-        type: "GET",
-        async: false,
-        url: queryCsarUri,
-        contentType: "application/json",
-        dataType: "json",
-        success: function (jsonResp) {
-            template.csarType = jsonResp.type
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            alert("Error on page : " + xhr.responseText);
-        }
-    });
-    return template;
-}
-
 function updateTable(serviceInstance) {
     appendOenRow(serviceInstance);
     addDeleteEventRegistration();
@@ -365,94 +326,88 @@ function addDeleteEventRegistration() {
         var templateId = $(spanElement).text();
         var inputElement = $(tdElement).children("input")[0];
         var instanceId = $(inputElement).val();
-        var result = deleteServiceInstance(templateId, instanceId);
-        if (result) {
-            trElement.remove();
-            alert("Service instance deleted successfully!");
-        }
-    });
-}
 
-function deleteServiceInstance(templateId, instanceId) {
-    var serviceTemplate = fetchServiceTemplateBy(templateId);
-    if (serviceTemplate === undefined) {
-        return;
-    }
-    var gatewayService = '/openoapi/servicegateway/v1/services';
-    var result = false;
-    if (serviceTemplate.csarType === 'GSAR') {
-        result = deleteGsoServiceInstance(gatewayService, instanceId);
-    } else if (serviceTemplate.csarType === 'NSAR' || serviceTemplate.csarType === 'NFAR') {
-        result = deleteNfvoServiceInstance(gatewayService, instanceId);
-    } else if (serviceTemplate.csarType === 'SSAR') {
-        result = deleteSdnoServiceInstance(gatewayService, instanceId);
-    }
-    return result;
+        var gatewayService = 'http://localhost:8080/openoapi/servicegateway/v1/services';
+        $.when(
+            fetchServiceTemplateBy(templateId)
+        ).then(
+            function(template) {
+                if (template.csarType === 'GSAR') {
+                    return deleteGsoServiceInstance(gatewayService, instanceId);
+                } else if (template.csarType === 'NSAR' || serviceTemplate.csarType === 'NFAR') {
+                    var nfvoNsUri = '/openoapi/nslcm/v1.0/ns';
+                    return deleteServiceInstance(gatewayService, nfvoNsUri, instanceId);
+                } else if (template.csarType === 'SSAR') {
+                    var sdnoNsUri = '/openoapi/sdnonslcm/v1.0/ns';
+                    return deleteServiceInstance(gatewayService, sdnoNsUri, instanceId);
+                }
+            }
+        ).then(
+            function() {
+                trElement.remove();
+            }
+        );
+    });
 }
 
 function deleteGsoServiceInstance(gatewayService, instanceId) {
-    var gsoLcmUrl = '/openoapi/lifecyclemgr/v1/services/' + instanceId;
-    var operation = 'DELETE';
-    return sendDeleteRequest(operation, gatewayService, gsoLcmUrl);
+    var defer = $.Deferred();
+    var gsoLcmUri = '/openoapi/lifecyclemgr/v1/services';
+    $.when(
+        deleteNetworkServiceInstance(gatewayService, gsoLcmUri, instanceId);
+    ).then(
+        function(response) {
+        defer.resolve();
+    });
+    return defer;
 }
 
-function deleteNfvoServiceInstance(gatewayService, instanceId) {
-    var nfvoNsUrl = '/openoapi/nslcm/v1.0/ns/' + instanceId;
-    var nfvoNsTerminateUrl = nfvoNsUrl + '/terminate';
-    var terminateParameter = {
-        'nsInstanceId': instanceId,
-        'terminationType': "graceful",
-        'gracefulTerminationTimeout': "60",
-        'operation': "POST",
-        'gatewayUri': nfvoNsTerminateUrl
+function deleteServiceInstance(gatewayService, nsUri, instanceId) {
+    var defer = $.Deferred();
+    $.when(
+        terminateNetworkServiceInstance(gatewayService, nsUri, instanceId)
+    ).then(
+        function(response) {
+            return deleteNetworkServiceInstance(gatewayService, nsUri, instanceId);
+        }
+    ).then(
+        function(response) {
+            defer.resolve();
+        }
+    )
+    return defer;
+}
+
+function deleteNetworkServiceInstance(gatewayService, nsUri, instanceId) {
+    var instanceUri = nsUri + '/' + instanceId;
+    var parameter = {
+        'operation': "DELETE",
+        'gatewayUri': instanceUri
     };
-    var result = sendRequest(gatewayService, terminateParameter);
-    if (result) {
-        var serviceParameter = {
-            'operation': "DELETE",
-            'gatewayUri': nfvoNsUrl
-        };
-        result = sendRequest(gatewayService, serviceParameter);
-    }
-    return result;
-}
-
-function deleteSdnoServiceInstance(gatewayService, instanceId) {
-    var sdnoNsUrl = '/openoapi/sdnonslcm/v1.0/ns/' + instanceId;
-    var sdnoNsTerminateUrl = sdnoNsUrl + '/terminate';
-    var terminateParameter = {
-        'nsInstanceId': instanceId,
-        'terminationType': "graceful",
-        'gracefulTerminationTimeout': "60",
-        'operation': "POST",
-        'gatewayUri': sdnoNsTerminateUrl
-    };
-    var result = sendDeleteRequest(gatewayService, terminateParameter);
-    if (result) {
-        var serviceParameter = {
-            'operation': "DELETE",
-            'gatewayUri': sdnoNsUrl
-        };
-        result = sendDeleteRequest(gatewayService, serviceParameter);
-    }
-    return result;
-}
-
-function sendDeleteRequest(gatewayService, parameter) {
-    var result = false;
-    $.ajax({
+    return $.ajax({
         type: "DELETE",
-        async: false,
         url: gatewayService,
         contentType: "application/json",
         dataType: "json",
-        data: JSON.stringify(parameter),
-        success: function (jsonResp) {
-            result = true;
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            alert("Error on page : " + xhr.responseText);
-        }
+        data: JSON.stringify(parameter)
     });
-    return result;
+}
+
+function terminateNetworkServiceInstance(gatewayService, nsUri, instanceId) {
+    var instanceUri = nsUri + '/' + instanceId;
+    var nsTerminateUri = instanceUri + '/terminate';
+    var terminateParameter = {
+        'nsInstanceId': instanceId,
+        'terminationType': "graceful",
+        'gracefulTerminationTimeout': "60",
+        'operation': "POST",
+        'gatewayUri': nsTerminateUri
+    };
+    return $.ajax({
+        type: "DELETE",
+        url: gatewayService,
+        contentType: "application/json",
+        dataType: "json",
+        data: JSON.stringify(terminateParameter)
+    });
 }
