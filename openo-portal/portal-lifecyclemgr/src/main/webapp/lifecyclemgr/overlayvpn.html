@@ -41,7 +41,9 @@
                     //Assigning data to table
                     data: jsondata
                 });
-
+            $('.table tbody tr').click(function () {
+                $(this).addClass('openoTable_row_selected').siblings().removeClass('openoTable_row_selected');
+            })
             });
             function operateFormatter(value, row, index) {
                 return [
@@ -56,8 +58,34 @@
                 }
             };
         </script>
-    </head>
-<body id="open_base_vpn_cotentBody" class="cotentBody ng-scope">
+    <style>
+        .fixed-table-container tbody td .th-inner,
+        .fixed-table-container thead th .th-inner {
+            line-height: 4px;
+        }
+
+        .fixed-table-pagination .pagination-info {
+            display: none !important;
+        }
+
+        .table tbody tr:hover td,
+        .table tbody tr.odd:hover td {
+            background-color: #e6fbe0 !important;
+        }
+
+        table tr.openoTable_row_selected td {
+            background: #e8f8fe !important;
+            border-bottom: 1px solid #e8e8e8 !important;
+        }
+
+        .container-fluid {
+            padding-left: 30px;
+            padding-right: 0px;
+        }
+    </style>
+</head>
+
+<body id="open_base_vpn_cotentBody" class="ng-scope">
 <div class="container-fluid ms-controller">
 
     <h3> Overlay VPN </h3>
@@ -65,10 +93,10 @@
         <div id='ict_virtualApplication_table_div'>
             <div>
                 <div class="top">
-                    <table id="sai" data-pagination="true" data-page-size="5" data-pagination-first-text="First"
-                           data-pagination-pre-text="Previous" data-pagination-next-text="Next"
-                           data-pagination-last-text="Last">
-                        <thead id="soverlayTable_thead" class="openo-table-thead">
+                    <table id="sai" class="table table-striped" data-pagination="true" data-page-size="5"
+                           data-pagination-first-text="First" data-pagination-pre-text="Previous"
+                           data-pagination-next-text="Next" data-pagination-last-text="Last">
+                        <thead id="soverlayTable_thead" class="openo-table-thead" style="background:#ECECEC">
                         <tr class="active">
                             <th class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign"
                                 data-field="overlayName" data-sortable="true">
@@ -83,33 +111,37 @@
                                 data-field="overlayDesc" data-sortable="true">
                                 <div class="openo-table-th-border"></div>
                                 <div class="DataTables_sort_wrapper openo-ellipsis ">
-							<span id="overlayDesc_sorticon"
-                                  class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element "> Description
-                    </span></div>
+                                            <span id="overlayDesc_sorticon"
+                                                  class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element "> Description
+                    </span>
+                                </div>
                             </th>
                             <th class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign"
                                 data-field="overlayThincCPE" data-sortable="true">
                                 <div class="openo-table-th-border"></div>
                                 <div class="DataTables_sort_wrapper openo-ellipsis ">
-					<span id="overlayThincCPE_sorticon"
-                          class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">Thin CPE
-                    </span></div>
+                                            <span id="overlayThincCPE_sorticon"
+                                                  class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">Thin CPE
+                    </span>
+                                </div>
                             </th>
                             <th class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign"
                                 data-field="overlayPortVlanID" data-sortable="true">
                                 <div class="openo-table-th-border"></div>
                                 <div class="DataTables_sort_wrapper openo-ellipsis ">
-					<span id="overlayPortVlanID_sorticon"
-                          class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">Port:Vlan ID
-                    </span></div>
+                                            <span id="overlayPortVlanID_sorticon"
+                                                  class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">Port:Vlan ID
+                    </span>
+                                </div>
                             </th>
                             <th class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign"
                                 data-field="overlayDCName" data-sortable="true">
                                 <div class="openo-table-th-border"></div>
                                 <div class="DataTables_sort_wrapper openo-ellipsis ">
-					<span id="overlayDCName_sorticon"
-                          class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">DC Name
-                    </span></div>
+                                            <span id="overlayDCName_sorticon"
+                                                  class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">DC Name
+                    </span>
+                                </div>
                             </th>
                             <th class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign"
                                 data-field="overlayVPC" data-sortable="true">
