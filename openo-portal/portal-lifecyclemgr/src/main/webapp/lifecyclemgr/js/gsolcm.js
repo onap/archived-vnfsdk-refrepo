@@ -65,7 +65,9 @@ function renderTemplateParametersTab() {
         templateParameters = translateToTemplateParameters(templateParameterResponse[0].inputs);
         var vims = translateToVimInfo(vimsInfoResponse[0]);
         var components = transfromToComponents(templateParameters.parameters, vims);
-        document.getElementById("parameterTab").innerHTML = components;
+		
+		//TODO need to address the issue of the dynamic loading of parameter tab,,,
+     //   document.getElementById("parameterTab").innerHTML = components;
     });
 }
 
