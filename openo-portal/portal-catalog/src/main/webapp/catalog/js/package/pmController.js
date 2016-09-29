@@ -18,10 +18,7 @@ var vm = avalon.define({
     resource : {
         packageInfo : [],
         packageDetails : "",
-        vimSelectItems : [
-            {vimName:"test1", oid:"123456"},
-            {vimName:"test2",oid:"987654"}
-        ]
+        vimSelectItems : []
     },
     csarIdSelected : "",
 	$packageTableFields : {// table columns
@@ -35,7 +32,7 @@ var vm = avalon.define({
 		]
 	},
 	$language: {
-        "sProcessing": "<img src='../component/thirdparty/data-tables/images/loading-spinner-grey.gif'/><span>&nbsp;&nbsp;"
+        "sProcessing": "<img src='../common/thirdparty/data-tables/images/loading-spinner-grey.gif'/><span>&nbsp;&nbsp;"
                         +$.i18n.prop("nfv-nso-iui-table-sProcess")+"</span>",
         "sLengthMenu": $.i18n.prop("nfv-nso-iui-table-sLengthMenu"),
         "sZeroRecords": $.i18n.prop("nfv-nso-iui-table-sZeroRecords"),
@@ -63,7 +60,7 @@ var vm = avalon.define({
         nsarOnboardUrl: "/openoapi/nslcm/v1.0/nspackage",
         nfarOnboardUrl: "/openoapi/nslcm/v1.0/vnfpackage",
         changePackageStatusUrl : "/openoapi/catalog/v1/csars",
-        queryVimInfoUrl : "/api/roc/v1/resource/vims"
+        queryVimInfoUrl : "/openoapi/extsys/v1/vims"
     },
     $getPackageCond: function() {
     	var cond = {};
@@ -133,11 +130,17 @@ var vm = avalon.define({
             labVimId : "",
         },
         $initData : function(csarId) {
-            vm.resource.vimSelectItems = [
-                {vimName:"test1", oid:"123456"},
-                {vimName:"test2", oid:"987654"},
-                {vimName:"test3", oid:"123qwe"}
-            ];
+            //vm.resource.vimSelectItems = [
+            //    {vimName:"test1", oid:"123456"},
+            //    {vimName:"test2", oid:"987654"},
+            //    {vimName:"test3", oid:"123qwe"}
+            //];
+            var url=vm.$restUrl.queryVimInfoUrl;
+            commonUtil.get(url,null,function(resp) {
+                if (resp) {
+                    vm.resource.vimSelectItems=resp;
+                }
+            })
             vm.selectVimDialog.nfarOnBoardParam.csarId = csarId;
         },
         $confirmBtnClick : function () {
@@ -148,10 +151,10 @@ var vm = avalon.define({
                 var radioId = "testEnvRadios" + i;
                 var checkboxId = "produceEnvChecks" + i;
                 if(document.getElementById(radioId).checked) {
-                    labVimId = vm.resource.vimSelectItems[i].oid;
+                    labVimId = vm.resource.vimSelectItems[i].vimId;
                 }
                 if(document.getElementById(checkboxId).checked) {
-                    vimIds.push(vm.resource.vimSelectItems[i].oid);
+                    vimIds.push(vm.resource.vimSelectItems[i].vimId);
                 }
             }
             vm.selectVimDialog.nfarOnBoardParam.labVimId = labVimId;
