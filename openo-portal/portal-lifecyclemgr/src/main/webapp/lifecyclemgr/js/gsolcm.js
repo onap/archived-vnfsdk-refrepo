@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 var templateParameters = {
-    templateName: '',
+    changed: true,
     parameters: []
 };
-
-var service_instance_insert_index = 0;
 
 var lcmHandler = function () {
     this._addOwnEvents();
@@ -26,19 +24,21 @@ var lcmHandler = function () {
 
 lcmHandler.prototype = {
     _addOwnEvents: function () {
-        $('a[data-toggle="tab"]').on('show.bs.tab', this.beforeParameterTabShow);
         $('#createNS').click(this.okAction);
     },
-    beforeParameterTabShow: function (event) {
-        renderTemplateParametersTab();
-    },
-    okAction: function (event) {
+    okAction: function () {
+        var vimLocation = $('#vim_location').val();
+        if(vimLocation == undefined || vimLocation == 'select') {
+            alert('Location must be selected in Template Parameters');
+            return;
+        }
+
         var serviceInstance = {
-            serviceTemplateId: $('#svcTempl').val(),
+            serviceTemplateId: $("#svcTempl").val(),
             serviceName: $('#svcName').val(),
-            serviceDescription: $('#svcDesc').val(),
-            serviceParameters: collectServiceParameters(templateParameters.parameters),
-            vimLocation: $('#vim_location').val()
+            description: $('#svcDesc').val(),
+            inputParameters: collectServiceParameters(templateParameters.parameters),
+            vimLocation: vimLocation
         };
         var gatewayService = 'http://localhost:8080/openoapi/servicegateway/v1/services';
         $.when(
@@ -46,6 +46,7 @@ lcmHandler.prototype = {
         ).then(
             function(template) {
                 serviceInstance.templateName = template.name;
+                serviceInstance.serviceType = template.serviceType;
                 return createNetworkServiceInstance(template, serviceInstance, gatewayService);
             }
         ).then(
@@ -57,17 +58,23 @@ lcmHandler.prototype = {
     }
 };
 
-function renderTemplateParametersTab() {
+function initParameterTab() {
+    if (!templateParameters.changed) {
+        return;
+    }
+    var svcTempl = $("#svcTempl").val();
+    if ('select' === svcTempl) {
+        document.getElementById("templateParameterTab").innerHTML = '';
+        return;
+    }
     $.when(
         fetchTemplateParameterDefinitions(templateParameters),
         fetchVimInfo()
-    ).then(function(templateParameterResponse, vimsInfoResponse) {
+    ).then(function (templateParameterResponse, vimsInfoResponse) {
         templateParameters = translateToTemplateParameters(templateParameterResponse[0].inputs);
         var vims = translateToVimInfo(vimsInfoResponse[0]);
-        var components = transfromToComponents(templateParameters.parameters, vims);
-
-		//TODO need to address the issue of the dynamic loading of parameter tab,,,
-     //   document.getElementById("parameterTab").innerHTML = components;
+        var components = transformToComponents(templateParameters.parameters, vims);
+        document.getElementById("templateParameterTab").innerHTML = components;
     });
 }
 
@@ -102,7 +109,7 @@ function translateToTemplateParameters(inputs) {
             value: inputs[i].defaultValue
         };
     }
-    return {name: $("#svcTempl").val(), parameters: inputParameters};
+    return {changed: false, parameters: inputParameters};
 }
 
 function translateToVimInfo(vims) {
@@ -118,11 +125,11 @@ function translateToVimInfo(vims) {
     return result;
 }
 
-function transfromToComponents(parameters, vims) {
+function transformToComponents(parameters, vims) {
     var components = '';
     var i;
     for (i = 0; i < parameters.length; i += 1) {
-        var component = '<div class="form-group">' +
+        var component = '<div class="mT15 form-group" style="margin-left:25px;">' +
             '<label class="col-sm-3 control-label">' +
             '<span>' + parameters[i].description + '</span>' + generateRequiredLabel(parameters[i]) +
             '</label>' +
@@ -145,7 +152,7 @@ function generateRequiredLabel(parameter) {
 }
 
 function generateLocationComponent(vims) {
-    var component = '<div class="form-group">' +
+    var component = '<div class="form-group" style="margin-left:25px;margin-bottom:15px;">' +
         '<label class="col-sm-3 control-label">' +
         '<span>Location</span>' +
         '<span class="required">*</span>' +
@@ -159,7 +166,7 @@ function generateLocationComponent(vims) {
 }
 
 function transformToOptions(vims) {
-    var options = '';
+    var options = '<option value="select">--select--</option>';
     var i;
     for (i = 0; i < vims.length; i += 1) {
         var option = '<option value="' + vims[i].vimId + '">' + vims[i].vimName + '</option>';
@@ -191,7 +198,13 @@ function fetchServiceTemplateBy(templateId) {
         }
     ).then(
         function(response) {
-            template.csarType = response.type;
+            if(response.type === 'GSAR') {
+                template.serviceType = 'GSO';
+            } else if(response.type === 'NSAR' || response.type === 'NFAR') {
+                template.serviceType = 'NFVO';
+            } else if(response.type === 'SSAR') {
+                template.serviceType = "SDNO";
+            }
             defer.resolve(template)
         }
     );
@@ -199,27 +212,27 @@ function fetchServiceTemplateBy(templateId) {
 }
 
 function createNetworkServiceInstance(template, serviceInstance, gatewayService) {
-    if (template.csarType === 'GSAR') {
+    if (template.serviceType === 'GSO') {
         return createGsoServiceInstance(gatewayService, serviceInstance, template);
-    } else if (template.csarType === 'NSAR' || template.csarType === 'NFAR') {
+    } else if (template.serviceType === 'NFVO') {
         return createNfvoServiceInstance(gatewayService, serviceInstance);
-    } else if (template.csarType === 'SSAR') {
+    } else if (template.serviceType === 'SDNO') {
         return createSdnoServiceInstance(gatewayService, serviceInstance);
     }
 }
 
 function createGsoServiceInstance(gatewayService, serviceInstance, serviceTemplate) {
     var defer = $.Deferred();
-    serviceInstance.serviceParameters.location = serviceInstance.vimLocation;
+    serviceInstance.inputParameters.location = serviceInstance.vimLocation;
     var gsoLcmUri = '/openoapi/lifecyclemgr/v1/services';
     var parameter = {
         'name': serviceInstance.serviceName,
-        'description': serviceInstance.serviceDescription,
+        'description': serviceInstance.description,
         'serviceDefId': serviceTemplate.gsarId,
         'templatedId': serviceInstance.serviceTemplateId,
         'templateName': serviceTemplate.templateName,
         'getewayUri': gsoLcmUri,
-        'parameters': serviceInstance.serviceParameters
+        'parameters': serviceInstance.inputParameters
     };
     $.when($.ajax({
         type: "POST",
@@ -228,21 +241,21 @@ function createGsoServiceInstance(gatewayService, serviceInstance, serviceTempla
         dataType: "json",
         data: JSON.stringify(parameter)
     })).then(function(response) {
-        serviceInstance.serviceInstanceId = response.serviceId;
+        serviceInstance.serviceId = response.serviceId;
         defer.resolve(serviceInstance);
-    })
+    });
     return defer;
 }
 
 function createNfvoServiceInstance(gatewayService, serviceInstance) {
-    var nfvoLcmNsUrl = '/openoapi/nslcm/v1.0/ns';
-    serviceInstance.serviceParameters.location = serviceInstance.vimLocation;
-    return createServiceInstance(gatewayService, nfvoLcmNsUrl, serviceInstance);
+    var nfvoLcmNsUri = '/openoapi/nslcm/v1.0/ns';
+    serviceInstance.inputParameters.location = serviceInstance.vimLocation;
+    return createServiceInstance(gatewayService, nfvoLcmNsUri, serviceInstance);
 }
 
 function createSdnoServiceInstance(gatewayService, serviceInstance) {
-    var sdnoLcmNsUrl = '/openoapi/sdnonslcm/v1.0/ns';
-    return createServiceInstance(gatewayService, sdnoLcmNsUrl, serviceInstance);
+    var sdnoLcmNsUri = '/openoapi/sdnonslcm/v1.0/ns';
+    return createServiceInstance(gatewayService, sdnoLcmNsUri, serviceInstance);
 }
 
 function createServiceInstance(gatewayService, nsUri, serviceInstance) {
@@ -250,7 +263,7 @@ function createServiceInstance(gatewayService, nsUri, serviceInstance) {
     var sParameter = {
         'nsdId': serviceInstance.serviceTemplateId,
         'nsName': serviceInstance.serviceName,
-        'description': serviceInstance.serviceDescription,
+        'description': serviceInstance.description,
         'gatewayUri': nsUri
     };
     $.when($.ajax({
@@ -260,12 +273,13 @@ function createServiceInstance(gatewayService, nsUri, serviceInstance) {
         dataType: "json",
         data: JSON.stringify(sParameter)
     })).then(function(response) {
-        var nsInstanceId = response[0].nsInstanceId;
-        var initNsUrl = nsUri + '/' + nsInstanceId + '/Instantiate'
+        var nsInstanceId = response.nsInstanceId;
+        serviceInstance.serviceId = nsInstanceId;
+        var initNsUrl = nsUri + '/' + nsInstanceId + '/Instantiate';
         var parameter = {
             'gatewayUri': initNsUrl,
             'nsInstanceId': nsInstanceId,
-            'additionalParamForNs': serviceInstance.serviceParameters
+            'additionalParamForNs': serviceInstance.inputParameters
         };
         return $.ajax({
             type: "POST",
@@ -274,7 +288,7 @@ function createServiceInstance(gatewayService, nsUri, serviceInstance) {
             dataType: "json",
             data: JSON.stringify(parameter)
         });
-    }).then(function(response) {
+    }).then(function() {
         defer.resolve(serviceInstance);
     });
     return defer;
@@ -291,21 +305,8 @@ function collectServiceParameters(parameters) {
 }
 
 function updateTable(serviceInstance) {
-    appendOenRow(serviceInstance);
-    addDeleteEventRegistration();
-}
-
-function appendOenRow(serviceInstance) {
-    var index = service_instance_insert_index;
-    var creator = '';
-    $('#sai').append('<tr id="service_instance_' + index + '"></tr>');
-    $("#service_instance_" + index).html('<td><div class="DataTables_sort_wrapper openo-ellipsis "><span id="service_name" class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">' + serviceInstance.serviceName + '</span></td>' +
-        '<td><span class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">' + serviceInstance.templateName + '</span></td>' +
-        '<td class="service_template_id"><span class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">' + serviceInstance.serviceTemplateId + '</span><input type="hidden" value="' + serviceInstance.serviceInstanceId + '"/></td>' +
-        '<td><span class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">' + formatDate(new Date()) + '</span></td>' +
-        '<td><span class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">' + creator + '</span></td>' +
-        '<td><button class="data_delete_action"><img id="delete_action" class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element " src="images/delete.png"></img></button></td>');
-    service_instance_insert_index += 1;
+    serviceInstance.createTime = formatDate(new Date());
+    $('#sai').bootstrapTable("append", serviceInstance);
 }
 
 function formatDate(date) {
@@ -318,64 +319,47 @@ function formatDate(date) {
     return year + "-" + month + "-" + day + " " + hh + ":" + mm + ":" + ss;
 }
 
-function addDeleteEventRegistration() {
-    $(".data_delete_action").click(function (event) {
-        var trElement = $(this).parents("tr")[0];
-        var tdElement = $(trElement).children("td.service_template_id")[0];
-        var spanElement = $(tdElement).children("span")[0];
-        var templateId = $(spanElement).text();
-        var inputElement = $(tdElement).children("input")[0];
-        var instanceId = $(inputElement).val();
-
-        var gatewayService = 'http://localhost:8080/openoapi/servicegateway/v1/services';
-        $.when(
-            fetchServiceTemplateBy(templateId)
-        ).then(
-            function(template) {
-                if (template.csarType === 'GSAR') {
-                    return deleteGsoServiceInstance(gatewayService, instanceId);
-                } else if (template.csarType === 'NSAR' || serviceTemplate.csarType === 'NFAR') {
-                    var nfvoNsUri = '/openoapi/nslcm/v1.0/ns';
-                    return deleteServiceInstance(gatewayService, nfvoNsUri, instanceId);
-                } else if (template.csarType === 'SSAR') {
-                    var sdnoNsUri = '/openoapi/sdnonslcm/v1.0/ns';
-                    return deleteServiceInstance(gatewayService, sdnoNsUri, instanceId);
-                }
-            }
-        ).then(
-            function() {
-                trElement.remove();
-            }
-        );
-    });
+function deleteNe(rowId, row) {
+    var instanceId = row.serviceId;
+    var serviceType = row.serviceType;
+    var gatewayService = 'http://localhost:8080/openoapi/servicegateway/v1/services';
+    var remove = function () {
+        $('#sai').bootstrapTable("removeByUniqueId", rowId);
+    };
+    if(serviceType === 'GSO') {
+        deleteGsoServiceInstance(gatewayService, instanceId, remove)
+    } else if (serviceType === 'NFVO') {
+        var nfvoNsUri = '/openoapi/nslcm/v1.0/ns';
+        deleteNonGsoServiceInstance(gatewayService, nfvoNsUri, instanceId, remove);
+    } else if (serviceType === 'SDNO') {
+        var sdnoNsUri = '/openoapi/sdnonslcm/v1.0/ns';
+        deleteNonGsoServiceInstance(gatewayService, sdnoNsUri, instanceId, remove);
+    }
 }
 
-function deleteGsoServiceInstance(gatewayService, instanceId) {
-    var defer = $.Deferred();
+function deleteGsoServiceInstance(gatewayService, instanceId, remove) {
     var gsoLcmUri = '/openoapi/lifecyclemgr/v1/services';
     $.when(
-        deleteNetworkServiceInstance(gatewayService, gsoLcmUri, instanceId);
+        deleteNetworkServiceInstance(gatewayService, gsoLcmUri, instanceId)
     ).then(
-        function(response) {
-        defer.resolve();
-    });
-    return defer;
+        function() {
+            remove();
+        }
+    );
 }
 
-function deleteServiceInstance(gatewayService, nsUri, instanceId) {
-    var defer = $.Deferred();
+function deleteNonGsoServiceInstance(gatewayService, nsUri, instanceId, remove) {
     $.when(
         terminateNetworkServiceInstance(gatewayService, nsUri, instanceId)
     ).then(
-        function(response) {
+        function() {
             return deleteNetworkServiceInstance(gatewayService, nsUri, instanceId);
         }
     ).then(
-        function(response) {
-            defer.resolve();
+        function() {
+            remove();
         }
     )
-    return defer;
 }
 
 function deleteNetworkServiceInstance(gatewayService, nsUri, instanceId) {
