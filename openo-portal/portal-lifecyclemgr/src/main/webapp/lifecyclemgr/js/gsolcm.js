@@ -324,7 +324,7 @@ function deleteNe(rowId, row) {
     var serviceType = row.serviceType;
     var gatewayService = 'http://localhost:8080/openoapi/servicegateway/v1/services';
     var remove = function () {
-        $('#sai').bootstrapTable("removeByUniqueId", rowId);
+        $('#sai').bootstrapTable('remove', {field: 'serviceId', values: [instanceId]});
     };
     if(serviceType === 'GSO') {
         deleteGsoServiceInstance(gatewayService, instanceId, remove)
