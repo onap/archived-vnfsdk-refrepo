@@ -21,7 +21,7 @@ var vm = avalon.define({
         {href: "#nodes", name: "Nodes", value: false}
     ],
     $language: {
-        "sProcessing": "<img src='../component/thirdparty/data-tables/images/loading-spinner-grey.gif'/><span>&nbsp;&nbsp;"
+        "sProcessing": "<img src='../common/thirdparty/data-tables/images/loading-spinner-grey.gif'/><span>&nbsp;&nbsp;"
         + $.i18n.prop("nfv-nso-iui-table-sProcess") + "</span>",
         "sLengthMenu": $.i18n.prop("nfv-nso-iui-table-sLengthMenu"),
         "sZeroRecords": $.i18n.prop("nfv-nso-iui-table-sZeroRecords"),
