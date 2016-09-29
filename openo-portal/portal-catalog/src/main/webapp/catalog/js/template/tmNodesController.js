@@ -16,15 +16,16 @@
 var vm = avalon.define({
     $id : "tmNodesController",
     templateId : "",
+    globalNodesData: {},
     $language: {
         "sProcessing": "<img src='../common/thirdparty/data-tables/images/loading-spinner-grey.gif'/><span>&nbsp;&nbsp;"
-        +$.i18n.prop("nfv-nso-iui-table-sProcess")+"</span>",
+        + $.i18n.prop("nfv-nso-iui-table-sProcess") + "</span>",
         "sLengthMenu": $.i18n.prop("nfv-nso-iui-table-sLengthMenu"),
         "sZeroRecords": $.i18n.prop("nfv-nso-iui-table-sZeroRecords"),
         "sInfo": "<span class='seperator'>  </span>" + $.i18n.prop("nfv-nso-iui-table-sInfo"),
         "sInfoEmpty": $.i18n.prop("nfv-nso-iui-table-sInfoEmpty"),
         "sGroupActions": $.i18n.prop("nfv-nso-iui-table-sGroupActions"),
-        "sAjaxRequestGeneralError":$.i18n.prop("nfv-nso-iui-table-sAjaxRequestGeneralError"),
+        "sAjaxRequestGeneralError": $.i18n.prop("nfv-nso-iui-table-sAjaxRequestGeneralError"),
         "sEmptyTable": $.i18n.prop("nfv-nso-iui-table-sEmptyTable"),
         "oPaginate": {
             "sPrevious": $.i18n.prop("nfv-nso-iui-table-sPrevious"),
@@ -33,52 +34,53 @@ var vm = avalon.define({
             "sPageOf": $.i18n.prop("nfv-nso-iui-table-sPageOf")
         }
     },
-    $restUrl : {
-        queryNodeTemplateUrl : "/openoapi/catalog/v1/servicetemplates/{0}/nodetemplates",
-        queryTemplateInfoUrl : "/openoapi/catalog/v1/servicetemplates"
+    $restUrl: {
+        queryNodeTemplateUrl: "/openoapi/catalog/v1/servicetemplates/{0}/nodetemplates",
+        queryTemplateInfoUrl: "/openoapi/catalog/v1/servicetemplates"
     },
-    $init : function() {
+    $init: function () {
         vm.$initTemplateData();
-        //vm.$initTopoNodesData();
-        vm.$initNodesData();
     },
-    $initTemplateData : function() {
+    $initTemplateData: function () {
         $.ajax({
-            type : "GET",
-            url : vm.$restUrl.queryTemplateInfoUrl,
-            success : function(resp) {
-                if(resp) {
+            type: "GET",
+            url: vm.$restUrl.queryTemplateInfoUrl,
+            success: function (resp) {
+                if (resp) {
                     vm.servicesTemplateData = [];
-                    for(var i=0; i<resp.length; i++) {
+                    for (var i = 0; i < resp.length; i++) {
                         //generate node table display data
                         vm.servicesTemplateData.push(resp[i]);
                     }
                     vm.$initNfvNodesTab();
                 }
             },
-            error : function() {
+            error: function () {
                 commonUtil.showMessage($.i18n.prop("nfv-topology-iui-message-error"), "danger");
             }
         });
     },
-    $initNodesData : function() {
+    $initNodesData: function (tempId) {
         $.ajax({
             type: "GET",
-            url: vm.$restUrl.queryNodeTemplateUrl,
+            //url: vm.$restUrl.queryNodeTemplateUrl,
+            url: "/openoapi/catalog/v1/servicetemplates/" + tempId + "/nodetemplates",
             success: function (resp) {
                 if (resp) {
-                    vm.nodesDetail.nodesTemplateDetailData = [];
+                    vm.nodesDetail.templatesNodesDetailData[tempId] = [];
+                    var nodesTempData = [];
                     for (var i = 0; i < resp.length; i++) {
                         //generate node table display data
                         var nodeTemplate = topoUtil.generateNodeTemplate(resp[i]);
-                        vm.nodesList.nodesData.push(nodeTemplate);
+                        nodesTempData.push(nodeTemplate);
                     }
-                    vm.nodesDetail.nodesTemplateDetailData = resp;
+                    vm.nodesList.nodesData[tempId] = nodesTempData;
+                    vm.nodesDetail.templatesNodesDetailData[tempId] = resp;
                     //generate topology graph display data
                     //vm.topologyTab.topoTemplateData = topoUtil.generateTopoTemplate(vm.nodesList.nodesData.$model);
                     //initialize topology data
                     //topoUtil.initTopoData(vm.topologyTab.topoTemplateData.$model);
-                    vm.nodesList.$initNodesTable();
+                    vm.nodesList.$initNodesTable(tempId);
                 }
             },
             error: function () {
@@ -87,8 +89,8 @@ var vm = avalon.define({
         });
     },
     servicesTemplateData: [],
-    $nodesTabId : "ict_nodes_template_table",
-    $nodesTemplateTabFields : {// table columns
+    $nodesTabId: "ict_nodes_template_table",
+    $nodesTemplateTabFields: {// table columns
         table: [
             {"mData": "serviceTemplateId", name: "ID","bVisible": false},
             {"mData": "", name: "","sClass": 'details-control'},
@@ -116,87 +118,151 @@ var vm = avalon.define({
                 tr.removeClass('shown');
             }
             else {
-                table.fnOpen(tr[0], vm.nodesList.$format_Detail(), 'details');
+                table.fnOpen(tr[0], vm.nodesList.$format_Detail(table,tr[0]), 'details');
                 tr.addClass('shown');
             }
         });
     },
 
     //nodes list table
-    nodesList :{
-        nodesData: [],
-        $nodesTabDataId : "ict_nodes_table",
-        $nodesTabFields : {// table columns
+    nodesList: {
+        nodesData: {},
+        tempId:"",
+        $nodesTabDataId: "ict_nodes_table",
+        $nodesTabFields: {// table columns
             table: [
                 {"mData": "id", name: "ID", "bVisible": false},
-                {"mData": "name", name: $.i18n.prop("nfv-templateDetail-iui-field-nodetypename"), "bSortable": true, "fnRender" : tmNodesDetailUtil.nameRender},
+                {
+                    "mData": "name",
+                    name: $.i18n.prop("nfv-templateDetail-iui-field-nodetypename"),
+                    "bSortable": true,
+                    "fnRender": tmNodesDetailUtil.nameRender
+                },
                 {"mData": "type", name: $.i18n.prop("nfv-templateDetail-iui-field-type"), "bSortable": false},
-                {"mData": "containedin", name: $.i18n.prop("nfv-templateDetail-iui-field-containedin"), "bSortable": false},
-                {"mData": "deployedon", name: $.i18n.prop("nfv-templateDetail-iui-field-deployedon"), "bSortable": false},
-                {"mData": "connectedto", name: $.i18n.prop("nfv-templateDetail-iui-field-connectedto"), "bSortable": false},
-                {"mData": "virtuallinksto", name: $.i18n.prop("nfv-templateDetail-iui-field-virtuallinksto"), "bSortable": false}
+                {
+                    "mData": "containedin",
+                    name: $.i18n.prop("nfv-templateDetail-iui-field-containedin"),
+                    "bSortable": false
+                },
+                {
+                    "mData": "deployedon",
+                    name: $.i18n.prop("nfv-templateDetail-iui-field-deployedon"),
+                    "bSortable": false
+                },
+                {
+                    "mData": "connectedto",
+                    name: $.i18n.prop("nfv-templateDetail-iui-field-connectedto"),
+                    "bSortable": false
+                },
+                {
+                    "mData": "virtuallinksto",
+                    name: $.i18n.prop("nfv-templateDetail-iui-field-virtuallinksto"),
+                    "bSortable": false
+                }
             ]
         },
-        $initNodesTable: function () {
+        $initNodesTable: function (tempId) {
             var setting = {};
             setting.language = vm.$language;
             setting.paginate = true;
             setting.info = true;
             setting.columns = vm.nodesList.$nodesTabFields.table;
-            setting.restUrl = vm.$restUrl.queryNodeTemplateUrl;
-            setting.tableId = vm.nodesList.$nodesTabDataId;
-            serverPageTable.initTableWithoutLib(setting,{},vm.nodesList.$nodesTabDataId + '_div');
+            setting.restUrl = "/openoapi/catalog/v1/servicetemplates/" + tempId + "/nodetemplates";
+            setting.tableId = vm.nodesList.$nodesTabDataId + "_" + tempId;
+            //serverPageTable.initTableWithData(setting,vm.nodesList.$nodesTabDataId + '_div',vm.nodesList.nodesData.$model);
+            serverPageTable.initTableWithoutLib(setting, {}, setting.tableId + '_div');
         },
-        $format_Detail: function() {
-            var sOut = '<div class="row-fluid" data-name="table_zone"><div class="col-xs-12" id="ict_nodes_table_div"></div></div>'
-            vm.$initNodesData();
+        $format_Detail: function (oTable, nTr) {
+            var aData = oTable.fnGetData(nTr);
+            var tempId = aData.serviceTemplateId;
+            vm.nodesList.tempId = tempId;
+            var tableId = "ict_nodes_table" + "_" + tempId + "_div";
+            var sOut = '<div class="row-fluid" data-name="table_zone"><div class="col-xs-12" id="'+tableId+'"></div></div>'
+            vm.$initNodesData(tempId);
             return sOut;
         },
     },
     //Nodes Details
     nodesDetail : {
         nodesTemplateDetailData: [],
-        detailTitle : "",
-        isShow : "none",
-        detailIndex : 0,
-        detailData : [
+        templatesNodesDetailData:[],
+        detailTitle: "",
+        isShow: "none",
+        detailIndex: 0,
+        detailData: [
             {id: "general", name: $.i18n.prop("nfv-templateDetail-nodesTab-iui-tab-general"), isActive: true},
-            {id: "properties", name: $.i18n.prop("nfv-templateDetail-nodesTab-iui-tab-properties"), isActive: false},
-            {id: "relationShips", name: $.i18n.prop("nfv-templateDetail-nodesTab-iui-tab-relationShips"), isActive: false}
+            {
+                id: "properties",
+                name: $.i18n.prop("nfv-templateDetail-nodesTab-iui-tab-properties"),
+                isActive: false
+            },
+            {
+                id: "relationShips",
+                name: $.i18n.prop("nfv-templateDetail-nodesTab-iui-tab-relationShips"),
+                isActive: false
+            }
         ],
-        $showDetails : function(isShow, nodetypeid, nodetypename) {
+        $showDetails: function (isShow, nodetypeid, nodetypename,tempId) {
             vm.nodesDetail.isShow = isShow;
             if (isShow == "block") {
                 vm.nodesDetail.detailTitle = nodetypename + " " + $.i18n.prop("nfv-templateDetail-nodesTab-iui-title-nodeDetail"),
                     $('#' + vm.nodesDetail.detailData[0].id).click();
                 vm.nodesDetail.detailData[0].isActive = true;
-                vm.nodesDetail.$initNodeDetailTable(nodetypeid);
+                vm.nodesDetail.$initNodeDetailTable(nodetypeid,tempId);
             }
         },
-        detailCondChange : function(index) {
+        detailCondChange: function (index) {
             vm.nodesDetail.detailIndex = index;
-            for(var i=0; i<vm.nodesDetail.detailData.length; i++) {
+            for (var i = 0; i < vm.nodesDetail.detailData.length; i++) {
                 vm.nodesDetail.detailData[i].isActive = false;
             }
             vm.nodesDetail.detailData[index].isActive = true;
         },
         $tableFields : {// table columns
             general: [
-                {"mData": "key", "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-key"), "bSortable" : false},
-                {"mData": "value", "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-value"), "bSortable" : false}
+                {
+                    "mData": "key",
+                    "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-key"),
+                    "bSortable": false
+                },
+                {
+                    "mData": "value",
+                    "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-value"),
+                    "bSortable": false
+                }
             ],
             properties: [
-                {"mData": "key", "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-key"), "bSortable" : false},
-                {"mData": "value", "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-value"), "bSortable" : false}
+                {
+                    "mData": "key",
+                    "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-key"),
+                    "bSortable": false
+                },
+                {
+                    "mData": "value",
+                    "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-value"),
+                    "bSortable": false
+                }
             ],
             relationShips: [
-                {"mData": "sourceNodeName", "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-sourceNodeName"), "bSortable" : false},
-                {"mData": "targetNodeName", "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-targetNodeName"), "bSortable" : false},
-                {"mData": "type", "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-type"), "bSortable" : false}
+                {
+                    "mData": "sourceNodeName",
+                    "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-sourceNodeName"),
+                    "bSortable": false
+                },
+                {
+                    "mData": "targetNodeName",
+                    "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-targetNodeName"),
+                    "bSortable": false
+                },
+                {
+                    "mData": "type",
+                    "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-type"),
+                    "bSortable": false
+                }
             ]
         },
-        $initNodeDetailTable: function(nodetemplateid) {
-            var data = topoUtil.getCurrentDetailData(vm.nodesDetail.nodesTemplateDetailData.$model, nodetemplateid);
+        $initNodeDetailTable: function (nodetemplateid,tempId) {
+            var data = topoUtil.getCurrentDetailData(vm.nodesList.nodesData[tempId], nodetemplateid);
             //initialize three tables of nodedetail
             $.each(vm.nodesDetail.$tableFields, function(key, value){
                 var setting = {};
