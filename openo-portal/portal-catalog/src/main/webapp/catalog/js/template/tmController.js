@@ -23,7 +23,7 @@ var vm = avalon.define({
 	$templateTableFields : {// table columns
 		table: [
             {"mData": "serviceTemplateId", name: "ID", "bVisible": false},
-            {"mData": "templateName", name: $.i18n.prop("nfv-template-iui-field-templatename"), "fnRender" : tmUtil.nameRender},
+            {"mData": "templateName",name: $.i18n.prop("nfv-template-iui-field-templatename"),"fnRender": tmUtil.nameRender},
             //{"mData": "templateName", name: $.i18n.prop("nfv-template-iui-field-templatename-topo"), "fnRender" : tmUtil.topoRender},
             //{"mData": "templateName", name: $.i18n.prop("nfv-template-iui-field-templatename-nodes"), "fnRender" : tmUtil.nodesRender},
             {"mData": "vendor", name: $.i18n.prop("nfv-template-iui-field-vendor")},
@@ -33,7 +33,7 @@ var vm = avalon.define({
 		]
 	},
     $language: {
-            "sProcessing": "<img src='../component/thirdparty/data-tables/images/loading-spinner-grey.gif'/><span>&nbsp;&nbsp;"
+            "sProcessing": "<img src='../common/thirdparty/data-tables/images/loading-spinner-grey.gif'/><span>&nbsp;&nbsp;"
                         +$.i18n.prop("nfv-nso-iui-table-sProcess")+"</span>",
             "sLengthMenu": $.i18n.prop("nfv-nso-iui-table-sLengthMenu"),
             "sZeroRecords": $.i18n.prop("nfv-nso-iui-table-sZeroRecords"),
