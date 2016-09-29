@@ -96,10 +96,17 @@
 
         function hideBasic() {
             $("#basicInfoTab").hide();
+            initParameterTab();
+            $("#templateParameterTab").show();
         }
 
         function showBasic() {
             $("#basicInfoTab").show();
+            $("#templateParameterTab").hide();
+        }
+
+        function serviceTemplateChanged() {
+            templateParameters.changed = true;
         }
 
         function showTopoCont() {
@@ -497,13 +504,17 @@
                                     </label>
                                     <div class="col-sm-7">
                                         <select class="form-control" style="padding-top: 0px;padding-bottom: 0px;"
-                                                id="svcTempl" name="svcTempl">
+                                                id="svcTempl" name="svcTempl" onchange="serviceTemplateChanged();">
                                             <option value="select">--select--</option>
                                             <option value="1.1">1.1</option>
                                             <option value="1.2">1.2</option>
                                         </select>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div id="templateParameterTab">
+
                             </div>
 
                         </div>
