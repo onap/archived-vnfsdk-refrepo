@@ -15,8 +15,8 @@
  */
 var vm = avalon.define({
     $id : "tmDetailController",
-    templateId : "",
-    globalNodesData: {},
+    templateId : "",//store the Id of service template which shows in Topology tab page
+    globalNodesData: {},//store the nodes data which shows in Topology tab page
     templateData : [
         {href: "#topology", name: "Topology", value: true},
         {href: "#nodes", name: "Nodes", value: false}
@@ -71,7 +71,7 @@ var vm = avalon.define({
             url: vm.$restUrl.queryNodeTemplateUrl,
             success: function (resp) {
                 if (resp) {
-                    vm.nodesTab.nodesDetail.nodesTemplateDetailData = [];
+                    vm.nodesDetail.nodesTemplateDetailData = [];
                     var nodesTempData = [];
                     for (var i = 0; i < resp.length; i++) {
                         //generate node table display data
@@ -79,12 +79,11 @@ var vm = avalon.define({
                         nodesTempData.push(nodeTemplate);
                     }
                     vm.globalNodesData[vm.templateId] = nodesTempData;
-                    vm.nodesTab.nodesDetail.nodesTemplateDetailData = resp;
                     //generate topology graph display data
-                    vm.topologyTab.topoTemplateData = topoUtil.generateTopoTemplate(vm.globalNodesData[vm.templateId]);
+                    vm.nodesDetail.nodesTemplateDetailData = resp;
                     //initialize topology data
+                    vm.topologyTab.topoTemplateData = topoUtil.generateTopoTemplate(vm.globalNodesData[vm.templateId]);
                     topoUtil.initTopoData(vm.topologyTab.topoTemplateData.$model);
-                    //vm.nodesTab.nodesList.$initNodesTable();
                 }
             },
             error: function () {
@@ -114,7 +113,7 @@ var vm = avalon.define({
             topoUtil.initTopoData(vm.topologyTab.topoTemplateData.$model);
         },
         $showTopo: function (id, name) {
-            vm.nodesTab.nodesDetail.$showDetails("block", id, name);
+            vm.topologyTab.$showTopoDetails("block", id, name);
         },
         $showVnfTopo: function (templateId) {
             vm.topologyTab.returnBtnVisible = true;
@@ -125,7 +124,17 @@ var vm = avalon.define({
             vm.topologyTab.returnBtnVisible = false;
             vm.$restUrl.queryNodeTemplateUrl = "/openoapi/catalog/v1/servicetemplates/" + vm.templateId + "/nodetemplates";
             vm.$init();
-        }
+        },
+        $showTopoDetails: function (isShow, nodetypeid, nodetypename) {
+            vm.nodesDetail.isShow = isShow;
+            if (isShow == "block") {
+                vm.nodesDetail.detailTitle = nodetypename + " " + $.i18n.prop("nfv-templateDetail-nodesTab-iui-title-nodeDetail"),
+                    $('#' + vm.nodesDetail.detailData[0].id).click();
+                vm.nodesDetail.detailData[0].isActive = true;
+                vm.nodesDetail.$initTopoNodesDetailTable(nodetypeid);
+            }
+        },
+
     },
     nodesTab: {
         servicesTemplateData: [],
@@ -172,7 +181,6 @@ var vm = avalon.define({
                 url: "/openoapi/catalog/v1/servicetemplates/" + tempId + "/nodetemplates",
                 success: function (resp) {
                     if (resp) {
-                        vm.nodesTab.nodesDetail.templatesNodesDetailData[tempId] = [];
                         var nodesTempData = [];
                         for (var i = 0; i < resp.length; i++) {
                             //generate node table display data
@@ -180,11 +188,7 @@ var vm = avalon.define({
                             nodesTempData.push(nodeTemplate);
                         }
                         vm.nodesTab.nodesList.nodesData[tempId] = nodesTempData;
-                        vm.nodesTab.nodesDetail.templatesNodesDetailData[tempId] = resp;
                         //generate topology graph display data
-                        //vm.topologyTab.topoTemplateData = topoUtil.generateTopoTemplate(vm.nodesTab.nodesList.nodesData.$model);
-                        //initialize topology data
-                        //topoUtil.initTopoData(vm.topologyTab.topoTemplateData.$model);
                         vm.nodesTab.nodesList.$initNodesTable(tempId);
                     }
                 },
@@ -252,98 +256,110 @@ var vm = avalon.define({
                 return sOut;
             },
         },
-        //Nodes Details
-        nodesDetail: {
-            nodesTemplateDetailData: [],
-            templatesNodesDetailData:[],
-            detailTitle: "",
-            isShow: "none",
-            detailIndex: 0,
-            detailData: [
-                {id: "general", name: $.i18n.prop("nfv-templateDetail-nodesTab-iui-tab-general"), isActive: true},
+    },
+    //Nodes Details
+    nodesDetail: {
+        nodesTemplateDetailData: [], //used in topo tab page to show node detail
+        detailTitle: "",
+        isShow: "none",
+        detailIndex: 0,
+        detailData: [
+            {id: "general", name: $.i18n.prop("nfv-templateDetail-nodesTab-iui-tab-general"), isActive: true},
+            {
+                id: "properties",
+                name: $.i18n.prop("nfv-templateDetail-nodesTab-iui-tab-properties"),
+                isActive: false
+            },
+            {
+                id: "relationShips",
+                name: $.i18n.prop("nfv-templateDetail-nodesTab-iui-tab-relationShips"),
+                isActive: false
+            }
+        ],
+        $showDetails: function (isShow, nodetypeid, nodetypename,tempId) {
+            vm.nodesDetail.isShow = isShow;
+            if (isShow == "block") {
+                vm.nodesDetail.detailTitle = nodetypename + " " + $.i18n.prop("nfv-templateDetail-nodesTab-iui-title-nodeDetail"),
+                    $('#' + vm.nodesDetail.detailData[0].id).click();
+                vm.nodesDetail.detailData[0].isActive = true;
+                vm.nodesDetail.$initNodeDetailTable(nodetypeid,tempId);
+            }
+        },
+        detailCondChange: function (index) {
+            vm.nodesDetail.detailIndex = index;
+            for (var i = 0; i < vm.nodesDetail.detailData.length; i++) {
+                vm.nodesDetail.detailData[i].isActive = false;
+            }
+            vm.nodesDetail.detailData[index].isActive = true;
+        },
+        $tableFields : {// table columns
+            general: [
                 {
-                    id: "properties",
-                    name: $.i18n.prop("nfv-templateDetail-nodesTab-iui-tab-properties"),
-                    isActive: false
+                    "mData": "key",
+                    "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-key"),
+                    "bSortable": false
                 },
                 {
-                    id: "relationShips",
-                    name: $.i18n.prop("nfv-templateDetail-nodesTab-iui-tab-relationShips"),
-                    isActive: false
+                    "mData": "value",
+                    "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-value"),
+                    "bSortable": false
                 }
             ],
-            $showDetails: function (isShow, nodetypeid, nodetypename,tempId) {
-                vm.nodesTab.nodesDetail.isShow = isShow;
-                if (isShow == "block") {
-                    vm.nodesTab.nodesDetail.detailTitle = nodetypename + " " + $.i18n.prop("nfv-templateDetail-nodesTab-iui-title-nodeDetail"),
-                        $('#' + vm.nodesTab.nodesDetail.detailData[0].id).click();
-                    vm.nodesTab.nodesDetail.detailData[0].isActive = true;
-                    vm.nodesTab.nodesDetail.$initNodeDetailTable(nodetypeid,tempId);
+            properties: [
+                {
+                    "mData": "key",
+                    "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-key"),
+                    "bSortable": false
+                },
+                {
+                    "mData": "value",
+                    "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-value"),
+                    "bSortable": false
                 }
-            },
-            detailCondChange: function (index) {
-                vm.nodesTab.nodesDetail.detailIndex = index;
-                for (var i = 0; i < vm.nodesTab.nodesDetail.detailData.length; i++) {
-                    vm.nodesTab.nodesDetail.detailData[i].isActive = false;
+            ],
+            relationShips: [
+                {
+                    "mData": "sourceNodeName",
+                    "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-sourceNodeName"),
+                    "bSortable": false
+                },
+                {
+                    "mData": "targetNodeName",
+                    "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-targetNodeName"),
+                    "bSortable": false
+                },
+                {
+                    "mData": "type",
+                    "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-type"),
+                    "bSortable": false
                 }
-                vm.nodesTab.nodesDetail.detailData[index].isActive = true;
-            },
-            $tableFields : {// table columns
-                general: [
-                    {
-                        "mData": "key",
-                        "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-key"),
-                        "bSortable": false
-                    },
-                    {
-                        "mData": "value",
-                        "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-value"),
-                        "bSortable": false
-                    }
-                ],
-                properties: [
-                    {
-                        "mData": "key",
-                        "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-key"),
-                        "bSortable": false
-                    },
-                    {
-                        "mData": "value",
-                        "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-value"),
-                        "bSortable": false
-                    }
-                ],
-                relationShips: [
-                    {
-                        "mData": "sourceNodeName",
-                        "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-sourceNodeName"),
-                        "bSortable": false
-                    },
-                    {
-                        "mData": "targetNodeName",
-                        "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-targetNodeName"),
-                        "bSortable": false
-                    },
-                    {
-                        "mData": "type",
-                        "name": $.i18n.prop("nfv-templateDetail-nodesTab-iui-field-type"),
-                        "bSortable": false
-                    }
-                ]
-            },
-            $initNodeDetailTable: function (nodetemplateid,tempId) {
-                var data = topoUtil.getCurrentDetailData(vm.nodesTab.nodesList.nodesData[tempId], nodetemplateid);
-                //initialize three tables of nodedetail
-                $.each(vm.nodesTab.nodesDetail.$tableFields, function (key, value) {
-                    var setting = {};
-                    setting.language = vm.$language;
-                    setting.paginate = false;
-                    setting.info = false;
-                    setting.columns = value;
-                    setting.tableId = "ict_table_" + key;
-                    serverPageTable.initTableWithData(setting, setting.tableId + '_div', data[key]);
-                });
-            }
+            ]
+        },
+        $initNodeDetailTable: function (nodetemplateid,tempId) {
+            var data = topoUtil.getCurrentDetailData(vm.nodesTab.nodesList.nodesData[tempId], nodetemplateid);
+            //initialize three tables of nodedetail
+            $.each(vm.nodesDetail.$tableFields, function (key, value) {
+                var setting = {};
+                setting.language = vm.$language;
+                setting.paginate = false;
+                setting.info = false;
+                setting.columns = value;
+                setting.tableId = "ict_table_" + key;
+                serverPageTable.initTableWithData(setting, setting.tableId + '_div', data[key]);
+            });
+        },
+        $initTopoNodesDetailTable: function (nodetemplateid) {
+            var data = topoUtil.getCurrentDetailData(vm.nodesDetail.nodesTemplateDetailData.$model, nodetemplateid);
+            //initialize three tables of nodedetail
+            $.each(vm.nodesDetail.$tableFields, function (key, value) {
+                var setting = {};
+                setting.language = vm.$language;
+                setting.paginate = false;
+                setting.info = false;
+                setting.columns = value;
+                setting.tableId = "ict_table_" + key;
+                serverPageTable.initTableWithData(setting, setting.tableId + '_div', data[key]);
+            });
         }
     },
     executionTab: {
@@ -390,7 +406,7 @@ var vm = avalon.define({
         $init: function () {
             vm.executionTab.$initEventsTable();
         }
-    },
+    }
 
 });
 
@@ -408,7 +424,6 @@ var initParam = function () { //initialize template detail params
         if (flavor) {
             vm.$restUrl.queryNodeTemplateUrl += "?flavor=" + flavor;
         }
-
         vm.$init();
     }
 };

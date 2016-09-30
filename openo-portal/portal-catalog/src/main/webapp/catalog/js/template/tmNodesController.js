@@ -15,8 +15,7 @@
  */
 var vm = avalon.define({
     $id : "tmNodesController",
-    templateId : "",
-    globalNodesData: {},
+    templateId : "", //store the Id of service template which shows in Topology tab page
     $language: {
         "sProcessing": "<img src='../common/thirdparty/data-tables/images/loading-spinner-grey.gif'/><span>&nbsp;&nbsp;"
         + $.i18n.prop("nfv-nso-iui-table-sProcess") + "</span>",
@@ -67,7 +66,6 @@ var vm = avalon.define({
             url: "/openoapi/catalog/v1/servicetemplates/" + tempId + "/nodetemplates",
             success: function (resp) {
                 if (resp) {
-                    vm.nodesDetail.templatesNodesDetailData[tempId] = [];
                     var nodesTempData = [];
                     for (var i = 0; i < resp.length; i++) {
                         //generate node table display data
@@ -75,11 +73,6 @@ var vm = avalon.define({
                         nodesTempData.push(nodeTemplate);
                     }
                     vm.nodesList.nodesData[tempId] = nodesTempData;
-                    vm.nodesDetail.templatesNodesDetailData[tempId] = resp;
-                    //generate topology graph display data
-                    //vm.topologyTab.topoTemplateData = topoUtil.generateTopoTemplate(vm.nodesList.nodesData.$model);
-                    //initialize topology data
-                    //topoUtil.initTopoData(vm.topologyTab.topoTemplateData.$model);
                     vm.nodesList.$initNodesTable(tempId);
                 }
             },
@@ -126,8 +119,8 @@ var vm = avalon.define({
 
     //nodes list table
     nodesList: {
-        nodesData: {},
-        tempId:"",
+        nodesData: {}, //used in Nodes tab page, to store nodes data of difference service template
+        tempId:"", //used in Nodes tab page,to store the node's templateId
         $nodesTabDataId: "ict_nodes_table",
         $nodesTabFields: {// table columns
             table: [
@@ -184,8 +177,6 @@ var vm = avalon.define({
     },
     //Nodes Details
     nodesDetail : {
-        nodesTemplateDetailData: [],
-        templatesNodesDetailData:[],
         detailTitle: "",
         isShow: "none",
         detailIndex: 0,

@@ -69,10 +69,10 @@
 			</div>			
 		</div>
 		
-		<div id="right-menu" class="ms-nodedetail" ms-css-display="nodesTab.nodesDetail.isShow">
+		<div id="right-menu" class="ms-nodedetail" ms-css-display="nodesDetail.isShow">
 			<div>
-				<div class="title"><h4>{{nodesTab.nodesDetail.detailTitle}}</h4>
-					<div class="rigth right-button-pointer" ms-click="nodesTab.nodesDetail.$showDetails('none')">
+				<div class="title"><h4>{{nodesDetail.detailTitle}}</h4>
+					<div class="rigth right-button-pointer" ms-click="nodesDetail.$showDetails('none')">
 					<button type="button" class="btn btn-default">
 						<span id="nfv-templateDetail-nodesTab-iui-btn-close" name_i18n="com_zte_nfv_nsoc_i18n"></span>
 					</button>
@@ -80,21 +80,21 @@
 				</div>
 				<div>
 					<div class="btn-group" >
-						<button type="button" class="btn btn-default" ms-repeat="nodesTab.nodesDetail.detailData" ms-click="nodesTab.nodesDetail.detailCondChange($index)" ms-attr-id="el.id"
+						<button type="button" class="btn btn-default" ms-repeat="nodesDetail.detailData" ms-click="nodesDetail.detailCondChange($index)" ms-attr-id="el.id"
 						ms-class="active: el.isActive">{{el.name}}
 						</button>
 					</div>
-					<div ms-if="nodesTab.nodesDetail.detailIndex === 0">
+					<div ms-if="nodesDetail.detailIndex === 0">
 						<div class="row-fluid" data-name="table_zone">
 							<div id='ict_table_general_div' class="nodesDetail"></div>
 						</div>
 					</div>
-					<div ms-if="nodesTab.nodesDetail.detailIndex === 1">
+					<div ms-if="nodesDetail.detailIndex === 1">
 						<div class="row-fluid" data-name="table_zone">
 							<div id='ict_table_properties_div' class="nodesDetail"></div>
 						</div>
 					</div>
-					<div ms-if="nodesTab.nodesDetail.detailIndex === 2">
+					<div ms-if="nodesDetail.detailIndex === 2">
 						<div class="row-fluid" data-name="table_zone">
 							<div id='ict_table_relationShips_div' class="nodesDetail"></div>
 						</div>
