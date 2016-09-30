@@ -18,6 +18,6 @@ tmNodesDetailUtil.timer = null;
 
 tmNodesDetailUtil.nameRender = function(obj) {
     return '<a href="#" onclick="vm.nodesDetail.$showDetails('
-        + '\'block\',\'' + obj.aData.id + '\', \'' + obj.aData.name + '\')">' + obj.aData.name + '</a>';
+        + '\'block\',\'' + obj.aData.id + '\', \'' + obj.aData.name + '\',\'' + vm.nodesList.tempId + '\')">' + obj.aData.name + '</a>';
 }
 
