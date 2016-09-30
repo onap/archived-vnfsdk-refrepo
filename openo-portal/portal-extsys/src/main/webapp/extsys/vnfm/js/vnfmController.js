@@ -42,6 +42,7 @@ var vm = avalon
         $htmlText: {
             saveSuccess: $.i18n.prop("nfv-vnfm-iui-message-save-success"),
             saveFail: $.i18n.prop("nfv-vnfm-iui-message-save-fail"),
+            alreadyExist: $.i18n.prop("nfv-vnfm-iui-message-vnfm-already-exists"),
             updateSuccess: $.i18n.prop("nfv-vnfm-iui-message-update-success"),
             updateFail: $.i18n.prop("nfv-vnfm-iui-message-update-fail")
         },
@@ -99,7 +100,7 @@ var vm = avalon
             name: "",
             type: "",
             //moc : "",
-            //mocDisabled : false,
+            nameReadonly : false,
             vimId: "",
             //vimVisiable : false,
             vendor: "",
@@ -119,7 +120,7 @@ var vm = avalon
             vm.addVnfm.name = "";
             vm.addVnfm.type = "";
             //vm.addVnfm.moc = "";
-            //vm.addVnfm.mocDisabled = false;
+            vm.addVnfm.nameReadonly = false;
             vm.addVnfm.vimId = "";
             //vm.addVnfm.vimVisiable = false;
             vm.addVnfm.vendor = "";
@@ -177,7 +178,15 @@ var vm = avalon
                 password: vm.addVnfm.password
             }
             //save VIM info
-            if (vm.addVnfm.saveType == "add") {
+            if (vm.addVnfm.saveType == "add") {  
+                //      for( var i = 0; i < vm.vnfmInfo.length; i ++ ){
+                //     if(vm.addVnfm.name == vm.vnfmInfo[i].name){                       
+                //        vm.server_rtn.warning_block = true;
+                //        vm.server_rtn.rtn_info = vm.$htmlText.alreadyExist;
+                //        commonUtil.showMessage(vm.$htmlText.alreadyExist, "failed");
+                //        return;
+                //     }
+                // }     
                 $.ajax({
                     type: "POST",
                     url: vm.$restUrl.addVnfmInfoUrl,

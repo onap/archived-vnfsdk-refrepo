@@ -63,7 +63,21 @@
                                     <span class="required" aria-required="true">*</span>
                                 </label>
                                 <div class="col-sm-7">
-                                    <input type="text" ms-duplex="addVim.vimName" name="vimName" class="form-control"/>
+                                    <input type="text" ms-duplex="addVim.vimName" name="vimName" class="form-control" ms-readonly="addVim.vimNameReadonly"/>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span id_i18n="com_zte_ums_eco_roc_vim_type"
+                                          name_i18n="com_zte_conductor_ui_i18n"></span>
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <div class="col-sm-7">
+                                    <select id="vimTypeSelect" ms-each="$vimType.selectItems"
+                                            ms-duplex="addVim.vimType" data-duplex-changed="vimTypeRendered">
+                                        <option ms-attr-value='el.cond_value'>{{el.name}}</option>
+                                    </select>
                                     <span class="help-block"></span>
                                 </div>
                             </div>
@@ -138,7 +152,7 @@
                                     <span class="help-block"></span>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" ms-visible="addVim.domainVisable">
                                 <label class="control-label col-sm-3">
                                     <span id_i18n="com_zte_ums_eco_roc_vim_domain"
                                           name_i18n="com_zte_conductor_ui_i18n"></span>
@@ -147,21 +161,7 @@
                                     <input type="text" ms-duplex="addVim.domain" name="domain" class="form-control"/>
                                     <span class="help-block"></span>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-3">
-                                    <span id_i18n="com_zte_ums_eco_roc_vim_type"
-                                          name_i18n="com_zte_conductor_ui_i18n"></span>
-                                    <span class="required" aria-required="true">*</span>
-                                </label>
-                                <div class="col-sm-7">
-                                    <select id="vimTypeSelect" ms-each="$vimType.selectItems"
-                                            ms-duplex="addVim.vimType">
-                                        <option ms-attr-value='el.cond_value'>{{el.name}}</option>
-                                    </select>
-                                    <span class="help-block"></span>
-                                </div>
-                            </div>
+                            </div>                           
                             <div class="form-group">
                                 <label class="control-label col-sm-3">
                                     <span id_i18n="com_zte_ums_eco_roc_vim_description"

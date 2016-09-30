@@ -87,6 +87,8 @@ var vm = avalon
             vimId: "",
             vimName: "",
             domain: '',
+            domainVisable:true,
+            vimNameModify:false,
             userName: "",
             tenant: "",
             password: "",
@@ -102,10 +104,12 @@ var vm = avalon
             if (vm.action.ADD == action) {
                 vm.addVim.vimId = "";
                 vm.addVim.vimName = "";
+                vm.addVim.vimNameModify=false;
                 vm.addVim.userName = "";
                 vm.addVim.password = "";
                 vm.addVim.url = "";
                 vm.addVim.domain = "";
+                vm.addVim.domainVisable = true;
                 vm.addVim.description = "";
                 vm.addVim.tenant = "";
                 vm.addVim.vendor = "";
@@ -116,12 +120,14 @@ var vm = avalon
             } else {
                 vm.addVim.vimId = el.vimId;
                 vm.addVim.vimName = el.name;
+                vm.addVim.vimNameModify=true;
                 vm.addVim.url = el.url;
                 vm.addVim.description = el.description;
                 vm.addVim.userName = el.userName;
                 vm.addVim.password = el.password;
                 vm.addVim.tenant = el.tenant;
                 vm.addVim.domain = el.domain;
+                vm.addVim.domainVisable=vm.$getdomainVisable(el.type);
                 vm.addVim.saveType = "update";
                 vm.addVim.titleName = $.i18n.prop('com_zte_ums_eco_roc_vim_modify_info');
                 vm.addVim.vimType = el.type;
@@ -148,16 +154,14 @@ var vm = avalon
             }
             vm.executeWait.visible = true;
             vm.executeError.visible = false;
-            if (vm.addVim.saveType == "add") {               
-                /*
-                 for( var i = 0; i < vm.vimInfo.length; i ++ ){
-                 if(vm.addVim.url == vm.vimInfo[i].url){
-                 resUtil.growl($.i18n.prop("com_zte_ums_eco_roc_vim_growl_msg_title") +  'already exists',"info");
-                 $('#addVimDlg').modal('hide');
-                 return;
-                 }
-                 }
-                 */
+            if (vm.addVim.saveType == "add") { 
+                for( var i = 0; i < vm.vimInfo.length; i ++ ){
+                    if(vm.addVim.name == vm.vimInfo[i].name){
+                       resUtil.growl($.i18n.prop("com_zte_ums_eco_roc_vim_growl_msg_title") +  ' already exists',"info");
+                       $('#addVimDlg').modal('hide');
+                        return;
+                    }
+                }                 
                 vm.persistVim();
             } else if (vm.addVim.saveType == "update") {
                 vm.updateVim();
@@ -292,7 +296,20 @@ var vm = avalon
         },
         gotoChartPage: function (oid, name, tenant) {
             window.location.href = "vimChart.html?" + oid + "&" + name + "&" + tenant;
+        },
+        $getdomainVisable:function(vimType){
+            if ("openstack"==vimType){
+                return true;           
+             }else{
+                return false;
+             }
+
+        },
+        vimTypeRendered:function(){
+            vm.addVim.domainVisable=vm.$getdomainVisable(vm.addVim.vimType);
         }
+
+
     });
 avalon.scan();
 vm.$initTable();

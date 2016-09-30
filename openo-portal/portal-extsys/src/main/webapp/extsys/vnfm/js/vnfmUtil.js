@@ -55,6 +55,7 @@ vnfmUtil.updateVnfm = function (data) {
     vm.addVnfm.type = data.type;
     vm.addVnfm.vimId = data.vimId;
     vm.addVnfm.url = data.url;
+    vm.addVnfm.nameReadonly=true;
     vm.addVnfm.userName = data.userName;
     vm.addVnfm.password = data.password;
     vm.addVnfm.saveType = "update";
