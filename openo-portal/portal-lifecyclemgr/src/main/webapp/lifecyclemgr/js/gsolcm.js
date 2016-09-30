@@ -28,7 +28,7 @@ lcmHandler.prototype = {
     },
     okAction: function () {
         var vimLocation = $('#vim_location').val();
-        if(vimLocation == undefined || vimLocation == 'select') {
+        if(vimLocation == 'select') {
             alert('Location must be selected in Template Parameters');
             return;
         }
@@ -40,7 +40,7 @@ lcmHandler.prototype = {
             inputParameters: collectServiceParameters(templateParameters.parameters),
             vimLocation: vimLocation
         };
-        var gatewayService = 'http://localhost:8080/openoapi/servicegateway/v1/services';
+        var gatewayService = '/openoapi/servicegateway/v1/services';
         $.when(
             fetchServiceTemplateBy(serviceInstance.serviceTemplateId)
         ).then(
@@ -59,28 +59,64 @@ lcmHandler.prototype = {
 };
 
 function initParameterTab() {
+    // Service template was not changed. Do not re-initiate the parameter tab.
     if (!templateParameters.changed) {
         return;
     }
-    var svcTempl = $("#svcTempl").val();
-    if ('select' === svcTempl) {
+    var templateId = $("#svcTempl").val();
+    if ('select' === templateId) {
         document.getElementById("templateParameterTab").innerHTML = '';
         return;
     }
     $.when(
-        fetchTemplateParameterDefinitions(templateParameters),
-        fetchVimInfo()
-    ).then(function (templateParameterResponse, vimsInfoResponse) {
-        templateParameters = translateToTemplateParameters(templateParameterResponse[0].inputs);
-        var vims = translateToVimInfo(vimsInfoResponse[0]);
-        var components = transformToComponents(templateParameters.parameters, vims);
-        document.getElementById("templateParameterTab").innerHTML = components;
-    });
+        generateTemplateParametersComponent(templateId),
+        generateLocationComponent(templateId)
+    ).then(
+        function (templateParameters, location) {
+            document.getElementById("templateParameterTab").innerHTML = templateParameters + location;
+        }
+    );
 }
 
-function fetchTemplateParameterDefinitions(parameters) {
-    var currentServiceTemplate = $("#svcTempl").val();
-    var queryParametersUri = 'http://localhost:8080/openoapi/catalog/v1/servicetemplates/' + currentServiceTemplate + '/parameters';
+function generateTemplateParametersComponent(templateId) {
+    var defer = $.Deferred();
+    $.when(
+        fetchTemplateParameterDefinitions(templateId)
+    ).then(
+        function (templateParameterResponse) {
+            templateParameters = translateToTemplateParameters(templateParameterResponse.inputs);
+            defer.resolve(transformToComponents(templateParameters.parameters));
+        }
+    );
+    return defer;
+}
+
+function generateLocationComponent(templateId) {
+    var defer = $.Deferred();
+    $.when(
+        fetchServiceTemplateBy(templateId)
+    ).then(
+        function (template) {
+            if(template.serviceType === 'SDNO') {
+                // SDNO need not config location parameter.
+                defer.resolve('');
+                return;
+            }
+            $.when(
+                fetchVimInfo()
+            ).then(
+                function (vimsResponse) {
+                    var vims = translateToVimInfo(vimsResponse);
+                    defer.resolve(transformToLocationComponent(vims));
+                }
+            )
+        }
+    );
+    return defer;
+}
+
+function fetchTemplateParameterDefinitions(templateId) {
+    var queryParametersUri = '/openoapi/catalog/v1/servicetemplates/' + templateId + '/parameters';
     return $.ajax({
         type: "GET",
         url: queryParametersUri
@@ -88,7 +124,7 @@ function fetchTemplateParameterDefinitions(parameters) {
 }
 
 function fetchVimInfo() {
-    var vimQueryUri = 'http://localhost:8080/openoapi/extsys/v1/vims';
+    var vimQueryUri = '/openoapi/extsys/v1/vims';
     return $.ajax({
         type: "GET",
         url: vimQueryUri
@@ -120,12 +156,12 @@ function translateToVimInfo(vims) {
         result[i] = {
             vimId: vims[i].vimId,
             vimName: vims[i].name
-        }
+        };
     }
     return result;
 }
 
-function transformToComponents(parameters, vims) {
+function transformToComponents(parameters) {
     var components = '';
     var i;
     for (i = 0; i < parameters.length; i += 1) {
@@ -139,7 +175,6 @@ function transformToComponents(parameters, vims) {
             '</div></div>';
         components = components + component;
     }
-    components = components + generateLocationComponent(vims);
     return components;
 }
 
@@ -151,7 +186,7 @@ function generateRequiredLabel(parameter) {
     return requiredLabel;
 }
 
-function generateLocationComponent(vims) {
+function transformToLocationComponent(vims) {
     var component = '<div class="form-group" style="margin-left:25px;margin-bottom:15px;">' +
         '<label class="col-sm-3 control-label">' +
         '<span>Location</span>' +
@@ -177,7 +212,7 @@ function transformToOptions(vims) {
 
 function fetchServiceTemplateBy(templateId) {
     var defer = $.Deferred();
-    var serviceTemplateUri = 'http://localhost:8080/openoapi/catalog/v1/servicetemplates/' + templateId;
+    var serviceTemplateUri = '/openoapi/catalog/v1/servicetemplates/' + templateId;
     var template = {};
     $.when(
         $.ajax({
@@ -189,7 +224,7 @@ function fetchServiceTemplateBy(templateId) {
         function(response) {
             template.name = response.templateName;
             template.gsarId = response.csarId;
-            var queryCsarUri = 'http://localhost:8080/openoapi/catalog/v1/csars/' + template.gsarId;
+            var queryCsarUri = '/openoapi/catalog/v1/csars/' + template.gsarId;
             return $.ajax({
                 type: "GET",
                 url: queryCsarUri,
@@ -229,9 +264,9 @@ function createGsoServiceInstance(gatewayService, serviceInstance, serviceTempla
         'name': serviceInstance.serviceName,
         'description': serviceInstance.description,
         'serviceDefId': serviceTemplate.gsarId,
-        'templatedId': serviceInstance.serviceTemplateId,
+        'templateId': serviceInstance.serviceTemplateId,
         'templateName': serviceTemplate.templateName,
-        'getewayUri': gsoLcmUri,
+        'gatewayUri': gsoLcmUri,
         'parameters': serviceInstance.inputParameters
     };
     $.when($.ajax({
@@ -322,7 +357,7 @@ function formatDate(date) {
 function deleteNe(rowId, row) {
     var instanceId = row.serviceId;
     var serviceType = row.serviceType;
-    var gatewayService = 'http://localhost:8080/openoapi/servicegateway/v1/services';
+    var gatewayService = '/openoapi/servicegateway/v1/services';
     var remove = function () {
         $('#sai').bootstrapTable('remove', {field: 'serviceId', values: [instanceId]});
     };
