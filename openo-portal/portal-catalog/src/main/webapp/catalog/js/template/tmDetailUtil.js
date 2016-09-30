@@ -17,7 +17,7 @@ var tmDetailUtil = {};
 tmDetailUtil.timer = null;
 
 tmDetailUtil.nameRender = function(obj) {
-    return '<a href="#" onclick="vm.nodesTab.nodesDetail.$showDetails('
+    return '<a href="#" onclick="vm.nodesDetail.$showDetails('
     + '\'block\',\'' + obj.aData.id + '\', \'' + obj.aData.name + '\',\'' + vm.nodesTab.nodesList.tempId + '\')">' + obj.aData.name + '</a>';
 }
 
