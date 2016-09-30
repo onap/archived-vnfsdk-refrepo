@@ -23,8 +23,8 @@ var resetSelectedItem=function(menuAlink){
 	}
 }
 var reSelected=function(){
-	if(ZteFrameWork){
-		var menuID = ZteFrameWork.getLocationHash();
+	if(openoFrameWork){
+		var menuID = openoFrameWork.getLocationHash();
 		var menuAlink = $('#'+ menuID,$('#pageableDiv'));
 		if(menuAlink.length>0){
 			resetSelectedItem(menuAlink);

@@ -123,10 +123,6 @@ var initMainPage = function(){
 		});
 		
 		//添加模块导航链接
-//		var parentPage = window.parent;
-//		while(!parentPage.ZteFrameWork){
-//			parentPage = parentPage.parent;
-//		}				
 		$("a.entranceLink").click(function(e){
 			e.preventDefault();
 			if($(this).attr("id") && $(this).attr("id") != "undefined"){

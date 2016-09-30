@@ -488,7 +488,7 @@ var DatatableICT = function () {
 								 "contentType": 'application/json; charset=utf-8',
 								"success": function(res, textStatus, jqXHR) {
 									if (res.sMessage) {
-										ZteFrameWork.alert({type: (res.sStatus == 'OK' ? 'success' : 'danger'), icon: (res.sStatus == 'OK' ? 'check' : 'warning'), message: res.sMessage, container: tableWrapper, place: 'prepend'});
+										openoFrameWork.alert({type: (res.sStatus == 'OK' ? 'success' : 'danger'), icon: (res.sStatus == 'OK' ? 'check' : 'warning'), message: res.sMessage, container: tableWrapper, place: 'prepend'});
 									}
 									if ($('.group-checkable', tableContainer).size() === 1) {
 										$('.group-checkable', tableContainer).attr("checked", false);
@@ -512,7 +512,7 @@ var DatatableICT = function () {
 									if (tableOptions.onError) {
 										tableOptions.onError.call(the);
 									}
-									ZteFrameWork.alert({type: 'danger', icon: 'warning', message: tableOptions.dataTable.oLanguage.sAjaxRequestGeneralError, container: tableWrapper, place: 'prepend'});
+									openoFrameWork.alert({type: 'danger', icon: 'warning', message: tableOptions.dataTable.oLanguage.sAjaxRequestGeneralError, container: tableWrapper, place: 'prepend'});
 									$('.dataTables_processing', tableWrapper).remove();
 								}
 							} );
@@ -526,7 +526,7 @@ var DatatableICT = function () {
 								"data": aoData,
 								"success": function(res, textStatus, jqXHR) {
 									if (res.sMessage) {
-										ZteFrameWork.alert({type: (res.sStatus == 'OK' ? 'success' : 'danger'), icon: (res.sStatus == 'OK' ? 'check' : 'warning'), message: res.sMessage, container: tableWrapper, place: 'prepend'});
+										openoFrameWork.alert({type: (res.sStatus == 'OK' ? 'success' : 'danger'), icon: (res.sStatus == 'OK' ? 'check' : 'warning'), message: res.sMessage, container: tableWrapper, place: 'prepend'});
 									}
 									if ($('.group-checkable', tableContainer).size() === 1) {
 										$('.group-checkable', tableContainer).attr("checked", false);
@@ -561,7 +561,7 @@ var DatatableICT = function () {
 									if (tableOptions.onError) {
 										tableOptions.onError.call(the);
 									}
-									ZteFrameWork.alert({type: 'danger', icon: 'warning', message: tableOptions.dataTable.oLanguage.sAjaxRequestGeneralError, container: tableWrapper, place: 'prepend'});
+									openoFrameWork.alert({type: 'danger', icon: 'warning', message: tableOptions.dataTable.oLanguage.sAjaxRequestGeneralError, container: tableWrapper, place: 'prepend'});
 									$('.dataTables_processing', tableWrapper).remove();
 								}
 							} );
@@ -584,7 +584,7 @@ var DatatableICT = function () {
                             tableInitialized = true; // set table initialized
                             table.show(); // display table
                         }
-                        ZteFrameWork.initUniform($('input[type="checkbox"]', tableContainer));  // reinitialize uniform checkboxes on each table reload
+                        openoFrameWork.initUniform($('input[type="checkbox"]', tableContainer));  // reinitialize uniform checkboxes on each table reload
                         countSelectedRecords(); // reset selected records indicator
                         //所有td不换行
                         $('table#datatable_ajax' +  contextData.curentDatableId).find('td').css('white-space', 'nowrap');

@@ -873,7 +873,7 @@ $Boot.Config = function() {
     }
 
     //当前语言 默认为英语
-    var language = "zh-CN";
+    var language = "en-US";
     //var languageList = ['ar', 'ba', 'cr', 'cs', 'de', 'el', 'es', 'fi', 'fr', 'fr-FR', 'hu-HU', 'id', 'it', 'ja', 'nb-NO', 'nl', 'pl', 'pl-PL', 'pt', 'pt-BR', 'ro-RO', 'ru-RU', 'sk', 'sr', 'sr-Latn', 'sv-SE', 'en-US','uk-UA', 'zh-CN', 'zh-TW'];
     var languageList = ['en-US', 'zh-CN'];
 	
@@ -953,21 +953,6 @@ $Boot.Config = function() {
 
     }
 	
-    /**
-     * 取得浏览器语言信息
-     */
-    this.getLanguage = function() {        
-		var rtnLanguage = localStorage.getItem("language-option");		
-		if( rtnLanguage == "null" || rtnLanguage == null ){
-			rtnLanguage = window.navigator.userLanguage||window.navigator.language;
-		}
-		if( rtnLanguage == '"zh-CN"' || rtnLanguage == "zh-CN" ){
-			return "zh-CN";
-		}else{
-			return "en-US";
-		}
-		//return "en-US";
-    }
 
 	this.getUrlParam=function(name){
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
@@ -986,7 +971,7 @@ $Boot.createNamespace("com.zte.ums.aos.framework.BootConfig", $Boot.Config);
 $Boot.bootConfig = new com.zte.ums.aos.framework.BootConfig();
 
 function getLanguage(){
-   return $Boot.bootConfig.getLanguage();
+   return "en-US";
 }
 
 function getStringWidth(text,fontSize)

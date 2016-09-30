@@ -1,18 +1,7 @@
 ﻿/*
- * Copyright 2016, CMCC Technologies Co., Ltd.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+主框架
+*/ 
+/*string类型的去前后空格和format方法*/
 String.prototype.trim = function() { 
 	return this.replace(/(^\s*)|(\s*$)/g, "");  
 };
@@ -341,7 +330,7 @@ var s=!function(w,d){
     return purl;
 });
 //把框架所有的ajax请求集中到一起，发一条请求，获取所有的配置信息。	
-ZteFrameWork_conf = {
+openoFrameWork_conf = {
 	userName:store.get('username'),
 	changePassItem:FrameConst.change_pass?FrameConst.change_pass:true,
 	helpMenuItem:false,
@@ -351,9 +340,9 @@ ZteFrameWork_conf = {
 	logoutMenuItem:true,
 	defaultThemeColor:"ztebluelight2",
 	dbType:"other",
-	acceptLanguage:"zh-CN"
+	acceptLanguage:"en-US"
 };
-$("#currentUser").html(ZteFrameWork_conf.userName);
+$("#currentUser").html(openoFrameWork_conf.userName);
 
 $.ajax({ 			
 	url : FrameConst.REST_FRAMECOMMIFO,  
@@ -363,31 +352,31 @@ $.ajax({
 	success: function(data){
 		var tempConf = data;
 		if(	tempConf.helpMenuItem && tempConf.helpMenuItem != "" ){
-			ZteFrameWork_conf.helpMenuItem = tempConf.helpMenuItem;
+			openoFrameWork_conf.helpMenuItem = tempConf.helpMenuItem;
 		}
 		if(	tempConf.aboutMenuItem && tempConf.aboutMenuItem != "" ){
-			ZteFrameWork_conf.aboutMenuItem = tempConf.aboutMenuItem;
+			openoFrameWork_conf.aboutMenuItem = tempConf.aboutMenuItem;
 		}		
 		if(	tempConf.flightMenuItem && tempConf.flightMenuItem != "" ){
-			ZteFrameWork_conf.flightMenuItem = tempConf.flightMenuItem;
+			openoFrameWork_conf.flightMenuItem = tempConf.flightMenuItem;
 		}
 		if(	tempConf.fullscreenMenuItem && tempConf.fullscreenMenuItem != "" ){
-			ZteFrameWork_conf.fullscreenMenuItem = tempConf.fullscreenMenuItem;
+			openoFrameWork_conf.fullscreenMenuItem = tempConf.fullscreenMenuItem;
 		}
 		if(	tempConf.logoutMenuItem && tempConf.logoutMenuItem != "" ){
-			ZteFrameWork_conf.logoutMenuItem = tempConf.logoutMenuItem;
+			openoFrameWork_conf.logoutMenuItem = tempConf.logoutMenuItem;
 		}
 		if(	tempConf.defaultThemeColor && tempConf.defaultThemeColor != "" ){
-			ZteFrameWork_conf.defaultThemeColor = tempConf.defaultThemeColor;
+			openoFrameWork_conf.defaultThemeColor = tempConf.defaultThemeColor;
 		}
 		if(	tempConf.dbType && tempConf.dbType != "" ){
-			ZteFrameWork_conf.dbType = tempConf.dbType;
+			openoFrameWork_conf.dbType = tempConf.dbType;
 		}	 
 		if(	tempConf.acceptLanguage && tempConf.acceptLanguage != "" ){
-			ZteFrameWork_conf.acceptLanguage = tempConf.acceptLanguage;
+			openoFrameWork_conf.acceptLanguage = tempConf.acceptLanguage;
 		}
 		if(	tempConf.changePassItem && tempConf.changePassItem != "" ){
-			ZteFrameWork_conf.changePassItem = tempConf.changePassItem;
+			openoFrameWork_conf.changePassItem = tempConf.changePassItem;
 		}
 		
 		setFrameWorkByConf();
@@ -416,12 +405,12 @@ function setThemeColor( configColor ){
 
 function setFrameWorkByConf(){
 		//设置用户相关的框架下拉菜单是否可用
-		    var helpMenuItem = ZteFrameWork_conf.helpMenuItem;
-			var aboutMenuItem = ZteFrameWork_conf.aboutMenuItem;
-            var flightMenuItem = ZteFrameWork_conf.flightMenuItem;
-			var fullscreenMenuItem = ZteFrameWork_conf.fullscreenMenuItem;
-			var logoutMenuItem = ZteFrameWork_conf.logoutMenuItem;
-			var changePassMenuItem = ZteFrameWork_conf.changePassMenuItem;
+		    var helpMenuItem = openoFrameWork_conf.helpMenuItem;
+			var aboutMenuItem = openoFrameWork_conf.aboutMenuItem;
+            var flightMenuItem = openoFrameWork_conf.flightMenuItem;
+			var fullscreenMenuItem = openoFrameWork_conf.fullscreenMenuItem;
+			var logoutMenuItem = openoFrameWork_conf.logoutMenuItem;
+			var changePassMenuItem = openoFrameWork_conf.changePassMenuItem;
             if (!helpMenuItem || helpMenuItem === "false") {
                 $('#uep_ict_help_url').parent('li').remove();
             }
@@ -451,7 +440,7 @@ function setFrameWorkByConf(){
 			}		
 			
 		//设置二次开发者选择的框架皮肤
-		var defaultColor = ZteFrameWork_conf.defaultThemeColor;
+		var defaultColor = openoFrameWork_conf.defaultThemeColor;
 		var panel = $('.zte-theme-panel');
 		$('ul > li', panel).removeClass("current"); 
         if (store && !store('style_color')) { // cookie没有才设置默认主题
@@ -493,14 +482,14 @@ var fMenuSiderDivId = 'page-f-sidebar-menu';
 var fMenuMegaDivId = 'f_hormenu';
 var megaSiderDivId = 'page-megachild-sidebar-menu';
 var megaDivId = 'main_hormenu';
-var zteframework_menu_horizontal = "horizontal";
-var zteframework_menu_vertical = "vertical";
-var zteframework_menu_fmenu = "fmenu";
-var zteframework_showNav = "true";
-var zteframework_smallView = 960;//原来为992，但是在投影仪上不准（投影仪设置为1024，但是实际尺寸比1024小），边栏菜单也会被移除，这个设置一个稍小的值。
+var openoFrameWork_menu_horizontal = "horizontal";
+var openoFrameWork_menu_vertical = "vertical";
+var openoFrameWork_menu_fmenu = "fmenu";
+var openoFrameWork_showNav = "true";
+var openoFrameWork_smallView = 960;//原来为992，但是在投影仪上不准（投影仪设置为1024，但是实际尺寸比1024小），边栏菜单也会被移除，这个设置一个稍小的值。
 
 /*下面是主框架的核心*/
-var ZteFrameWork = function () {
+var openoFrameWork = function () {
 	var defaultLanage=getLanguage();
     var isRTL = false;//文档顺序
 	var isTouch=function(){
@@ -626,7 +615,7 @@ var ZteFrameWork = function () {
     var dealSidebarState = function () {
         // 窗体宽度小尺寸（平板和iphone模式下）时移出左边栏
         var viewport = _getViewPort();
-        if (viewport.width < zteframework_smallView) {
+        if (viewport.width < openoFrameWork_smallView) {
             $('body').removeClass("page-sidebar-closed");
         }else{
 			if (getCookie('sidebar_closed') === '1') {
@@ -634,7 +623,7 @@ var ZteFrameWork = function () {
 			}
 		}
     }
-    //  ZteFrameWork.addResponsiveHandler()回调函数.
+    //  openoFrameWork.addResponsiveHandler()回调函数.
     var runResponsiveHandlers = function () {
         //重新初始化其他订阅的元素elements
         for (var i = 0; i < responsiveHandlers.length; i++) {
@@ -699,17 +688,17 @@ var ZteFrameWork = function () {
             fsiderMenu.css('display','none');
 			return;
 		}		
-		if (zteframework_menu_horizontal == siderbarpos) {
+		if (openoFrameWork_menu_horizontal == siderbarpos) {
 				sidermenu.css('display','none');// 侧边栏隐藏
                 fhorMenu.css('display','none');// 侧边栏隐藏
                 fsiderMenu.css('display','none');// 侧边栏隐藏
                 hormenu.css("display", "block");//显示水平菜单栏
-		} else if (zteframework_menu_vertical == siderbarpos) {
+		} else if (openoFrameWork_menu_vertical == siderbarpos) {
 				sidermenu.css('display','block');// 侧边栏显示
 				hormenu.css("display", "none");//隐藏水平菜单栏
                 fhorMenu.css('display','none');// 侧边栏隐藏
                 fsiderMenu.css('display','none');// 侧边栏隐藏
-		} else if (zteframework_menu_fmenu == siderbarpos) {
+		} else if (openoFrameWork_menu_fmenu == siderbarpos) {
 			sidermenu.css('display','none');
 			hormenu.css("display", "none");
 			fhorMenu.css('display','block');
@@ -866,7 +855,7 @@ var ZteFrameWork = function () {
 		// 屏幕小尺寸时会隐藏边栏，这时菜单由小屏幕右上图标控制，当屏幕变化到大尺寸屏幕时，
 		// 需要按原菜单出现方式恢复菜单显示。
 		var screenwidth = $(window).width();
-		if(screenwidth >= zteframework_smallView){
+		if(screenwidth >= openoFrameWork_smallView){
 			changeSiderBar();
 			if($(".page-sidebar-menu li").css('display') != "none"){
 				if ($('body').hasClass("page-sidebar-closed") && $(".sidebar-toggler").hasClass("close-by-viewportChange")) {	
@@ -920,7 +909,7 @@ var ZteFrameWork = function () {
                     }
                     resize = setInterval(dealIframeHeight, 400,$(this)); 
                 }*/
-    			ZteFrameWork.stopPageLoading();
+    			openoFrameWork.stopPageLoading();
     		});     		             
         }                                  
     }
@@ -937,9 +926,9 @@ var ZteFrameWork = function () {
 		$('#header_notification_bar').html("<div>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</div>");
 	}
 	var dealShownav=function(){
-        var showNav=ZteFrameWork.getLocationURLParameter('showNav');
+        var showNav=openoFrameWork.getLocationURLParameter('showNav');
 		if( showNav=="false"){
-            zteframework_showNav = showNav;
+            openoFrameWork_showNav = showNav;
 			hidemenu();
 			hideAlarmLight();
 		}
@@ -960,7 +949,7 @@ var ZteFrameWork = function () {
 			dealFMenuRelated(source , megaSiderDivId);
             targetContainer = rtn[0];
             targetsource = rtn[1];
-		}else if(navPosOption === zteframework_menu_fmenu){
+		}else if(navPosOption === openoFrameWork_menu_fmenu){
             dealFMenuRelated(source , fMenuSiderDivId);
         }
 		if (targetContainer) {
@@ -1031,7 +1020,7 @@ var ZteFrameWork = function () {
 
         }else{//F菜单的竖向菜单点击
             //处理一种特殊情况，告警灯打开新页面，所有的菜单都不出现，因此，虽然这个source在竖菜单，但竖菜单这个时候实际上是没有显示的
-            if( zteframework_showNav == "true") {
+            if( openoFrameWork_showNav == "true") {
                 $('#' + siderDivId + '>li').hide();     
 				var lis = $(source).parents('li');	
 				var id = lis.eq(lis.length-1).children( 'a' ).attr('hparentid');				
@@ -1149,14 +1138,14 @@ var ZteFrameWork = function () {
             var url = aObject.attr("href");
             if(!url||url.length<2)
               return;
-			url=ZteFrameWork.handlBaseURL(url);
+			url=openoFrameWork.handlBaseURL(url);
 		    //-----------2015年9月21日新增V5中大O需要的按照实例（根据选择的系统实例变化url的ip和端口地址）进行动态切换菜单的功能
 		    var category= aObject.attr("category");//处理菜单中定义的Category属性
 			if(category&&category.length>0){//处理Category属性
 				var newIpPort=_menuCategorys.items(category);
 				if(newIpPort&&newIpPort.ipPort&&newIpPort.ipPort.trim()!=""){//如果找到了
-					var newIpPortstr=ZteFrameWork.getDomainURL(newIpPort.ipPort);//去掉ip和port后多余的部分
-					var urlipport=ZteFrameWork.getDomainURL(url);
+					var newIpPortstr=openoFrameWork.getDomainURL(newIpPort.ipPort);//去掉ip和port后多余的部分
+					var urlipport=openoFrameWork.getDomainURL(url);
 					console.log("old url:"+url);
 					url=newIpPortstr+url.replace(urlipport,"");
 					console.log("newIpPort:"+newIpPortstr+"      newURL:"+url);					
@@ -1194,7 +1183,7 @@ var ZteFrameWork = function () {
 				pymParent.iframe.setAttribute('msallowfullscreen','');
 				pymParent.iframe.setAttribute('webkitallowfullscreen',''); 
 				//pymParent.iframe.setAttribute('scrolling',autoScroll);
-				pymParent.iframe.setAttribute('onload', 'ZteFrameWork.SyncCSS(this,0,"'+_cssfile+'");ZteFrameWork.stopPageLoading();');
+				pymParent.iframe.setAttribute('onload', 'openoFrameWork.SyncCSS(this,0,"'+_cssfile+'");openoFrameWork.stopPageLoading();');
 				cachedIframesObject.replace(id,pymParent);//缓存iframe对象实体
 				pymParent.onMessage('height', function(he){
 					  console.log("The frame "+id+" receive message height is "+he);
@@ -1253,7 +1242,7 @@ var ZteFrameWork = function () {
 						return false;//返回false 后续不再做其他动作了
 					}
 					finally{
-						ZteFrameWork.stopPageLoading();
+						openoFrameWork.stopPageLoading();
 					}
 				}else{//否则url不同,或者url相同但没有shiftjs
 					if(nagivJS.length>0&&nagivJS.toLowerCase()!="null"){//如果是代码导航过来的去掉url参数中的默认action动作
@@ -1264,7 +1253,7 @@ var ZteFrameWork = function () {
 						pagemyIframe.attr("src","");//url和src不同说明更换了页面，需要清空重新加载
 					}else //if (src.trim()==url.trim()) //没有shiftjs并且url相同，说明不需要再次加载了,已经加载过了
 					{
-						ZteFrameWork.stopPageLoading();
+						openoFrameWork.stopPageLoading();
 					}	
 					pagemyIframe.attr("src",url);
 					
@@ -1277,7 +1266,7 @@ var ZteFrameWork = function () {
 						});						
 					}
 					if(_cssfile.length>0&&_cssfile.toLowerCase()!="null"){//如果配置了cssSrc，每次切换都重新执行一边这个css文件，防止有遗漏
-						parm={syncCSSJS:'ZteFrameWork.SyncCSS(this,10,"'+_cssfile+'");ZteFrameWork.stopPageLoading();'};
+						parm={syncCSSJS:'openoFrameWork.SyncCSS(this,10,"'+_cssfile+'");openoFrameWork.stopPageLoading();'};
 						pagemyIframe.one('load',parm,function(e){ 
 							var syncCSSJS=e&&e.data&&e.data.syncCSSJS?e.data.syncCSSJS:"";
 							if(syncCSSJS.length>0&&syncCSSJS.toLowerCase()!="null")
@@ -1312,7 +1301,7 @@ var ZteFrameWork = function () {
 				
 			}  					
             showIframe(miframe);                  
-            ZteFrameWork.fixContentHeight(); // 调整高度  
+            openoFrameWork.fixContentHeight(); // 调整高度  
 			return true;
    }
     // 处理边栏菜单
@@ -1448,7 +1437,7 @@ var ZteFrameWork = function () {
 			if (url.length<2){
 				return;
 			}
-			url=ZteFrameWork.handlBaseURL(url);
+			url=openoFrameWork.handlBaseURL(url);
 			if (gurl==url){				
 				if(e===true){
 					$('#pageableDiv').show();
@@ -1580,7 +1569,7 @@ var ZteFrameWork = function () {
 	var dhByBreadcrumb = false;
     var dealBreadcrumb=function(clickedObject,notGenUID,e){//notGenUID为true就不重新生成id
 		var mbreadcrumb=$('.breadcrumbUl');
-		ZteFrameWork.setPageTitle(clickedObject.find('span').text().trim());              
+		openoFrameWork.setPageTitle(clickedObject.find('span').text().trim());              
 		var clieckedObj= clickedObject.parent('li');
 		if(clieckedObj.length == 0){ //分页式更多菜单，a链接的父亲是div
 			clieckedObj= clickedObject.parent('div');
@@ -1601,7 +1590,7 @@ var ZteFrameWork = function () {
 			while  (clieckedObj&&clieckedObj.length>0){
 			   if(clieckedObj.children('a')){
 					if(!notGenUID){
-						url=ZteFrameWork.getUniqueID("aid");//+Math.floor(Math.random() * (new Date()).getTime());
+						url=openoFrameWork.getUniqueID("aid");//+Math.floor(Math.random() * (new Date()).getTime());
 						clieckedObj.children('a').attr("name",url);
 					}else{
 						url=clieckedObj.children('a').attr("name");
@@ -1609,7 +1598,7 @@ var ZteFrameWork = function () {
 					tempObj=clieckedObj.clone();
 					tempObj.children('a').removeClass('iframe');
 					tempObj.children('a').removeClass('active');
-					tempObj.children('a').attr("href","javascript:ZteFrameWork.goToURL('"+url+"');");
+					tempObj.children('a').attr("href","javascript:openoFrameWork.goToURL('"+url+"');");
 					var arrowdown = $(".fa-angle-down", tempObj.children('a'));
 					if (arrowdown) {
 						arrowdown.remove();
@@ -1622,9 +1611,9 @@ var ZteFrameWork = function () {
 						var id = clieckedObj.children( 'a' ).attr('hparentid');									
 						//判断是F菜单还是横菜单
 						var megaMenu = null;
-						if(navPosOption ==  zteframework_menu_horizontal){
+						if(navPosOption ==  openoFrameWork_menu_horizontal){
 							magaMenu = $('#'+megaDivId);
-						}else if(navPosOption ==  zteframework_menu_fmenu){
+						}else if(navPosOption ==  openoFrameWork_menu_fmenu){
 							magaMenu = $('#'+fMenuMegaDivId);
 						}
 						clieckedObj =  $("a[id=" + id + "]" , magaMenu).parent('li');								
@@ -1675,7 +1664,7 @@ var ZteFrameWork = function () {
 			if(tempObj.children('a')){
 				tempObj.children('a').removeClass('iframe');
 				url=tempObj.children('a').attr("href");
-				tempObj.children('a').attr("onclick","ZteFrameWork.openbreadcrumbLink($(this),event);");
+				tempObj.children('a').attr("onclick","openoFrameWork.openbreadcrumbLink($(this),event);");
 				var tempdiv = tempObj.children('a').children('div');
 				if( tempdiv.length > 0 ){
 					var innerofDiv = tempdiv[0].innerHTML;
@@ -1747,7 +1736,7 @@ var ZteFrameWork = function () {
         }
 
         var viewport = _getViewPort();
-        if (viewport.width >= zteframework_smallView) {
+        if (viewport.width >= openoFrameWork_smallView) {
             var sidebarHeight = _calculateFixedSidebarViewportHeight();
             dealSidebarAndContentHeight();
         }
@@ -1836,7 +1825,7 @@ var ZteFrameWork = function () {
     // 处理边栏菜单切换时的关闭和隐藏.
     var dealSidebarToggler = function () {
         var viewport = _getViewPort();
-        if (getCookie('sidebar_closed') === '1' && viewport.width >= zteframework_smallView) {
+        if (getCookie('sidebar_closed') === '1' && viewport.width >= openoFrameWork_smallView) {
             $('body').addClass('page-sidebar-closed');
         }
         $('.page-sidebar, .sidebar-toggler').on('click', '.sidebar-toggler', function (e) {
@@ -1928,7 +1917,7 @@ var ZteFrameWork = function () {
 		return setInterval(function() {
 			var userName;
 			if( userName == null ){
-				var userName = ZteFrameWork_conf.userName;
+				var userName = openoFrameWork_conf.userName;
 			}
 			var heartUrl = FrameConst.REST_HEARTBEAT + "?username=" + encodeURIComponent(userName);
 			$.ajax(heartUrl, {
@@ -2051,7 +2040,7 @@ var ZteFrameWork = function () {
         $('.header-option', panel).val("fixed");
         $('.footer-option', panel).val("default");
         if ( $('.sidebar-pos-option').attr("disabled") === false) {
-            $('.sidebar-pos-option', panel).val(ZteFrameWork.isRTL() ? 'right' : 'left');
+            $('.sidebar-pos-option', panel).val(openoFrameWork.isRTL() ? 'right' : 'left');
         }		
         var _resetLayout = function () {
             dealResetLayout();
@@ -2060,7 +2049,7 @@ var ZteFrameWork = function () {
 			dealSetLayout();
         }
         var setColor = function (color) {
-            var color_ = (ZteFrameWork.isRTL() ? color + '-rtl' : color);
+            var color_ = (openoFrameWork.isRTL() ? color + '-rtl' : color);
             $('#style_color').attr("href", ICTFRAME_CONST_THEME_COLOR_CSS_PREFFIX + color_ + ".css");
             setCookie('style_color', color);
 			syncColorCSS();
@@ -2129,7 +2118,7 @@ var ZteFrameWork = function () {
         var fsiderMenu = $("#" + fMenuSiderDivId);
 		var pcontent = $("[class='page-content']");
 		if (sidermenu && sidermenu.length > 0 && hormenu && hormenu.length  > 0 && fhorMenu && fhorMenu.length  > 0) {
-			if (navPosOption === zteframework_menu_horizontal) {
+			if (navPosOption === openoFrameWork_menu_horizontal) {
 				sidermenu.css('display','none');// 侧边栏隐藏
                 fhorMenu.css('display','none');
                 fsiderMenu.css('display','none');
@@ -2141,7 +2130,7 @@ var ZteFrameWork = function () {
 				$('.sidebar-option', panel).attr("disabled", true);
 				$('.sidebar-pos-option', panel).val("left");
 				$('.sidebar-pos-option', panel).attr("disabled", true);
-			} else if (navPosOption === zteframework_menu_vertical ) {
+			} else if (navPosOption === openoFrameWork_menu_vertical ) {
 				$("body").removeClass("page-full-width");
 				sidermenu.css('display','block');//侧边栏显示
 				var body = $('body');
@@ -2156,7 +2145,7 @@ var ZteFrameWork = function () {
 				horSiderMenu.css('display','none');
 				$('.sidebar-option', panel).attr("disabled", false);
 				$('.sidebar-pos-option', panel).attr("disabled", false);
-			} else if(navPosOption === zteframework_menu_fmenu ){
+			} else if(navPosOption === openoFrameWork_menu_fmenu ){
                 sidermenu.css('display','none');// 侧边栏隐藏
                 hormenu.css("display", "none");//隐藏水平菜单栏
                 fsiderMenu.css('display','none');
@@ -2235,7 +2224,7 @@ var ZteFrameWork = function () {
                 $("body").removeClass("page-footer-fixed");
         }
             //sidebar position
-        if (ZteFrameWork.isRTL()) {
+        if (openoFrameWork.isRTL()) {
                 if (sidebarPosOption === 'left') {
                     $("body").addClass("page-sidebar-reversed");
                     $('#frontend-link').tooltip('destroy').tooltip({placement: 'right'});
@@ -2310,7 +2299,7 @@ var ZteFrameWork = function () {
 			id = path.substring(0,spIndex);
 			action = path.substring(spIndex+1);
 		}
-		ZteFrameWork.goToURLByIDAndNewAction(id,action);
+		openoFrameWork.goToURLByIDAndNewAction(id,action);
 	}
 	var syncColorCSS=function(){//注册皮肤切换事件处理函数，处理iframe中的皮肤切换
 		var pagemyIframe=null;
@@ -2318,7 +2307,7 @@ var ZteFrameWork = function () {
             for (var i in cachedIframes.hash()) {                			      
 			    pagemyIframe=$('.page-content .page-content-body .'+i);
 			    if(pagemyIframe&&pagemyIframe.length>0){
-					ZteFrameWork.SyncCSS(pagemyIframe[0],1,"");
+					openoFrameWork.SyncCSS(pagemyIframe[0],1,"");
 				}
             }
         }
@@ -2336,7 +2325,7 @@ var ZteFrameWork = function () {
     }
 	//处理跨域请求代理，通过该代理进行iframe间传递参数，注意这里的代理页面proxy.html必须部署到要跨域的对端域的服务器web根目录下
 	var dealCrossProxy=function(ifrm,crossproxysrc,ifmHeadlins,flag){//crossproxysrc这个是proxy.html对应的url根路径
-		var url=$.url(ZteFrameWork.getCurrentScript(document));
+		var url=$.url(openoFrameWork.getCurrentScript(document));
 		var proxyHtmlPath=url.attr("directory")+"proxy/proxy.html"//这中情况适用于使用了该界面集成框架的应用系统
 	    var _ifmProxy=$('<iframe id="ifm_Proxy" name="ifm_Proxy" oldproxyorigin="'+crossproxysrc+'" src="'+crossproxysrc+proxyHtmlPath+'" style="border: 0px; margin: 0px; padding: 0px; width: 100%; display:none;" ></iframe>');
 		var _ifm=$('#ifm_Proxy');
@@ -2445,7 +2434,7 @@ var ZteFrameWork = function () {
 			$('title').html(title+" - "+gdocTitle); 
 		},
 		getLanguage:function(){//获取语言
-			return ZteFrameWork_conf.acceptLanguage;
+			return openoFrameWork_conf.acceptLanguage;
 		},
         
 		getLocationHash:function(){
@@ -2484,13 +2473,13 @@ var ZteFrameWork = function () {
 				if (!items || items.length < 1) {
 					items=$(".page-content a[id='"+id+"']");
 				}
-			}else if(navPosOption === zteframework_menu_horizontal){//从水平菜单里面找
+			}else if(navPosOption === openoFrameWork_menu_horizontal){//从水平菜单里面找
                 items=$("#main_hormenu a[id='"+id+"']");
                 if(items.length == 0){
                     //横菜单没有找到，再在横菜单的子菜单找一次
                     items=$("#page-megachild-sidebar-menu a[id='"+id+"']");
                 }
-            }else if(navPosOption === zteframework_menu_fmenu){
+            }else if(navPosOption === openoFrameWork_menu_fmenu){
                 items=$("#f_hormenu a[id='"+id+"']");
                 if(items.length == 0){
                     //横菜单没有找到，再在竖菜单找一次。
@@ -2557,11 +2546,11 @@ var ZteFrameWork = function () {
         },
         //2015年10月26日新增动态切换菜单的功能，这里的菜单还需要再次更换菜单项访问的ip端口信息				
 		handlBaseURL:function(url){
-			var baseURLRoot=ZteFrameWork.getBaseURLRoot();
+			var baseURLRoot=openoFrameWork.getBaseURLRoot();
 			if (baseURLRoot.length>0) {//2015年10月26日新增动态切换菜单的功能，这里的菜单还需要再次更换菜单项访问的ip端口信息
-					baseURLRoot=ZteFrameWork.getDomainURL(baseURLRoot);//去掉ip和port后多余的部分
+					baseURLRoot=openoFrameWork.getDomainURL(baseURLRoot);//去掉ip和port后多余的部分
 					console.log("old a link href url:"+url);
-					url=baseURLRoot+url.replace(ZteFrameWork.getDomainURL(url),"");
+					url=baseURLRoot+url.replace(openoFrameWork.getDomainURL(url),"");
 					console.log("baseURLRoot:"+baseURLRoot+"      newURL:"+url);			
 			};
 			return url;
@@ -2756,7 +2745,7 @@ var ZteFrameWork = function () {
 					hkjs=document.createElement("script");	////hk.js 加载后拦截ajax请求进行转发				
 				}
 			}
-			var crossOrign=ZteFrameWork.getDomainURL(ifrm.src);					
+			var crossOrign=openoFrameWork.getDomainURL(ifrm.src);					
 			if(	window.location.origin==crossOrign){	//第一层同域处理	
 				for (i=0;i<ifmHeadlins.length;i++){
 					var link=ifrm.contentDocument.getElementById(ifmHeadlins[i].link.id);
@@ -2784,7 +2773,7 @@ var ZteFrameWork = function () {
 					}
 					for(j=0;j<childifrms.length;j++){
 						var parm={ifmHeadlins:ifmHeadlins2};
-						var childOrign=ZteFrameWork.getDomainURL(childifrms[j].src);
+						var childOrign=openoFrameWork.getDomainURL(childifrms[j].src);
 						if(window.location.origin==childOrign){//同域
 							var ifrmload=function(e){ 
 								for (i=0;i<e.data.ifmHeadlins.length;i++){
@@ -2827,7 +2816,7 @@ var ZteFrameWork = function () {
 		},	
 	    goToURL:function(url){
 			dhByBreadcrumb = true;//全局变量，声明此次事件是由点击面包屑发起的
-			var showNav=ZteFrameWork.getLocationURLParameter('showNav');
+			var showNav=openoFrameWork.getLocationURLParameter('showNav');
 			if(showNav=="false"){//如果不显示菜单,就强制刷新本页
 				location.reload();
 			}else{
@@ -2836,7 +2825,7 @@ var ZteFrameWork = function () {
 			}
          },
 		goToURLByName:function(name){
-	        var showNav=ZteFrameWork.getLocationURLParameter('showNav');
+	        var showNav=openoFrameWork.getLocationURLParameter('showNav');
 			if(showNav=="false"){//如果不显示菜单,就强制刷新本页
 				location.reload();
 			}else{
@@ -2848,7 +2837,7 @@ var ZteFrameWork = function () {
 			if(!id){
 				return;
 			}  
-			var showNav=ZteFrameWork.getLocationURLParameter('showNav');
+			var showNav=openoFrameWork.getLocationURLParameter('showNav');
 			if(showNav=="false"){//如果不显示菜单,就强制刷新本页
 				location.reload();
 			}else{
@@ -2916,7 +2905,7 @@ var ZteFrameWork = function () {
             waittime = setInterval(function () {
                     if(moreMenusisLoaded==true){
 						clearInterval(waittime);
-						ZteFrameWork.goToURLByIDAndNewAction(id,newActionStr,null);
+						openoFrameWork.goToURLByIDAndNewAction(id,newActionStr,null);
 					}
                 }, 10); 
 		},
@@ -2984,12 +2973,12 @@ var ZteFrameWork = function () {
 			if(menuitem&&menuitem.length>0){
 				var panel = $('.zte-theme-panel');
 				var navPosOption = $('.nav-pos-direction', panel).val();
-				if(navPosOption === zteframework_menu_fmenu){
+				if(navPosOption === openoFrameWork_menu_fmenu){
 					var hparentid=menuitem.attr("hparentid");
 					var id=menuitem.attr("id");
 					var i=0,menuItemH=menuitem;
 					while (id!=hparentid&&i<20){
-						menuItemH=ZteFrameWork.findMenuItemByMenuId(hparentid);
+						menuItemH=openoFrameWork.findMenuItemByMenuId(hparentid);
 						hparentid=menuItemH.attr("hparentid");
 						id=menuItemH.attr("id");
 						i++;
@@ -3024,7 +3013,7 @@ var ZteFrameWork = function () {
 				
 				if(menuitem&&menuitem.length>0){
 					menuitem.one('click',parm,function(e){	//临时一次性的注册一次click事件处理函数，执行完毕会自动删除			
-						ZteFrameWork.dealAtoIframe($(this),e);
+						openoFrameWork.dealAtoIframe($(this),e);
 						//$(window).one('hashchange', loadCurrentHash);
 						return false;
 					}); 
@@ -3049,13 +3038,13 @@ var ZteFrameWork = function () {
 			var items = undefined;
 			if (navPosOption === "vertical"){ //从垂直菜单里面找
 				items=$("#page-sidebar-menu a[id='"+id+"']");
-			}else if(navPosOption === zteframework_menu_horizontal){//从水平菜单里面找
+			}else if(navPosOption === openoFrameWork_menu_horizontal){//从水平菜单里面找
 				items=$("#main_hormenu a[id='"+id+"']");
 				if(items.length == 0){
                     //横菜单没有找到，再在横菜单的子菜单找一次
                     items=$("#page-megachild-sidebar-menu a[id='"+id+"']");
                 }
-			}else if(navPosOption === zteframework_menu_fmenu){
+			}else if(navPosOption === openoFrameWork_menu_fmenu){
                 items=$("#f_hormenu a[id='"+id+"']");
                 if(items.length == 0){
                     //横菜单没有找到，再在竖菜单找一次。
@@ -3086,11 +3075,11 @@ var ZteFrameWork = function () {
 			var panel = $('.zte-theme-panel');              
 			var navPosOption = $('.nav-pos-direction', panel).val();
 			var mainMenuId = null;
-			if (navPosOption === zteframework_menu_vertical){
+			if (navPosOption === openoFrameWork_menu_vertical){
 				relationAry=sideBarMenu_to_moreMenu_frame;					
-			}else if(navPosOption === zteframework_menu_horizontal){
+			}else if(navPosOption === openoFrameWork_menu_horizontal){
 				relationAry=horBarMenu_to_moreMenu_frame;
-			}else if(navPosOption === zteframework_menu_fmenu){
+			}else if(navPosOption === openoFrameWork_menu_fmenu){
 				relationAry=horBarMenu_to_moreMenu_frame;
 			}				
 			if ( !relationAry || !id ){
@@ -3119,13 +3108,13 @@ var ZteFrameWork = function () {
 			var navPosOption = $('.nav-pos-direction', panel).val();
             if (navPosOption === "vertical"){ //从垂直菜单里面找
                 items=$("#page-sidebar-menu a[id='"+id+"']");
-            }else if(navPosOption === zteframework_menu_horizontal){//从水平菜单里面找
+            }else if(navPosOption === openoFrameWork_menu_horizontal){//从水平菜单里面找
                 items=$("#main_hormenu a[id='"+id+"']");
                 if(items.length == 0){
                     //横菜单没有找到，再在横菜单的子菜单找一次
                     items=$("#page-megachild-sidebar-menu a[id='"+id+"']");
                 }
-            }else if(navPosOption === zteframework_menu_fmenu){
+            }else if(navPosOption === openoFrameWork_menu_fmenu){
                 items=$("#f_hormenu a[id='"+id+"']");
                 if(items.length == 0){
                     //横菜单没有找到，再在竖菜单找一次。
@@ -3203,7 +3192,7 @@ function runHtmlScripts(s) {
 	var scripts = div.getElementsByTagName('script');				
 	$(scripts).each(function(){
 		var src = this.src;
-		src=ZteFrameWork.handlBaseURL(src);
+		src=openoFrameWork.handlBaseURL(src);
 		if(src){
 			//存储当前Script标签的绝对路径以适应该js被其他系统跨域引用的情况
 			currentRunningScriptSrcPath[src.substring(src.lastIndexOf("/") + 1)] = src.substring(0, src.lastIndexOf("/")+1);
@@ -3223,7 +3212,7 @@ function stripHtmlScripts(s) {
 		}else{
 			$.globalEval(this.text || this.textContent || this.innerHTML || '');
 		} */
-		this.src=ZteFrameWork.handlBaseURL(this.src);
+		this.src=openoFrameWork.handlBaseURL(this.src);
 		this.parentNode.removeChild(this);
 	});
 	return div.innerHTML;
@@ -3232,8 +3221,8 @@ function getsiderBarMenu(url){
     if (url.length<2){
         return;
     }
-	url=ZteFrameWork.handlBaseURL(url);	   
-    ZteFrameWork.startPageLoading();//菜单加载中请稍候....
+	url=openoFrameWork.handlBaseURL(url);	   
+    openoFrameWork.startPageLoading();//菜单加载中请稍候....
     var pagesidebar=$('#page-sidebar-menu');
     pagesidebar.empty();
     pagesidebar.append("<li class='sidebar-toggler-wrapper'><div class='sidebar-toggler hidden-xs hidden-sm'></div></li>");
@@ -3253,7 +3242,7 @@ function getsiderBarMenu(url){
             dealMysqlBackupMenu();
             //loadi18n_WebFramework_sideMenu();
 			setTimeout(function () {
-                ZteFrameWork.stopPageLoading();
+                openoFrameWork.stopPageLoading();
 			    goToHomePage();
             }, 1000);
         },
@@ -3309,8 +3298,8 @@ function getHorMenu(url){
     if (url.length<2){
         return;
     }
-	url=ZteFrameWork.handlBaseURL(url);    
-    ZteFrameWork.startPageLoading();//菜单加载中请稍候....	
+	url=openoFrameWork.handlBaseURL(url);    
+    openoFrameWork.startPageLoading();//菜单加载中请稍候....	
     var pagehorbar=$('#main_hormenu')
     pagehorbar.empty();
     $.ajax({
@@ -3326,13 +3315,13 @@ function getHorMenu(url){
             $('#main_hormenu').append(resScriptsSriped);
 			runHtmlScripts(res);
 			// 增加mysql判断，如果数据库为mysql，去掉基础数据备份功能菜单项
-			var dbType = ZteFrameWork_conf.dbType;
+			var dbType = openoFrameWork_conf.dbType;
 			if (dbType == "mysql") {
 				var item=$(".hor-menu a[id='uep-ict-backup-baseDataBack']");
 				item.parent().remove();
 			}
             horMenuAuthentication('main_hormenu');
-            ZteFrameWork.stopPageLoading();
+            openoFrameWork.stopPageLoading();
 			if($('.nav-pos-direction', panel).val() === "horizontal"){
 			setTimeout(function () {
                 //goToHomePage();//注意这里由于水平和左边栏菜单都在一个页面中出现，所以这里只调用一次
@@ -3352,8 +3341,8 @@ function getMegaFMenu( url ){
     if (url.length<2){
         return;
     }
-	url=ZteFrameWork.handlBaseURL(url);       
-    ZteFrameWork.startPageLoading();//菜单加载中请稍候....	
+	url=openoFrameWork.handlBaseURL(url);       
+    openoFrameWork.startPageLoading();//菜单加载中请稍候....	
     var siderDiv =$( '#' + megaSiderDivId );
     siderDiv.empty();
 	siderDiv.append("<li class='sidebar-toggler-wrapper'><div class='sidebar-toggler hidden-xs hidden-sm'></div></li>");
@@ -3371,7 +3360,7 @@ function getMegaFMenu( url ){
             FMenuAuthentication( megaDivId ,megaSiderDivId );
 			rebuildHorMenu();
 			ajustFMenu( megaDivId ,megaSiderDivId );
-            ZteFrameWork.stopPageLoading();			
+            openoFrameWork.stopPageLoading();			
         },
         error: function (xhr, ajaxOptions, thrownError) {
             //siderDiv.append('<h4 class="nav-load-error">'+$.i18n.prop('com_zte_ums_ict_framework_ui_loadmenuerror')+'</h4>');//加载系统菜单失败!
@@ -3410,9 +3399,9 @@ function getFMenu( urlMega , urlSider ){
     if (urlMega.length<2 || urlSider.length<2){
         return;
     }
-	urlMega=ZteFrameWork.handlBaseURL(urlMega);
-    urlSider=ZteFrameWork.handlBaseURL(urlSider);		
-    ZteFrameWork.startPageLoading();//菜单加载中请稍候....
+	urlMega=openoFrameWork.handlBaseURL(urlMega);
+    urlSider=openoFrameWork.handlBaseURL(urlSider);		
+    openoFrameWork.startPageLoading();//菜单加载中请稍候....
     var fhorbar=$('#f_hormenu');
     fhorbar.empty();
     var fSideBar= $("#page-f-sidebar-menu");
@@ -3429,7 +3418,7 @@ function getFMenu( urlMega , urlSider ){
             horMenuAuthentication('f_hormenu');
 			runHtmlScripts(res);
             dealMysqlBackupMenu();
-            ZteFrameWork.stopPageLoading();
+            openoFrameWork.stopPageLoading();
         },
         error: function (xhr, ajaxOptions, thrownError) {
             $('#f_hormenu').append('<h4 class="nav-load-error">'+$.i18n.prop('com_zte_ums_ict_framework_ui_loadmenuerror')+'</h4>');//加载系统菜单失败!
@@ -3454,7 +3443,7 @@ function getFMenu( urlMega , urlSider ){
             dealMysqlBackupMenu();
             FMenuAuthentication( fMenuMegaDivId ,fMenuSiderDivId );
 			ajustFMenu( fMenuMegaDivId ,fMenuSiderDivId );				
-            ZteFrameWork.stopPageLoading();
+            openoFrameWork.stopPageLoading();
             loadi18n_WebFramework_sideMenu();
         },
         error: function (xhr, ajaxOptions, thrownError) {
@@ -3474,7 +3463,7 @@ function getChangePWDDlg(url){
     if (url.length<2){
         return;
     }
-    ZteFrameWork.startPageLoading();//加载中....
+    openoFrameWork.startPageLoading();//加载中....
     var pageChangepasswd=$('.modal-dialog .Changepasswd');
     pageChangepasswd.empty();
     $.ajax({
@@ -3485,7 +3474,7 @@ function getChangePWDDlg(url){
         success: function (res) {
             $('.modal-dialog .Changepasswd').append(res);
             ChangePWD.init();
-            ZteFrameWork.stopPageLoading();
+            openoFrameWork.stopPageLoading();
         },
         error: function (xhr, ajaxOptions, thrownError) {
             $('.modal-dialog .Changepasswd').append('<h4>'+$.i18n.prop('com_zte_ums_ict_framework_ui_loadchgpwdpageError')+'</h4>');//加载修改密码页面失败!
@@ -3502,7 +3491,7 @@ function getHeaderMenu(url){
     if (url.length<2){
         return;
     }
-    ZteFrameWork.startPageLoading();//加载中请稍候....
+    openoFrameWork.startPageLoading();//加载中请稍候....
     var headerMenu=$('#headerMenu');
     headerMenu.empty();
     $.ajax({
@@ -3513,7 +3502,7 @@ function getHeaderMenu(url){
         dataType: "html", 
         success: function (res) {
             $('#headerMenu').append(res);
-            ZteFrameWork.stopPageLoading();
+            openoFrameWork.stopPageLoading();
         },
         error: function (xhr, ajaxOptions, thrownError) {
             //$('#headerMenu').append('<h4>'+$.i18n.prop('com_zte_ums_ict_framework_ui_loadmenuerror')+'</h4>');//加载系统菜单失败!
@@ -3521,7 +3510,7 @@ function getHeaderMenu(url){
     });
 };
 function goToHomePage(){
-    locationhash = ZteFrameWork.getLocationHash();
+    locationhash = openoFrameWork.getLocationHash();
 	if(!!locationhash&&locationhash.length>0){//有锚点，直接触发
 		var newIPPort=null;				
 		if (store&&store('menuCategoryID')) {
@@ -3531,9 +3520,9 @@ function goToHomePage(){
 			}				
         }
 		if(!!newIPPort){
-			ZteFrameWork.goToURLByIDAndNewIPPort(locationhash,newIPPort,null);
+			openoFrameWork.goToURLByIDAndNewIPPort(locationhash,newIPPort,null);
 		}else{
-			ZteFrameWork.goToURLByIDAndNewAction(locationhash,null,null);
+			openoFrameWork.goToURLByIDAndNewAction(locationhash,null,null);
 		}
 	}else{//否则还是模拟点击配置了start类的菜单
 	    var containerStr = "";
@@ -3558,7 +3547,7 @@ function goToHomePage(){
 
 		}
         //F菜单的恒菜单显示
-        else if (navPosOption === zteframework_menu_fmenu) {
+        else if (navPosOption === openoFrameWork_menu_fmenu) {
             //containerStr=$('.hor-menu').length>0?'.header':containerStr;
             startmenu = $('.iframe.start' ,fhormenu);
 			if (startmenu && startmenu.length < 1) {
@@ -3636,7 +3625,7 @@ function getLcsRight(lcsoperations) {
 			"data" : jsonvalues
 		};
 		var url=FrameConst.REST_GETLICENSEINFO + "?tmpstamp=" + new Date().getTime();
-		url=ZteFrameWork.handlBaseURL(url);
+		url=openoFrameWork.handlBaseURL(url);
 		$.ajax({
 			"dataType" : 'json',
 			"type" : "GET",
@@ -3859,7 +3848,7 @@ function groupButtonAuthentication() {
 		}
 	}
 	// 增加mysql判断，如果数据库为mysql，去掉基础数据备份功能菜单项
-	var dbType = ZteFrameWork_conf.dbType;
+	var dbType = openoFrameWork_conf.dbType;
 	if (dbType == "mysql") {
         $("#uep-ict-backup-baseDataBack",$('.more-botton-zone > li.btn-group')).parent().remove();
 	}	
@@ -3936,7 +3925,7 @@ function getAllOperCodeRights(operations) {
 		};
 		var sendData = JSON.stringify(data);
 		var url=FrameConst.REST_CHECKRIGHT + "?data=" + sendData + "&tmpstamp=" + new Date().getTime();
-		url=ZteFrameWork.handlBaseURL(url);
+		url=openoFrameWork.handlBaseURL(url);
 		$.ajax({
 			"dataType" : 'json',
 			"type" : "GET",
@@ -3972,7 +3961,7 @@ function hasRight(opCode, rightObj) {
 };
 // 处理mysql环境下备份菜单的合并问题
 function dealMysqlBackupMenu() {
-	var dbType = ZteFrameWork_conf.dbType;
+	var dbType = openoFrameWork_conf.dbType;
     if (dbType !== undefined && dbType !== "mysql") {
         return;
     }

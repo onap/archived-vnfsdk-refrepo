@@ -16,13 +16,13 @@
 {
 	"propertiesFileNamePrefix":"web-framework-integration-i18n",
 	"productName":"Net Numen ICT",
-	"productImage":"image/integration/zte_logo_white.png",
+	"productImage":"image/integration/openo_logo_white.png",
 	"modules":[
 		{
 			"cover":"com_zte_ums_ict_framework_main_page_dashboard",
 			"background":"skyBlue-mainpage",
 			"toolsImage":"toolsImageBrokenLine",
-			"url":"",	
+			"url":"",
 		    "linkId":"ngict-dashboard-index",
 			"contentTip":""
 		},
@@ -46,7 +46,7 @@
 			"background":"orange-mainpage",
 			"toolsImage":"toolsImageGear",
 			"url":"",
-			"linkId":"ngict-fm-summary",	
+			"linkId":"ngict-fm-summary",
 			
 			"contentTip":""
 		},
@@ -55,7 +55,7 @@
 			"background":"pinkishRed-mainpage",
 			"toolsImage":"toolsImagePresent",
 			"url":"",
-			"linkId":"ngict-pm-meatask",	
+			"linkId":"ngict-pm-meatask",
 			
 			"contentTip":""
 		},
@@ -71,7 +71,7 @@
 			"background":"grassGreen-mainpage",
 			"toolsImage":"toolsImageFile",
 			"url":"",
-			"linkId":"ngict-sm",	
+			"linkId":"ngict-sm",
 			
 			"contentTip":""
 		},
@@ -94,7 +94,7 @@
 			"background":"orange-mainpage",
 			"toolsImage":"toolsImageGear",
 			"url":"",
-			"linkId":"ngict-log",	
+			"linkId":"ngict-log",
 			
 			"contentTip":""
 		},
@@ -103,7 +103,7 @@
 			"background":"skyBlue-mainpage",
 			"toolsImage":"toolsImageBriefcase",
 			"url":"",
-			"linkId":"ngict-system",	
+			"linkId":"ngict-system",
 			
 			"contentTip":""
 		},

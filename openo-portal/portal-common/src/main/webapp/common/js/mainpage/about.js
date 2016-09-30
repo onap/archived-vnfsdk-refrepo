@@ -98,7 +98,7 @@ function getAboutDlg(url){
     if (url.length<2){
         return;
     }
-    ZteFrameWork.startPageLoading();//加载中....
+    openoFrameWork.startPageLoading();//加载中....
     var aboutDiv =jQuery('.modal-dialog .aboutDlg');
     aboutDiv.empty();
     $.ajax({
@@ -110,7 +110,7 @@ function getAboutDlg(url){
             jQuery('.modal-dialog .aboutDlg').append(res);
             iniAboutInfo();
             internationalization();
-            ZteFrameWork.stopPageLoading();
+            openoFrameWork.stopPageLoading();
         },
         error: function (xhr, ajaxOptions, thrownError) {
             
