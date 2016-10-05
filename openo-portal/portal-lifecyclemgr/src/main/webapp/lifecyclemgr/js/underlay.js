@@ -13,9 +13,15 @@
  * limitations under the License.
  */
 
+var url = {};
+$.getJSON("./conf/dataconfig.json", function (jsonData){
+    url.overlay = jsonData.url +":"+ jsonData.port + "/org.openo.sdno.overlayvpnservice";
+    url.underlay = jsonData.url +":"+ jsonData.port + "/org.openo.sdno.l3vpnservice";
+    console.log("URL = " + JSON.stringify(url));
+});
 
 function loadUnderlayData() {
-    var requestUrl = "http://localhost:8080/org.openo.sdno.l3vpnservice/openoapi/sdnol3vpn/v1/l3vpns";
+    var requestUrl = url.underlay + "/openoapi/sdnol3vpn/v1/l3vpns";
     $
         .ajax({
             type: "GET",
@@ -26,12 +32,12 @@ function loadUnderlayData() {
                 //TODO: Update the table
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                alert("Error on getting underlay data : " + xhr.responseText);
+                //alert("Error on getting underlay data : " + xhr.responseText);
             }
         });
 }
 function deleteUnderlayData(objectId) {
-    var requestUrl = "http://localhost:8080/org.openo.sdno.l3vpnservice/openoapi/sdnol3vpn/v1/l3vpns/" + objectId;
+    var requestUrl = url.underlay + "/openoapi/sdnol3vpn/v1/l3vpns/" + objectId;
     $
         .ajax({
             type: "DELETE",
@@ -47,7 +53,7 @@ function deleteUnderlayData(objectId) {
         });
 }
 function loadOverlayData() {
-    var requestUrl = "http://localhost:8080/org.openo.sdno.overlayvpnservice/openoapi/sdnooverlayvpn/v1/site2dc-vpn";
+    var requestUrl = url.overlay + "/openoapi/sdnooverlayvpn/v1/site2dc-vpn";
     $
         .ajax({
             type: "GET",
@@ -58,7 +64,7 @@ function loadOverlayData() {
                 //TODO: Update the table
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                alert("Error on getting Overlayvpn data : " + xhr.responseText);
+                //alert("Error on getting Overlayvpn data : " + xhr.responseText);
             }
         });
 }
@@ -85,7 +91,7 @@ $(function () {
         var formData = JSON.stringify($("#underlayForm").serializeObject());
         alert(formData);
         var jsonobj = JSON.parse(formData);
-        var requestUrl = "http://localhost:8080/org.openo.sdno.l3vpnservice/openoapi/sdnol3vpn/v1/l3vpns";
+        var requestUrl = url.underlay + "/openoapi/sdnol3vpn/v1/l3vpns";
         $
             .ajax({
                 type: "POST",

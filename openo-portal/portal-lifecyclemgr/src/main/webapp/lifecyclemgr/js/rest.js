@@ -13,10 +13,17 @@
  * limitations under the License.
  */
 
-
+var url = "";
 $(function () {
+
+    $.getJSON("./conf/dataconfig.json", function (jsonData){
+        url = jsonData.url +":"+ jsonData.port;
+        console.log("URL = " + url);
+    });
+
     $('.creat-btn').click(function () {
-        $('#vmAppDialog').addClass('in').css({'display': 'block'});
+        /*$('#vmAppDialog').addClass('in').css({'display': 'block'});*/
+        $('#vmAppDialog').modal();
 
     });
     $('.close,.button-previous').click(function () {
@@ -27,7 +34,7 @@ $(function () {
     });
     $('.para').click(function () {
         if ($('#serviceTemplateName').val() == '') {
-            alert('Please choose the service templet！');
+            alert('Please choose the service template！');
             $('#flavorTab').css('display', 'none');
         } else {
             $('#flavorTab').css('display', 'block');
@@ -37,13 +44,14 @@ $(function () {
     $('.basic').click(function () {
         $('#flavorTab').css('display', 'none');
     });
-
-    $('.table tbody tr').click(function () {
+/*
+    $('.table tbody tr').click(function(){
         $(this).addClass('openoTable_row_selected').siblings().removeClass('openoTable_row_selected');
-    });
+    });*/
     $('.table tr:odd').addClass('active');
     $('#false').click(function () {
-        $('#vmAppDialog').addClass('in').css({'display': 'block'});
+        /*$('#vmAppDialog').addClass('in').css({'display': 'block'});*/
+	$('#vmAppDialog').modal();
     });
     $('.close,.button-previous').click(function () {
         $('#vmAppDialog').removeClass('in').css('display', 'none');
@@ -83,7 +91,7 @@ $(function () {
         var jsonobj = JSON.parse(formData);
         var newJson = {"managedElement": jsonobj};
         formData = JSON.stringify(newJson);
-        var requestUrl = "http://localhost:8080/org.openo.sdno.brs/openoapi/sdnobrs/v1/managed-elements";
+        var requestUrl = url + "/org.openo.sdno.brs/openoapi/sdnobrs/v1/managed-elements";
         $
             .ajax({
                 type : "POST",
@@ -106,7 +114,7 @@ $(function () {
 })
 
 /*******************************************Get Service**********************************************/
-function loadGetServiceData(url){
+function loadGetServiceData(){
     return JSON.parse('[{"serviceId":"1111","serviceName":"siteToDC","description":"siteToDC","createTime":"xxxxxx","creator":"XXXX","serviceType":"GSO","templateName":"xxxxxx","inputParameters":{"POP-1-0-0.vFW-moc":"xxx","POP-1-0-0.vCPE-moc":"xxx"}},{"serviceId":"2222","serviceName":"siteToDC","description":"siteToDC","createTime":"xxxxxx","creator":"XXXX","serviceType":"GSO","templateName":"xxxxxx","inputParameters":{"POP-1-0-0.vFW-moc":"xxx1","POP-1-0-0.vCPE-moc":"xxx1"}}]');
 
     // TODO authenticate the url.
@@ -127,7 +135,7 @@ function loadGetServiceData(url){
 }
 
 /*********************************************Get Service Details********************************************/
-function loadServiceDetails(url, serviceId){
+function loadServiceDetails(serviceId){
     return JSON.parse('[{"id":"12345", "name":"sdno"}, {"id":"23456", "name":"gso"},{"id":"12345", "name":"nfvo"}]');
     //return JSON.parse('{"sdno":[{"id":"12345", "name":"SDNO"}], "nfvo":[{"id":"12345", "name":"SDNO"}]}');
     //return JSON.parse('"nfvo":[{"id":"12345", "name":"SDNO"}]}');
@@ -149,8 +157,7 @@ function loadServiceDetails(url, serviceId){
 }
 
 function anchorClick(serviceId){
-    var url = "";
-    var jsonData = loadServiceDetails(url, serviceId);
+    var jsonData = loadServiceDetails(serviceId);
     //TODO populate the modal according to json response
     return true;
 }

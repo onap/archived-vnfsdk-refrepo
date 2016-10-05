@@ -13,6 +13,12 @@
  * limitations under the License.
  */
 
+var url = "";
+$.getJSON("./conf/dataconfig.json", function (jsonData){
+    url = jsonData.url +":"+ jsonData.port;
+    console.log("URL = " + url);
+});
+
 $('.siteDeleteImg').click(
     function () {
         var data = $(this).parent().parent().parent().find('td:last').find(
@@ -29,7 +35,7 @@ $('.siteDeleteImg').click(
     });
 
 function deleteController(objectId) {
-    var requestUrl = "/openoapi/extsys/v1/sdncontrollers/" + objectId;
+    var requestUrl = url + "/openoapi/extsys/v1/sdncontrollers/" + objectId;
     $.ajax({
         type: "DELETE",
         url: requestUrl,
@@ -48,7 +54,7 @@ function deleteController(objectId) {
 }
 
 function loadControllerData() {
-    var requestUrl = "/openoapi/extsys/v1/sdncontrollers";
+    var requestUrl = url + "/openoapi/extsys/v1/sdncontrollers";
     $.ajax({
         type: "GET",
         url: requestUrl,
@@ -148,7 +154,7 @@ $(function () {
             "topologicalController": jsonobj
         };
         formData = JSON.stringify(newJson);
-        var requestUrl = "/openoapi/extsys/v1/sdncontrollers";
+        var requestUrl = url + "/openoapi/extsys/v1/sdncontrollers";
         $.ajax({
             type: "POST",
             url: requestUrl,

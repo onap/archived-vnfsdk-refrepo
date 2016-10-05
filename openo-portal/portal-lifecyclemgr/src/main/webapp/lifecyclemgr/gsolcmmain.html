@@ -33,7 +33,6 @@
         <link href="css/jquery-ui-1.12.1.min.css" rel="stylesheet" />
     <script type="text/javascript">
         $(document).ready(function () {
-         	var url = "";
             /*	   $('.modal-content').resizable({
    
                 minHeight: 300,
@@ -41,7 +40,7 @@
             });*/
             $('.modal-dialog').draggable();
             $("#detailCont").show();
-            var jsondata = loadGetServiceData(url);
+            var jsondata = loadGetServiceData();
             $('#sai').bootstrapTable({
                 //Assigning data to table
                 data: jsondata

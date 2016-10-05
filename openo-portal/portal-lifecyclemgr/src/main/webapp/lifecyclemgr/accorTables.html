@@ -33,7 +33,7 @@
             var serviceId = getQueryStringValue("serviceId");
             console.log("serviceId : " + serviceId);
 
-            var jsonData = loadServiceDetails("", serviceId);
+            var jsonData = loadServiceDetails(serviceId);
             console.log("jsonData length: " + jsonData.length);
             for (i = 0; i < jsonData.length; i++) {
                 console.log("jsonData Name: " + jsonData[i].name);
@@ -72,6 +72,43 @@
             $("#dashboard").hide();
         }
 
+        function fnLoadTblData(el, panelType) {
+            console.log("panelType of "+el.id+" is "+panelType);
+            var current = document.querySelector('.selected');
+            if (current) {
+                current.classList.remove('selected');
+            }
+            el.classList.add('selected');
+            switch (panelType) {
+                case "sdno":
+                    if(el.id == "overLink") {
+                        $("#dashboard").show();
+                        $("#overDiv").show();
+                        $("#underDiv").hide();
+                    } else if(el.id == "underLink"){
+                        $("#dashboard").show();
+                        $("#overDiv").hide();
+                        $("#underDiv").show();
+                    } else {
+                        $("#dashboard").hide();
+                        $("#overDiv").hide();
+                        $("#underDiv").hide();
+                    }
+                    break;
+                case "gso":
+                    $("#dashboard").hide();
+                    $("#overDiv").hide();
+                    $("#underDiv").hide();
+                    break;
+                case "nfvo":
+                    $("#dashboard").hide();
+                    $("#overDiv").hide();
+                    $("#underDiv").hide();
+                    break;
+            }
+
+        }
+
         function getQueryStringValue(key) {
             var params = new URLSearchParams(window.location.search.slice(1));
             return params.get(key);
@@ -81,23 +118,27 @@
             var content = '';
             content += '<div class="panel panel-default"><div class="panel-heading">';
             content += '<h4 class="panel-title">';
-            content += '<a style="text-decoration:none;" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">';
-            content += '<span id="sdnoLink">' + text + '</span></a>';
+            content += '<a style="text-decoration:none;" data-toggle="collapse" data-parent="#accordion" href="#collapseOne_'+type+'" onClick="fnLoadTblData(this, \''+type+'\');">';
+            content += '<span id="sdnoLink">'+text+'</span></a>';
             content += '</h4></div>';
-            content += '<div id="collapseOne" class="panel-collapse collapse in">';
+            if(type == "sdno") {
+                content += '<div id="collapseOne_' + type + '" class="panel-collapse collapse in">';
+            } else {
+                content += '<div id="collapseOne_' + type + '" class="panel-collapse collapse">';
+            }
             content += '<ul class="list-group">';
 
-            if (type == "sdno") {
-                content += '<li onClick="fnOver();" id="overLink" class="list-group-item"><span class="glyphicon glyphicon-pencil text-primary"></span><span>Overlay VPN</span>';
+            if(type == "sdno") {
+                content += '<li onClick="fnLoadTblData(this, \''+type+'\');" id="overLink" class="list-group-item selected"><span class="glyphicon glyphicon-pencil text-primary"></span><span>Overlay VPN</span>';
                 content += '</li>';
-                content += '<li id="underLink" onClick="fnUnder();" class="list-group-item"><span class="glyphicon glyphicon-pencil text-primary"></span><span>Underlay VPN</span>';
+                content += '<li id="underLink" onClick="fnLoadTblData(this, \''+type+'\');" class="list-group-item"><span class="glyphicon glyphicon-pencil text-primary"></span><span>Underlay VPN</span>';
                 content += '</li>';
             }
-            else if (type == "gso") {
-                content += '<li onClick="clZte();" id="underLink" class="list-group-item"><span class="glyphicon glyphicon-pencil text-primary"></span><span>OPEN-O</span></li>';
+            else if(type == "gso"){
+                content += '<li onClick="fnLoadTblData(this, \''+type+'\');" id="linkgso" class="list-group-item"><span class="glyphicon glyphicon-pencil text-primary"></span><span>OPEN-O</span></li>';
             }
-            else if (type == "nfvo") {
-                content += '<li onClick="clZte();" id="underLink" class="list-group-item"><span class="glyphicon glyphicon-pencil text-primary"></span><span>ZTE</span></li>';
+            else if(type == "nfvo"){
+                content += '<li onClick="fnLoadTblData(this, \''+type+'\');" id="linknfvo" class="list-group-item"><span class="glyphicon glyphicon-pencil text-primary"></span><span>ZTE</span></li>';
             }
             content += '</ul></div></div>';
             return content;
@@ -173,12 +214,21 @@
         .panel-collapse .list-group-item li.list-group-item {
             border-top: 1px solid #DDD !important;
         }
+
+        .selected {
+            /*background-color: #ddd;*/
+            color: #4ac9ff;
+        }
+        .panel-title>a {
+            display: inline-block;
+            width: 100%;
+        }
     </style>
 </head>
 </body>
 <div class="">
     <div class="row">
-        <div class="col-sm-3" style="width:18%">
+        <div class="col-sm-3" style="width:18%; padding-right: 0;">
             <div class="panel-group" id="accordion">
                 <!--<div class="panel panel-default">
                     <div class="panel-heading">
@@ -218,20 +268,20 @@
 
             </div>
         </div>
-        <div class="col-sm-3" id="dashboard" style="width:82%">
+        <div class="col-sm-3" id="dashboard" style="width:82%; padding: 0;">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">SDNO-VPN Manager</h3>
                 </div>
-                <div class="panel-body" style="height: 250px; overflow: auto;">
+                <div class="panel-body" style="height: 250px; overflow: auto; padding: 0; background-color: #fafafa">
 
                     <div id="overDiv">
-                        <iframe src="overlayvpn.html" style="width:100%;height:210px;" name="targetframe"
+                        <iframe src="overlayvpn.html" style="width:100%;height:450px;" name="targetframe"
                                 allowTransparency="true" scrolling="no" frameborder="0">
                         </iframe>
                     </div>
                     <div id="underDiv">
-                        <iframe src="underlayvpn.html" style="width:100%;height:450px;" name="targetframe"
+                        <iframe src="underlayvpn.html" style="width:100%;height:500px;" name="targetframe"
                                 allowTransparency="true" scrolling="no" frameborder="0">
                         </iframe>
                     </div>
