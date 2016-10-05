@@ -12,6 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var url = "";
+$.getJSON("./conf/dataconfig.json", function (jsonData){
+    url = jsonData.url +":"+ jsonData.port + "/org.openo.sdno.brs";
+    console.log("URL = " + url);
+});
 
 $('.siteDeleteImg').click(function () {
     var data = $(this).parent().parent().parent().find('td:last').find('div:last').html();
@@ -27,7 +32,7 @@ $('.siteDeleteImg').click(function () {
 
 
 function deleteSite(objectId) {
-    var requestUrl = "/openoapi/sdnobrs/v1/sites/" + objectId;
+    var requestUrl = url+"/openoapi/sdnobrs/v1/sites/" + objectId;
     $
         .ajax({
             type: "DELETE",
@@ -46,7 +51,7 @@ function deleteSite(objectId) {
         });
 }
 function deleteLink(objectId) {
-    var requestUrl = "/openoapi/sdnobrs/v1/topological-links/" + objectId;
+    var requestUrl = url+"/openoapi/sdnobrs/v1/topological-links/" + objectId;
     $
         .ajax({
             type: "DELETE",
@@ -66,7 +71,7 @@ function deleteLink(objectId) {
 }
 
 function deleteNe(objectId) {
-    var requestUrl = "/openoapi/sdnobrs/v1/managed-elements/" + objectId;
+    var requestUrl = url+"/openoapi/sdnobrs/v1/managed-elements/" + objectId;
     $
         .ajax({
             type: "DELETE",
@@ -86,7 +91,7 @@ function deleteNe(objectId) {
 }
 
 function deletePort(objectId) {
-    var requestUrl = "/openoapi/sdnobrs/v1/logical-termination-points/" + objectId;
+    var requestUrl = url+"/openoapi/sdnobrs/v1/logical-termination-points/" + objectId;
     $
         .ajax({
             type: "DELETE",
@@ -105,7 +110,7 @@ function deletePort(objectId) {
         });
 }
 function loadSiteData() {
-    var requestUrl = "/openoapi/sdnobrs/v1/sites";
+    var requestUrl = url+"/openoapi/sdnobrs/v1/sites";
     $
         .ajax({
             type: "GET",
@@ -122,7 +127,7 @@ function loadSiteData() {
         });
 }
 function loadLinkData() {
-    var requestUrl = "/openoapi/sdnobrs/v1/topological-links";
+    var requestUrl = url+"/openoapi/sdnobrs/v1/topological-links";
     $
         .ajax({
             type: "GET",
@@ -139,7 +144,7 @@ function loadLinkData() {
         });
 }
 function loadNeData() {
-    var requestUrl = "/openoapi/sdnobrs/v1/managed-elements";
+    var requestUrl = url+"/openoapi/sdnobrs/v1/managed-elements";
     $
         .ajax({
             type: "GET",
@@ -156,7 +161,7 @@ function loadNeData() {
         });
 }
 function loadPortData() {
-    var requestUrl = "/openoapi/sdnobrs/v1/logical-termination-points";
+    var requestUrl = url+"/openoapi/sdnobrs/v1/logical-termination-points";
     $
         .ajax({
             type: "GET",
@@ -240,7 +245,7 @@ $(function () {
         var jsonobj = JSON.parse(formData);
         var newJson = {"site": jsonobj};
         formData = JSON.stringify(newJson);
-        var requestUrl = "/openoapi/sdnobrs/v1/sites";
+        var requestUrl = url+"/openoapi/sdnobrs/v1/sites";
         $
             .ajax({
                 type: "POST",
@@ -265,7 +270,7 @@ $(function () {
         var jsonobj = JSON.parse(formData);
         var newJson = {"managedElement": jsonobj};
         formData = JSON.stringify(newJson);
-        var requestUrl = "/openoapi/sdnobrs/v1/managed-elements";
+        var requestUrl = url+"/openoapi/sdnobrs/v1/managed-elements";
         $
             .ajax({
                 type: "POST",
@@ -291,7 +296,7 @@ $(function () {
         var jsonobj = JSON.parse(formData);
         var newJson = {"logicalTerminationPoint": jsonobj};
         formData = JSON.stringify(newJson);
-        var requestUrl = "/openoapi/sdnobrs/v1/logical-termination-points";
+        var requestUrl = url+"/openoapi/sdnobrs/v1/logical-termination-points";
         $
             .ajax({
                 type: "POST",
@@ -318,7 +323,7 @@ $(function () {
         var jsonobj = JSON.parse(formData);
         var newJson = {"topologicalLink": jsonobj};
         formData = JSON.stringify(newJson);
-        var requestUrl = "/openoapi/sdnobrs/v1/topological-links";
+        var requestUrl = url+"/openoapi/sdnobrs/v1/topological-links";
         $
             .ajax({
                 type: "POST",
