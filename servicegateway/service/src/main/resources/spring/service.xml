@@ -41,22 +41,6 @@
             <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
         </jaxrs:providers>
     </jaxrs:server>
-    
-    <bean id="datasource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-        <property name="driverClass" value="com.mysql.jdbc.Driver" />
-        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/mybatistest" />
-        <property name="user" value="root" />
-        <property name="password" value="Test_12345" />
-    </bean>
-    
-    <bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="datasource" />
-        <property name="mapperLocations" value="classpath*:mybatis/mappers/*.xml" />
-    </bean>
-    
-    <bean id="session" class="org.mybatis.spring.SqlSessionTemplate">
-        <constructor-arg index="0" ref="sessionFactory" />
-    </bean>
 
     <bean class="org.openo.gso.gui.servicegateway.activator.Activator"></bean>
     
