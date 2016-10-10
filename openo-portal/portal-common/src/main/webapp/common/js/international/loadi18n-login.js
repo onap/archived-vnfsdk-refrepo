@@ -20,7 +20,7 @@ function loadProperties_login(lang) {
 		path:'./common/i18n/', 
 		mode:'map', 
 		callback: function() {
-			var i18nItems = $('[name_i18n=com_zte_ums_ict_framework_ui_i18n_login]');
+			var i18nItems = $('[name_i18n=openo_login_i18n_login]');
 			for (var i = 0; i < i18nItems.length; i++) {
 				var $item = $(i18nItems.eq(i));
 				var itemId = $item.attr('id');

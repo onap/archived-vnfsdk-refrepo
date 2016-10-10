@@ -25,7 +25,7 @@ var IS_V5_TESTVERSION = true;
 
 var FrameConst={};
 //默认登录成功跳转页面
-FrameConst.DEFAULT_LOGINSKIP_PAGE = "main-page.html";
+FrameConst.DEFAULT_LOGINSKIP_PAGE = "common/main-page.html";
 
 FrameConst.do_heartbeat = false;
 FrameConst.change_pass = false;
