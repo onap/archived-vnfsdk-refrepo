@@ -148,7 +148,6 @@ public class ServiceGatewayImpl implements IServiceGateway {
         service.remove(Constant.SERVICE_OPERATION);
 
         // call the restful
-        String id = null;
         try {
             RestfulResponse restfulRsp = null;
             if(Constant.SERVICE_DELETE_OPERATION.equalsIgnoreCase(operation)) {
