@@ -114,15 +114,15 @@
             <artifactId>jackson-jaxrs</artifactId>
             <version>1.9.2</version>
         </dependency>
-        <dependency>
+        <dependency> 
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
         </dependency>        
         <dependency>
-            <groupId>com.googlecode.jmockit</groupId>
+            <groupId>org.jmockit</groupId>
             <artifactId>jmockit</artifactId>
-            <version>1.1</version>
+            <version>1.18</version>
             <scope>test</scope>
         </dependency>
         <dependency>
