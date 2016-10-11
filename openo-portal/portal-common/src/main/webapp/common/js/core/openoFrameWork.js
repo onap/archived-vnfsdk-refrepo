@@ -688,34 +688,22 @@ var openoFrameWork = function () {
             fsiderMenu.css('display','none');
 			return;
 		}		
-		if (openoFrameWork_menu_horizontal == siderbarpos) {
-				sidermenu.css('display','none');// 侧边栏隐藏
-                fhorMenu.css('display','none');// 侧边栏隐藏
-                fsiderMenu.css('display','none');// 侧边栏隐藏
-                hormenu.css("display", "block");//显示水平菜单栏
-		} else if (openoFrameWork_menu_vertical == siderbarpos) {
-				sidermenu.css('display','block');// 侧边栏显示
-				hormenu.css("display", "none");//隐藏水平菜单栏
-                fhorMenu.css('display','none');// 侧边栏隐藏
-                fsiderMenu.css('display','none');// 侧边栏隐藏
-		} else if (openoFrameWork_menu_fmenu == siderbarpos) {
-			sidermenu.css('display','none');
-			hormenu.css("display", "none");
-			fhorMenu.css('display','block');
+
+		sidermenu.css('display','none');
+		hormenu.css("display", "none");
+		fhorMenu.css('display','block');
+		fsiderMenu.css('display','block');
+		//除了toggle按钮之外，是否还有其他儿子是要显示的，如果没有，那么竖菜单不显示；反之，显示。
+		var lis = fsiderMenu.children(".sidebar-toggler-wrapper").siblings();
+		if(lis.length > 0 && lis.css('display') != "none"){
 			fsiderMenu.css('display','block');
-			//除了toggle按钮之外，是否还有其他儿子是要显示的，如果没有，那么竖菜单不显示；反之，显示。
-			var lis = fsiderMenu.children(".sidebar-toggler-wrapper").siblings();
-			if(lis.length > 0 && lis.css('display') != "none"){
-				fsiderMenu.css('display','block');
-				//
-				$("body").removeClass("page-full-width");
-				if ($('body').hasClass("page-sidebar-closed")) {
-					$(".page-content").css("marginLeft", _sidebarCollapsedWidth);
-				} else {
-					$(".page-content").css("marginLeft", _sidebarWidth);
-				}
+			$("body").removeClass("page-full-width");
+			if ($('body').hasClass("page-sidebar-closed")) {
+				$(".page-content").css("marginLeft", _sidebarCollapsedWidth);
+			} else {
+				$(".page-content").css("marginLeft", _sidebarWidth);
 			}
-        }			
+		}
 	}
     //根据当前菜单在屏幕的位置，和一级菜单下二级菜单的排列，来决定菜单是向左展开还是向右展开
     var ajustHorMenuDropDirection = function( isInit ){
@@ -3438,13 +3426,13 @@ function getFMenu( urlMega , urlSider ){
 			var resScriptsSriped = stripHtmlScripts(res);
 			fpagesidebar.append(resScriptsSriped);
             //先全部隐藏，后面根据与hash的匹配情况来显示
-            fpagesidebar.children().css('display','none');
+            //fpagesidebar.children().css('display','none');
 			runHtmlScripts(res);
             dealMysqlBackupMenu();
             FMenuAuthentication( fMenuMegaDivId ,fMenuSiderDivId );
 			ajustFMenu( fMenuMegaDivId ,fMenuSiderDivId );				
             openoFrameWork.stopPageLoading();
-            loadi18n_WebFramework_sideMenu();
+            //loadi18n_WebFramework_sideMenu();
         },
         error: function (xhr, ajaxOptions, thrownError) {
             $('.page-f-sidebar-menu').append('<h4 class="nav-load-error">'+$.i18n.prop('com_zte_ums_ict_framework_ui_loadmenuerror')+'</h4>');//加载系统菜单失败!;//加载系统菜单失败!

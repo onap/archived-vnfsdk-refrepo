@@ -16,8 +16,7 @@
 var initMainPage = function() {
 	var modules;
 	var resConfig;
-	var lang = getLanguage();
-	var propertiesFileNamePrefix = "";
+	var propertiesFileName = "";
 
 	$.ajax({
 		async : false,
@@ -27,7 +26,7 @@ var initMainPage = function() {
 		"success" : function (res, textStatus, jqXHR) {
 			resConfig = res;
 			modules = res.modules;
-			propertiesFileNamePrefix = res.propertiesFileNamePrefix;
+			propertiesFileName = res.propertiesFileNamePrefix;
 		},
 		error : function () {
 		}
@@ -92,6 +91,6 @@ var initMainPage = function() {
 			}
 		});
 
-		loadPropertiesSideMenu(lang, propertiesFileNamePrefix, "i18n/" , "openo_main_page_i18n");
+		loadi18n_WebFramework(propertiesFileName, 'i18n/', 'openo_main_page_i18n');
 	});
 }

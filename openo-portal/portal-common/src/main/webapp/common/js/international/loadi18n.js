@@ -15,32 +15,42 @@
  */
 var lang = getLanguage();
 
-function loadProperties(lang) {
+function loadProperties(propertiesFileName, propertiesFilePath , name_i18n) {
 	jQuery.i18n.properties({
 		language:lang,
-		name:'web-framework-integration-i18n',
-		path:'./common/i18n/',
+		name:propertiesFileName,
+		path:propertiesFilePath,
 		mode:'map',
 		callback: function() {
-			var i18nItems = $('[name_i18n=openo_main_page_i18n]');
+			var i18nItems = $('[name_i18n='+ name_i18n + ']');
 			for (var i = 0; i < i18nItems.length; i++) {
 				var $item = $(i18nItems.eq(i));
 				var itemId = $item.attr('id');
+				var itemValue = $.i18n.prop(itemId);
+				if (itemValue.indexOf(';') > 0) {
+					itemValue = itemValue.replace(';', '');
+				}
+				if (/[\'\"]/.test(itemValue)) {
+					itemValue = itemValue.replace(/\"/g,'');
+					itemValue = itemValue.replace(/\'/g,'');
+				}
 				if (typeof($item.attr("title")) != "undefined") {
-					$item.attr("title", $.i18n.prop(itemId));
+					$item.attr("title", itemValue);
+				} else if (typeof($item.attr("placeholder")) != "undefined") {
+					$item.attr("placeholder", itemValue);
 				} else {
-					$item.text($.i18n.prop(itemId));
+					$item.text(itemValue);
 				}
 			}
 		}
 	});
 }
 
-function loadi18n_WebFramework() {
-	loadProperties(lang);
+function loadi18n_WebFramework(propertiesFileName, propertiesFilePath, name_i18n) {
+	loadProperties(propertiesFileName, propertiesFilePath, name_i18n);
 }
 
-function loadPropertiesSideMenu(lang, propertiesFileNamePrefix, propertiesFilePath , name_I18n) {
+function loadPropertiesSideMenu(lang, propertiesFileNamePrefix, propertiesFilePath, name_I18n) {
 	if(!name_I18n) name_I18n='openo_main_page_i18n';
 	jQuery.i18n.properties({
 		language:lang,
@@ -64,5 +74,5 @@ function loadPropertiesSideMenu(lang, propertiesFileNamePrefix, propertiesFilePa
 
 function loadi18n_WebFramework_sideMenu() {
 	var srcpath ="i18n/";
-	loadPropertiesSideMenu(lang , 'web-framework-integration-i18n', srcpath);
+	loadPropertiesSideMenu(lang , 'web-framework-i18n', srcpath);
 }
