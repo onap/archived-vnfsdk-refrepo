@@ -3280,140 +3280,24 @@ var setLayoutValueByCookie = function () {
 		// } else {
 			// $('.nav-pos-direction', panel).attr("disabled", true);
 		// }
-}
-function getHorMenu(url){
-	setLayoutValueByCookie();
-    if (url.length<2){
-        return;
-    }
-	url=openoFrameWork.handlBaseURL(url);    
-    openoFrameWork.startPageLoading();//菜单加载中请稍候....	
-    var pagehorbar=$('#main_hormenu')
-    pagehorbar.empty();
-    $.ajax({
-        type: "GET",
-        async : false,
-        cache: false,
-        url: url,
-        dataType: "html", 
-        success: function (res) {
-			//去除script标签以后添加到主框架以防止append方法因为加载script标签失败导致后面的代码无法运行
-			//res = stripHtmlScripts(res);
-			var resScriptsSriped = stripHtmlScripts(res);			
-            $('#main_hormenu').append(resScriptsSriped);
-			runHtmlScripts(res);
-			// 增加mysql判断，如果数据库为mysql，去掉基础数据备份功能菜单项
-			var dbType = openoFrameWork_conf.dbType;
-			if (dbType == "mysql") {
-				var item=$(".hor-menu a[id='uep-ict-backup-baseDataBack']");
-				item.parent().remove();
-			}
-            horMenuAuthentication('main_hormenu');
-            openoFrameWork.stopPageLoading();
-			if($('.nav-pos-direction', panel).val() === "horizontal"){
-			setTimeout(function () {
-                //goToHomePage();//注意这里由于水平和左边栏菜单都在一个页面中出现，所以这里只调用一次
-            }, 150);
-			}
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            //$('#main_hormenu').append('<h4 class="nav-load-error">'+$.i18n.prop('com_zte_ums_ict_framework_ui_loadmenuerror')+'</h4>');//加载系统菜单失败!
-			var pcontent = $("[class='page-content']");
-			//pcontent.css("marginLeft",225);
-			$('.nav-pos-direction', panel).attr("disabled", true);
-        }
-    });
 };
-//加载横菜单的子菜单，加到左边的siderbar里面
-function getMegaFMenu( url ){
-    if (url.length<2){
-        return;
-    }
-	url=openoFrameWork.handlBaseURL(url);       
-    openoFrameWork.startPageLoading();//菜单加载中请稍候....	
-    var siderDiv =$( '#' + megaSiderDivId );
-    siderDiv.empty();
-	siderDiv.append("<li class='sidebar-toggler-wrapper'><div class='sidebar-toggler hidden-xs hidden-sm'></div></li>");
-    $.ajax({
-        type: "GET",
-        async : false,
-        cache: false,
-        url: url,
-        dataType: "html", 
-        success: function (res) {
-			//去除script标签以后添加到主框架以防止append方法因为加载script标签失败导致后面的代码无法运行			
-			var resScriptsSriped = stripHtmlScripts(res);			
-            siderDiv.append(resScriptsSriped);
-			runHtmlScripts(res);
-            FMenuAuthentication( megaDivId ,megaSiderDivId );
-			rebuildHorMenu();
-			ajustFMenu( megaDivId ,megaSiderDivId );
-            openoFrameWork.stopPageLoading();			
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            //siderDiv.append('<h4 class="nav-load-error">'+$.i18n.prop('com_zte_ums_ict_framework_ui_loadmenuerror')+'</h4>');//加载系统菜单失败!
-			//var pcontent = $("[class='page-content']");
-			//pcontent.css("marginLeft",225);
-        }
-    });
-}
 
-function iniHorMenu(){
-    var hormenu=$('#main_hormenu');
-	if(!hormenu) return;
-    var url=hormenu.attr("menuSrc");
-    if(url&&url.length>0){
-       getHorMenu(url);
-    }
-	//
-	var megaFMenu = $('#'+megaSiderDivId);
-	if(!megaFMenu) return;
-    var url = 	megaFMenu.attr("menuSrc");
-	if(url&&url.length>0){
-       getMegaFMenu(url);
-    }
+
+function iniFMenu() {
+	var fsidemenu = $('#page-f-sidebar-menu');
+	if (!fsidemenu) {
+		return;
+	}
+	var urlsider = fsidemenu.attr("menuSrc");
+	if (urlsider && urlsider.length > 0) {
+		getFMenu(urlsider);
+	}
 };
-function iniFMenu(){
-    var fhormenu=$('#f_hormenu');
-    var fsidemenu=$('#page-f-sidebar-menu');
-    if(!fhormenu || !fsidemenu) return;
-    var urlmega=fhormenu.attr("menuSrc");
-    var urlsider=fsidemenu.attr("menuSrc");
-    if(urlmega&&urlmega.length>0 && urlsider && urlsider.length > 0){
-        getFMenu(urlmega , urlsider);
-    }
-};
-function getFMenu( urlMega , urlSider ){
-    if (urlMega.length<2 || urlSider.length<2){
-        return;
-    }
-	urlMega=openoFrameWork.handlBaseURL(urlMega);
-    urlSider=openoFrameWork.handlBaseURL(urlSider);		
-    openoFrameWork.startPageLoading();//菜单加载中请稍候....
-    var fhorbar=$('#f_hormenu');
-    fhorbar.empty();
-    var fSideBar= $("#page-f-sidebar-menu");
-    fSideBar.empty();
-    $.ajax({
-        type: "GET",
-        async : false,
-        cache: false,
-        url: urlMega,
-        dataType: "html",
-        success: function (res) {
-			var resScriptsSriped = stripHtmlScripts(res);
-            $('#f_hormenu').append(resScriptsSriped);
-            horMenuAuthentication('f_hormenu');
-			runHtmlScripts(res);
-            dealMysqlBackupMenu();
-            openoFrameWork.stopPageLoading();
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            $('#f_hormenu').append('<h4 class="nav-load-error">'+$.i18n.prop('com_zte_ums_ict_framework_ui_loadmenuerror')+'</h4>');//加载系统菜单失败!
-            var pcontent = $("[class='page-content']");           
-			$('.nav-pos-direction', panel).attr("disabled", true);
-        }
-    });
+
+function getFMenu(urlSider) {
+	urlSider = openoFrameWork.handlBaseURL(urlSider);
+	openoFrameWork.startPageLoading();
+
     var fpagesidebar=$('#' + fMenuSiderDivId);
     fpagesidebar.empty();
     fpagesidebar.append("<li class='sidebar-toggler-wrapper'><div class='sidebar-toggler hidden-xs hidden-sm'></div></li>");
