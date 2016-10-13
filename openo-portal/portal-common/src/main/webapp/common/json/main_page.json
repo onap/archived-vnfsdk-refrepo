@@ -1,6 +1,4 @@
 ﻿{
-	"propertiesFileNamePrefix":"web-framework-mainPage-i18n",
-	"productName":"OPEN-O System",
 	"modules":[
 		{
 			"cover":"org_openo_orchestrator_framework_main_page_service",
