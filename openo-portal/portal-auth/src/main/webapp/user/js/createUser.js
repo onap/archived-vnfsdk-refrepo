@@ -30,11 +30,11 @@ $(document).ready(function() {
             }
             var data = getCreateUser();
             createUser(data).done(function() {
-                window.document.location = "/openoui/auth/v1/user/html/user.html";
+                window.document.location = "/openoui/user/user.html";
             })
         })
         $("#cancel").click(function(e) {
-            window.document.location = "/openoui/auth/v1/user/html/user.html";
+            window.document.location = "/openoui/user/user.html";
         })
     }
 
