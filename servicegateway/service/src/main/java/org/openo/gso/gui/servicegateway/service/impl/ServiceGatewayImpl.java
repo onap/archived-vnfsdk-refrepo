@@ -84,12 +84,15 @@ public class ServiceGatewayImpl implements IServiceGateway {
         // call the restful 
         String id = null;
         try {
+        	LOGGER.info("Send the cretation RESTful request to orchestrator.The Body is"+ requestBody.toString());
         	RestfulResponse restfulRsp = RestfulFactory.getRestInstance("http").post(gatewayUri,
                     getRestfulParameters(JsonUtil.marshal(requestBody)));
+        	LOGGER.info("Receive the cretation RESTful response from orchestrator.The status is:"+restfulRsp.getStatus()+" the content is:"+ 
+                    restfulRsp.getResponseContent());
             if (null != restfulRsp) {
                 // Record the result of registration
                 // (201:success;415:Invalid Parameter;500:Internal Server Error)
-                LOGGER.info("restful call result:", restfulRsp.getStatus());
+                LOGGER.info("restful call result:"+ restfulRsp.getStatus());
                 id = restfulRsp.getRespHeaderStr(Constant.SERVICE_ID);
                 id = (null == id) ? restfulRsp.getRespHeaderStr(Constant.NS_INSTANCE_ID) : id;
                 id = (null == id) ? restfulRsp.getRespHeaderStr(Constant.JOB_ID) : id;
