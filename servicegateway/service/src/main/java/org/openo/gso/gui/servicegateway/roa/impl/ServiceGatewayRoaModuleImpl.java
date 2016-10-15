@@ -70,7 +70,7 @@ public class ServiceGatewayRoaModuleImpl implements IServiceGatewayRoaModule {
             // 1. Check validation
             String reqContent = RestUtils.getRequestBody(servletReq);
             ValidateUtil.assertStringNotNull(reqContent);
-            LOGGER.info("Received a request form the NBI the reqContent is :"+ reqContent11);
+            LOGGER.info("Received a request form the NBI the reqContent is :"+ reqContent);
 
             // 2. Create service
             serviceId = serviceGateway.createService(reqContent, servletReq);
