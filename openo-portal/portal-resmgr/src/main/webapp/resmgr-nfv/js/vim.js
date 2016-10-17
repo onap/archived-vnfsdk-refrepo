@@ -1,5 +1,5 @@
 function loadVimData() {
-    var requestUrl = "/resmgr/rest/v1/resmanage/vim/vimInfo";
+    var requestUrl = app_url+"/v1/resmanage/vim/vimInfo";
     $.ajax({
         type: "GET",
         url: requestUrl,
