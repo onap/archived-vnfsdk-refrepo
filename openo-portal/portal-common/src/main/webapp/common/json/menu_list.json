@@ -16,6 +16,11 @@
 			"iconClass":"fa fa-puzzle-piece"
 		},
 		{
+			"id":"openo_menu_orchestrator",
+			"url":"",
+			"iconClass":"fa fa-folder-open-o"
+		},
+		{
 			"id":"openo_menu_manage_view",
 			"url":"",
 			"iconClass":"fa fa-coffee"
@@ -45,6 +50,24 @@
 			"id":"openo_menu_user_user_management",
 			"url":"../user/user.html",
 			"iconClass":"fa fa-puzzle-piece"
+		},
+		{
+			"parentId":"openo_menu_orchestrator",
+			"id":"openo_menu_orchestrator_model_design",
+			"url":"/winery/servicetemplates.html",
+			"iconClass":"fa fa-folder-open-o"
+		},
+		{
+			"parentId":"openo_menu_orchestrator",
+			"id":"openo_menu_orchestrator_package",
+			"url":"../catalog/csarPackage.html",
+			"iconClass":"fa fa-folder-open-o"
+		},
+		{
+			"parentId":"openo_menu_orchestrator",
+			"id":"openo_menu_orchestrator_service_template",
+			"url":"../catalog/template.html",
+			"iconClass":"fa fa-list-alt"
 		},
 		{
 			"parentId":"openo_menu_manage_view",
