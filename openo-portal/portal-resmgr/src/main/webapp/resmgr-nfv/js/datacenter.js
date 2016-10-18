@@ -4,7 +4,7 @@ function hideFirstCol() {
 }
 
 function deleteDatacenter(objectId) {
-    var requestUrl = "/resmgr/rest/openoapi/resmgr/v1/datacenters/" + objectId;
+    var requestUrl = app_url+ "/openoapi/resmgr/v1/datacenters/" + objectId;
     $.ajax({
         type: "DELETE",
         url: requestUrl,
@@ -23,7 +23,7 @@ function deleteDatacenter(objectId) {
 }
 
 function loadDatacenterData() {
-    var requestUrl = "/resmgr/rest/openoapi/resmgr/v1/datacenters";
+    var requestUrl = app_url+"/openoapi/resmgr/v1/datacenters";
     $.ajax({
         type: "GET",
         url: requestUrl,
@@ -46,7 +46,7 @@ function loadDatacenterData() {
     });
 }
 function loadNetWorkData() {
-    var requestUrl = "/resmgr/rest/openoapi/resmgr/v1/networks";
+    var requestUrl = app_url+"/openoapi/resmgr/v1/networks";
     $.ajax({
         type: "GET",
         url: requestUrl,
@@ -62,7 +62,7 @@ function loadNetWorkData() {
     });
 }
 function loadPortData() {
-    var requestUrl = "/resmgr/rest/openoapi/resmgr/v1/ports";
+    var requestUrl = app_url+"/openoapi/resmgr/v1/ports";
     $.ajax({
         type: "GET",
         url: requestUrl,
@@ -78,7 +78,7 @@ function loadPortData() {
     });
 }
 function loadHostData() {
-    var requestUrl = "/resmgr/rest/openoapi/resmgr/v1/hosts";
+    var requestUrl = app_url+"/openoapi/resmgr/v1/hosts";
     $.ajax({
         type: "GET",
         url: requestUrl,
@@ -97,7 +97,7 @@ function loadHostData() {
 
 function fillCountryData() {
 
-    var requestUrl = "/resmgr/rest/openoapi/resmgr/v1/locations/country";
+    var requestUrl = app_url+"/openoapi/resmgr/v1/locations/country";
     var htmlContent = "";
     $.ajax({
         type: "GET",
@@ -119,7 +119,7 @@ function fillCountryData() {
 
 function fillVimNameData() {
 
-    var requestUrl = "/resmgr/rest/openoapi/resmgr/v1/locations/cloudservice";
+    var requestUrl = app_url+"/openoapi/resmgr/v1/locations/cloudservice";
     var htmlContent = "";
     $.ajax({
         type: "GET",
@@ -198,7 +198,7 @@ $(function () {
 
                 var formData = JSON.stringify($("#vmAppForm").serializeObject());
                 var jsonobj = JSON.parse(formData);
-                var requestUrl = "/resmgr/rest/openoapi/resmgr/v1/datacenters";
+                var requestUrl = app_url+"/openoapi/resmgr/v1/datacenters";
                 $.ajax({
                     type: "POST",
                     url: requestUrl,
@@ -220,7 +220,7 @@ $(function () {
 
     $('#country').change(function () {
         var country = $(this).children('option:selected').val();
-        var requestUrl = "/resmgr/rest/openoapi/resmgr/v1/locations/locationbycountry?country=" + country;
+        var requestUrl = app_url+"/openoapi/resmgr/v1/locations/locationbycountry?country=" + country;
 
         var htmlContent = "<option value=''>--select--</option>";
         $.ajax({
