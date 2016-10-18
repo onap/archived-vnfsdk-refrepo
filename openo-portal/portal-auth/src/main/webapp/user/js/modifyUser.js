@@ -26,11 +26,11 @@ $(document).ready(function() {
         $("#confirm").click(function(e) {
             var data = getModifyUser();
             modifyUser(data).done(function() {
-                window.document.location = "/openoui/auth/v1/user/html/user.html";
+                window.document.location = "/openoui/user/user.html";
             })
         })
         $("#cancel").click(function(e) {
-            window.document.location = "/openoui/auth/v1/user/html/user.html";
+            window.document.location = "/openoui/user/user.html";
         })
     }
 

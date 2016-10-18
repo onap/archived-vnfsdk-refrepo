@@ -38,7 +38,7 @@ $(document).ready(function() {
             var data = getModifyUser();
             changePsd(data).done(function() {
                 top.bootbox.alert("Password change successfully.", function(e) {
-                    Rest.turn2URI("/openoui/auth/v1/user/html/user.html");
+                    Rest.turn2URI("/openoui/user/user.html");
                 })
             }).fail(function(e) {
                 if (e.statusText == "Unauthorized") {
@@ -49,7 +49,7 @@ $(document).ready(function() {
             })
         })
         $("#cancel").click(function(e) {
-            window.document.location = "/openoui/auth/v1/user/html/user.html";
+            window.document.location = "/openoui/user/user.html";
         })
     }
 
