@@ -15,8 +15,8 @@
  */
 $(document).ready(function() {
     var USER_SERVICE = "/openoapi/auth/v1/users";
-    var deleteEditOpt = "<img class='edit' title='edit' src='/openoui/auth/v1/user/images/edit.png'><img class='changePsd' title='Change Password' src='/openoui/auth/v1/user/images/reset.png'><img class='delete' title='delete' src='/openoui/auth/v1/user/images/delete.png'>";
-    var editOpt = "<img class='edit' title='edit' src='/openoui/auth/v1/user/images/edit.png'><img class='changePsd' title='Change Password' src='/openoui/auth/v1/user/images/reset.png'>";
+    var deleteEditOpt = "<img class='edit' title='edit' src='/openoui/user/images/edit.png'><img class='changePsd' title='Change Password' src='/openoui/user/images/reset.png'><img class='delete' title='delete' src='/openoui/user/images/delete.png'>";
+    var editOpt = "<img class='edit' title='edit' src='/openoui/user/images/edit.png'><img class='changePsd' title='Change Password' src='/openoui/user/images/reset.png'>";
 
     var userListHeader = [
         { title: "User", data: "User",width: "20%"},
@@ -54,14 +54,14 @@ $(document).ready(function() {
                     }
                 })
             } else if (classname == "edit") {
-                window.document.location = "/openoui/auth/v1/user/html/modifyUser.html" + "?id=" + id;
+                window.document.location = "/openoui/user/modifyUser.html" + "?id=" + id;
             } else if (classname == "changePsd") {
-                window.document.location = "/openoui/auth/v1/user/html/changePassword.html" + "?id=" + id;
+                window.document.location = "/openoui/user/changePassword.html" + "?id=" + id;
             }
         })
 
         $("#create").click(function(e) {
-            window.document.location = "/openoui/auth/v1/user/html/createUser.html";
+            window.document.location = "/openoui/user/createUser.html";
         })
     }
 

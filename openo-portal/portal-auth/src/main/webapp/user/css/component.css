@@ -33,7 +33,7 @@
     background: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(100%,#fafafa));
     background: -webkit-linear-gradient(top,#fff,#fafafa);
     background: linear-gradient(to bottom,#fff,#fafafa);
-    border-radius: 6px;
+    border-radius: 6px!important;
 }
 .fk_button:hover {
     color: #009ae7;    
@@ -48,10 +48,10 @@
     margin-right: 10px;
 }
 .add_imag {
-    background-image: url(/openoui/auth/v1/user/images/add.png);
+    background-image: url(/openoui/user/images/add.png);
 }
 .delete_imag {
-    background-image: url(/openoui/auth/v1/user/images/delete.png);
+    background-image: url(/openoui/user/images/delete.png);
 }
 .button_imag {
     padding-left: 25px;
