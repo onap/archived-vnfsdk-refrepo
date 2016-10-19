@@ -3,7 +3,7 @@ function hideFirstCol() {
 //	$('table tr').find('td:eq(0)').hide();
 }
 function deleteLocation(objectId) {
-    var requestUrl = "/resmgr/rest/openoapi/resmgr/v1/locations/" + objectId;
+    var requestUrl = app_url+"/openoapi/resmgr/v1/locations/" + objectId;
     $.ajax({
         type: "DELETE",
         url: requestUrl,
@@ -34,7 +34,7 @@ function editLocation(row) {
 }
 
 function loadLocationData() {
-    var requestUrl = "/resmgr/rest/openoapi/resmgr/v1/locations";
+    var requestUrl = app_url+"/openoapi/resmgr/v1/locations";
     $.ajax({
         type: "GET",
         url: requestUrl,
@@ -146,8 +146,8 @@ $(function () {
             function () {
                 var formData = JSON.stringify($("#vmAppForm").serializeObject());
                 var jsonobj = JSON.parse(formData);
-                var requestUrl = "/resmgr/rest/openoapi/resmgr/v1/locations";
-                var requestUrl_query = "/resmgr/rest/openoapi/resmgr/v1/locations";
+                var requestUrl = app_url+"/openoapi/resmgr/v1/locations";
+                var requestUrl_query = app_url+"/openoapi/resmgr/v1/locations";
                 if ($('#id').val().length === 0) {//create
 
 
