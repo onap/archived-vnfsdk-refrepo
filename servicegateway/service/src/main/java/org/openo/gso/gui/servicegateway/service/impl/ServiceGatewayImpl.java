@@ -139,21 +139,16 @@ public class ServiceGatewayImpl implements IServiceGateway {
         // Parse request
         String reqContent = RestUtils.getRequestBody(httpRequest);
         Map<String, Object> requestBody = JsonUtil.unMarshal(reqContent, Map.class);
-        Map<String, Object> service = (Map<String, Object>)requestBody.get(Constant.SERVICE_INDENTIFY);
-        if(null == service)
-        {
-            service = requestBody;
-        }
         ValidateUtil.assertObjectNotNull(requestBody);
 
         // Validate data
-        String gatewayUri = (String)service.get(Constant.SERVICE_GATEWAY_URI);
+        String gatewayUri = (String)requestBody.get(Constant.SERVICE_GATEWAY_URI);
         ValidateUtil.assertStringNotNull(gatewayUri);
-        service.remove(Constant.SERVICE_GATEWAY_URI);
+        requestBody.remove(Constant.SERVICE_GATEWAY_URI);
 
-        String operation = (String) service.get(Constant.SERVICE_OPERATION);
+        String operation = (String) requestBody.get(Constant.SERVICE_OPERATION);
         ValidateUtil.assertStringNotNull(operation);
-        service.remove(Constant.SERVICE_OPERATION);
+        requestBody.remove(Constant.SERVICE_OPERATION);
 
         // call the restful
         try {

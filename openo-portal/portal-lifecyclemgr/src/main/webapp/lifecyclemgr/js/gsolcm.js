@@ -357,7 +357,7 @@ function formatDate(date) {
 function deleteNe(rowId, row) {
     var instanceId = row.serviceId;
     var serviceType = row.serviceType;
-    var gatewayService = '/openoapi/servicegateway/v1/services';
+    var gatewayService = '/openoapi/servicegateway/v1/services/' + instanceId + '/terminate';
     var remove = function () {
         $('#sai').bootstrapTable('remove', {field: 'serviceId', values: [instanceId]});
     };
@@ -404,7 +404,7 @@ function deleteNetworkServiceInstance(gatewayService, nsUri, instanceId) {
         'gatewayUri': instanceUri
     };
     return $.ajax({
-        type: "DELETE",
+        type: "POST",
         url: gatewayService,
         contentType: "application/json",
         dataType: "json",
@@ -423,7 +423,7 @@ function terminateNetworkServiceInstance(gatewayService, nsUri, instanceId) {
         'gatewayUri': nsTerminateUri
     };
     return $.ajax({
-        type: "DELETE",
+        type: "POST",
         url: gatewayService,
         contentType: "application/json",
         dataType: "json",
