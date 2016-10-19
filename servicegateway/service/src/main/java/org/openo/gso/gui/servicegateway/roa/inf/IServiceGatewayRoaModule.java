@@ -18,7 +18,6 @@ package org.openo.gso.gui.servicegateway.roa.inf;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -63,10 +62,10 @@ public interface IServiceGatewayRoaModule {
      * @throws ServiceException when operate database or parameter is wrong.
      * @since GSO 0.5
      */
-    @DELETE
+    @POST
     @Produces({"application/json"})
     @Consumes({"application/json"})
-    @Path("/{serviceId}")
+    @Path("/{serviceId}/terminate")
     Response deleteService(@PathParam("serviceId") String serviceId, @Context HttpServletRequest servletReq)
             throws ServiceException;
 
