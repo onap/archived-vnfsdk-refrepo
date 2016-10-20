@@ -103,7 +103,7 @@
 					<td ms-text="res.operationalState"></td>
 					<td>
 						<span class="label label-info status" data-toggle="tooltip" title="nfv-package-iui-status-tip"
-							  ms-click="vm.onBoardPackage(res.csarId,res.type)">
+							  ms-click="vm.onBoardPackage(res.csarId,res.type,res.onBoardState)">
 						{{res.onBoardState}}
 						</span>
 					</td>
@@ -116,6 +116,26 @@
 				</tr>
 				</tbody>
 			</table>
+		</div>
+		<div class="row-fluid">
+			<div class="col-md-12" style="padding-left:0px;">
+				<div class="pull-left">
+					<small><label>
+						View
+						<select size="1" name="ict_template_table_length" aria-controls="ict_template_table">
+							<option value="10" selected="selected">10</option>
+							<option value="25">25</option>
+							<option value="50">50</option>
+							<option value="100">100</option>
+						</select>
+						 records
+					</label>
+					<span id="com_zte_openo_umc_monitor_monitorList_total" name_i18n="com_zte_openo_umc_monitor_ui_i18n">Found total</span>
+						<span ms-text="vm.resource.packageInfo.size()"></span>
+						<span id="com_zte_openo_umc_monitor_monitorList_records" name_i18n="com_zte_openo_umc_monitor_ui_i18n">records</span>
+					</small>
+				</div>
+			</div>
 		</div>
 		<div id="right-menu" ms-css-display="packageDetail.isShow">
 			<div>
