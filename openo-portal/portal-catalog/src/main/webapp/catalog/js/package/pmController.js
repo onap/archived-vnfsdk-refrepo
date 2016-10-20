@@ -21,16 +21,16 @@ var vm = avalon.define({
         vimSelectItems : []
     },
     csarIdSelected : "",
-	$packageTableFields : {// table columns
-		table: [
-            {"mData": "name", name: $.i18n.prop("nfv-package-iui-field-name")},
-            {"mData": "type", name: $.i18n.prop("nfv-package-iui-field-type")},
-            {"mData": "size", name: $.i18n.prop("nfv-package-iui-field-size")},
-            {"mData": "createTime", name: $.i18n.prop("nfv-package-iui-field-createTime")},
-            {"mData": "status", name: $.i18n.prop("nfv-package-iui-field-status"), "fnRender" : pmUtil.statusRender},
-            {"mData": null, name: $.i18n.prop("nfv-package-iui-field-operation"), "fnRender" : pmUtil.actionRender}
-		]
-	},
+	//$packageTableFields : {// table columns
+	//	table: [
+     //       {"mData": "name", name: $.i18n.prop("nfv-package-iui-field-name")},
+     //       {"mData": "type", name: $.i18n.prop("nfv-package-iui-field-type")},
+     //       {"mData": "size", name: $.i18n.prop("nfv-package-iui-field-size")},
+     //       {"mData": "createTime", name: $.i18n.prop("nfv-package-iui-field-createTime")},
+     //       {"mData": "status", name: $.i18n.prop("nfv-package-iui-field-status"), "fnRender" : pmUtil.statusRender},
+     //       {"mData": null, name: $.i18n.prop("nfv-package-iui-field-operation"), "fnRender" : pmUtil.actionRender}
+	//	]
+	//},
 	$language: {
         "sProcessing": "<img src='../common/thirdparty/data-tables/images/loading-spinner-grey.gif'/><span>&nbsp;&nbsp;"
                         +$.i18n.prop("nfv-nso-iui-table-sProcess")+"</span>",
@@ -51,14 +51,14 @@ var vm = avalon.define({
     $restUrl:{
         queryPackageInfoUrl: "/openoapi/catalog/v1/csars",
         uploadPackageUrl: "/openoapi/catalog/v1/csars",
-        gsarDelPackageUrl: "/openoapi/gsolcm/v1.0/nspackage",
+        gsarDelPackageUrl: "/openoapi/gso/v1/nspackages",
         ssarDelPackageUrl: "/openoapi/catalog/v1/csars",
-        nsarDelPackageUrl: "/openoapi/nslcm/v1.0/nspackage",
-        nfarDelPackageUrl: "/openoapi/nslcm/v1.0/vnfpackage",
-        gsarOnboardUrl: "/openoapi/gsolcm/v1.0/nspackage",
-        ssarOnboardUrl: "/openoapi/nslcm/v1.0/nspackage",
-        nsarOnboardUrl: "/openoapi/nslcm/v1.0/nspackage",
-        nfarOnboardUrl: "/openoapi/nslcm/v1.0/vnfpackage",
+        nsarDelPackageUrl: "/openoapi/nslcm/v1/nspackage",
+        nfarDelPackageUrl: "/openoapi/nslcm/v1/vnfpackage",
+        gsarOnboardUrl: "/openoapi/gso/v1/nspackages",
+        ssarOnboardUrl: "/openoapi/catalog/v1/csars",
+        nsarOnboardUrl: "/openoapi/nslcm/v1/nspackage",
+        nfarOnboardUrl: "/openoapi/nslcm/v1/vnfpackage",
         changePackageStatusUrl : "/openoapi/catalog/v1/csars",
         queryVimInfoUrl : "/openoapi/extsys/v1/vims"
     },
@@ -130,11 +130,6 @@ var vm = avalon.define({
             labVimId : "",
         },
         $initData : function(csarId) {
-            //vm.resource.vimSelectItems = [
-            //    {vimName:"test1", oid:"123456"},
-            //    {vimName:"test2", oid:"987654"},
-            //    {vimName:"test3", oid:"123qwe"}
-            //];
             var url=vm.$restUrl.queryVimInfoUrl;
             commonUtil.get(url,null,function(resp) {
                 if (resp) {
@@ -189,28 +184,14 @@ var vm = avalon.define({
             if(result) {
                 if(type == "NSAR") {
                     url = vm.$restUrl.nsarDelPackageUrl + "/" + csarId;
-                    //commonUtil.delete(url, function(resp) {
-                    //    vm.gotoPackageListPage();
-                    //});
                 } else if(type == "NFAR") {
                     url = vm.$restUrl.nfarDelPackageUrl + "/" + csarId;
-                    //commonUtil.delete(url, function(resp) {
-                    //    vm.gotoPackageListPage();
-                    //});
                 } else if(type == "GSAR") {
                     url = vm.$restUrl.gsarDelPackageUrl + "/" + csarId;
-                    //commonUtil.delete(url, function(resp) {
-                    //    vm.gotoPackageListPage();
-                    //});
                 } else if(type == "SSAR") {
                     url = vm.$restUrl.ssarDelPackageUrl + "/" + csarId;
-                    //commonUtil.delete(url, function(resp) {
-                    //    vm.gotoPackageListPage();
-                    //});
                 }
-                commonUtil.delete(url, function(resp) {
-                    vm.gotoPackageListPage();
-                });
+                pmUtil.delPackage(url);
             }
         });
     },
@@ -226,26 +207,28 @@ var vm = avalon.define({
         return false;
     },
 
-    onBoardPackage : function(csarId,type) {
+    onBoardPackage : function(csarId,type,onBoardState) {
         var param = {
             csarId : csarId
         };
         if(type == "NSAR") {
-            //vm.csarIdSelected = csarId;
-            //vm.showOnboardDialog(csarId);
             var url = vm.$restUrl.nsarOnboardUrl;
             pmUtil.doOnBoard(url, param);
         } else if(type == "NFAR") {
-            //var url = vm.$restUrl.nfarOnboardUrl;
-            //pmUtil.doOnBoard(url, param);
             vm.csarIdSelected = csarId;
             vm.showOnboardDialog(csarId);
         } else if(type == "GSAR") {
             var url = vm.$restUrl.gsarOnboardUrl;
             pmUtil.doOnBoard(url, param);
         } else if(type == "SSAR") {
-            var url = vm.$restUrl.ssarOnboardUrl;
-            pmUtil.doOnBoard(url, param);
+            var ssarTarOnbardState="";            
+            if(onBoardState =="onBoarded") {
+                ssarTarOnbardState = "non-onBoarded";
+            } else {
+                ssarTarOnbardState = "onBoarded";
+            }
+            var url = vm.$restUrl.ssarOnboardUrl+"/"+csarId+"?onBoardState="+ssarTarOnbardState
+            pmUtil.doSSAROnboard(url);
         }
     },
     showOnboardDialog : function(csarId) {
@@ -321,6 +304,7 @@ var vm = avalon.define({
     },
     gotoPackageListPage:function(){
         window.location.href="./csarPackage.html";
+        refreshByCond();
     }
 });
 avalon.scan();
