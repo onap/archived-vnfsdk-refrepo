@@ -111,45 +111,104 @@ $(function () {
                 }
             });
     });
+    //init the templates combo
+    $.when(
+            generateTemplatesComponent()
+        ).then(
+            function (templates) {
+                document.getElementById("svcTempl").innerHTML = templates;
+            }
+        );
 })
+
+/**
+ * generate the templates Component
+ * @returns
+ */
+function generateTemplatesComponent(){
+	var defer = $.Deferred();
+	$.when(
+    		queryTemplates()
+        ).then(
+            function (tmplatesResponse) {
+                var templatesInfo = translateToTemplatesInfo(tmplatesResponse);
+                defer.resolve(templatesInfo);
+            }
+        )
+    return defer;
+}
+
+/**
+ * query templates
+ * @returns
+ */
+function queryTemplates() {
+	var queryTemplatesUrl = '/openoapi/catalog/v1/servicetemplates';
+	return $.ajax({
+		type : "GET",
+		url : queryTemplatesUrl
+	});
+}
+
+/**
+ * generate templates html string
+ * @param templates
+ * @returns
+ */
+function translateToTemplatesInfo(templates) {
+	var options = '<option value="select">--select--</option>';
+	var i;
+	for (i = 0; i < templates.length; i += 1) {
+		var option = '<option value="' + templates[i].serviceTemplateId + '">' + templates[i].templateName
+				+ '</option>';
+		options = options + option;
+	}
+	return options;
+}
 
 /*******************************************Get Service**********************************************/
 function loadGetServiceData(){
 
-    var requestUrl = url + "/openoapi/inventory/v1/services";
+    var returnVal;
+    var requestUrl = "/openoapi/inventory/v1/services";
     $
         .ajax({
             type : "POST",
             url : requestUrl,
+            async: false,
             contentType : "application/json",
             success : function(jsonobj) {
                 // TODO return according to the json data received.
-                return jsonobj;
+            	returnVal =  jsonobj;
             },
             error : function(xhr, ajaxOptions, thrownError) {
                 alert("Error on getting link data : " + xhr.responseText);
             }
         });
+    return returnVal;
 }
 
 /*********************************************Get Service Details********************************************/
 function loadServiceDetails(serviceId){
    
    // TODO re-confirm the latest url.
-    var requestUrl = url + "/openoapi/lifecyclemgr/v1/services/toposequence/" + serviceId;
+    var requestUrl ="/openoapi/gso/v1/services/toposequence/" + serviceId;
+    var returnObj;
     $
         .ajax({
             type : "GET",
+            async: false,
             url : requestUrl,
             contentType : "application/json",
             success : function(jsonobj) {
                 // TODO return according to the json data received.
-                return jsonobj;
+            	returnObj = jsonobj;
             },
             error : function(xhr, ajaxOptions, thrownError) {
                 alert("Error on getting link data : " + xhr.responseText);
             }
         });
+    return returnObj;
 }
 
 function anchorClick(serviceId){
