@@ -37,5 +37,6 @@
         <module>portal-catalog</module>
         <module>portal-auth</module>
         <module>portal-lifecyclemgr</module>
+        <module>portal-performance</module>
     </modules>
 </project>

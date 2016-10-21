@@ -24,6 +24,11 @@
 			"id":"openo_menu_manage_view",
 			"url":"",
 			"iconClass":"fa fa-coffee"
+		},
+		{
+			"id":"openo_menu_performance",
+			"url":"",
+			"iconClass":"fa fa-bar-chart"
 		}
 	],
 	"childMenus":[
@@ -80,6 +85,18 @@
 			"id":"openo_menu_manage_view_vnfm",
 			"url":"../extsys/vnfm/vnfmView.html",
 			"iconClass":"fa fa-coffee"
+		},
+		{
+			"parentId":"openo_menu_performance",
+			"id":"openo_menu_performance_performance_query",
+			"url":"../performance/performance_view.html",
+			"iconClass":"fa fa-bar-chart"
+		},
+		{
+			"parentId":"openo_menu_performance",
+			"id":"openo_menu_alarm_alarm_query",
+			"url":"../performance/alarm_view.html",
+			"iconClass":"fa fa-bell"
 		}
 	]
 }
