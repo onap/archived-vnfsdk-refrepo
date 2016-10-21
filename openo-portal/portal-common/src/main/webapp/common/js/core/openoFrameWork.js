@@ -3172,39 +3172,37 @@ var openoFrameWork = function () {
     
 }();
 
-var currentRunningScriptSrcPath = {};
 //抽取html片段中任意位置的script标签（包括代码是内嵌的情况）逐个运行（不会在单个script加载不到的时候停下来）
 function runHtmlScripts(s) {
 	var div = document.createElement('div');
 	div.innerHTML = s;
-	var scripts = div.getElementsByTagName('script');				
-	$(scripts).each(function(){
+	var scripts = div.getElementsByTagName('script');
+
+	var currentRunningScriptSrcPath = {};
+	$(scripts).each(function() {
 		var src = this.src;
-		src=openoFrameWork.handlBaseURL(src);
-		if(src){
-			//存储当前Script标签的绝对路径以适应该js被其他系统跨域引用的情况
-			currentRunningScriptSrcPath[src.substring(src.lastIndexOf("/") + 1)] = src.substring(0, src.lastIndexOf("/")+1);
-			$.getScript(src);			
-		}else{
+		src = openoFrameWork.handlBaseURL(src);
+		if (src) {
+			currentRunningScriptSrcPath[src.substring(src.lastIndexOf("/") + 1)] = src.substring(0, src.lastIndexOf("/") + 1);
+			$.getScript(src);
+		} else {
 			$.globalEval(this.text || this.textContent || this.innerHTML || '');
 		}
 	});
-}
-function stripHtmlScripts(s) {
-	var div = document.createElement('div');
-	div.innerHTML = s;
-	var scripts = div.getElementsByTagName('script');				
-	$(scripts).each(function(){
-		/* if(this.src){
-			$.getScript(this.src);
-		}else{
-			$.globalEval(this.text || this.textContent || this.innerHTML || '');
-		} */
-		this.src=openoFrameWork.handlBaseURL(this.src);
+};
+
+function stripHtmlScripts(htmlContent) {
+	var divContent = document.createElement('div');
+	divContent.innerHTML = htmlContent;
+	var scripts = divContent.getElementsByTagName('script');
+
+	$(scripts).each(function() {
+		this.src = openoFrameWork.handlBaseURL(this.src);
 		this.parentNode.removeChild(this);
 	});
-	return div.innerHTML;
-}
+	return divContent.innerHTML;
+};
+
 function getsiderBarMenu(url){
     if (url.length<2){
         return;
@@ -3280,223 +3278,25 @@ var setLayoutValueByCookie = function () {
 		// } else {
 			// $('.nav-pos-direction', panel).attr("disabled", true);
 		// }
-}
-function getHorMenu(url){
-	setLayoutValueByCookie();
-    if (url.length<2){
-        return;
-    }
-	url=openoFrameWork.handlBaseURL(url);    
-    openoFrameWork.startPageLoading();//菜单加载中请稍候....	
-    var pagehorbar=$('#main_hormenu')
-    pagehorbar.empty();
-    $.ajax({
-        type: "GET",
-        async : false,
-        cache: false,
-        url: url,
-        dataType: "html", 
-        success: function (res) {
-			//去除script标签以后添加到主框架以防止append方法因为加载script标签失败导致后面的代码无法运行
-			//res = stripHtmlScripts(res);
-			var resScriptsSriped = stripHtmlScripts(res);			
-            $('#main_hormenu').append(resScriptsSriped);
-			runHtmlScripts(res);
-			// 增加mysql判断，如果数据库为mysql，去掉基础数据备份功能菜单项
-			var dbType = openoFrameWork_conf.dbType;
-			if (dbType == "mysql") {
-				var item=$(".hor-menu a[id='uep-ict-backup-baseDataBack']");
-				item.parent().remove();
-			}
-            horMenuAuthentication('main_hormenu');
-            openoFrameWork.stopPageLoading();
-			if($('.nav-pos-direction', panel).val() === "horizontal"){
-			setTimeout(function () {
-                //goToHomePage();//注意这里由于水平和左边栏菜单都在一个页面中出现，所以这里只调用一次
-            }, 150);
-			}
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            //$('#main_hormenu').append('<h4 class="nav-load-error">'+$.i18n.prop('com_zte_ums_ict_framework_ui_loadmenuerror')+'</h4>');//加载系统菜单失败!
-			var pcontent = $("[class='page-content']");
-			//pcontent.css("marginLeft",225);
-			$('.nav-pos-direction', panel).attr("disabled", true);
-        }
-    });
 };
-//加载横菜单的子菜单，加到左边的siderbar里面
-function getMegaFMenu( url ){
-    if (url.length<2){
-        return;
-    }
-	url=openoFrameWork.handlBaseURL(url);       
-    openoFrameWork.startPageLoading();//菜单加载中请稍候....	
-    var siderDiv =$( '#' + megaSiderDivId );
-    siderDiv.empty();
-	siderDiv.append("<li class='sidebar-toggler-wrapper'><div class='sidebar-toggler hidden-xs hidden-sm'></div></li>");
-    $.ajax({
-        type: "GET",
-        async : false,
-        cache: false,
-        url: url,
-        dataType: "html", 
-        success: function (res) {
-			//去除script标签以后添加到主框架以防止append方法因为加载script标签失败导致后面的代码无法运行			
-			var resScriptsSriped = stripHtmlScripts(res);			
-            siderDiv.append(resScriptsSriped);
-			runHtmlScripts(res);
-            FMenuAuthentication( megaDivId ,megaSiderDivId );
-			rebuildHorMenu();
-			ajustFMenu( megaDivId ,megaSiderDivId );
-            openoFrameWork.stopPageLoading();			
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            //siderDiv.append('<h4 class="nav-load-error">'+$.i18n.prop('com_zte_ums_ict_framework_ui_loadmenuerror')+'</h4>');//加载系统菜单失败!
-			//var pcontent = $("[class='page-content']");
-			//pcontent.css("marginLeft",225);
-        }
-    });
-}
 
-function iniHorMenu(){
-    var hormenu=$('#main_hormenu');
-	if(!hormenu) return;
-    var url=hormenu.attr("menuSrc");
-    if(url&&url.length>0){
-       getHorMenu(url);
-    }
-	//
-	var megaFMenu = $('#'+megaSiderDivId);
-	if(!megaFMenu) return;
-    var url = 	megaFMenu.attr("menuSrc");
-	if(url&&url.length>0){
-       getMegaFMenu(url);
-    }
+
+function iniFMenu() {
+	var fsidemenu = $('#' + fMenuSiderDivId);
+
+	if (fsidemenu) {
+		openoFrameWork.startPageLoading();
+
+		var menuContent = initLeftMenu();
+		fsidemenu.empty();
+		fsidemenu.append("<li class='sidebar-toggler-wrapper'><div class='sidebar-toggler hidden-xs hidden-sm'></div></li>");
+		fsidemenu.append(menuContent);
+		loadi18n_WebFramework('web-framework-menu-i18n', 'i18n/', 'openo_frame_left_menu_i18n');
+
+		openoFrameWork.stopPageLoading();
+	}
 };
-function iniFMenu(){
-    var fhormenu=$('#f_hormenu');
-    var fsidemenu=$('#page-f-sidebar-menu');
-    if(!fhormenu || !fsidemenu) return;
-    var urlmega=fhormenu.attr("menuSrc");
-    var urlsider=fsidemenu.attr("menuSrc");
-    if(urlmega&&urlmega.length>0 && urlsider && urlsider.length > 0){
-        getFMenu(urlmega , urlsider);
-    }
-};
-function getFMenu( urlMega , urlSider ){
-    if (urlMega.length<2 || urlSider.length<2){
-        return;
-    }
-	urlMega=openoFrameWork.handlBaseURL(urlMega);
-    urlSider=openoFrameWork.handlBaseURL(urlSider);		
-    openoFrameWork.startPageLoading();//菜单加载中请稍候....
-    var fhorbar=$('#f_hormenu');
-    fhorbar.empty();
-    var fSideBar= $("#page-f-sidebar-menu");
-    fSideBar.empty();
-    $.ajax({
-        type: "GET",
-        async : false,
-        cache: false,
-        url: urlMega,
-        dataType: "html",
-        success: function (res) {
-			var resScriptsSriped = stripHtmlScripts(res);
-            $('#f_hormenu').append(resScriptsSriped);
-            horMenuAuthentication('f_hormenu');
-			runHtmlScripts(res);
-            dealMysqlBackupMenu();
-            openoFrameWork.stopPageLoading();
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            $('#f_hormenu').append('<h4 class="nav-load-error">'+$.i18n.prop('com_zte_ums_ict_framework_ui_loadmenuerror')+'</h4>');//加载系统菜单失败!
-            var pcontent = $("[class='page-content']");           
-			$('.nav-pos-direction', panel).attr("disabled", true);
-        }
-    });
-    var fpagesidebar=$('#' + fMenuSiderDivId);
-    fpagesidebar.empty();
-    fpagesidebar.append("<li class='sidebar-toggler-wrapper'><div class='sidebar-toggler hidden-xs hidden-sm'></div></li>");
-    $.ajax({
-        type: "GET",
-        cache: false,
-        url: urlSider,
-        dataType: "html",
-        success: function (res) {
-			var resScriptsSriped = stripHtmlScripts(res);
-			fpagesidebar.append(resScriptsSriped);
-            //先全部隐藏，后面根据与hash的匹配情况来显示
-            //fpagesidebar.children().css('display','none');
-			runHtmlScripts(res);
-            dealMysqlBackupMenu();
-            FMenuAuthentication( fMenuMegaDivId ,fMenuSiderDivId );
-			ajustFMenu( fMenuMegaDivId ,fMenuSiderDivId );				
-            openoFrameWork.stopPageLoading();
-            //loadi18n_WebFramework_sideMenu();
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            $('.page-f-sidebar-menu').append('<h4 class="nav-load-error">'+$.i18n.prop('com_zte_ums_ict_framework_ui_loadmenuerror')+'</h4>');//加载系统菜单失败!;//加载系统菜单失败!
-        }
-    });
-};
-function iniSidebarMenu(){
-	var sidermenu=$('#page-sidebar-menu');
-	if(!sidermenu) return;
-    var url=sidermenu.attr("menuSrc");
-    if(url&&url.length>0){
-       getsiderBarMenu(url);
-    }          
-};
-function getChangePWDDlg(url){
-    if (url.length<2){
-        return;
-    }
-    openoFrameWork.startPageLoading();//加载中....
-    var pageChangepasswd=$('.modal-dialog .Changepasswd');
-    pageChangepasswd.empty();
-    $.ajax({
-        type: "GET",
-        cache: false,
-        url: url,
-        dataType: "html", 
-        success: function (res) {
-            $('.modal-dialog .Changepasswd').append(res);
-            ChangePWD.init();
-            openoFrameWork.stopPageLoading();
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            $('.modal-dialog .Changepasswd').append('<h4>'+$.i18n.prop('com_zte_ums_ict_framework_ui_loadchgpwdpageError')+'</h4>');//加载修改密码页面失败!
-        }
-    });
-};
-function iniChangePWDDlg(){
-    var url=$('.modal-dialog .Changepasswd').attr("dlgsrc");
-    if(url&&url.length>0){
-        getChangePWDDlg(url);
-    }
-};
-function getHeaderMenu(url){
-    if (url.length<2){
-        return;
-    }
-    openoFrameWork.startPageLoading();//加载中请稍候....
-    var headerMenu=$('#headerMenu');
-    headerMenu.empty();
-    $.ajax({
-        type: "GET",
-        cache: false,
-        async: false,
-        url: url,
-        dataType: "html", 
-        success: function (res) {
-            $('#headerMenu').append(res);
-            openoFrameWork.stopPageLoading();
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            //$('#headerMenu').append('<h4>'+$.i18n.prop('com_zte_ums_ict_framework_ui_loadmenuerror')+'</h4>');//加载系统菜单失败!
-        }
-    });
-};
+
 function goToHomePage(){
     locationhash = openoFrameWork.getLocationHash();
 	if(!!locationhash&&locationhash.length>0){//有锚点，直接触发
@@ -3724,90 +3524,7 @@ function horMenuAuthentication( horMenuId ) {
     });
     rebuildHorMenu();
 };
-//根据F菜单的竖菜单来调整横菜单。获取hparentid相同的竖菜单中的第一个，来更新横菜单上对应父亲菜单的href、catchnum等信息
-function ajustFMenu(megaBarDivId , siderbarDivId){
-    var hparentIds = {};
-    $('a[hparentid]', $('#'+ siderbarDivId)).each(function () {
-        var hparentId = $(this).attr("hparentId");
-        var parentMenu = $('a[id = ' + hparentId + ']', $('#' + megaBarDivId));
-        var oldAHref = parentMenu.attr("href");
-        if (oldAHref == null || oldAHref.trim() == "#" || oldAHref == "javascript") {
-            var hrefMenu = $(this);
-            //竖菜单的第一级有可能是虚菜单，则找这个虚节点下面的第一个有href的菜单
-            if(  $(this).attr('href') == null || $(this).attr('href') == "#" || $(this).attr('href') == "javascript:;"){
-                $('a[href]', $(this).parent().children('ul')).each(function () {
-                    hrefMenu = $(this);
-                    if (hrefMenu != null && hrefMenu != "#" && hrefMenu != "javascript") {
-                        return false; //跳出循环
-                    }
-                })
-            }
-            parentMenu.attr("href", hrefMenu.attr("href"));
-            parentMenu.attr("shiftjs", hrefMenu.attr("shiftjs"));
-            parentMenu.attr("cachenum", hrefMenu.attr("cachenum"));
-			parentMenu.attr("iframeName", hrefMenu.attr("iframeName"));
-			parentMenu.attr("xdomain", hrefMenu.attr("xdomain"));
-			parentMenu.attr("cssSrc", hrefMenu.attr("cssSrc"));	
-			parentMenu.attr("category", hrefMenu.attr("category"));				
-            parentMenu.attr("breadcrumgroupbuttonsrc", hrefMenu.attr("breadcrumgroupbuttonsrc"));
-            parentMenu.attr("operation", hrefMenu.attr("operation"));
-            parentMenu.attr("iframeautoscroll", hrefMenu.attr("iframeautoscroll"));
-        }
-    });
-}
-function FMenuAuthentication(megaBarDivId , siderbarDivId){
-    var beforeHparentId = {};
-    $('a[hparentid]', $('#'+ siderbarDivId)).each(function(){
-        var parentid = $(this).attr("hparentid");
-        beforeHparentId[parentid] = 1;
-    });
-	checkFmenuRightByAttr('licenseid' , megaBarDivId , siderbarDivId , getLcsRight);
-	checkFmenuRightByAttr('operation' , megaBarDivId , siderbarDivId,  getAllOperCodeRights);
-    rebuildSiderBarMenu();
-	var afterHparentId={};
-    $('a[hparentid]', $('#'+ siderbarDivId)).each(function(){
-        var parentid = $(this).attr("hparentid");
-        afterHparentId[parentid] = 1;
-    });
-    //比较鉴权前后的父菜单差异，如果这个父菜单自己没有href属性，且鉴权后，所有的子菜单都没有权限，那么这个父菜单需要从界面上去掉
-    for( var parentid in beforeHparentId ){
-        if( afterHparentId[parentid] == null ){
-            var parent = $('#'+ parentid , $('#'+ megaBarDivId));
-            if(parent.attr('href') == null || parent.attr('href') == "javascript:;" || parent.attr('href') == "#"){
-                parent.parent().remove();
-            }
-        }
-    }
-}
-function checkFmenuRightByAttr( attrName, megaBarDivId , siderbarDivId ,callback ){
-	// license 鉴权
-	var menuids = new Array();
-	var parentMenuId = new Array();
-	var operations = new Array();
-	//从页面DOM取得菜单license项。
-	$('a['+ attrName+']', $('#'+ siderbarDivId)).each(function () {
-		var attrValue = $(this).attr(attrName);
-		if (attrValue) {
-			operations.push(attrValue);
-			var id = $(this).attr("id");
-			menuids.push({'id':id });
-		}
-	});
-	var rights = callback(operations);// 取得license数据。
-	if (rights && (rights.length == menuids.length)) {
-		// 根据后台license值判断所在菜单项是否显示
-		for (var i = 0; i < menuids.length; i++) {
-			var id = menuids[i].id;
-			var hparentId =menuids[i].hParentId;
-			var key = operations[i];
-			var item = rights[i];
-			// 菜单项如果配了licenseid, 并且不是true字符串, 则移除菜单项
-			if (item.value != "True") {
-				$('#'+id, $('#'+ siderbarDivId)).parent().remove();
-			}
-		}
-	}
-}
+
 // “更多操作”分组按钮鉴权
 function groupButtonAuthentication() {
 	// license 鉴权
