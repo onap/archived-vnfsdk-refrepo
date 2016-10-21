@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.openo.baseservice.remoteservice.exception.ServiceException;
 
+import java.util.Map;
+
 /**
  * Interface to operate service.<br/>
  * <p>
@@ -50,6 +52,6 @@ public interface IServiceGateway {
      * @throws ServiceException operate DB or parameter is wrong.
      * @since GSO 0.5
      */
-    void deleteService(String serviceId, HttpServletRequest httpRequest) throws ServiceException;
+    Map<String, Object> deleteService(String serviceId, HttpServletRequest httpRequest) throws ServiceException;
 
 }
