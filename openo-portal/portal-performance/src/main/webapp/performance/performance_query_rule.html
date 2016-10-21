@@ -1,0 +1,141 @@
+﻿<div class="container-fluid" id="meatask_queryRule_body" style="height:650px;background-color:#FFF;overflow-x:hidden;overflow-y:auto">
+	<form action="#" class="form-horizontal" id="meatask_queryRule_submit">
+		<div>
+			<div>
+				<div>
+					<div class="form-title">
+						<span id="com_zte_ums_ict_pm_query_time" name_i18n="openo_performance_i18n"></span>
+					</div>
+					<div class="row">
+						<div class="form-group" id="">
+							<label class="control-label col-xs-3">
+								<span id="com_zte_ums_ict_pm_query_time" name_i18n="openo_performance_i18n"></span>
+							</label>
+							<div id="taskTimeDiv" class="col-xs-4">
+								<input id="queryTimeRange"></input>
+							</div>
+						</div>
+						<div class="form-group col-xs-12" id="">
+							<label class="control-label col-xs-3">
+								<span id="com_zte_ums_ict_pm_query_granularity" name_i18n="openo_performance_i18n"></span>
+							</label>
+							<div class="btn-group circleBtn col-xs-4">
+								<div class="btn btnWhite circleBtn" ms-attr-id="el.id" ms-repeat-el="granularities" ms-class-blueActive="el.value" ms-click="granularityClicked(el ,this)">{{el.name}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-title">
+					<span id="com_zte_ums_ict_pm_query_resource_type" name_i18n="openo_performance_i18n"></span>
+				</div>
+				<div class="row">
+					<div class="form-group" id="">
+						<label class="control-label col-xs-3">
+							<span id="com_zte_ums_ict_pm_query_resource_type" name_i18n="openo_performance_i18n"></span>
+						</label>
+						<div class="col-xs-4">
+							<select id="resourceTypes" ms-duplex-String="selectedResourceType" class="selector-class" ms-change="resTypeSelectAction()">
+								<option ms-repeat-el="resTypeArray">{{el.name}}</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group">
+						<label class="control-label col-xs-3">
+							<span id="com_zte_ums_ict_pm_query_moType" name_i18n="openo_performance_i18n"></span>
+						</label>
+						<div class="col-xs-4">
+							<select id="moTypes" ms-duplex-String="selectedMoType" class="selector-class" ms-change="moTypeSelectAction()">
+								<option ms-repeat-el="moTypeArray">{{el.name}}</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group">
+						<label class="control-label col-xs-3"><span id="com_zte_ums_ict_pm_query_index" name_i18n="openo_performance_i18n"></span></label>
+						<div class="col-xs-6">
+							<table class="table table-striped table-bordered table-hover" cellpadding="0" cellspacing="0" border="0" id="indexes">
+								<thead>
+									<th role="row" width="3%" class="heading"><input type="checkbox" class="indexesAll"/></th>
+									<th role="row" class="heading"><span id="com_zte_ums_ict_pm_query_index" name_i18n="openo_performance_i18n"></span></th>
+								</thead>
+								<tbody>
+									<tr ms-repeat-elem="counterArray">
+										<td class="checkBoxInFirstCol">
+											<input ms-duplex-string="selectedCounter" type="checkbox" ms-attr-value="elem.id"/>
+										</td>
+										<td>{{elem.name}}</td>
+									<tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="form-title">
+					<span id="com_zte_ums_ict_pm_query_target_resource" name_i18n="openo_performance_i18n"></span>
+				</div>
+				<div class="row">
+					<div class="form-group">
+						<label class="control-label col-xs-3"><span id="com_zte_ums_ict_pm_query_resource" name_i18n="openo_performance_i18n"></span></label>
+						<div class="col-xs-6 resourceList">
+							<table class="table table-striped table-bordered table-hover" cellpadding="0" cellspacing="0" border="0">
+								<thead>
+									<th role="row" class="heading"><span id="com_zte_ums_ict_pm_query_selected_resource" name_i18n="openo_performance_i18n"></span></th>
+								</thead>
+								<tbody>
+									<tr>
+										<td class="row">
+											<div class="col-xs-6 col-sm-4 col-md-4 col-lg-4" ms-repeat-elem="resourceSlectedObjs" data-repeat-rendered="clickSelectedCommonCond">
+												<div class="deleteIcon ict-close" ms-click="rmSelectedResource(elem ,this)"></div>
+												<div class="resourceObj">{{elem.name}}</div>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group col-xs-12 filterDiv">
+						<div class="col-xs-offset-3 col-xs-6">
+							<input id="resourcesToFilter" name="resourcesToFilter" placeholder="" name_i18n="openo_performance_i18n"/>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group">
+						<div class="col-xs-offset-3 col-xs-6">
+							<table class="table table-striped table-bordered table-hover" cellpadding="0" cellspacing="0" border="0" id="resources">
+								<thead>
+									<th role="row" width="3%" class="heading"><input type="checkbox" class="resourceAll"/></th>
+									<th role="row" class="heading"><span id="com_zte_ums_ict_pm_threshold_resource_name" name_i18n="openo_performance_i18n"></span></th>
+								</thead>
+								<tbody>
+									<tr ms-repeat-elem="resources">
+										<td><input ms-duplex-string="resourceSlected" type="checkbox" ms-attr-value="elem.id" ms-attr-taskId="elem.id"/></td>
+										<td>{{elem.name}}</td>
+									<tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group " id="">
+						<div class=" col-xs-offset-3 col-xs-4 form-actions btnGroup">
+							<a id="submit_in_queryRuleChanged" href="javascript:;" class="btn blue1 radius_l button-submit" ms-click="queryRuleChanged()">
+								<span id="com_zte_ums_ict_pm_action_query" name_i18n="openo_performance_i18n"></span>
+							</a>
+							<a href="javascript:;" ms-click="returnQueryPage()">
+								<span id="com_zte_ums_ict_pm_back" name_i18n="openo_performance_i18n"></span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
