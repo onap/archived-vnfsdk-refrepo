@@ -40,54 +40,6 @@ pmUtil.changeTableStatus = function(name, status) {
     }
 }
 
-pmUtil.isRowDeletingStatus = function(name) {
-    var table = $("#" + vm.$tableId).dataTable();
-    var tableData = table.fnGetData();
-    for (var i=0; i<tableData.length; i++) {
-        if(tableData[i]["name"] == name && 
-           tableData[i]["status"].indexOf($.i18n.prop("nfv-package-iui-status-deleting")) > -1) {
-            return true;            
-        }
-    }
-    return false;
-}
-
-pmUtil.delPackage = function(csarId) {
-    if(pmUtil.isRowDeletingStatus(csarId)){
-        return;
-    }
-	bootbox.confirm($.i18n.prop("nfv-package-iui-message-delete-confirm"), function(result){
-		if(result) {
-            pmUtil.changeTableStatus(csarId, "deleting");
-			var url = vm.$restUrl.delPackageUrl + csarId;
-			commonUtil.delete(url, function(resp) {
-				
-			});
-		}
-	});		
-}
-
-pmUtil.isRowOnBoardingStatus = function(name) {
-    var table = $("#" + vm.$tableId).dataTable();
-    var tableData = table.fnGetData();
-    for (var i=0; i<tableData.length; i++) {
-        if(tableData[i]["name"] == name &&
-            tableData[i]["status"].indexOf($.i18n.prop("nfv-package-iui-status-onboarding")) > -1) {
-            return true;
-        }
-    }
-    return false;
-}
-
-pmUtil.onBoardPackage = function(name) {
-    if(pmUtil.isRowOnBoardingStatus(name)){
-        return;
-    }
-    pmUtil.changeTableStatus(name, "onboarding");
-    var url = vm.$restUrl.delPackageUrl + "?csarName=" + name;
-    commonUtil.delete(url, function(resp) {
-    });
-}
 //query packages exist
 //0: the package does not exist 
 //1: the package does not exist, but the instance cite this package
@@ -99,7 +51,7 @@ pmUtil.getExistPackageByName = function(name) {
     }
     var result = $.ajax({
         type : "GET",
-        url : vm.$restUrl.queryPackageInfoUrl + "?csarName=" + name,
+        url : vm.$restUrl.queryPackageInfoUrl + "?name=" + name,
         async: false
     });        
     var data = result.responseJSON;
@@ -174,6 +126,35 @@ pmUtil.doNFAROnboard = function(extData) {
         },
         error : function() {
             commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-onBoard-error"), "failed");
+        }
+    });
+}
+
+pmUtil.doSSAROnboard = function(url) {
+    $.ajax({
+        type : "PUT",
+        url : url,
+        contentType : "application/json",
+        success : function(resp) {
+            refreshByCond();
+        },
+        error : function() {
+            commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-onBoard-error"), "failed");
+        }
+    });
+}
+
+pmUtil.delPackage = function (url) {
+    $.ajax({
+        type : "DELETE",
+        url : url,
+        contentType : "application/json",
+        success : function(resp) {
+            refreshByCond();
+        },
+        error : function() {
+            refreshByCond();
+            //commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-delete-error"), "failed");
         }
     });
 }
