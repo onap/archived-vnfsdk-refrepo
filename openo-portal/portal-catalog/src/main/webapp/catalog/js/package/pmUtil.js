@@ -150,11 +150,16 @@ pmUtil.delPackage = function (url) {
         url : url,
         contentType : "application/json",
         success : function(resp) {
+            commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-delete-success"), "success");
             refreshByCond();
         },
-        error : function() {
-            refreshByCond();
-            //commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-delete-error"), "failed");
+        error : function(resp) {
+            if(resp.status == 202 || resp.responseText == "success") {
+                commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-delete-success"), "success");
+                refreshByCond();
+            } else {
+                commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-delete-error"), "failed");
+            }
         }
     });
 }
