@@ -15,18 +15,17 @@
  */
 var initMainPage = function() {
 	var modules;
-	var resConfig;
-	var propertiesFileName = "";
+	var propertiesFilePath = "i18n/";
+	var propertiesFileName = "web-framework-mainPage-i18n";
+	var i18nName = "openo_main_page_i18n";
 
 	$.ajax({
 		async : false,
 		"type" : "GET",
-		url : "json/main-page.json",
+		url : "json/main_page.json",
 		dataType : "json",
 		"success" : function (res, textStatus, jqXHR) {
-			resConfig = res;
 			modules = res.modules;
-			propertiesFileName = res.propertiesFileNamePrefix;
 		},
 		error : function () {
 		}
@@ -91,6 +90,6 @@ var initMainPage = function() {
 			}
 		});
 
-		loadi18n_WebFramework(propertiesFileName, 'i18n/', 'openo_main_page_i18n');
+		loadi18n_WebFramework(propertiesFileName, propertiesFilePath, i18nName);
 	});
 }
