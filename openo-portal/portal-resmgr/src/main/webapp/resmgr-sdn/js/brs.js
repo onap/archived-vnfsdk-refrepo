@@ -14,7 +14,7 @@
  */
 var url = "";
 $.getJSON("./conf/dataconfig.json", function (jsonData){
-    url = jsonData.url +":"+ jsonData.port + "/org.openo.sdno.brs";
+    url = jsonData.url +":"+ jsonData.port;
     console.log("URL = " + url);
 });
 
