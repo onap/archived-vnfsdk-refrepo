@@ -52,6 +52,6 @@ public interface IServiceGateway {
      * @throws ServiceException operate DB or parameter is wrong.
      * @since GSO 0.5
      */
-    Map<String, Object> deleteService(String serviceId, HttpServletRequest httpRequest) throws ServiceException;
+    Map<String, Object> deleteService(String serviceId, String reqContent, HttpServletRequest httpRequest) throws ServiceException;
 
 }

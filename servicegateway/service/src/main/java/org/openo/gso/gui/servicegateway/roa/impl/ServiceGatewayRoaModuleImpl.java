@@ -108,7 +108,7 @@ public class ServiceGatewayRoaModuleImpl implements IServiceGatewayRoaModule {
             ValidateUtil.assertStringNotNull(reqContent);
 
             // 2. Delete service
-            result = serviceGateway.deleteService(serviceId, servletReq);
+            result = serviceGateway.deleteService(serviceId, reqContent, servletReq);
         } catch(ServiceException exception) {
             LOGGER.error("Fail to delete service instance.");
             return Response.serverError().build();

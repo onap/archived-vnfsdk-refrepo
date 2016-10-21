@@ -131,14 +131,13 @@ public class ServiceGatewayImpl implements IServiceGateway {
      * @since GSO 0.5
      */
     @Override
-    public Map<String, Object> deleteService(String serviceId, HttpServletRequest httpRequest) throws ServiceException {
+    public Map<String, Object> deleteService(String serviceId, String reqContent, HttpServletRequest httpRequest) throws ServiceException {
     	if(httpRequest == null)
     	{    		
     		LOGGER.error("ServiceGatewayImpl.deleteService httpRequest is null");
     		throw new ServiceException("ServiceGatewayImpl.deleteService httpRequest is null");
     	}
         // Parse request
-        String reqContent = RestUtils.getRequestBody(httpRequest);
         Map<String, Object> requestBody = JsonUtil.unMarshal(reqContent, Map.class);
         ValidateUtil.assertObjectNotNull(requestBody);
 
