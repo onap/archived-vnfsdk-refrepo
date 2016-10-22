@@ -151,15 +151,41 @@ pmUtil.delPackage = function (url) {
         contentType : "application/json",
         success : function(resp) {
             commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-delete-success"), "success");
-            refreshByCond();
+            setTimeout( function(){
+                refreshByCond();
+            }, 1 * 1000 );
         },
         error : function(resp) {
             if(resp.status == 202 || resp.responseText == "success") {
                 commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-delete-success"), "success");
-                refreshByCond();
+                setTimeout( function(){
+                    refreshByCond();
+                }, 1 * 1000 );
+                //refreshByCond();
             } else {
                 commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-delete-error"), "failed");
+                setTimeout( function(){
+                    refreshByCond();
+                }, 1 * 1000 );
+                //refreshByCond();
             }
         }
     });
+}
+
+pmUtil.nameRender = function(obj) {
+    return '<a href="#" onclick="vm.packageDetail.$showDetails('
+        + '\'block\',\'' + obj.aData.id + '\', \'' + obj.aData.name + '\')">' + obj.aData.name + '</a>';
+}
+
+pmUtil.onBoardRender = function(obj) {
+    var attr;
+    attr = 'class="label label-info status" data-toggle="tooltip" title="nfv-package-iui-status-tip"';
+    return '<span class="label label-info status" data-toggle="tooltip" title="nfv-package-iui-status-tip" onclick="vm.onBoardPackage(\'' + obj.aData.csarId
+        + '\',\''+ obj.aData.type + '\', \''+ obj.aData.onBoardState +'\')">' + obj.aData.onBoardState + '</span>';
+}
+
+pmUtil.operationRender = function(obj) {
+    return '<a href="#" class="btn-xs grey btn-editable" onclick="vm.$delPackage(\'' + obj.aData.csarId
+        + '\',\''+ obj.aData.type + '\')">' + '<i class=\"ict-delete\"></i>' + $.i18n.prop('nfv-software-iui-action-delete') + '</a>';
 }
