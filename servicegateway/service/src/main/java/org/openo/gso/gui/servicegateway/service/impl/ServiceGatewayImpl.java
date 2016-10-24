@@ -16,6 +16,7 @@
 
 package org.openo.gso.gui.servicegateway.service.impl;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -130,7 +131,7 @@ public class ServiceGatewayImpl implements IServiceGateway {
      * @since GSO 0.5
      */
     @Override
-    public void deleteService(String serviceId, HttpServletRequest httpRequest) throws ServiceException {
+    public Map<String, Object> deleteService(String serviceId, HttpServletRequest httpRequest) throws ServiceException {
     	if(httpRequest == null)
     	{    		
     		LOGGER.error("ServiceGatewayImpl.deleteService httpRequest is null");
@@ -153,16 +154,26 @@ public class ServiceGatewayImpl implements IServiceGateway {
         // call the restful
         try {
             RestfulResponse restfulRsp = null;
+            Map<String, Object> result = new HashMap<String, Object>();
             if(Constant.SERVICE_DELETE_OPERATION.equalsIgnoreCase(operation)) {
                 restfulRsp = RestfulFactory.getRestInstance("http").delete(gatewayUri,
                         getRestfulParameters(JsonUtil.marshal(requestBody)));
+                result.put(Constant.RESPONSE_STATUS, "success");
+                result.put(Constant.RESPONSE_STATUS_DESCRIPTION, "It is deleting.");
+                result.put(Constant.RESPONSE_ERRORCODE, "202");
             } else {
                 restfulRsp = RestfulFactory.getRestInstance("http").post(gatewayUri,
                         getRestfulParameters(JsonUtil.marshal(requestBody)));
+                if (null != restfulRsp) {
+                    String jobId = restfulRsp.getRespHeaderStr(Constant.JOB_ID);
+                    result.put(Constant.JOB_ID, jobId);
+                }
             }
             if (null != restfulRsp) {
                 LOGGER.info("restful call result:", restfulRsp.getStatus());
+                LOGGER.info("restful call content:", restfulRsp.getResponseContent());
             }
+            return result;
         } catch(ServiceException e) {
             LOGGER.error("service gateway delete restful call result:", e);
             throw e;

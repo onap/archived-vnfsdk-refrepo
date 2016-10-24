@@ -101,7 +101,6 @@ public class ServiceGatewayRoaModuleImpl implements IServiceGatewayRoaModule {
      */
     @Override
     public Response deleteService(String serviceId, HttpServletRequest servletReq) {
-        Map<String, Object> operateStatus = null;
         Map<String, Object> result = null;
         try {
             // 1. Check validation
@@ -109,20 +108,11 @@ public class ServiceGatewayRoaModuleImpl implements IServiceGatewayRoaModule {
             ValidateUtil.assertStringNotNull(reqContent);
 
             // 2. Delete service
-            serviceGateway.deleteService(serviceId, servletReq);
+            result = serviceGateway.deleteService(serviceId, servletReq);
         } catch(ServiceException exception) {
             LOGGER.error("Fail to delete service instance.");
-            operateStatus = ResponseUtils.setOperateStatus(Constant.RESPONSE_STATUS_FAIL, exception,
-                    String.valueOf(exception.getHttpCode()));
-            result = ResponseUtils.setResult(serviceId, operateStatus);
-
-            return Response.accepted().entity(result).build();
+            return Response.serverError().build();
         }
-
-        operateStatus = ResponseUtils.setOperateStatus(Constant.RESPONSE_STATUS_SUCCESS, null,
-                String.valueOf(HttpCode.RESPOND_OK));
-        result = ResponseUtils.setResult(serviceId, operateStatus);
-
         return Response.accepted().entity(result).build();
     }
 
