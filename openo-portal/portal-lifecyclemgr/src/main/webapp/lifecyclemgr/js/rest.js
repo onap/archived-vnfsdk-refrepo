@@ -171,12 +171,21 @@ function loadGetServiceData(){
 
     var returnVal;
     var requestUrl = "/openoapi/inventory/v1/services";
+    var parameter = {
+            'sort': [],
+            'pagination': 0,
+            'pagesize': 25,
+            'condition': {},
+            'serviceId': ""
+        };
     $
         .ajax({
             type : "POST",
             url : requestUrl,
             async: false,
             contentType : "application/json",
+            dataType: "json",
+            data: JSON.stringify(parameter),
             success : function(jsonobj) {
                 // TODO return according to the json data received.
             	returnVal =  jsonobj;
