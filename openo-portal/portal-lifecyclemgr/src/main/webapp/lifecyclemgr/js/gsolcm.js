@@ -142,7 +142,7 @@ function translateToTemplateParameters(inputs) {
             defaultValue: inputs[i].defaultValue,
             required: inputs[i].required,
             id: 'parameter_' + i,
-            value: inputs[i].defaultValue
+            value: inputs[i].defaultValue || ''
         };
     }
     return {changed: false, parameters: inputParameters};
