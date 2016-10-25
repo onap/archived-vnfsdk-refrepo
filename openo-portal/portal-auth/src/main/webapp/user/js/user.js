@@ -32,6 +32,14 @@ $(document).ready(function() {
         }).error(function(data) {
             if (data.status == 403) {
                 $(".hw_body").html("<span style='font-size:20px;'>" + JSON.parse(data.responseText).error.message + "</span>");
+            } else {
+                var userListHeader = [
+                    { title: "User", data: "User",width: "20%"},
+                    { title: "Description", data: "Description",width: "60%"},
+                    { title: "Operations", data: "Operations",width: "20%"}
+                ];
+                Table.create("", "table_id", userListHeader);
+                $(".hw_body").css("visibility", "visible");
             }
         });
 
