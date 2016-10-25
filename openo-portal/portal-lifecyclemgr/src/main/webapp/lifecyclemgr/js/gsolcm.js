@@ -339,13 +339,15 @@ function createGsoServiceInstance(gatewayService, serviceInstance, serviceTempla
     serviceInstance.inputParameters.location = serviceInstance.vimLocation;
     var gsoLcmUri = '/openoapi/lifecyclemgr/v1/services';
     var parameter = {
-        'name': serviceInstance.serviceName,
-        'description': serviceInstance.description,
-        'serviceDefId': serviceTemplate.gsarId,
-        'templateId': serviceInstance.serviceTemplateId,
-        'templateName': serviceTemplate.templateName,
-        'gatewayUri': gsoLcmUri,
-        'parameters': serviceInstance.inputParameters
+    	'service': {
+    		'name': serviceInstance.serviceName,
+    		'description': serviceInstance.description,
+    		'serviceDefId': serviceTemplate.gsarId,
+    		'templateId': serviceInstance.serviceTemplateId,
+    		'templateName': serviceTemplate.templateName,
+    		'gatewayUri': gsoLcmUri,
+    		'parameters': serviceInstance.inputParameters
+    	}
     };
     $.when($.ajax({
         type: "POST",
