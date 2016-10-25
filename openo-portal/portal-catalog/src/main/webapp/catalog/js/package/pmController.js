@@ -15,22 +15,26 @@
  */
 var vm = avalon.define({
 	$id : "pmController",
+    $tableId : "ict_package_table",
     resource : {
         packageInfo : [],
         packageDetails : "",
         vimSelectItems : []
     },
     csarIdSelected : "",
-	//$packageTableFields : {// table columns
-	//	table: [
-     //       {"mData": "name", name: $.i18n.prop("nfv-package-iui-field-name")},
-     //       {"mData": "type", name: $.i18n.prop("nfv-package-iui-field-type")},
-     //       {"mData": "size", name: $.i18n.prop("nfv-package-iui-field-size")},
-     //       {"mData": "createTime", name: $.i18n.prop("nfv-package-iui-field-createTime")},
-     //       {"mData": "status", name: $.i18n.prop("nfv-package-iui-field-status"), "fnRender" : pmUtil.statusRender},
-     //       {"mData": null, name: $.i18n.prop("nfv-package-iui-field-operation"), "fnRender" : pmUtil.actionRender}
-	//	]
-	//},
+	$packageTableFields : {// table columns
+		table: [
+            //{"mData":"",name:$.i18n.prop("nfv-package-iui-field-sn")},
+            {"mData": "csarId", name: "ID", "bVisible": false},
+            {"mData": "name", name: $.i18n.prop("nfv-package-iui-field-name"),"fnRender" : pmUtil.nameRender},
+            {"mData": "type", name: $.i18n.prop("nfv-package-iui-field-type")},
+            {"mData": "usageState", name: $.i18n.prop("nfv-package-iui-field-usagestate")},
+            {"mData": "processState", name: $.i18n.prop("nfv-package-iui-field-processstate")},
+            {"mData": "operationalState", name: $.i18n.prop("nfv-package-iui-field-operationalstate")},
+            {"mData": "onBoardState", name: $.i18n.prop("nfv-package-iui-field-onboardstate"), "fnRender" : pmUtil.onBoardRender},
+            {"mData": "", name: $.i18n.prop("nfv-package-iui-field-operation"), "fnRender" : pmUtil.operationRender}
+		]
+	},
 	$language: {
         "sProcessing": "<img src='../common/thirdparty/data-tables/images/loading-spinner-grey.gif'/><span>&nbsp;&nbsp;"
                         +$.i18n.prop("nfv-nso-iui-table-sProcess")+"</span>",
@@ -66,14 +70,24 @@ var vm = avalon.define({
     	var cond = {};
 		return cond;
     },
-	$initTable: function() {
-        var url=vm.$restUrl.queryPackageInfoUrl;
-        commonUtil.get(url,null,function(resp) {
-            if (resp) {
-                vm.resource.packageInfo=resp;
-            }
-        })
-	},
+	//$initTable: function() {
+     //   var url=vm.$restUrl.queryPackageInfoUrl;
+     //   commonUtil.get(url,null,function(resp) {
+     //       if (resp) {
+     //           vm.resource.packageInfo=resp;
+     //       }
+     //   })
+	//},
+    $initTable: function() {
+        var setting = {};
+        setting.language = vm.$language;
+        setting.paginate = true;
+        setting.info = true;
+        setting.columns = vm.$packageTableFields.table;
+        setting.restUrl = vm.$restUrl.queryPackageInfoUrl;
+        setting.tableId = vm.$tableId;
+        serverPageTable.initDataTable(setting,{},vm.$tableId + '_div');
+    },
     packageDetail : {
         detailTitle : "",
         isShow : "none",
@@ -88,14 +102,14 @@ var vm = avalon.define({
             isActive : false
         }
         ],
-        $showDetails : function (isShow, sn, name) {
+        $showDetails : function (isShow, csarId, name) {
             vm.packageDetail.isShow = isShow;
             vm.packageDetail.detailCondChange(0);
             if (isShow == "block") {
                 vm.packageDetail.detailTitle = name + "-" + $.i18n.prop("nfv-package-iui_packageview_packageDetail"),
                     $('#' + vm.packageDetail.detailData[0].id).click();
                 vm.packageDetail.detailData[0].isActive = true;
-                vm.packageDetail.$initPackageDetailTable(sn);
+                vm.packageDetail.$initPackageDetailTable(csarId);
             }
         },
         detailCondChange : function (index) {
@@ -105,8 +119,15 @@ var vm = avalon.define({
             }
             vm.packageDetail.detailData[index].isActive = true;
         },
-        $initPackageDetailTable : function (sn) {
-            vm.resource.packageDetails = vm.resource.packageInfo[sn];
+        $initPackageDetailTable : function (csarId) {
+            var data;
+            for(var i=0; i<vm.resource.packageInfo.length; i++) {
+                if (vm.resource.packageInfo[i].csarId == csarId) {
+                    data = vm.resource.packageInfo[i];
+                    break;
+                }
+            }
+            vm.resource.packageDetails = data;
             vm.resource.relationInfo = [];
         },
         $isRowDeletingStatus : function(name) {
@@ -221,13 +242,16 @@ var vm = avalon.define({
             var url = vm.$restUrl.gsarOnboardUrl;
             pmUtil.doOnBoard(url, param);
         } else if(type == "SSAR") {
-            var ssarTarOnbardState="";            
+            var ssarTarOnbardState="";
+            var operationalState="";
             if(onBoardState =="onBoarded") {
                 ssarTarOnbardState = "non-onBoarded";
+                operationalState = "Disabled";
             } else {
                 ssarTarOnbardState = "onBoarded";
+                operationalState = "Enabled";
             }
-            var url = vm.$restUrl.ssarOnboardUrl+"/"+csarId+"?onBoardState="+ssarTarOnbardState
+            var url = vm.$restUrl.ssarOnboardUrl+"/"+csarId+"?onBoardState="+ssarTarOnbardState+"&operationalState="+operationalState;
             pmUtil.doSSAROnboard(url);
         }
     },
