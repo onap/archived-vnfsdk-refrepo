@@ -175,7 +175,7 @@ var vm = avalon.define({
             }
             vm.selectVimDialog.nfarOnBoardParam.labVimId = labVimId;
             vm.selectVimDialog.nfarOnBoardParam.vimIds = vimIds;
-            var extData = vm.selectVimDialog.nfarOnBoardParam;
+            var extData = vm.selectVimDialog.nfarOnBoardParam.$model;
             pmUtil.doNFAROnboard(extData);
             $("#selectVimDialog").modal("hide");
         },
