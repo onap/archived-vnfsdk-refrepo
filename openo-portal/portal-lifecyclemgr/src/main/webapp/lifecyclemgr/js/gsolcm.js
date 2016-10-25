@@ -367,7 +367,7 @@ function createNfvoServiceInstance(gatewayService, serviceInstance) {
 }
 
 function createSdnoServiceInstance(gatewayService, serviceInstance) {
-    var sdnoLcmNsUri = '/openoapi/sdnonslcm/v1.0/ns';
+    var sdnoLcmNsUri = '/openoapi/sdnonslcm/v1/ns';
     return createServiceInstance(gatewayService, sdnoLcmNsUri, serviceInstance);
 }
 
