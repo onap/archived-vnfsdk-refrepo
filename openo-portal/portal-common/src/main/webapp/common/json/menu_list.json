@@ -40,14 +40,8 @@
 		},
 		{
 			"parentId":"openo_menu_resource_mgr",
-			"id":"openo_menu_resource_mgr_sdno",
+			"id":"openo_menu_resource_mgr",
 			"url":"../resmgr-sdn/resource.html",
-			"iconClass":"fa fa-folder-open-o"
-		},
-		{
-			"parentId":"openo_menu_resource_mgr",
-			"id":"openo_menu_resource_mgr_nfvo",
-			"url":"../resmgr-nfv/resource.html",
 			"iconClass":"fa fa-folder-open-o"
 		},
 		{
