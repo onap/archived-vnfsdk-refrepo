@@ -81,14 +81,92 @@ function initParameterTab() {
 function generateTemplateParametersComponent(templateId) {
     var defer = $.Deferred();
     $.when(
-        fetchTemplateParameterDefinitions(templateId)
+        fetchTemplateParameterDefinitions(templateId),
+        fetchGsoNestingTemplateParameters(templateId)
     ).then(
-        function (templateParameterResponse) {
-            templateParameters = translateToTemplateParameters(templateParameterResponse.inputs);
+        function (templateParameterResponse, nestingTempatesParas) {
+        	var inputParas = concat(templateParameterResponse[0].inputs, nestingTempatesParas);
+            templateParameters = translateToTemplateParameters(inputParas);
             defer.resolve(transformToComponents(templateParameters.parameters));
         }
     );
     return defer;
+}
+
+function fetchGsoNestingTemplateParameters(templateId) {
+	var defer = $.Deferred();
+	var nestingParams = [];
+	$.when(
+		fetchServiceTemplateBy(templateId)
+	).then(
+	    function(template) {
+	    	if(template.serviceType === 'GSO') {
+	    		return fetchNodeTemplates(templateId);
+	    	}
+	    	// There are no nesting template parameters for non GSO.
+	    	defer.reslove([]);
+	    }
+	).then(
+	    function(nodeTemplates) {
+	    	var count = nodeTemplates.length;
+	    	if(count ===0) {
+	    		defer.resolve([]);
+	    		return;
+	    	}
+	    	var params = $.Deferred();
+	    	params.progress(function(inputs) {
+	    		pushAll(nestingParams, inputs);
+	    		count--;
+	    		if(count === 0) {
+	    			defer.resolve(nestingParams);
+	    		}
+	    	});
+	    	nodeTemplates.forEach(function(nodeTemplate) {
+	    		var nestingNodeUri = '/openoapi/catalog/v1/servicetemplate/nesting?nodeTypeIds=' + nodeTemplate.type;
+	    		$.when(
+	    			$.ajax({
+	    				type: "GET",
+	    				url: nestingNodeUri
+	    			})
+	    		).then(
+	    		    function(serviceTemplates) {
+	    		    	var oneNodeParameters = []
+	    		    	serviceTemplates.forEach(function(serviceTemplate) {
+	    		    		pushAll(oneNodeParameters, serviceTemplate.inputs.map(function(input) {
+	    		    			input.name = nodeTemplate.type + '.' + input.name;
+	    		    			return input;
+	    		    		}));
+	    		    	})
+	    		    	params.notify(oneNodeParameters);
+	    		    }
+	    		);
+	    	});
+	    }
+	);
+	return defer;
+}
+
+function fetchNodeTemplates(templateId) {
+	var nodeTemplateUri = '/openoapi/catalog/v1/servicetemplates/'+ templateId +'/nodetemplates';
+	return $.ajax({
+		type: "GET",
+		url: nodeTemplateUri
+	});
+}
+
+function concat(array1, array2) {
+	var result = [];
+	pushAll(result, array1);
+	pushAll(result, array2);
+	return result;
+}
+
+function pushAll(acc, array) {
+	var result = acc;
+	array.forEach(function(element) {
+		result.push(element)
+	})
+	return result;
 }
 
 function generateLocationComponent(templateId) {
