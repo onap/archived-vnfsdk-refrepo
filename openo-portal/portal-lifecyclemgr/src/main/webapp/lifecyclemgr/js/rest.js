@@ -91,7 +91,7 @@ $(function () {
         var jsonobj = JSON.parse(formData);
         var newJson = {"managedElement": jsonobj};
         formData = JSON.stringify(newJson);
-        var requestUrl = url + "/org.openo.sdno.brs/openoapi/sdnobrs/v1/managed-elements";
+        var requestUrl = url + "/openoapi/sdnobrs/v1/managed-elements";
         $
             .ajax({
                 type : "POST",
