@@ -308,7 +308,7 @@ function createServiceInstance(gatewayService, nsUri, serviceInstance) {
         dataType: "json",
         data: JSON.stringify(sParameter)
     })).then(function(response) {
-        var nsInstanceId = response.nsInstanceId;
+        var nsInstanceId = response.serviceId;
         serviceInstance.serviceId = nsInstanceId;
         var initNsUrl = nsUri + '/' + nsInstanceId + '/Instantiate';
         var parameter = {
