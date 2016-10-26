@@ -104,7 +104,7 @@ function fetchGsoNestingTemplateParameters(templateId) {
 	    		return fetchNodeTemplates(templateId);
 	    	}
 	    	// There are no nesting template parameters for non GSO.
-	    	defer.reslove([]);
+	    	defer.resolve([]);
 	    }
 	).then(
 	    function(nodeTemplates) {
@@ -122,7 +122,7 @@ function fetchGsoNestingTemplateParameters(templateId) {
 	    		}
 	    	});
 	    	nodeTemplates.forEach(function(nodeTemplate) {
-	    		var nestingNodeUri = '/openoapi/catalog/v1/servicetemplate/nesting?nodeTypeIds=' + nodeTemplate.type;
+	    		var nestingNodeUri = '/openoapi/catalog/v1/servicetemplates/nesting?nodeTypeIds=' + nodeTemplate.type;
 	    		$.when(
 	    			$.ajax({
 	    				type: "GET",
