@@ -337,7 +337,7 @@ function createNetworkServiceInstance(template, serviceInstance, gatewayService)
 function createGsoServiceInstance(gatewayService, serviceInstance, serviceTemplate) {
     var defer = $.Deferred();
     serviceInstance.inputParameters.location = serviceInstance.vimLocation;
-    var gsoLcmUri = '/openoapi/lifecyclemgr/v1/services';
+    var gsoLcmUri = '/openoapi/gso/v1/services';
     var parameter = {
         'name': serviceInstance.serviceName,
         'description': serviceInstance.description,
@@ -451,7 +451,7 @@ function deleteNe(rowId, row) {
 }
 
 function deleteGsoServiceInstance(gatewayService, instanceId, remove) {
-    var gsoLcmUri = '/openoapi/lifecyclemgr/v1/services';
+    var gsoLcmUri = '/openoapi/gso/v1/services';
     $.when(
         deleteNetworkServiceInstance(gatewayService, gsoLcmUri, instanceId)
     ).then(
