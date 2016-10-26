@@ -447,7 +447,7 @@ function deleteNe(rowId, row) {
         var nfvoNsUri = '/openoapi/nslcm/v1.0/ns';
         deleteNonGsoServiceInstance(gatewayService, nfvoNsUri, instanceId, remove);
     } else if (serviceType === 'SDNO') {
-        var sdnoNsUri = '/openoapi/sdnonslcm/v1.0/ns';
+        var sdnoNsUri = '/openoapi/sdnonslcm/v1/ns';
         deleteNonGsoServiceInstance(gatewayService, sdnoNsUri, instanceId, remove);
     }
 }
