@@ -184,9 +184,10 @@ function fetchGsoNestingTemplateParameters(templateId) {
 	    		    		nestingParasAggregatation.notify(oneNodeParameters);
 	    		    	});
 	    		    	serviceTemplates.forEach(function(serviceTemplate) {
-							if(serviceTemplate == null || serviceTemplate == undefined)
+							if(serviceTemplate === undefined || serviceTemplate.inputs === undefined || serviceTemplate.csarId === undefined)
 							{
-								return [];
+								nodeAggregatation.notify([]);
+								return;
 							}
 	    		    		var inputs = serviceTemplate.inputs.map(function(input) {
 	    		    			input.name = nodeTemplate.type + '.' + input.name;
@@ -407,7 +408,7 @@ function createGsoServiceInstance(gatewayService, serviceInstance, serviceTempla
     		'description': serviceInstance.description,
     		'serviceDefId': serviceTemplate.gsarId,
     		'templateId': serviceInstance.serviceTemplateId,
-    		'templateName': serviceTemplate.templateName,
+    		'templateName': serviceTemplate.name,
     		'gatewayUri': gsoLcmUri,
     		'parameters': serviceInstance.inputParameters
     	}
