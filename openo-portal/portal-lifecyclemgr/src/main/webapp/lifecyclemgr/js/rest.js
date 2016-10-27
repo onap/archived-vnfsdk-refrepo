@@ -85,7 +85,7 @@ $(function () {
         });
         return o;
     };
-
+    /*
     $('#createNS').click(function(){
         var formData = JSON.stringify($("#neForm").serializeObject());
         var jsonobj = JSON.parse(formData);
@@ -110,7 +110,7 @@ $(function () {
                     alert("Error on page : " + xhr.responseText);
                 }
             });
-    });
+    });*/
     //init the templates combo
     $.when(
             generateTemplatesComponent()
