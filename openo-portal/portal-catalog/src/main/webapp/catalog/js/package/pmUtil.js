@@ -29,11 +29,11 @@ pmUtil.changeStatus = function(csarId, status) {
     });
 }
 
-pmUtil.changeTableStatus = function(name, status) {
+pmUtil.changeTableStatus = function(csarId, status) {
 	var table = $("#" + vm.$tableId).dataTable();
 	var tableData = table.fnGetData();
 	for (var i=0; i<tableData.length; i++) {
-        if(tableData[i]["name"] == name) {
+        if(tableData[i]["csarId"] == csarId) {
         	table.fnUpdate(status, i, 4, false, false);
         	break;
         }
@@ -67,11 +67,12 @@ pmUtil.getExistPackageByName = function(name) {
 }
 
 pmUtil.updateDeletedPackageStatus = function(message) {
-    if(message.status == "true" || message.status == "deletionPending") {                
+    var messageobj = JSON.parse(message);
+    if(messageobj.status == "true" || messageobj.status == "deletionPending") {
         commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-delete-success"), "success");
         refreshByCond();
     } else {
-        pmUtil.changeTableStatus(message.csarid, "deletefail");
+        pmUtil.changeTableStatus(messageobj.csarid, "deletefail");
     }
 }
 
@@ -103,7 +104,9 @@ pmUtil.doOnBoard = function(url,param) {
             dataType : "json",
             success : function(resp) {
                 if(resp.data.status == "failed") {
-                    commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-onBoarded"), "failed");
+                    commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-onBoard-error"), "failed");
+                } else {
+                    commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-onBoarded"), "success");
                 }
                 refreshByCond();
             },
@@ -122,6 +125,11 @@ pmUtil.doNFAROnboard = function(extData) {
         contentType : "application/json",
         dataType : "json",
         success : function(resp) {
+            if(resp.data.status == "failed") {
+                commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-onBoard-error"), "failed");
+            } else {
+                commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-onBoarded"), "success");
+            }
             refreshByCond();
         },
         error : function() {
@@ -136,6 +144,11 @@ pmUtil.doSSAROnboard = function(url) {
         url : url,
         contentType : "application/json",
         success : function(resp) {
+            if(resp.data.status == "failed") {
+                commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-onBoard-error"), "failed");
+            } else {
+                commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-onBoarded"), "success");
+            }
             refreshByCond();
         },
         error : function() {
@@ -150,24 +163,18 @@ pmUtil.delPackage = function (url) {
         url : url,
         contentType : "application/json",
         success : function(resp) {
-            commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-delete-success"), "success");
-            setTimeout( function(){
-                refreshByCond();
-            }, 1 * 1000 );
+            //commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-delete-success"), "success");
+            //setTimeout( function(){
+            //    refreshByCond();
+            //}, 1 * 1000 );
         },
         error : function(resp) {
             if(resp.status == 202 || resp.responseText == "success") {
-                commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-delete-success"), "success");
-                setTimeout( function(){
-                    refreshByCond();
-                }, 1 * 1000 );
+                //commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-delete-success"), "success");
                 //refreshByCond();
             } else {
                 commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-delete-error"), "failed");
-                setTimeout( function(){
-                    refreshByCond();
-                }, 1 * 1000 );
-                //refreshByCond();
+                refreshByCond();
             }
         }
     });
