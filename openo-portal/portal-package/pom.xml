@@ -32,6 +32,12 @@
 
   <dependencies>
     <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <scope>provided</scope>
+      <version>2.5</version>
+    </dependency>
+    <dependency>
       <groupId>org.openo.gso.gui</groupId>
       <artifactId>portal-common</artifactId>
       <version>1.0.0-SNAPSHOT</version>
@@ -67,6 +73,33 @@
       <version>1.0.0-SNAPSHOT</version>
       <type>war</type>
     </dependency>
+    <dependency>
+      <groupId>org.openo.gso.gui</groupId>
+      <artifactId>portal-performance</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+      <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>dom4j</groupId>
+      <artifactId>dom4j</artifactId>
+      <version>1.6.1</version>
+    </dependency>
+    <dependency>
+      <groupId>net.sf.json-lib</groupId>
+      <artifactId>json-lib</artifactId>
+      <version>2.1</version>
+      <classifier>jdk15</classifier>
+      </dependency>
+      <dependency>
+        <groupId>commons-httpclient</groupId>
+        <artifactId>commons-httpclient</artifactId>
+        <version>3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+        <version>4.3.5</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -101,6 +134,10 @@
             <overlay>
               <groupId>org.openo.gso.gui</groupId>
               <artifactId>portal-lifecyclemgr</artifactId>
+            </overlay>
+            <overlay>
+              <groupId>org.openo.gso.gui</groupId>
+              <artifactId>portal-performance</artifactId>
             </overlay>
           </overlays>
         </configuration>

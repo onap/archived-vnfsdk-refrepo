@@ -1,0 +1,125 @@
+﻿<!--
+    Copyright 2016, CMCC Technologies Co., Ltd.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link href="../common/thirdparty/font-awesome/css/font-awesome.min.css" rel="stylesheet" id="font_awesome"/>
+		<link href="../common/thirdparty/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+		<link href="../common/thirdparty/uniform/css/uniform.default.css" rel="stylesheet"/>
+		<link href="../common/thirdparty/zTree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css">
+		<link href="../common/thirdparty/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet">
+		<link href="../common/css/plugins.css" rel="stylesheet" type="text/css">
+		<link href="../common/css/ZteIctIcons/style.css" rel="stylesheet" type="text/css"/>
+		<link href="../common/css/ngict-component.css" rel="stylesheet" type="text/css">
+		<link href="css/pmQueryBox.css" rel="stylesheet" type="text/css">
+		<link href="css/performanceQuery.css" rel="stylesheet" type="text/css"/>
+		<link href="css/performanceChart.css" rel="stylesheet" type="text/css"/>
+	</head>
+	<body>
+		<div ms-controller="pmQueryController" class="ms-controller">
+			<div class="row" ms-visible="boxVisible">
+				<div class="row" style="margin-left: 15px;">
+					<div class="col-xs-6 col-md-6 col-sm-6 col-lg-6 titlefont">
+						<span id="com_zte_ums_ict_pm_query_data" name_i18n="openo_performance_i18n"></span>
+					</div>
+				</div>
+				<div class = "separator-line"></div>
+				<div class="row ruleNav" style="margin-left: 50px;width: 93%;">
+					<div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="false">
+						<div class="carousel-inner" role="listbox">
+							<div class="item " ms-repeat-el="pmQueries">
+								<div class="col-xs-12" style=" padding-right: 20px; padding-top: 10px;">
+									<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 boxPadding" ms-repeat-elem="el.array" data-repeat-rendered="clickSelectedCommonCond" ms-click="queryTabClicked(elem ,this)">
+										<a href="#">
+											<div class="box" ms-class="boxStyle{{$index % 4 + 1}}">
+												<div class="subbox">
+													<div class="textImageStyle " ms-class="{{elem.textImage}}">
+														<span class="ict-cpu"></span>
+													</div>
+													<div class="set-title">{{elem.name}}</div>
+													<span class="ict-modify" ms-click="queryRuleView(event, elem)"></span>
+												</div>
+											</div>
+											<div class="col-md-12 separator-line separator-line-visibilty" ms-class="boxStyle{{$index % 4 + 1}}"></div>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+							<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+							<span class="sr-only">Previous</span>
+						</a>
+						<a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next" style="margin-right: -10px;">
+							<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+							<span class="sr-only">Next</span>
+						</a>
+					</div>
+				</div>
+				<div class="row-fluid separator">
+					<div ms-visible="boxVisible" class="col-xs-12" style="margin-top: 10px;">
+						<a href="#" id="upArrow" ms-click="clickDisplayGraphAlink()"><img src="image/up.png"/></a>
+					</div>
+				</div>
+			</div>
+			<div class="row-fluid separator">
+				<div ms-visible="!boxVisible" class="col-xs-12">
+					<a href="#" ms-click="clickDisplayGraphAlink()"><img src="image/down.png"/></a>
+				</div>
+			</div>
+			<div class="container-fluid">
+				<div class="row" style=" margin-top: 15px;">
+					<div class="col-xs-6 col-md-6 col-sm-6 col-lg-6 titlefont">
+						<span id="tableTitleText">{{tableTitle}}</span>
+						<a href="#" ms-visible="tableIconVisable"><img id="tableImg" src="image/table_icon.png" ms-click="showPerformanceTable()"></a>
+						<a href="#" ms-visible="chartIconVisable"><img id="chartImg" src="image/chart_icon.png" ms-click="showPerformanceChart()"></a>
+					</div>
+				</div>
+				<div class = "separator-line"></div>
+				<div class="row-fluid " data-name="table_zone">
+					<div ms-visible="pmChartVisable" id="chartCanvasDiv" style="width:1000px; height:600px;"></div>
+					<div ms-visible="pmDataVisable" id = 'ict_pm_data_div'></div>
+					<div ms-visible="queryRuleVisable" ms-include-src="'performance_query_rule.html'"></div>
+				</div>
+			</div>
+		</div>
+		<script src="../common/thirdparty/jquery/jquery-1.10.2.min.js"></script>
+		<script src="../common/thirdparty/jquery.i18n/jquery.i18n.properties-1.0.9.js"></script>
+		<script src="../common/js/international/loadi18n.js" type="text/javascript"></script>
+		<script src="../common/js/tools.js"></script>
+		<script>
+			loadi18n_WebFramework('web-performance-i18n', 'i18n/', 'openo_performance_i18n');
+		</script>
+		<script src="../common/thirdparty/data-tables/jquery.dataTables.js"></script>
+		<script src="../common/thirdparty/bootbox/bootbox.min.js"type="text/javascript"></script>
+		<script src="../common/thirdparty/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+		<script src="../common/thirdparty/jquery-validation/js/jquery.validate.js"></script>
+		<script src="../common/thirdparty/jquery-validation/js/additional-methods.min.js"></script>
+		<script src="../common/thirdparty/echarts/echarts-all.js" type="text/javascript"></script>
+		<script src="../common/thirdparty/bootstrap-daterangepicker/moment.js"></script>
+		<script src="../common/thirdparty/bootstrap-daterangepicker/daterangepicker.js"></script>
+		<script src="../common/thirdparty/avalon/avalon.js"></script>
+		<script src="../common/js/security/aes.js" type="text/javascript"></script>
+		<script src="../common/js/security/framework-util.js" type="text/javascript"></script>
+		<script src="../common/js/json2.js"></script>
+		<script src="js/serverPageTable.js"></script>
+		<script src="js/pmUtil.js"></script>
+		<script src="js/commonUtil.js"></script>
+		<script src="js/performanceQueryController.js"></script>
+		<script src="js/performanceChart.js"></script>
+	</body>
+</html>

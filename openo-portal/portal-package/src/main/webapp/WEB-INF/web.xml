@@ -15,8 +15,11 @@
     limitations under the License.
 -->
 <web-app>
-  <display-name>OPEN-O Web Application</display-name>
-  <welcome-file-list>
-    <welcome-file>common/login.html</welcome-file>
-  </welcome-file-list>
+    <display-name>OPEN-O Web Application</display-name>
+    <welcome-file-list>
+        <welcome-file>common/login.html</welcome-file>
+    </welcome-file-list>
+    <listener>
+        <listener-class>org.openo.portal.system.SystemListener</listener-class>
+    </listener>
 </web-app>
