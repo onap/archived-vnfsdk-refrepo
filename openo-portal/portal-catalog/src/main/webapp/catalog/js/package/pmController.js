@@ -326,6 +326,11 @@ var vm = avalon.define({
             }
         });
     },
+    $initCometd : function() {
+        commonUtil.registerCometdMessage("/openoapi/catalog/v1/catalognotification", "/package/delete", function(message) {
+            pmUtil.updateDeletedPackageStatus(message);
+        });
+    },
     gotoPackageListPage:function(){
         window.location.href="./csarPackage.html";
         refreshByCond();
@@ -333,7 +338,7 @@ var vm = avalon.define({
 });
 avalon.scan();
 vm.$initUpload();
-
+vm.$initCometd();
 $(function(){
     vm.$initTable();
 });
