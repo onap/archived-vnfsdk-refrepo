@@ -185,7 +185,7 @@ function fetchGsoNestingTemplateParameters(templateId) {
 	    		    		nestingParasAggregatation.notify(oneNodeParameters);
 	    		    	});
 	    		    	serviceTemplates.forEach(function(serviceTemplate) {
-							if(serviceTemplate === undefined || serviceTemplate.inputs === undefined || serviceTemplate.csarId === undefined)
+							if(serviceTemplate === null || serviceTemplate === undefined || serviceTemplate.inputs === undefined || serviceTemplate.csarId === undefined)
 							{
 								nodeAggregatation.notify([]);
 								return;
