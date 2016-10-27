@@ -103,7 +103,7 @@ pmUtil.doOnBoard = function(url,param) {
             contentType : "application/json",
             dataType : "json",
             success : function(resp) {
-                if(resp.data.status == "failed") {
+                if(resp != "" && resp.data.status == "failed") {
                     commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-onBoard-error"), "failed");
                 } else {
                     commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-onBoarded"), "success");
@@ -125,7 +125,7 @@ pmUtil.doNFAROnboard = function(extData) {
         contentType : "application/json",
         dataType : "json",
         success : function(resp) {
-            if(resp.data.status == "failed") {
+            if(resp != "" && resp.data.status == "failed") {
                 commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-onBoard-error"), "failed");
             } else {
                 commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-onBoarded"), "success");
@@ -144,7 +144,7 @@ pmUtil.doSSAROnboard = function(url) {
         url : url,
         contentType : "application/json",
         success : function(resp) {
-            if(resp.data.status == "failed") {
+            if(resp != "" && resp.data.status == "failed") {
                 commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-onBoard-error"), "failed");
             } else {
                 commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-onBoarded"), "success");
