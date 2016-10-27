@@ -422,7 +422,7 @@ function createGsoServiceInstance(gatewayService, serviceInstance, serviceTempla
 }
 
 function createNfvoServiceInstance(gatewayService, serviceInstance) {
-    var nfvoLcmNsUri = '/openoapi/nslcm/v1.0/ns';
+    var nfvoLcmNsUri = '/openoapi/nslcm/v1/ns';
     return createServiceInstance(gatewayService, nfvoLcmNsUri, serviceInstance);
 }
 
@@ -503,7 +503,7 @@ function deleteNe(rowId, row) {
     if(serviceType === 'GSO') {
         deleteGsoServiceInstance(gatewayService, instanceId, remove)
     } else if (serviceType === 'NFVO') {
-        var nfvoNsUri = '/openoapi/nslcm/v1.0/ns';
+        var nfvoNsUri = '/openoapi/nslcm/v1/ns';
         deleteNonGsoServiceInstance(gatewayService, nfvoNsUri, instanceId, remove);
     } else if (serviceType === 'SDNO') {
         var sdnoNsUri = '/openoapi/sdnonslcm/v1/ns';
