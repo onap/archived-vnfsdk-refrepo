@@ -114,6 +114,7 @@ function fetchServiceTemplateBy(templateId) {
         function(response) {
             template.name = response.templateName;
             template.gsarId = response.csarId;
+            template.id = response.id;
             return fetchCsar(template.gsarId);
         }
     ).then(
@@ -393,7 +394,7 @@ function createNetworkServiceInstance(template, serviceInstance, gatewayService)
     if (template.serviceType === 'GSO') {
         return createGsoServiceInstance(gatewayService, serviceInstance, template);
     } else if (template.serviceType === 'NFVO') {
-        return createNfvoServiceInstance(gatewayService, serviceInstance);
+        return createNfvoServiceInstance(gatewayService, serviceInstance, template);
     } else if (template.serviceType === 'SDNO') {
         return createSdnoServiceInstance(gatewayService, serviceInstance);
     }
@@ -426,20 +427,22 @@ function createGsoServiceInstance(gatewayService, serviceInstance, serviceTempla
     return defer;
 }
 
-function createNfvoServiceInstance(gatewayService, serviceInstance) {
+function createNfvoServiceInstance(gatewayService, serviceInstance, template) {
     var nfvoLcmNsUri = '/openoapi/nslcm/v1/ns';
+    serviceInstance.nsdId = template.id;
     return createServiceInstance(gatewayService, nfvoLcmNsUri, serviceInstance);
 }
 
 function createSdnoServiceInstance(gatewayService, serviceInstance) {
     var sdnoLcmNsUri = '/openoapi/sdnonslcm/v1/ns';
+    serviceInstance.nsdId = serviceInstance.serviceTemplateId;
     return createServiceInstance(gatewayService, sdnoLcmNsUri, serviceInstance);
 }
 
 function createServiceInstance(gatewayService, nsUri, serviceInstance) {
     var defer = $.Deferred();
     var sParameter = {
-        'nsdId': serviceInstance.serviceTemplateId,
+        'nsdId': serviceInstance.nsdId,
         'nsName': serviceInstance.serviceName,
         'description': serviceInstance.description,
         'gatewayUri': nsUri
