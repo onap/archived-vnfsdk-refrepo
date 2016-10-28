@@ -456,7 +456,7 @@ function createServiceInstance(gatewayService, nsUri, serviceInstance) {
     })).then(function(response) {
         var nsInstanceId = response.serviceId;
         serviceInstance.serviceId = nsInstanceId;
-        var initNsUrl = nsUri + '/' + nsInstanceId + '/Instantiate';
+        var initNsUrl = nsUri + '/' + nsInstanceId + '/instantiate';
         var parameter = {
             'gatewayUri': initNsUrl,
             'nsInstanceId': nsInstanceId,
