@@ -13,11 +13,6 @@
  * limitations under the License.
  */
 
-var url = "";
-$.getJSON("./conf/dataconfig.json", function (jsonData){
-    url = jsonData.url +":"+ jsonData.port;
-    console.log("URL = " + url);
-});
 
 $('.siteDeleteImg').click(
     function () {
@@ -35,7 +30,7 @@ $('.siteDeleteImg').click(
     });
 
 function deleteController(objectId) {
-    var requestUrl = url + "/openoapi/extsys/v1/sdncontrollers/" + objectId;
+    var requestUrl = "/openoapi/extsys/v1/sdncontrollers/" + objectId;
     $.ajax({
         type: "DELETE",
         url: requestUrl,
@@ -54,14 +49,14 @@ function deleteController(objectId) {
 }
 
 function loadControllerData() {
-    var requestUrl = url + "/openoapi/extsys/v1/sdncontrollers";
+    var requestUrl = "/openoapi/extsys/v1/sdncontrollers";
     $.ajax({
         type: "GET",
         url: requestUrl,
         contentType: "application/json",
         success: function (jsonobj) {
             $('#controller').bootstrapTable({
-                data: jsonobj.topologicalControllers
+                data: jsonobj
             });
         },
         error: function (xhr, ajaxOptions, thrownError) {
@@ -150,11 +145,7 @@ $(function () {
     $('#createController').click(function () {
         var formData = JSON.stringify($("#controllerForm").serializeObject());
         var jsonobj = JSON.parse(formData);
-        var newJson = {
-            "topologicalController": jsonobj
-        };
-        formData = JSON.stringify(newJson);
-        var requestUrl = url + "/openoapi/extsys/v1/sdncontrollers";
+        var requestUrl = "/openoapi/extsys/v1/sdncontrollers";
         $.ajax({
             type: "POST",
             url: requestUrl,
@@ -163,7 +154,7 @@ $(function () {
             data: formData,
             success: function (jsonResp) {
                 alert("Controller saved successfully!!!");
-                jsonobj["id"] = jsonResp.topologicalController.id;
+                jsonobj["id"] = jsonResp.sdnControllerId;
                 $('#controller').bootstrapTable("append", jsonobj);
                 $('#vmAppDialog').removeClass('in').css('display', 'none');
 

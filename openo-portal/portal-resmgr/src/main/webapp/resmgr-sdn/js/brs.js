@@ -12,12 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var url = "";
-$.getJSON("./conf/dataconfig.json", function (jsonData){
-    url = jsonData.url +":"+ jsonData.port;
-    console.log("URL = " + url);
-});
-
 $('.siteDeleteImg').click(function () {
     var data = $(this).parent().parent().parent().find('td:last').find('div:last').html();
     alert(data);
@@ -31,8 +25,12 @@ $('.siteDeleteImg').click(function () {
 });
 
 
+function hideFirstCol() {
+    //$('table tr').find('th:eq(0)').hide();
+    //$('table tr').find('td:eq(0)').hide();
+}
 function deleteSite(objectId) {
-    var requestUrl = url+"/openoapi/sdnobrs/v1/sites/" + objectId;
+    var requestUrl = "/openoapi/sdnobrs/v1/sites/" + objectId;
     $
         .ajax({
             type: "DELETE",
@@ -51,7 +49,7 @@ function deleteSite(objectId) {
         });
 }
 function deleteLink(objectId) {
-    var requestUrl = url+"/openoapi/sdnobrs/v1/topological-links/" + objectId;
+    var requestUrl = "/openoapi/sdnobrs/v1/topological-links/" + objectId;
     $
         .ajax({
             type: "DELETE",
@@ -71,7 +69,7 @@ function deleteLink(objectId) {
 }
 
 function deleteNe(objectId) {
-    var requestUrl = url+"/openoapi/sdnobrs/v1/managed-elements/" + objectId;
+    var requestUrl = "/openoapi/sdnobrs/v1/managed-elements/" + objectId;
     $
         .ajax({
             type: "DELETE",
@@ -91,7 +89,7 @@ function deleteNe(objectId) {
 }
 
 function deletePort(objectId) {
-    var requestUrl = url+"/openoapi/sdnobrs/v1/logical-termination-points/" + objectId;
+    var requestUrl = "/openoapi/sdnobrs/v1/logical-termination-points/" + objectId;
     $
         .ajax({
             type: "DELETE",
@@ -110,7 +108,7 @@ function deletePort(objectId) {
         });
 }
 function loadSiteData() {
-    var requestUrl = url+"/openoapi/sdnobrs/v1/sites";
+    var requestUrl = "/openoapi/sdnobrs/v1/sites";
     $
         .ajax({
             type: "GET",
@@ -127,7 +125,7 @@ function loadSiteData() {
         });
 }
 function loadLinkData() {
-    var requestUrl = url+"/openoapi/sdnobrs/v1/topological-links";
+    var requestUrl = "/openoapi/sdnobrs/v1/topological-links";
     $
         .ajax({
             type: "GET",
@@ -144,16 +142,21 @@ function loadLinkData() {
         });
 }
 function loadNeData() {
-    var requestUrl = url+"/openoapi/sdnobrs/v1/managed-elements";
+
+    var requestUrl = "/openoapi/sdnobrs/v1/managed-elements";
     $
         .ajax({
             type: "GET",
             url: requestUrl,
             contentType: "application/json",
             success: function (jsonobj) {
+                var nedata = jsonobj.managedElements;
                 $('#ne').bootstrapTable({
-                    data: jsonobj.managedElements
+                    data: nedata
                 });
+                $('#ne').bootstrapTable('refresh');
+                hideFirstCol();
+
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 alert("Error on getting ne data : " + xhr.responseText);
@@ -161,7 +164,7 @@ function loadNeData() {
         });
 }
 function loadPortData() {
-    var requestUrl = url+"/openoapi/sdnobrs/v1/logical-termination-points";
+    var requestUrl = "/openoapi/sdnobrs/v1/logical-termination-points";
     $
         .ajax({
             type: "GET",
@@ -176,6 +179,34 @@ function loadPortData() {
                 alert("Error on getting port data : " + xhr.responseText);
             }
         });
+}
+function loadControllerData() {
+    var requestUrl = "/openoapi/extsys/v1/sdncontrollers";
+    $.ajax({
+        type: "GET",
+        url: requestUrl,
+        contentType: "application/json",
+        success: function (jsonobj) {
+            fillSelect(jsonobj);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert("Error on getting controller data : " + xhr.responseText);
+        }
+    });
+}
+function fillSelect(str){
+    var json;
+    if(typeof str === 'object'){
+        json = str;
+    }
+    else{
+        json = eval('(' + str + ')');
+    }
+    var seleObj = $('#controller')
+    seleObj.find("option").remove();
+    for(var i=0;i < json.length;i++){
+        seleObj.append('<option value="'+json[i].name+'">'+json[i].name+'</option>');
+    }
 }
 $(function () {
     $('.creat-btn').click(function () {
@@ -206,6 +237,7 @@ $(function () {
     });
     $('.table tr:odd').addClass('active');
     $('#false').click(function () {
+        loadControllerData();
         $('#vmAppDialog').addClass('in').css({'display': 'block'});
     });
     $('.close,.button-previous').click(function () {
@@ -245,7 +277,7 @@ $(function () {
         var jsonobj = JSON.parse(formData);
         var newJson = {"site": jsonobj};
         formData = JSON.stringify(newJson);
-        var requestUrl = url+"/openoapi/sdnobrs/v1/sites";
+        var requestUrl = "/openoapi/sdnobrs/v1/sites";
         $
             .ajax({
                 type: "POST",
@@ -270,7 +302,7 @@ $(function () {
         var jsonobj = JSON.parse(formData);
         var newJson = {"managedElement": jsonobj};
         formData = JSON.stringify(newJson);
-        var requestUrl = url+"/openoapi/sdnobrs/v1/managed-elements";
+        var requestUrl = "/openoapi/sdnobrs/v1/managed-elements";
         $
             .ajax({
                 type: "POST",
@@ -296,7 +328,7 @@ $(function () {
         var jsonobj = JSON.parse(formData);
         var newJson = {"logicalTerminationPoint": jsonobj};
         formData = JSON.stringify(newJson);
-        var requestUrl = url+"/openoapi/sdnobrs/v1/logical-termination-points";
+        var requestUrl = "/openoapi/sdnobrs/v1/logical-termination-points";
         $
             .ajax({
                 type: "POST",
@@ -323,7 +355,7 @@ $(function () {
         var jsonobj = JSON.parse(formData);
         var newJson = {"topologicalLink": jsonobj};
         formData = JSON.stringify(newJson);
-        var requestUrl = url+"/openoapi/sdnobrs/v1/topological-links";
+        var requestUrl = "/openoapi/sdnobrs/v1/topological-links";
         $
             .ajax({
                 type: "POST",
