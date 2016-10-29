@@ -32,14 +32,7 @@
         <script type="text/javascript" src="js/bootstrap-table-filter-control.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function () {
-
-                var jsondata = [];
-                jsondata = loadPortData();
-
-                $('#port').bootstrapTable({
-                    //Assigning data to table
-                    data: jsondata
-                });
+                loadPortData();
             });
             function operateFormatter(value, row, index) {
                 return [

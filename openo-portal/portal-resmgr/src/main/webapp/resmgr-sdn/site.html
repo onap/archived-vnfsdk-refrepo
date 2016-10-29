@@ -35,15 +35,7 @@
         </style>
         <script type="text/javascript">
             $(document).ready(function () {
-
-                var jsondata = [];
-                jsondata = loadSiteData();
-                $('#site').bootstrapTable({
-                    //Assigning data to table
-                    data: jsondata
-                });
-
-
+                loadSiteData();
             });
 
             function operateFormatter(value, row, index) {

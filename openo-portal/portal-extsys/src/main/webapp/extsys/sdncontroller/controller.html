@@ -32,13 +32,7 @@
         <script type="text/javascript" src="js/bootstrap-table-filter-control.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function () {
-
-                var jsondata = loadControllerData();
-
-                $('#controller').bootstrapTable({
-                    //Assigning data to table
-                    data: jsondata
-                });
+                loadControllerData();
             });
             function operateFormatter(value, row, index) {
                 return ['<img class="siteDeleteImg" src="images/delete.png" href="javascript:void(0)" style="cursor: pointer" name="title" title="Delete" />']
@@ -48,8 +42,7 @@
             window.operateEvents = {
                 'click .siteDeleteImg': function (e, value, row, index) {
                     // TO DO ajex call for delete
-                    deleteLink(row.id);
-                    console.log(value, row, index);
+                    deleteController(row.id, row);
                 }
             };
         </script>
@@ -177,6 +170,15 @@
                                             </span>
                                 </div>
                             </th>
+                            <th class="openo-table-state-default openo-table-th openo-table-disable-element  leftHeaderAlign"
+                                align="center" data-formatter="operateFormatter" data-events="operateEvents">
+                                <div class="openo-table-th-border"></div>
+                                <div class="DataTables_sort_wrapper openo-ellipsis ">
+							                <span id="ctrler_nativeID_sorticon"
+                                                  class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">Actions
+                                            </span>
+                                </div>
+                            </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -299,7 +301,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn SDBtn" data-dismiss="modal" aria-hidden="true"
-                                        id="createLink">
+                                        id="createController">
                                     <span id="nfv-virtualApplication-iui-text-cancelBtn">OK</span>
                                 </button>
                                 <button type="button" class="btn button-previous SDBtn">
