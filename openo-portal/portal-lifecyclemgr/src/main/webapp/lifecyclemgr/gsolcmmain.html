@@ -15,6 +15,7 @@
     limitations under the License.
 
 -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,14 +34,15 @@
     <script type="text/javascript" src="js/bootstrap-table-filter-control.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            /*	   $('.modal-content').resizable({
-   
-                minHeight: 300,
-                minWidth: 300
-            });*/
+
             $('.modal-dialog').draggable();
             $("#detailCont").show();
             var jsondata = loadGetServiceData();
+			
+			$.each(jsondata,function(k,v){
+			 jsondata[k].createTime=  new Date(jsondata[key].createTime).toUTCString();
+			});
+			
             $('#sai').bootstrapTable({
                 //Assigning data to table
                 data: jsondata
@@ -68,8 +70,8 @@
 
                 //loadIframe("topoFrame", "chartTopo.html?serviceId="+row.serviceId);
                 document.getElementById("topoCont").setAttribute('data', 'chartTopo.html?serviceId='+row.serviceId);
-				document.getElementById('inputcontent').setAttribute('data', 'inputData.html?json='+ JSON.stringify(row));
-                document.getElementById('inputcontentDlg').setAttribute('data', 'inputData.html?json='+ JSON.stringify(row));
+				document.getElementById('inputcontent').setAttribute('data', 'InputData.html?json='+ JSON.stringify(row));
+                document.getElementById('inputcontentDlg').setAttribute('data', 'InputData.html?json='+ JSON.stringify(row));
            	});
             new lcmHandler();
         });
@@ -358,11 +360,11 @@
                                 </iframe>-->
                             </div>
                             <div id="inpContMod" style="display:none;">
-                                <object id="inputcontentDlg" data="inputData.html" width="100%" height="300"
+                                <object id="inputcontentDlg" data="InputData.html" width="100%" height="300"
                                         type="text/html">
 
                                 </object>
-                                <!--<iframe src="inputData.html" name="" style="width:100%" allowTransparency="true" scrolling="no" frameborder="0">
+                                <!--<iframe src="InputData.html" name="" style="width:100%" allowTransparency="true" scrolling="no" frameborder="0">
                                 </iframe>
                                 </iframe>-->
                             </div>
@@ -431,7 +433,7 @@
                 </object>
             </div>
             <div id="inpCont" style="display:none;">
-                <object id="inputcontent" src="inputData.html" width="100%" height="300" type="text/html">
+                <object id="inputcontent" src="InputData.html" width="100%" height="300" type="text/html">
                 </object>
             </div>
         </div>
