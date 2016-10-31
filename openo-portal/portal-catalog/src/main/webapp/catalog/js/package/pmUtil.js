@@ -110,8 +110,13 @@ pmUtil.doOnBoard = function(url,param) {
                 }
                 refreshByCond();
             },
-            error : function() {
-                commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-onBoard-error"), "failed");
+            error : function(resp) {
+                if(resp != "" && resp.responseText == "success") {
+                    commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-onBoarded"), "success");
+                    refreshByCond();
+                } else {
+                    commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-onBoard-error"), "failed");
+                }
             }
         });
     }
@@ -132,7 +137,7 @@ pmUtil.doNFAROnboard = function(extData) {
             }
             refreshByCond();
         },
-        error : function() {
+        error : function(resp) {
             commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-onBoard-error"), "failed");
         }
     });
@@ -151,7 +156,7 @@ pmUtil.doSSAROnboard = function(url) {
             }
             refreshByCond();
         },
-        error : function() {
+        error : function(resp) {
             commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-onBoard-error"), "failed");
         }
     });
@@ -182,7 +187,7 @@ pmUtil.delPackage = function (url) {
 
 pmUtil.nameRender = function(obj) {
     return '<a href="#" onclick="vm.packageDetail.$showDetails('
-        + '\'block\',\'' + obj.aData.id + '\', \'' + obj.aData.name + '\')">' + obj.aData.name + '</a>';
+        + '\'block\',\'' + obj.aData.csarId + '\', \'' + obj.aData.name + '\')">' + obj.aData.name + '</a>';
 }
 
 pmUtil.onBoardRender = function(obj) {

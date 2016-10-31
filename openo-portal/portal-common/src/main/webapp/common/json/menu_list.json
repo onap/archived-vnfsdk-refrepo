@@ -52,12 +52,6 @@
         },
         {
             "parentId":"openo_menu_orchestrator",
-            "id":"openo_menu_orchestrator_model_design",
-            "url":"/winery/servicetemplates.html",
-            "iconClass":"fa fa-folder-open-o"
-        },
-        {
-            "parentId":"openo_menu_orchestrator",
             "id":"openo_menu_orchestrator_package",
             "url":"../catalog/csarPackage.html",
             "iconClass":"fa fa-folder-open-o"
