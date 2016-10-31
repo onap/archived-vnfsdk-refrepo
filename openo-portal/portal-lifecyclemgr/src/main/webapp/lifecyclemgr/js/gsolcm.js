@@ -146,12 +146,14 @@ function fetchGsoTemplateInputParameters(templateId) {
     $.when(
         fetchTemplateParameterDefinitions(templateId),
         fetchGsoNestingTemplateParameters(templateId),
-        fetchVimInfo()
+        fetchVimInfo(),
+        fetchSdnController()
     ).then(
-        function (templateParameterResponse, nestingTempatesParas, vimInfoResponse) {
+        function (templateParameterResponse, nestingTempatesParas, vimInfoResponse, sdnControllersResponse) {
         	var inputParas = concat(templateParameterResponse[0].inputs, nestingTempatesParas);
         	var vims = translateToVimInfo(vimInfoResponse[0]);
-            templateParameters = translateToTemplateParameters(inputParas, vims);
+            var sdnControllers = translateToSdnControllers(sdnControllersResponse[0]);
+            templateParameters = translateToTemplateParameters(inputParas, vims, sdnControllers);
             defer.resolve(templateParameters);
         }
     );
@@ -205,7 +207,13 @@ function fetchGsoNestingTemplateParameters(templateId) {
 	    		    		    			description: nodeTemplate.name + ' Location',
 	    		    		    			required: 'true'
 	    		    		    		});
-	    		    		    	}
+                                        inputs.push({
+                                            name: nodeTemplate.type + '.sdncontroller',
+                                            type: 'sdncontroller',
+                                            description: nodeTemplate.name + ' SDN Controller',
+                                            required: 'true'
+                                        });
+                                    }
 	    		    		    	nodeAggregatation.notify(inputs);
 	    		    		    }
 	    		    		);
@@ -255,7 +263,7 @@ function pushAll(acc, array) {
 	return result;
 }
 
-function translateToTemplateParameters(inputs, vims) {
+function translateToTemplateParameters(inputs, vims, controllers) {
     var inputParameters = [];
     var i;
     for (i = 0; i < inputs.length; i += 1) {
@@ -269,17 +277,19 @@ function translateToTemplateParameters(inputs, vims) {
             value: inputs[i].defaultValue || ''
         };
     }
-    return {changed: false, parameters: inputParameters, vimInfos: vims};
+    return {changed: false, parameters: inputParameters, vimInfos: vims, sdnControllers: controllers};
 }
 
 function fetchNfvoTemplateInputParameters(templateId) {
 	var defer = $.Deferred();
 	$.when(
 		fetchTemplateParameterDefinitions(templateId),
-		fetchVimInfo()
+		fetchVimInfo(),
+        fetchSdnController()
 	).then(
-	    function (templateParameterResponse, vimInfoResponse) {
+	    function (templateParameterResponse, vimInfoResponse, sdnControllerResponse) {
 	    	var vims = translateToVimInfo(vimInfoResponse[0]);
+            var sdnControllers = translateToSdnControllers(sdnControllerResponse[0]);
 	    	var inputParas = templateParameterResponse[0].inputs;
 	    	inputParas.push({
 	    		name: 'location',
@@ -287,7 +297,13 @@ function fetchNfvoTemplateInputParameters(templateId) {
 	    		description: 'Location',
 	    		required: 'true'
 	    	});
-	    	templateParameters = translateToTemplateParameters(inputParas, vims);
+            inputParas.push({
+                name: 'sdncontroller',
+                type: 'sdncontroller',
+                description: 'SDN Controller',
+                required: 'true'
+            });
+	    	templateParameters = translateToTemplateParameters(inputParas, vims, sdnControllers);
             defer.resolve(templateParameters);	
 	    }
 	);
@@ -300,7 +316,7 @@ function fetchSdnoTemplateInputParameters(templateId) {
 		fetchTemplateParameterDefinitions(templateId)
 	).then(
 	    function (templateParameterResponse) {
-	    	templateParameters = translateToTemplateParameters(templateParameterResponse.inputs, []);
+	    	templateParameters = translateToTemplateParameters(templateParameterResponse.inputs, [], []);
             defer.resolve(templateParameters);	
 	    }
 	);
@@ -323,30 +339,50 @@ function fetchVimInfo() {
     });
 }
 
+function fetchSdnController() {
+    var sdnControllerUri = '/openoapi/extsys/v1/sdncontrollers';
+    return $.ajax({
+        type: "GET",
+        url: sdnControllerUri
+    });
+}
+
 function translateToVimInfo(vims) {
 	return vims.map(function (vim) {
 		return {
-			vimId: vim.vimId,
-			vimName: vim.name
+			optionId: vim.vimId,
+			optionName: vim.name
 		};
 	});
+}
+
+function translateToSdnControllers(controllers) {
+    return controllers.map(function(controller) {
+        return {
+            optionId: controller.sdnControllerId,
+            optionName: controller.name
+        };
+    });
 }
 
 function transformToComponents(templateParas) {
 	var inputs = templateParas.parameters;
 	var vimInfos = templateParas.vimInfos;
+    var sdnControllers = templateParas.sdnControllers;
 	var components = '';
 	inputs.forEach(function (inputPara) {
 		if(inputPara.type === 'location') {
-			components = components + generateLocationComponent(inputPara, vimInfos);
-		} else {
+			components = components + generateComboxComponent(inputPara, vimInfos);
+		} else if(inputPara.type === 'sdncontroller') {
+            components = components + generateComboxComponent(inputPara, sdnControllers);
+        } else {
 			components = components + generateComponent(inputPara);
 		}
 	});
 	return components;
 }
 
-function generateLocationComponent(inputPara, vimInfos) {
+function generateComboxComponent(inputPara, items) {
     var component = '<div class="form-group" style="margin-left:25px;margin-bottom:15px;">' +
         '<label class="col-sm-3 control-label">' +
         '<span>'+ inputPara.description +'</span>' +
@@ -354,17 +390,17 @@ function generateLocationComponent(inputPara, vimInfos) {
         '</label>' +
         '<div class="col-sm-7">' +
         '<select class="form-control" style ="padding-top: 0px;padding-bottom: 0px;"' +
-        ' id="' + inputPara.id + '" name="vim_location">' +
-        transformToOptions(vimInfos) +
+        ' id="' + inputPara.id + '" name="'+ inputPara.name +'">' +
+        transformToOptions(items) +
         '</select></div></div>';
     return component;
 }
 
-function transformToOptions(vims) {
+function transformToOptions(items) {
     var options = '<option value="select">--select--</option>';
     var i;
-    for (i = 0; i < vims.length; i += 1) {
-        var option = '<option value="' + vims[i].vimId + '">' + vims[i].vimName + '</option>';
+    for (i = 0; i < items.length; i += 1) {
+        var option = '<option value="' + items[i].optionId + '">' + items[i].optionName + '</option>';
         options = options + option;
     }
     return options;
