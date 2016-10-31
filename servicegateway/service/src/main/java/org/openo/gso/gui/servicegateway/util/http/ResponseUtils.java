@@ -16,6 +16,7 @@
 
 package org.openo.gso.gui.servicegateway.util.http;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -148,11 +149,10 @@ public class ResponseUtils {
             result.put(Constant.RESPONSE_STATUS_DESCRIPTION, status);
         } else {
             if((null != exception.getExceptionArgs()) && (null != exception.getExceptionArgs().getDescArgs())) {
-                result.put(Constant.RESPONSE_STATUS_DESCRIPTION, exception.getExceptionArgs().getDescArgs().toString());
+                result.put(Constant.RESPONSE_STATUS_DESCRIPTION, Arrays.asList(exception.getExceptionArgs().getDescArgs()).toString());
             }
         }
         result.put(Constant.RESPONSE_ERRORCODE, errorCode);
-
         return result;
     }
     
