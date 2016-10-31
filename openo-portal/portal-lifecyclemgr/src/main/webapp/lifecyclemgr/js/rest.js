@@ -220,6 +220,54 @@ function loadServiceDetails(serviceId){
     return returnObj;
 }
 
+//get the vim name by id.
+function getVimNameById(vimId){
+   
+   // TODO re-confirm the latest url.
+    var requestUrl ="/openoapi/extsys/v1/vims/" + vimId;
+    var returnObj;
+    $
+        .ajax({
+            type : "GET",
+            async: false,
+            url : requestUrl,
+            contentType : "application/json",
+            success : function(jsonobj) {
+                // TODO return according to the json data received.
+            	returnObj = jsonobj;
+            },
+            error : function(xhr, ajaxOptions, thrownError) {
+                alert("Error on getting link data : " + xhr.responseText);
+            }
+        });
+    return returnObj;
+}
+
+// get the sdn controller name by id.
+function getSdnControllerNameById(sdnControllerId){
+   
+   // TODO re-confirm the latest url.
+    var requestUrl ="/openoapi/extsys/v1/sdncontrollers/" + sdnControllerId;
+    var returnObj;
+    $
+        .ajax({
+            type : "GET",
+            async: false,
+            url : requestUrl,
+            contentType : "application/json",
+            success : function(jsonobj) {
+                // TODO return according to the json data received.
+            	returnObj = jsonobj;
+            },
+            error : function(xhr, ajaxOptions, thrownError) {
+                alert("Error on getting link data : " + xhr.responseText);
+            }
+        });
+    return returnObj;
+}
+
+
+
 function anchorClick(serviceId){
     var jsonData = loadServiceDetails(serviceId);
     //TODO populate the modal according to json response
