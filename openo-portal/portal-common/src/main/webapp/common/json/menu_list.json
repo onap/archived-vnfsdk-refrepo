@@ -38,12 +38,18 @@
             "url":"../lifecyclemgr/gsolcmmain.html",
             "iconClass":"fa fa-comments"
         },
-        {
-            "parentId":"openo_menu_resource_mgr",
-            "id":"openo_menu_resource_mgr",
-            "url":"../resmgr-sdn/resource.html",
-            "iconClass":"fa fa-folder-open-o"
-        },
+		{
+			"parentId":"openo_menu_resource_mgr",
+			"id":"openo_menu_resource_mgr_sdno",
+			"url":"../resmgr-sdn/resource.html",
+			"iconClass":"fa fa-folder-open-o"
+		},
+		{
+			"parentId":"openo_menu_resource_mgr",
+			"id":"openo_menu_resource_mgr_nfvo",
+			"url":"../resmgr-nfv/resource.html",
+			"iconClass":"fa fa-folder-open-o"
+		},
         {
             "parentId":"openo_menu_user",
             "id":"openo_menu_user_user_management",
