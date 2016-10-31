@@ -83,6 +83,7 @@ var vm = avalon.define({
         setting.language = vm.$language;
         setting.paginate = true;
         setting.info = true;
+        setting.sort = true;
         setting.columns = vm.$packageTableFields.table;
         setting.restUrl = vm.$restUrl.queryPackageInfoUrl;
         setting.tableId = vm.$tableId;
@@ -120,15 +121,13 @@ var vm = avalon.define({
             vm.packageDetail.detailData[index].isActive = true;
         },
         $initPackageDetailTable : function (csarId) {
-            var data;
-            for(var i=0; i<vm.resource.packageInfo.length; i++) {
-                if (vm.resource.packageInfo[i].csarId == csarId) {
-                    data = vm.resource.packageInfo[i];
-                    break;
+            var url=vm.$restUrl.queryPackageInfoUrl + "/" + csarId;
+            commonUtil.get(url,null,function(resp) {
+                if (resp) {
+                    vm.resource.packageDetails=resp;
                 }
-            }
-            vm.resource.packageDetails = data;
-            vm.resource.relationInfo = [];
+       })
+
         },
         $isRowDeletingStatus : function(name) {
             var table = $("#" + vm.$tableId).dataTable();

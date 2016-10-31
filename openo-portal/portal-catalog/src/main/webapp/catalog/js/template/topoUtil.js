@@ -388,7 +388,7 @@ topoUtil.generateNodeTemplate = function(data) {
 	nodeTemplate.currentLinkNum = 0;
 	var relationShips = data.relationShips || []; //some nodes may not have relationships
 	$.each(relationShips, function(index, obj){
-		if (obj.sourceNodeId == data.id) {
+		if (obj.sourceNodeId == data.name) {
 			switch(obj.type) {
 				case "containedIn" :
 				case "tosca.relationships.nfv.ContainedIn" :
@@ -414,7 +414,7 @@ topoUtil.generateNodeTemplate = function(data) {
 					break;
 			}
 		}
-		if (obj.targetNodeId == data.id) {
+		if (obj.targetNodeId == data.name) {
 			switch(obj.type) {
 				case "connectedTo" : 
 				case "tosca.relationships.nfv.ConnectsTo" :
