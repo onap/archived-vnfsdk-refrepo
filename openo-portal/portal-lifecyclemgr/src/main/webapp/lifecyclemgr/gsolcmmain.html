@@ -34,14 +34,15 @@
     <script type="text/javascript" src="js/bootstrap-table-filter-control.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            /*	   $('.modal-content').resizable({
-   
-                minHeight: 300,
-                minWidth: 300
-            });*/
+
             $('.modal-dialog').draggable();
             $("#detailCont").show();
             var jsondata = loadGetServiceData();
+			
+			$.each(jsondata,function(k,v){
+			 jsondata[k].createTime=  new Date(jsondata[key].createTime).toUTCString();
+			});
+			
             $('#sai').bootstrapTable({
                 //Assigning data to table
                 data: jsondata
