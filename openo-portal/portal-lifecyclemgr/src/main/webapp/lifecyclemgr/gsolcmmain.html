@@ -40,7 +40,7 @@
             var jsondata = loadGetServiceData();
 			
 			$.each(jsondata,function(k,v){
-			 jsondata[k].createTime=  new Date(jsondata[key].createTime).toUTCString();
+			 jsondata[k].createTime=  new Date(jsondata[k].createTime).toUTCString();
 			});
 			
             $('#sai').bootstrapTable({
