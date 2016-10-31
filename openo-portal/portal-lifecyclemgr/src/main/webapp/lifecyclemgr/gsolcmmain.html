@@ -69,8 +69,8 @@
 
                 //loadIframe("topoFrame", "chartTopo.html?serviceId="+row.serviceId);
                 document.getElementById("topoCont").setAttribute('data', 'chartTopo.html?serviceId='+row.serviceId);
-				document.getElementById('inputcontent').setAttribute('data', 'inputData.html?json='+ JSON.stringify(row));
-                document.getElementById('inputcontentDlg').setAttribute('data', 'inputData.html?json='+ JSON.stringify(row));
+				document.getElementById('inputcontent').setAttribute('data', 'InputData.html?json='+ JSON.stringify(row));
+                document.getElementById('inputcontentDlg').setAttribute('data', 'InputData.html?json='+ JSON.stringify(row));
            	});
             new lcmHandler();
         });
@@ -359,11 +359,11 @@
                                 </iframe>-->
                             </div>
                             <div id="inpContMod" style="display:none;">
-                                <object id="inputcontentDlg" data="inputData.html" width="100%" height="300"
+                                <object id="inputcontentDlg" data="InputData.html" width="100%" height="300"
                                         type="text/html">
 
                                 </object>
-                                <!--<iframe src="inputData.html" name="" style="width:100%" allowTransparency="true" scrolling="no" frameborder="0">
+                                <!--<iframe src="InputData.html" name="" style="width:100%" allowTransparency="true" scrolling="no" frameborder="0">
                                 </iframe>
                                 </iframe>-->
                             </div>
@@ -432,7 +432,7 @@
                 </object>
             </div>
             <div id="inpCont" style="display:none;">
-                <object id="inputcontent" src="inputData.html" width="100%" height="300" type="text/html">
+                <object id="inputcontent" src="InputData.html" width="100%" height="300" type="text/html">
                 </object>
             </div>
         </div>
