@@ -42,7 +42,7 @@
             window.operateEvents = {
                 'click .siteDeleteImg': function (e, value, row, index) {
                     // TO DO ajex call for delete
-                    deleteController(row.id, row);
+                    deleteController(row["sdnControllerId"]);
                 }
             };
         </script>
