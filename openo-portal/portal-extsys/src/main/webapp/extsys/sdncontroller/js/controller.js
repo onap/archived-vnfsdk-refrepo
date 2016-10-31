@@ -37,7 +37,7 @@ function deleteController(objectId) {
         contentType: "application/json",
         success: function (jsonobj) {
             $('#controller').bootstrapTable('remove', {
-                field: 'id',
+                field: 'sdnControllerId',
                 values: [objectId]
             });
             alert("Delete Controller successfull !!!");
@@ -144,7 +144,6 @@ $(function () {
 
     $('#createController').click(function () {
         var formData = JSON.stringify($("#controllerForm").serializeObject());
-        var jsonobj = JSON.parse(formData);
         var requestUrl = "/openoapi/extsys/v1/sdncontrollers";
         $.ajax({
             type: "POST",
@@ -154,8 +153,7 @@ $(function () {
             data: formData,
             success: function (jsonResp) {
                 alert("Controller saved successfully!!!");
-                jsonobj["id"] = jsonResp.sdnControllerId;
-                $('#controller').bootstrapTable("append", jsonobj);
+                $('#controller').bootstrapTable("append", jsonResp);
                 $('#vmAppDialog').removeClass('in').css('display', 'none');
 
             },
