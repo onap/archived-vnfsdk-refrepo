@@ -174,7 +174,7 @@ function loadGetServiceData(){
     var parameter = {
             'sort': [],
             'pagination': 0,
-            'pagesize': 25,
+            'pagesize': 10000,
             'condition': {},
             'serviceId': ""
         };
