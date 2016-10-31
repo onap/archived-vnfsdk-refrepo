@@ -538,21 +538,26 @@ function formatDate(date) {
 }
 
 function deleteNe(rowId, row) {
-    var instanceId = row.serviceId;
-    var serviceType = row.serviceType;
-    var gatewayService = '/openoapi/servicegateway/v1/services/' + instanceId + '/terminate';
-    var remove = function () {
-        $('#sai').bootstrapTable('remove', {field: 'serviceId', values: [instanceId]});
+    var deleteHandle = function(result) {
+        if(result) {
+            var instanceId = row.serviceId;
+            var serviceType = row.serviceType;
+            var gatewayService = '/openoapi/servicegateway/v1/services/' + instanceId + '/terminate';
+            var remove = function () {
+                $('#sai').bootstrapTable('remove', {field: 'serviceId', values: [instanceId]});
+            };
+            if(serviceType === 'GSO') {
+                deleteGsoServiceInstance(gatewayService, instanceId, remove);
+            } else if (serviceType === 'NFVO') {
+                var nfvoNsUri = '/openoapi/nslcm/v1/ns';
+                deleteNonGsoServiceInstance(gatewayService, nfvoNsUri, instanceId, remove);
+            } else if (serviceType === 'SDNO') {
+                var sdnoNsUri = '/openoapi/sdnonslcm/v1/ns';
+                deleteNonGsoServiceInstance(gatewayService, sdnoNsUri, instanceId, remove);
+            }
+        }
     };
-    if(serviceType === 'GSO') {
-        deleteGsoServiceInstance(gatewayService, instanceId, remove)
-    } else if (serviceType === 'NFVO') {
-        var nfvoNsUri = '/openoapi/nslcm/v1/ns';
-        deleteNonGsoServiceInstance(gatewayService, nfvoNsUri, instanceId, remove);
-    } else if (serviceType === 'SDNO') {
-        var sdnoNsUri = '/openoapi/sdnonslcm/v1/ns';
-        deleteNonGsoServiceInstance(gatewayService, sdnoNsUri, instanceId, remove);
-    }
+    bootbox.confirm("Do you confirm to delete service?", deleteHandle);
 }
 
 function deleteGsoServiceInstance(gatewayService, instanceId, remove) {
