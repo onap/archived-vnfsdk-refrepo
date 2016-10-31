@@ -40,12 +40,25 @@
                 if (jsonData != null) {
                     $("body").empty();
                     for(var key in jsonData.inputParameters){
-					var name = key;
-					if(name.includes('.'))
-					{
-						name = key.substring(key.lastInexOf('.')+1,key.length);
-					}
-                        $("body").append('<div class="mT15 form-group row" style="margin-top:35px;margin-left:25%"><div class="col-sm-6" align="right"><label class="control-label"><span style="font-size:16px;">'+ name + ':</span></label></div><div class="col-sm-6"><input  type="text" name="" maxlength="256" style="margin-left:10px;width:250px;" data-toggle="tooltip" data-placement="top" title="'+ jsonData.inputParameters[key] + '" value="'+ jsonData.inputParameters[key] + '" readonly disabled/></div></div>');
+						var name = key;
+						if(name.includes('.'))
+						{
+							name = key.substring(key.lastIndexOf('.')+1,key.length);
+						}
+					    var paramValue = jsonData.inputParameters[key];
+						if(name.indexOf('location') != -1) {
+						    var vimObj  = getVimNameById(paramValue);
+							if(vimObj != undefined){
+								paramValue = vimObj.name;
+							}
+						}
+						else if(name.indexOf('sdncontroller') != -1){
+							var sdnControllerObj  = getSdnControllerNameById(paramValue);
+							if(sdnControllerObj != undefined){
+								paramValue = sdnControllerObj.name;
+							}
+						}	
+                        $("body").append('<div class="mT15 form-group row" style="margin-top:35px;margin-left:25%"><div class="col-sm-6" align="right"><label class="control-label"><span style="font-size:16px;">'+ name + ':</span></label></div><div class="col-sm-6"><input  type="text" name="" maxlength="256" style="margin-left:10px;width:250px;" data-toggle="tooltip" data-placement="top" title="'+ paramValue + '" value="'+ paramValue + '" readonly disabled/></div></div>');
                     }
                 }
 
