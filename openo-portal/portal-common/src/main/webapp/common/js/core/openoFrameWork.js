@@ -1952,7 +1952,7 @@ var openoFrameWork = function () {
 		return "Already disabled!";
 	};	
 	window.doLogout = function(){
-		window.location=FrameConst.REST_LOGOUT;
+		top.window.document.location.href=FrameConst.REST_LOGOUT;
 	};
     //处理ict注销确认
     $('#trigger_logout').click(function(){
@@ -3169,7 +3169,6 @@ var openoFrameWork = function () {
             return null; //返回参数值
 		}
     };
-    
 }();
 
 //抽取html片段中任意位置的script标签（包括代码是内嵌的情况）逐个运行（不会在单个script加载不到的时候停下来）

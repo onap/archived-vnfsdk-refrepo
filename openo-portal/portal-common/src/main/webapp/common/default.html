@@ -227,6 +227,13 @@
 			jQuery(document).ready(function() {
 				openoFrameWork.init();
 				$("#pageLoading").setToHide();
+				$('#trigger_logout').click(function(){
+	                bootbox.confirm($.i18n.prop('com_zte_ums_ict_framework_ui_confirmlogout'), function(result) { //你确认要注销吗?
+	                   if(result){
+	                     doLogout();
+	                    }
+	                }); 
+	            });
 			});
 		</script>
 	</body>

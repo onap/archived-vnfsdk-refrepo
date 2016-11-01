@@ -36,7 +36,7 @@ FrameConst.REST_HEARTBEAT = "../../api/uiframe/v1/heartbeat";
 FrameConst.REST_GETLICENSEINFO = "../../api/uiframe/v1/licensevalueinfo";
 FrameConst.REST_CHECKRIGHT = "../../api/uiframe/v1/checkRight";
 FrameConst.REST_LOGIN = "../../api/uiframe/v1/login";
-FrameConst.REST_LOGOUT = "../../api/uiframe/v1/loginOut?SSOAction=SSOLogout";
+FrameConst.REST_LOGOUT = "/openoui/common/logout.html";
 FrameConst.REST_GET_FRAME_MENUDIRECTION = "../../api/uiframe/v1/confByKey?key=usf.mainframe.web.navigation.direction";
 FrameConst.REST_GET_USERNAME = "../../api/uiframe/v1/userName";
 
