@@ -37,31 +37,6 @@
 		<link href="css/more-operation.css" rel="stylesheet" type="text/css" />
 		<link href="css/ZteIctIcons/style.css" rel="stylesheet" type="text/css"/>
 		<link href="" rel="stylesheet" type="text/css" id="style_color"/>
-		<script type="text/javascript" src="js/core/const.js"></script>
-		<script type="text/javascript" src="js/core/hk.min.js"></script>
-		<script type="text/javascript" src="thirdparty/jquery/jquery-1.10.2.min.js"></script>
-		<script type="text/javascript" src="thirdparty/fakeLoader/fakeLoader.min.js"></script>
-		<script type="text/javascript" src="thirdparty/bootstrap/js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="thirdparty/jquery-validation/js/jquery.validate.min.js"></script>
-		<script type="text/javascript" src="thirdparty/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"></script>
-		<script type="text/javascript" src="thirdparty/jquery-blockui/jquery.blockui.min.js"></script>
-		<script type="text/javascript" src="thirdparty/jquery-cokie/jquery.cokie.min.js"></script>
-		<script type="text/javascript" src="thirdparty/uniform/jquery.uniform.min.js"></script>
-		<script type="text/javascript" src="thirdparty/cometd/cometd.js"></script>
-		<script type="text/javascript" src="thirdparty/cometd/jquery/jquery.cometd.js"></script>
-		<script type="text/javascript" src="thirdparty/select2/select2.min.js"></script>
-		<script type="text/javascript" src="thirdparty/bootbox/bootbox.min.js"></script>
-		<script type="text/javascript" src="thirdparty/jquery.i18n/jquery.i18n.properties-1.0.9.js"></script>
-		<script type="text/javascript" src="thirdparty/data-tables/jquery.dataTables.min.js"></script>
-		<script type="text/javascript" src="js/moreOperation.js"></script>
-		<script type="text/javascript" src="js/tools.js"></script> 
-		<script type="text/javascript" src="js/international/loadi18n.js"></script>
-		<script type="text/javascript" src="js/Main2moreMenu.js"></script>
-		<script type="text/javascript" src="js/core/pym.min.js"></script>
-		<script type="text/javascript" src="js/core/openoFrameWork.js"></script>
-		<script type="text/javascript" src="js/fm_light.js"></script>
-		<script type="text/javascript" src="js/mainpage/about.js"></script>
-		<script type="text/javascript" src="js/core/load_menuList.js"></script>
 	</head>
 	<body class="page-header-fixed page-sidebar-fixed">
 		<div id="pageLoading" class="fakeloader"></div>
@@ -70,9 +45,7 @@
 		</script>
 		<div class="header navbar navbar-fixed-top mega-menu">
 			<div class="header-inner">
-				<div style="margin-left:50px; margin-top:3px;">
-					<img id="com_zte_ums_ict_framework_img_netnumenLogo" src="image/integration/openo_logo_black.png" width="7%" name_img="com_zte_ums_ict_framework_img" alt="logo"/>
-				</div>
+				<img id="com_zte_ums_ict_framework_img_netnumenLogo" src="image/integration/openo_logo_black.png" width="7%" name_img="com_zte_ums_ict_framework_img" alt="logo" style="margin-left:50px; margin-top:3px;"/>
 				<ul class="nav navbar-nav pull-right">
 					<div class="zte-theme-panel">
 						<div class="toggler"></div>
@@ -88,64 +61,6 @@
 							</div>
 						</div>
 					</div>
-
-
-
-					<li class="dropdown" id="header_notification_bar" style="display:none">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-							<i class="fa fa-warning" id="hd_heighestAlarmcount_li"></i>
-							<span class="badge" id="hd_heighestAlarmcount_value"></span>
-						</a>
-						<ul class="dropdown-menu extended notification">
-							<li>
-								<p>
-									<span id="hd_alarmcount_total_before_text"></span>
-									<span class="badge" id="hd_alarmcount_total_value"></span>
-									<span id="hd_alarmcount_total_after_text"></span>
-								</p>
-							</li>
-							<li>
-								<ul class="dropdown-menu-list scroller" style="height: 168px;">
-									<li>
-										<a href="#">
-											<span class="label label-icon alarm-critical">
-												<i class="fa fa-bolt " id="hd_alarmcount_critical_li"></i>
-												<span class="badge" id="hd_alarmcount_critical_value"></span>
-											</span>
-											<span id="hd_alarmcount_critical_text"></span>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<span class="label label-icon alarm-major">
-												<i class="fa fa-warning" id="hd_alarmcount_major_li"></i>
-												<span class="badge" id="hd_alarmcount_major_value"></span>
-											</span>
-											<span id="hd_alarmcount_major_text"></span>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<span class="label label-icon alarm-minor">
-												<i class="fa fa-bell-o" id="hd_alarmcount_minor_li"></i>
-												<span class="badge" id="hd_alarmcount_minor_value"></span>
-											</span>
-											<span id="hd_alarmcount_minor_text"></span>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<span class="label label-icon alarm-warning">
-												<i class="fa fa-bullhorn" id="hd_alarmcount_warning_li"></i>
-												<span class="badge" id="hd_alarmcount_warning_value"></span>
-											</span>
-											<span id="hd_alarmcount_warning_text"></span>
-										</a>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</li>
 					<li class="dropdown user" id="header_dropdown_user" style="display:none">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 							<span><img alt="" width=26 height=26 src="image/user.png"/></span>
@@ -172,9 +87,6 @@
 							</div>
 						</ul>
 					</li>
-
-
-
 				</ul>
 			</div>
 		</div>
@@ -216,8 +128,31 @@
 				</div>
 			</div>
 		</div>
-
-
+		<script type="text/javascript" src="js/core/const.js"></script>
+		<script type="text/javascript" src="js/core/hk.min.js"></script>
+		<script type="text/javascript" src="thirdparty/jquery/jquery-1.10.2.min.js"></script>
+		<script type="text/javascript" src="thirdparty/fakeLoader/fakeLoader.min.js"></script>
+		<script type="text/javascript" src="thirdparty/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="thirdparty/jquery-validation/js/jquery.validate.min.js"></script>
+		<script type="text/javascript" src="thirdparty/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"></script>
+		<script type="text/javascript" src="thirdparty/jquery-blockui/jquery.blockui.min.js"></script>
+		<script type="text/javascript" src="thirdparty/jquery-cokie/jquery.cokie.min.js"></script>
+		<script type="text/javascript" src="thirdparty/uniform/jquery.uniform.min.js"></script>
+		<script type="text/javascript" src="thirdparty/cometd/cometd.js"></script>
+		<script type="text/javascript" src="thirdparty/cometd/jquery/jquery.cometd.js"></script>
+		<script type="text/javascript" src="thirdparty/select2/select2.min.js"></script>
+		<script type="text/javascript" src="thirdparty/bootbox/bootbox.min.js"></script>
+		<script type="text/javascript" src="thirdparty/jquery.i18n/jquery.i18n.properties-1.0.9.js"></script>
+		<script type="text/javascript" src="thirdparty/data-tables/jquery.dataTables.min.js"></script>
+		<script type="text/javascript" src="js/moreOperation.js"></script>
+		<script type="text/javascript" src="js/tools.js"></script> 
+		<script type="text/javascript" src="js/international/loadi18n.js"></script>
+		<script type="text/javascript" src="js/Main2moreMenu.js"></script>
+		<script type="text/javascript" src="js/core/pym.min.js"></script>
+		<script type="text/javascript" src="js/core/openoFrameWork.js"></script>
+		<script type="text/javascript" src="js/fm_light.js"></script>
+		<script type="text/javascript" src="js/mainpage/about.js"></script>
+		<script type="text/javascript" src="js/core/load_menuList.js"></script>
 		<script>
 			var panel = $('.zte-theme-panel');
 			loadi18n_WebFramework('web-framework-i18n', 'i18n/', 'openo_frame_page_i18n');
@@ -227,13 +162,6 @@
 			jQuery(document).ready(function() {
 				openoFrameWork.init();
 				$("#pageLoading").setToHide();
-				$('#trigger_logout').click(function(){
-	                bootbox.confirm($.i18n.prop('com_zte_ums_ict_framework_ui_confirmlogout'), function(result) { //你确认要注销吗?
-	                   if(result){
-	                     doLogout();
-	                    }
-	                }); 
-	            });
 			});
 		</script>
 	</body>
