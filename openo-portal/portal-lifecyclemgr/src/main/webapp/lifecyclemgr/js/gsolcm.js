@@ -152,7 +152,11 @@ function fetchGsoTemplateInputParameters(templateId) {
         fetchSdnController()
     ).then(
         function (templateParameterResponse, nestingTempatesParas, vimInfoResponse, sdnControllersResponse) {
-        	var inputParas = concat(templateParameterResponse[0].inputs, nestingTempatesParas);
+            var inputs = templateParameterResponse[0].inputs.map(function(input) {
+                input.showName = input.name;
+                return input;
+            });
+        	var inputParas = concat(inputs, nestingTempatesParas);
         	var vims = translateToVimInfo(vimInfoResponse[0]);
             var sdnControllers = translateToSdnControllers(sdnControllersResponse[0]);
             templateParameters = translateToTemplateParameters(inputParas, vims, sdnControllers);
@@ -279,7 +283,8 @@ function translateToTemplateParameters(inputs, vims, controllers) {
             defaultValue: inputs[i].defaultValue,
             required: inputs[i].required,
             id: 'parameters_' + i,
-            value: inputs[i].defaultValue || ''
+            value: inputs[i].defaultValue || '',
+            showName: inputs[i].showName
         };
     }
     return {changed: false, parameters: inputParameters, vimInfos: vims, sdnControllers: controllers};
@@ -296,6 +301,10 @@ function fetchNfvoTemplateInputParameters(templateId) {
 	    	var vims = translateToVimInfo(vimInfoResponse[0]);
             var sdnControllers = translateToSdnControllers(sdnControllerResponse[0]);
 	    	var inputParas = templateParameterResponse[0].inputs;
+            inputParas = inputParas.map(function(input) {
+                input.showName = input.name;
+                return input;
+            });
 	    	inputParas.push({
 	    		name: 'location',
 	    		type: 'location',
@@ -323,7 +332,11 @@ function fetchSdnoTemplateInputParameters(templateId) {
 		fetchTemplateParameterDefinitions(templateId)
 	).then(
 	    function (templateParameterResponse) {
-	    	templateParameters = translateToTemplateParameters(templateParameterResponse.inputs, [], []);
+            var inputs = templateParameterResponse.inputs.map(function(input) {
+                input.showName = input.name;
+                return input;
+            })
+	    	templateParameters = translateToTemplateParameters(inputs, [], []);
             defer.resolve(templateParameters);	
 	    }
 	);
