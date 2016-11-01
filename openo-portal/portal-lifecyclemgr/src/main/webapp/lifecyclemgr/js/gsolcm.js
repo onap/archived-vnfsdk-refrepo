@@ -387,7 +387,7 @@ function transformToComponents(templateParas) {
 function generateComboxComponent(inputPara, items) {
     var component = '<div class="form-group" style="margin-left:25px;margin-bottom:15px;">' +
         '<label class="col-sm-3 control-label">' +
-        '<span>'+ inputPara.description +'</span>' +
+        '<span>'+ inputPara.name +'</span>' +
         '<span class="required">*</span>' +
         '</label>' +
         '<div class="col-sm-7">' +
@@ -411,11 +411,11 @@ function transformToOptions(items) {
 function generateComponent(inputPara) {
 	var component = '<div class="mT15 form-group" style="margin-left:25px;">' +
             '<label class="col-sm-3 control-label">' +
-            '<span>' + inputPara.description + '</span>' + generateRequiredLabel(inputPara) +
+            '<span>' + inputPara.name + '</span>' + generateRequiredLabel(inputPara) +
             '</label>' +
             '<div class="col-sm-7">' +
             '<input type="text" id="' + inputPara.id + '" name="parameter description" class="form-control" placeholder="' +
-            inputPara.description + '" value="' + inputPara.value + '" />' +
+            inputPara.name + '" value="' + inputPara.value + '" />' +
             '</div></div>';
     return component;
 }
