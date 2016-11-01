@@ -25,10 +25,7 @@ $('.siteDeleteImg').click(function () {
 });
 
 
-function hideFirstCol() {
-    //$('table tr').find('th:eq(0)').hide();
-    //$('table tr').find('td:eq(0)').hide();
-}
+
 function deleteSite(objectId) {
     var requestUrl = "/openoapi/sdnobrs/v1/sites/" + objectId;
     $
@@ -150,12 +147,18 @@ function loadNeData() {
             url: requestUrl,
             contentType: "application/json",
             success: function (jsonobj) {
+			
                 var nedata = jsonobj.managedElements;
+				var neMap = []; 
+				neMap = loadControllerData();
+				/*$.each(nedata,function(k,v){
+					nedata[k];
+				})*/;
+			
                 $('#ne').bootstrapTable({
                     data: nedata
                 });
                 $('#ne').bootstrapTable('refresh');
-                hideFirstCol();
 
             },
             error: function (xhr, ajaxOptions, thrownError) {
@@ -181,18 +184,23 @@ function loadPortData() {
         });
 }
 function loadControllerData() {
+    var neMap = [];
     var requestUrl = "/openoapi/extsys/v1/sdncontrollers";
     $.ajax({
         type: "GET",
+		async: false,
         url: requestUrl,
         contentType: "application/json",
         success: function (jsonobj) {
-            fillSelect(jsonobj);
+		
+          neMap =  fillSelect(jsonobj);
+		  
         },
         error: function (xhr, ajaxOptions, thrownError) {
             alert("Error on getting controller data : " + xhr.responseText);
         }
     });
+	return neMap;
 }
 function fillSelect(str){
     var json;
@@ -204,9 +212,12 @@ function fillSelect(str){
     }
     var seleObj = $('#controller')
     seleObj.find("option").remove();
+	var neMap = [];
     for(var i=0;i < json.length;i++){
-        seleObj.append('<option value="'+json[i].name+'">'+json[i].name+'</option>');
+        seleObj.append('<option value="'+json[i].sdnControllerId+'">'+json[i].name+'</option>');
+		neMap[json[i].sdnControllerId] = json[i].name;
     }
+	return neMap;
 }
 $(function () {
     $('.creat-btn').click(function () {
@@ -300,6 +311,9 @@ $(function () {
     $('#createNe').click(function () {
         var formData = JSON.stringify($("#neForm").serializeObject());
         var jsonobj = JSON.parse(formData);
+		var controllerIDs = [] ;
+		controllerIDs[0]= jsonobj.controller;
+		jsonobj.controllerID = controllerIDs;
         var newJson = {"managedElement": jsonobj};
         formData = JSON.stringify(newJson);
         var requestUrl = "/openoapi/sdnobrs/v1/managed-elements";
@@ -338,7 +352,7 @@ $(function () {
                 data: formData,
                 success: function (jsonResp) {
                     alert("Port saved successfully!!!");
-                    //TODO : hide model data window.
+               
                     jsonobj["id"] = jsonResp.logicalTerminationPoint.id;
                     $('#port').bootstrapTable("append", jsonobj);
                     $('#vmAppDialog').removeClass('in').css('display', 'none');
