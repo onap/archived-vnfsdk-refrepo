@@ -403,51 +403,51 @@ function setThemeColor( configColor ){
     });
 }; 
 
-function setFrameWorkByConf(){
-		//设置用户相关的框架下拉菜单是否可用
-		    var helpMenuItem = openoFrameWork_conf.helpMenuItem;
-			var aboutMenuItem = openoFrameWork_conf.aboutMenuItem;
-            var flightMenuItem = openoFrameWork_conf.flightMenuItem;
-			var fullscreenMenuItem = openoFrameWork_conf.fullscreenMenuItem;
-			var logoutMenuItem = openoFrameWork_conf.logoutMenuItem;
-			var changePassMenuItem = openoFrameWork_conf.changePassMenuItem;
-            if (!helpMenuItem || helpMenuItem === "false") {
-                $('#uep_ict_help_url').parent('li').remove();
-            }
-			if(!aboutMenuItem|| aboutMenuItem === "false"){
-				$('[data-target="#aboutDlg"]').parent('li').remove();
-			}
-			if(!helpMenuItem && !aboutMenuItem){
-				$('#uep_ict_help_div').remove();
-			}
-            if (!flightMenuItem|| flightMenuItem === "false") {
-                $('#header_notification_bar').html("<div>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</div>");
-            }
-			if (!fullscreenMenuItem|| fullscreenMenuItem === "false") {
-				//$('#trigger_fullscreen').parent().css("display", "none");
-				$('#trigger_fullscreen_div').html("");
-			}
-			if (!logoutMenuItem || logoutMenuItem === "false") {
-				//$('#trigger_logout').parent().css("display", "none");
-				$('#trigger_logout_div').html("");
-			}
-			if ((!fullscreenMenuItem && !logoutMenuItem) || (fullscreenMenuItem === "false" && logoutMenuItem === "false")) {				
-				$('#full_logout_divider').css("display", "none");
-			}
-			if (!changePassMenuItem ) {				
-				$('#changePwd_labellink').css('display','none');
-				$('#full_logout_divider').css('display','none');
-			}		
-			
-		//设置二次开发者选择的框架皮肤
-		var defaultColor = openoFrameWork_conf.defaultThemeColor;
-		var panel = $('.zte-theme-panel');
-		$('ul > li', panel).removeClass("current"); 
-        if (store && !store('style_color')) { // cookie没有才设置默认主题
-            setThemeColor(defaultColor);
-        }else{
-			setThemeColor(store('style_color'));
-		}
+function setFrameWorkByConf() {
+	//设置用户相关的框架下拉菜单是否可用
+	var helpMenuItem = openoFrameWork_conf.helpMenuItem;
+	var aboutMenuItem = openoFrameWork_conf.aboutMenuItem;
+	var flightMenuItem = openoFrameWork_conf.flightMenuItem;
+	var fullscreenMenuItem = openoFrameWork_conf.fullscreenMenuItem;
+	var logoutMenuItem = openoFrameWork_conf.logoutMenuItem;
+	var changePassMenuItem = openoFrameWork_conf.changePassMenuItem;
+	if (!helpMenuItem || helpMenuItem === "false") {
+		$('#uep_ict_help_url').parent('li').remove();
+	}
+	if (!aboutMenuItem|| aboutMenuItem === "false") {
+		$('[data-target="#aboutDlg"]').parent('li').remove();
+	}
+	if (!helpMenuItem && !aboutMenuItem) {
+		$('#uep_ict_help_div').remove();
+	}
+	if (!flightMenuItem|| flightMenuItem === "false") {
+		$('#header_notification_bar').html("<div>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</div>");
+	}
+	if (!fullscreenMenuItem|| fullscreenMenuItem === "false") {
+		//$('#trigger_fullscreen').parent().css("display", "none");
+		$('#trigger_fullscreen_div').html("");
+	}
+	if (!logoutMenuItem || logoutMenuItem === "false") {
+		//$('#trigger_logout').parent().css("display", "none");
+		$('#trigger_logout_div').html("");
+	}
+	if ((!fullscreenMenuItem && !logoutMenuItem) || (fullscreenMenuItem === "false" && logoutMenuItem === "false")) {
+		$('#full_logout_divider').css("display", "none");
+	}
+	if (!changePassMenuItem ) {
+		$('#changePwd_labellink').css('display','none');
+		$('#full_logout_divider').css('display','none');
+	}
+
+	//设置二次开发者选择的框架皮肤
+	var defaultColor = openoFrameWork_conf.defaultThemeColor;
+	var panel = $('.zte-theme-panel');
+	$('ul > li', panel).removeClass("current"); 
+	if (store && !store('style_color')) { // cookie没有才设置默认主题
+		setThemeColor(defaultColor);
+	} else {
+		setThemeColor(store('style_color'));
+	}
 };
 
 /*新增的hashtabel实现类，用户后续iframe的缓存，前进后退时打开过的页面的菜单id的缓存等*/
@@ -1269,7 +1269,7 @@ var openoFrameWork = function () {
 				}
 				var pdiv="pdiv_"+miframe;
 				if($("#"+pdiv).length<=0){//检查下，如果该div没有添加过就添加
-					pageContentBody.append("<div id='"+pdiv+"'></div>");
+					pageContentBody.append("<div id='"+pdiv+"' style='height:800px;overflow:auto'></div>");
 				}	
 				dealstartPageLoading(); 				
 				pymParent=createIframe(pdiv, url,miframe,miframe,miframe,_xdomain,_iframeAutoScroll);				

@@ -17,39 +17,26 @@ String.prototype.trim = function() {
 	return this.replace(/(^\s*)|(\s*$)/g, "");
 };
 
-function loginSubmitHandler(form) {
-	var params = {};
-	params["username"] = $("#openo_input_userName").val().trim();
-	var sourcePass = $("#openo_input_password").val();
-	var pass = sourcePass;
-	if (FrameConst.isEncypt === "true") {
-		pass = ict_framework_func1(pass);
+function loginSubmitHandler() {
+	var loginData = {
+		"userName": $("#openo_input_userName").val(),
+		"password": $("#openo_input_password").val()
 	}
-	params["password"] = pass;
-	params["isEncypted"] = FrameConst.isEncypt;
-	saveUserInfo(params);
-	location.href = FrameConst.DEFAULT_LOGINSKIP_PAGE;
 
-//	$.ajax({
-//		url : FrameConst.REST_LOGIN,
-//		type : 'POST',
-//		data : JSON.stringify(params),
-//		dataType : 'json',
-//		contentType : 'application/json; charset=utf-8',
-//		success : function(data, status, xhr) {
-//			if (data.result == 0) {
-//				var epass = CryptoJS.MD5(params.username+sourcePass);
-//				store("icttka", epass.toLocaleString());
-//			}
-//			processLoginResult(data, params);
-//		},
-//		Error : function(xhr, error, exception) {
-//			if (console) {
-//				console.log("login fail:" + error);
-//				console.log(exception);
-//			}
-//		}
-//	});
+	saveUserInfo();
+
+	$.ajax({
+		url : "/openoapi/auth/v1/tokens",
+		type : "POST",
+		contentType : 'application/json; charset=utf-8',
+		data : JSON.stringify(loginData),
+		success : function(data) {
+			top.window.document.location.href = "default.html";
+		},
+		error : function(data) {
+			top.window.document.location.href = "login.html";
+		}
+	}); 
 };
 
 var Login = function () {
@@ -169,9 +156,9 @@ var Login = function () {
 			handleLogin();
 			handleForgetPassword();
 			$.backstretch([
-				"./common/image/integration/openo_bg_1.jpg",
-				"./common/image/integration//openo_bg_2.jpg",
-				"./common/image/integration//openo_bg_3.jpg"
+				"image/integration/openo_bg_1.jpg",
+				"image/integration//openo_bg_2.jpg",
+				"image/integration//openo_bg_3.jpg"
 			], {
 				fade: 500,
 				duration: 15000
@@ -188,17 +175,33 @@ $(document).ready(function() {
 	}
 });
 
-function saveUserInfo(params) {
+function saveUserInfo() {
 	var rmbcheck = $("input[name='remember']");
 	if (rmbcheck.attr("checked") == true || rmbcheck.is(':checked')) {
 		var userName = $("#openo_input_userName").val();
 		var passWord = $("#openo_input_password").val();
 		store("remember", "true");
-		store("openo_input_userName", params.username);
+		store("openo_input_userName", username);
 		store("openo_input_password", passWord);
 	} else {
 		store.remove("remember");
 		store.remove("openo_input_userName");
 		store.remove("openo_input_password");
 	}
+}
+
+function logout() {
+	alert("logout");
+	$.ajax({
+		url : "/openoapi/auth/v1/tokens" + "?=" + new Date().getTime(),
+		type : "DELETE",
+		contentType : 'application/json',
+		dataType: "text",
+		success : function() {
+			top.window.location = "/openoui/auth/v1/login/html/login.html";
+		},
+		error : function() {
+			top.window.location = "/openoui/auth/v1/login/html/login.html";
+		}
+	}); 
 }
