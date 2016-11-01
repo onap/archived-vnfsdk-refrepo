@@ -32,6 +32,7 @@ lcmHandler.prototype = {
     		alert('Location must be selected in Template Parameters');
     		return;
     	}
+        $.isLoading({ text: "Creating service..." });
         var serviceInstance = {
             serviceTemplateId: $("#svcTempl").val(),
             serviceName: $('#svcName').val(),
@@ -50,6 +51,7 @@ lcmHandler.prototype = {
         ).then(
             function(serviceInstance) {
                 updateTable(serviceInstance);
+                $.isLoading('hide');
                 $('#vmAppDialog').removeClass('in').css('display', 'none');
             }
         );
@@ -540,10 +542,12 @@ function formatDate(date) {
 function deleteNe(rowId, row) {
     var deleteHandle = function(result) {
         if(result) {
+            $.isLoading({ text: "Deleting service..." });
             var instanceId = row.serviceId;
             var serviceType = row.serviceType;
             var gatewayService = '/openoapi/servicegateway/v1/services/' + instanceId + '/terminate';
             var remove = function () {
+                $.isLoading( "hide" );
                 $('#sai').bootstrapTable('remove', {field: 'serviceId', values: [instanceId]});
             };
             if(serviceType === 'GSO') {
