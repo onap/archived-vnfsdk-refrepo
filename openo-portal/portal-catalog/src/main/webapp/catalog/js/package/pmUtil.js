@@ -71,8 +71,18 @@ pmUtil.updateDeletedPackageStatus = function(message) {
     if(messageobj.status == "true" || messageobj.status == "deletionPending") {
         commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-delete-success"), "success");
         refreshByCond();
-    } else {
+    } else if (messageobj.status == "Delete package from HTTP server failed!") {
         pmUtil.changeTableStatus(messageobj.csarid, "deletefail");
+        commonUtil.showMessage($.i18n.prop("nfv-package-iui-http-delete-error"), "failed");
+    } else if (messageobj.status == "Delete template data failed!") {
+        pmUtil.changeTableStatus(messageobj.csarid, "deletefail");
+        commonUtil.showMessage($.i18n.prop("nfv-package-iui-template-delete-error"), "failed");
+    } else if (messageobj.status == "Delete package data failed!") {
+        pmUtil.changeTableStatus(messageobj.csarid, "deletefail");
+        commonUtil.showMessage($.i18n.prop("nfv-package-iui-package-delete-error"), "failed");
+    } else if (messageobj.status == "false") {
+        pmUtil.changeTableStatus(messageobj.csarid, "deletefail");
+        commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-delete-error"), "failed");
     }
 }
 
@@ -168,21 +178,29 @@ pmUtil.delPackage = function (url) {
         url : url,
         contentType : "application/json",
         success : function(resp) {
-            //commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-delete-success"), "success");
-            //setTimeout( function(){
-            //    refreshByCond();
-            //}, 1 * 1000 );
+           
         },
         error : function(resp) {
             if(resp.status == 202 || resp.responseText == "success") {
-                //commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-delete-success"), "success");
-                //refreshByCond();
+
             } else {
                 commonUtil.showMessage($.i18n.prop("nfv-package-iui-message-delete-error"), "failed");
                 refreshByCond();
             }
         }
     });
+}
+
+pmUtil.isRowDeletingStatus = function(csarId) {
+    var table = $("#" + vm.$tableId).dataTable();
+    var tableData = table.fnGetData();
+    for (var i=0; i<tableData.length; i++) {
+        if(tableData[i]["csarId"] == csarId && 
+           tableData[i]["status"].indexOf($.i18n.prop("nfv-package-iui-status-deleting")) > -1) {
+            return true;            
+        }
+    }
+    return false;
 }
 
 pmUtil.nameRender = function(obj) {
