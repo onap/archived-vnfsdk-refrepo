@@ -195,6 +195,7 @@ function fetchGsoNestingTemplateParameters(templateId) {
                                 return;
                             }
 	    		    		var inputs = serviceTemplate.inputs.map(function(input) {
+                                input.showName = input.name;
 	    		    			input.name = nodeTemplate.type + '.' + input.name;
 	    		    			return input;
 	    		    		});
@@ -207,13 +208,15 @@ function fetchGsoNestingTemplateParameters(templateId) {
 	    		    		    			name: nodeTemplate.type + '.location',
 	    		    		    			type: 'location',
 	    		    		    			description: nodeTemplate.name + ' Location',
-	    		    		    			required: 'true'
+	    		    		    			required: 'true',
+                                            showName: nodeTemplate.name + ' Location'
 	    		    		    		});
                                         inputs.push({
                                             name: nodeTemplate.type + '.sdncontroller',
                                             type: 'sdncontroller',
                                             description: nodeTemplate.name + ' SDN Controller',
-                                            required: 'true'
+                                            required: 'true',
+                                            showName: nodeTemplate.name + ' SDN Controller'
                                         });
                                     }
 	    		    		    	nodeAggregatation.notify(inputs);
@@ -297,13 +300,15 @@ function fetchNfvoTemplateInputParameters(templateId) {
 	    		name: 'location',
 	    		type: 'location',
 	    		description: 'Location',
-	    		required: 'true'
+	    		required: 'true',
+                showName: 'Location'
 	    	});
             inputParas.push({
                 name: 'sdncontroller',
                 type: 'sdncontroller',
                 description: 'SDN Controller',
-                required: 'true'
+                required: 'true',
+                showName: 'SDN Controller'
             });
 	    	templateParameters = translateToTemplateParameters(inputParas, vims, sdnControllers);
             defer.resolve(templateParameters);	
@@ -387,7 +392,7 @@ function transformToComponents(templateParas) {
 function generateComboxComponent(inputPara, items) {
     var component = '<div class="form-group" style="margin-left:25px;margin-bottom:15px;">' +
         '<label class="col-sm-3 control-label">' +
-        '<span>'+ inputPara.name +'</span>' +
+        '<span>'+ inputPara.showName +'</span>' +
         '<span class="required">*</span>' +
         '</label>' +
         '<div class="col-sm-7">' +
@@ -411,11 +416,11 @@ function transformToOptions(items) {
 function generateComponent(inputPara) {
 	var component = '<div class="mT15 form-group" style="margin-left:25px;">' +
             '<label class="col-sm-3 control-label">' +
-            '<span>' + inputPara.name + '</span>' + generateRequiredLabel(inputPara) +
+            '<span>' + inputPara.showName + '</span>' + generateRequiredLabel(inputPara) +
             '</label>' +
             '<div class="col-sm-7">' +
             '<input type="text" id="' + inputPara.id + '" name="parameter description" class="form-control" placeholder="' +
-            inputPara.name + '" value="' + inputPara.value + '" />' +
+            inputPara.showName + '" value="' + inputPara.value + '" />' +
             '</div></div>';
     return component;
 }
