@@ -29,13 +29,22 @@ function loginSubmitHandler() {
 		url : "/openoapi/auth/v1/tokens",
 		type : "POST",
 		contentType : 'application/json; charset=utf-8',
-		data : JSON.stringify(loginData),
-		success : function(data) {
-			top.window.document.location.href = "default.html";
-		},
-		error : function(data) {
-			top.window.document.location.href = "login.html";
+		data : JSON.stringify(loginData)
+	}).done(function(data) {
+		var topURL = top.window.document.location.href;
+		if (topURL.indexOf("?service") != -1) {
+			top.window.document.location.href = decodeURIComponent(topURL.substring(topURL.indexOf("?service")+9));
+		} else {
+			top.window.document.location.href = "/openoui/common/default.html";
 		}
+	}).fail(function(data) {
+		if (data.status == 401) {
+			alert("the username or password is wrong.")
+			// username or pasword is wrong.
+		} else {
+			// system error.
+		}
+		top.window.document.location.href = "/openoui/common/login.html";
 	}); 
 };
 
