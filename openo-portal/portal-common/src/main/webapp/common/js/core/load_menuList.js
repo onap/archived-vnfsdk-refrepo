@@ -39,7 +39,7 @@ var initLeftMenu = function() {
 		"</a>";
 
 	var templateChild = "<li>" +
-		"<a href='{url}' class='iframe'>" +
+		"<a href='{url}' class='iframe' id='{hrefId}'>" +
 		"<i class='{iconClass}'></i>" +
 		"<span id='{id}' name_i18n='{i18nName}'></span>" +
 		"</a>" +
@@ -57,6 +57,7 @@ var initLeftMenu = function() {
 				childMenuContent = childMenuContent + templateChild.replace("{id}", childMenus[j].id)
 					.replace("{url}", childMenus[j].url)
 					.replace("{iconClass}", childMenus[j].iconClass)
+					.replace("{hrefId}", childMenus[j].id + "_href")
 					.replace("{i18nName}", i18nName);
 			}
 		}

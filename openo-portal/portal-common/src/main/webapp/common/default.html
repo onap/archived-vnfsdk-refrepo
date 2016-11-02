@@ -47,7 +47,7 @@
 		</script>
 		<div class="header navbar navbar-fixed-top mega-menu">
 			<div class="header-inner">
-				<img id="com_zte_ums_ict_framework_img_netnumenLogo" src="image/integration/openo_logo_black.png" width="7%" name_img="com_zte_ums_ict_framework_img" alt="logo" style="margin-left:50px; margin-top:3px;"/>
+				<img id="com_zte_ums_ict_framework_img_netnumenLogo" src="image/integration/openo_logo_white.png" width="7%" name_img="com_zte_ums_ict_framework_img" alt="logo" style="margin-left:50px; margin-top:3px;"/>
 				<ul class="nav navbar-nav pull-right">
 					<div class="zte-theme-panel">
 						<div class="toggler"></div>
@@ -75,7 +75,7 @@
 								<li>
 									<a href="javascript:;" id="trigger_fullscreen">
 										<i class="fa fa-arrows"></i>
-										<span id="fullscreen_label"></span>
+										<span id="com_zte_ums_ict_framework_ui_group_fullscreen" name_i18n="openo_frame_page_i18n"></span>
 									</a>
 								</li>
 							</div>
@@ -83,7 +83,7 @@
 								<li>
 									<a id="trigger_logout" href="#">
 										<i class="fa fa-key"></i>
-										<span id="logout_label"></span>
+										<span id="com_zte_ums_ict_framework_ui_group_logout" name_i18n="openo_frame_page_i18n"></span>
 									</a>
 								</li>
 							</div>
@@ -107,7 +107,7 @@
 									</div>
 									<ul class="col-md-2 more-botton-zone"></ul>
 								</ul>
-								<div id ="pageableDiv" style ="display: none" class="row row1">
+								<div id="pageableDiv" style="display: none" class="row row1">
 									<div class="col-xs-12" >
 										<div class="row">
 											<div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="false">
@@ -163,6 +163,9 @@
 		<script>
 			jQuery(document).ready(function() {
 				openoFrameWork.init();
+				var initLink = document.getElementById('openo_menu_service_service_management_href');
+				initLink.target = '_blank';
+				initLink.click();
 				$("#pageLoading").setToHide();
 			});
 		</script>

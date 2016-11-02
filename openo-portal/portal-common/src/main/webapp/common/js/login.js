@@ -23,8 +23,6 @@ function loginSubmitHandler() {
 		"password": $("#openo_input_password").val()
 	}
 
-	saveUserInfo();
-
 	$.ajax({
 		url : "/openoapi/auth/v1/tokens",
 		type : "POST",
@@ -33,19 +31,26 @@ function loginSubmitHandler() {
 	}).done(function(data) {
 		var topURL = top.window.document.location.href;
 		if (topURL.indexOf("?service") != -1) {
-			top.window.document.location.href = decodeURIComponent(topURL.substring(topURL.indexOf("?service")+9));
+			top.window.document.location.href = decodeURIComponent(topURL.substring(topURL.indexOf("?service") + 9));
 		} else {
 			top.window.document.location.href = "/openoui/common/default.html";
 		}
+		store("loginUserName", $("#openo_input_userName").val());
 	}).fail(function(data) {
+		var tipDivId = $("#loginConnError");
 		if (data.status == 401) {
-			alert("the username or password is wrong.")
-			// username or pasword is wrong.
-		} else {
-			// system error.
+			tipDivId = $("#nameOrpwdError");
 		}
-		top.window.document.location.href = "/openoui/common/login.html";
-	}); 
+
+		tipDivId.addClass('alert-danger');
+		if (tipDivId.attr("tipstatus") == "normal") {
+			tipDivId.show();
+		} else if (tipDivId.attr("tipstatus") == "close") {
+			tipDivId.attr("tipstatus", "normal");
+		}
+	});
+
+	saveUserInfo();
 };
 
 var Login = function () {
@@ -99,71 +104,12 @@ var Login = function () {
 				return false;
 			}
 		});
-
-		$("input[name='remember']").bind("click", function () {
-			saveUserInfo();
-		});
-	}
-
-	var handleForgetPassword = function () {
-		$('.forget-form').validate({
-			errorElement: 'span', //default input error message container
-			errorClass: 'help-block', // default input error message class
-			focusInvalid: false, // do not focus the last invalid input
-			ignore: "",
-			rules: {
-				email: {
-					required: true,
-					email: true
-				}
-			},
-			messages: {
-				email: {
-					required: "Email is required."
-				}
-			},
-			invalidHandler: function (event, validator) { //display error alert on form submit   
-			},
-			highlight: function (element) { // hightlight error inputs
-				$(element).closest('.form-group').addClass('has-error'); // set error class to the control group
-			},
-			success: function (label) {
-				label.closest('.form-group').removeClass('has-error');
-				label.remove();
-			},
-			errorPlacement: function (error, element) {
-				error.insertAfter(element.closest('.input-icon'));
-			},
-			submitHandler: function (form) {
-				form.submit();
-			}
-		});
-
-		$('.forget-form input').keypress(function (e) {
-			if (e.which == 13) {
-				if ($('.forget-form').validate().form()) {
-					$('.forget-form').submit();
-				}
-				return false;
-			}
-		});
-
-		$('#forget-password').click(function () {
-			$('.login-form').hide();
-			$('.forget-form').show();
-		});
-
-		$('#back-btn').click(function () {
-			$('.login-form').show();
-			$('.forget-form').hide();
-		});
 	}
 
 	return {
 		//main function to initiate the module
 		init: function () {
 			handleLogin();
-			handleForgetPassword();
 			$.backstretch([
 				"image/integration/openo_bg_1.jpg",
 				"image/integration//openo_bg_2.jpg",
@@ -187,30 +133,12 @@ $(document).ready(function() {
 function saveUserInfo() {
 	var rmbcheck = $("input[name='remember']");
 	if (rmbcheck.attr("checked") == true || rmbcheck.is(':checked')) {
-		var userName = $("#openo_input_userName").val();
-		var passWord = $("#openo_input_password").val();
 		store("remember", "true");
-		store("openo_input_userName", username);
-		store("openo_input_password", passWord);
+		store("openo_input_userName", $("#openo_input_userName").val());
+		store("openo_input_password", $("#openo_input_password").val());
 	} else {
 		store.remove("remember");
 		store.remove("openo_input_userName");
 		store.remove("openo_input_password");
 	}
-}
-
-function logout() {
-	alert("logout");
-	$.ajax({
-		url : "/openoapi/auth/v1/tokens" + "?=" + new Date().getTime(),
-		type : "DELETE",
-		contentType : 'application/json',
-		dataType: "text",
-		success : function() {
-			top.window.location = "/openoui/auth/v1/login/html/login.html";
-		},
-		error : function() {
-			top.window.location = "/openoui/auth/v1/login/html/login.html";
-		}
-	}); 
 }

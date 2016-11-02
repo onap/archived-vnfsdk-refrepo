@@ -329,14 +329,14 @@ var s=!function(w,d){
     purl.jQuery(window.jQuery);
     return purl;
 });
-//把框架所有的ajax请求集中到一起，发一条请求，获取所有的配置信息。	
+//把框架所有的ajax请求集中到一起，发一条请求，获取所有的配置信息。
 openoFrameWork_conf = {
-	userName:store.get('username'),
+	userName:store("loginUserName"),
 	changePassItem:FrameConst.change_pass?FrameConst.change_pass:true,
 	helpMenuItem:false,
 	aboutMenuItem:false,
 	flightMenuItem:false,
-	fullscreenMenuItem:false,
+	fullscreenMenuItem:true,
 	logoutMenuItem:true,
 	defaultThemeColor:"ztebluelight2",
 	dbType:"other",
@@ -344,10 +344,10 @@ openoFrameWork_conf = {
 };
 $("#currentUser").html(openoFrameWork_conf.userName);
 
-$.ajax({ 			
-	url : FrameConst.REST_FRAMECOMMIFO,  
+$.ajax({
+	url : FrameConst.REST_FRAMECOMMIFO,
 	type : "GET",
-	cache:false,			
+	cache:false,
 	contentType : 'application/json; charset=utf-8',
 	success: function(data){
 		var tempConf = data;
