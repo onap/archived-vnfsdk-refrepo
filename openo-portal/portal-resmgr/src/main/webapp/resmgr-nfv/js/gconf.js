@@ -22,7 +22,7 @@ function getUrl(){
 		async:false,
 		dataType:"json",
 		success:function(jsonData) {
-			url = jsonData.url + ":" + jsonData.port +jsonData.context_name;
+			url = jsonData.url;
 			console.log("url = " + url);
 		}
 	});

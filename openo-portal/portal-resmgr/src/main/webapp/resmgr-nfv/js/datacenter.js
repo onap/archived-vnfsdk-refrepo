@@ -227,12 +227,11 @@ $(function () {
             type: "GET",
             url: requestUrl,
             contentType: "application/json",
-            success: function (jsonobj) {
-                $.each(jsonobj.data, function (n, v) {
-                    htmlContent += "<option value='" + v + "'>" + v + "</option>";
-                    $("#location").html(htmlContent);
-
-                });
+            success: function (jsonobj) {var str = jsonobj.data.replace('[', '').replace(']', '').split(',')
+                    $.each(str, function (n, v) {
+                    	 htmlContent += "<option value='" + v + "'>" + v + "</option>";
+                         $("#location").html(htmlContent);
+                    });
 
             },
             error: function (xhr, ajaxOptions, thrownError) {
