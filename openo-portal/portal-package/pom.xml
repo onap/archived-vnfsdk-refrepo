@@ -155,7 +155,7 @@
             <configuration>
               <tasks name="${project.artifactId}">
                 <zip destfile="target/${packagename}-${project.version}.zip" update="true">
-                  <zipfileset dir="target" includes="*.war"/>
+                  <zipfileset dir="target/openoui" includes="**"/>
                 </zip>
               </tasks>
             </configuration>
