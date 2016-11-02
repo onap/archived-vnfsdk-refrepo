@@ -49,14 +49,39 @@ lcmHandler.prototype = {
                 return createNetworkServiceInstance(template, serviceInstance, gatewayService);
             }
         ).then(
-            function(serviceInstance) {
-                updateTable(serviceInstance);
+            function(response) {
                 $.isLoading('hide');
-                $('#vmAppDialog').removeClass('in').css('display', 'none');
+                if(response.status === 'success') {
+                    updateTable(response.serviceInstance);
+                    $('#vmAppDialog').removeClass('in').css('display', 'none');
+                } else {
+                    showErrorMessage('Create service failed', response.errorResult);
+                }
             }
         );
     }
 };
+
+function showErrorMessage(title, result) {
+    var info = '<br/>' + '<h5>' + title + '</h5><hr/>';
+    info = info + '<h6>Status: ' + result.status + '</h6><p/>';
+    info = info + '<h6>Description: </h6>';
+    if(result.statusDescription.forEach === undefined) {
+        info = info + '<h6>' + result.statusDescription + '</h6><p/>';
+    } else {
+        result.statusDescription.forEach(function(message) {
+            info = info + '<h6>' + message + '</h6><p/>';
+        });    
+    }
+    info = info + '<h6>Error code: '+ result.errorCode + '</h6>';
+    $.bootstrapGrowl(info, {
+        type: 'danger',
+        align: 'center',
+        width: "auto",
+        delay: 10000,
+        allow_dismiss: true
+    });
+}
 
 function checkLocation(parameters) {
 	var checkPass = true;
@@ -477,25 +502,30 @@ function createGsoServiceInstance(gatewayService, serviceInstance, serviceTempla
         dataType: "json",
         data: JSON.stringify(parameter)
     })).then(function(response) {
-        serviceInstance.serviceId = response.serviceId;
-        defer.resolve(serviceInstance);
+        if(response.result.status === 'success') {
+            serviceInstance.serviceId = response.serviceId;
+            defer.resolve({status: 'success', instance: serviceInstance});
+        } else {
+            defer.resolve({status: 'fail', errorResult: response.result});
+        }
     });
     return defer;
 }
 
 function createNfvoServiceInstance(gatewayService, serviceInstance, template) {
-    var nfvoLcmNsUri = '/openoapi/nslcm/v1/ns';
+    var nfvoLcmUri = '/openoapi/nslcm/v1';
     serviceInstance.nsdId = template.id;
-    return createServiceInstance(gatewayService, nfvoLcmNsUri, serviceInstance);
+    return createServiceInstance(gatewayService, nfvoLcmUri, serviceInstance);
 }
 
 function createSdnoServiceInstance(gatewayService, serviceInstance) {
-    var sdnoLcmNsUri = '/openoapi/sdnonslcm/v1/ns';
+    var sdnoLcmUri = '/openoapi/sdnonslcm/v1';
     serviceInstance.nsdId = serviceInstance.serviceTemplateId;
-    return createServiceInstance(gatewayService, sdnoLcmNsUri, serviceInstance);
+    return createServiceInstance(gatewayService, sdnoLcmUri, serviceInstance);
 }
 
-function createServiceInstance(gatewayService, nsUri, serviceInstance) {
+function createServiceInstance(gatewayService, lcmUri, serviceInstance) {
+    var nsUri = lcmUri + '/ns';
     var defer = $.Deferred();
     var sParameter = {
         'nsdId': serviceInstance.nsdId,
@@ -510,23 +540,75 @@ function createServiceInstance(gatewayService, nsUri, serviceInstance) {
         dataType: "json",
         data: JSON.stringify(sParameter)
     })).then(function(response) {
-        var nsInstanceId = response.serviceId;
-        serviceInstance.serviceId = nsInstanceId;
-        var initNsUrl = nsUri + '/' + nsInstanceId + '/instantiate';
-        var parameter = {
-            'gatewayUri': initNsUrl,
-            'nsInstanceId': nsInstanceId,
-            'additionalParamForNs': serviceInstance.inputParameters
-        };
-        return $.ajax({
-            type: "POST",
-            url: gatewayService,
-            contentType: "application/json",
-            dataType: "json",
-            data: JSON.stringify(parameter)
-        });
-    }).then(function() {
-        defer.resolve(serviceInstance);
+        if(response.result.status === 'success') {
+            var nsInstanceId = response.serviceId;
+            serviceInstance.serviceId = nsInstanceId;
+            var initNsUrl = nsUri + '/' + nsInstanceId + '/instantiate';
+            var parameter = {
+                'gatewayUri': initNsUrl,
+                'nsInstanceId': nsInstanceId,
+                'additionalParamForNs': serviceInstance.inputParameters
+            };
+            return $.ajax({
+                type: "POST",
+                url: gatewayService,
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify(parameter)
+            });
+        } else {
+            return response;
+        }
+    }).then(function(response) {
+        if(response.result.status === 'success') {
+            var jobId = response.serviceId;
+            var jobStatusUri = lcmUri + '/jobs/' + jobId;
+            var timerDefer = $.Deferred();
+            var timeout = 600000;
+            var fun = function() {
+                if(timeout === 0) {
+                    timerDefer.resolve({
+                        status: 'fail', 
+                        statusDescription: 'Operation is timeout!', 
+                        errorCode: ''
+                    });
+                    return;
+                }
+                timeout = timeout - 1000;
+                $.when(
+                    $.ajax({
+                        type: "GET",
+                        url: jobStatusUri
+                    })
+                ).then(
+                    function(jobResponse) {
+                        var responseDesc = jobResponse.responseDescriptor;
+                        if(responseDesc.status === 'finished' || responseDesc.status === 'error') {
+                            timerDefer.resolve(responseDesc);
+                        }
+                    }
+                );
+            };
+            var timerId = setInterval(fun, 1000);
+            $.when(timerDefer).then(
+                function(responseDesc) {
+                    clearInterval(timerId);
+                    if(responseDesc.status === 'finished') {
+                        defer.resolve({status: 'success', instance: serviceInstance});
+                    } else {
+                        defer.resolve({
+                            status: 'fail', 
+                            errorResult: {
+                                status: responseDesc.status, 
+                                statusDescription: responseDesc.statusDescription, 
+                                errorCode: responseDesc.errorCode
+                            }}});
+                    }
+                }
+             );
+        } else {
+            defer.resolve({status: 'fail', errorResult: response.result});
+        }
     });
     return defer;
 }
@@ -568,14 +650,18 @@ function deleteNe(rowId, row) {
                 $.isLoading( "hide" );
                 $('#sai').bootstrapTable('remove', {field: 'serviceId', values: [instanceId]});
             };
+            var failFun = function(responseDesc) {
+                $.isLoading( "hide" );
+                showErrorMessage("Delete service failed", responseDesc);
+            }
             if(serviceType === 'GSO') {
                 deleteGsoServiceInstance(gatewayService, instanceId, remove);
             } else if (serviceType === 'NFVO') {
-                var nfvoNsUri = '/openoapi/nslcm/v1/ns';
-                deleteNonGsoServiceInstance(gatewayService, nfvoNsUri, instanceId, remove);
+                var nfvoLcmUri = '/openoapi/nslcm/v1';
+                deleteNonGsoServiceInstance(gatewayService, nfvoLcmUri, instanceId, remove, failFun);
             } else if (serviceType === 'SDNO') {
-                var sdnoNsUri = '/openoapi/sdnonslcm/v1/ns';
-                deleteNonGsoServiceInstance(gatewayService, sdnoNsUri, instanceId, remove);
+                var sdnoLcmUri = '/openoapi/sdnonslcm/v1';
+                deleteNonGsoServiceInstance(gatewayService, sdnoLcmUri, instanceId, remove, failFun);
             }
         }
     };
@@ -593,18 +679,67 @@ function deleteGsoServiceInstance(gatewayService, instanceId, remove) {
     );
 }
 
-function deleteNonGsoServiceInstance(gatewayService, nsUri, instanceId, remove) {
+function deleteNonGsoServiceInstance(gatewayService, lcmUri, instanceId, remove, failFun) {
+    var nsUri = lcmUri + '/ns';
     $.when(
         terminateNetworkServiceInstance(gatewayService, nsUri, instanceId)
     ).then(
-        function() {
-            return deleteNetworkServiceInstance(gatewayService, nsUri, instanceId);
+        function(response) {                
+            var jobId = response.jobId;
+            var jobStatusUri = lcmUri + '/jobs/' + jobId;
+            var timerDefer = $.Deferred();
+            var timeout = 600000;
+            var fun = function() {
+                if(timeout === 0) {
+                    timerDefer.resolve({
+                        status: 'fail', 
+                        statusDescription: 'Operation is timeout!', 
+                        errorCode: ''
+                    });
+                    return;
+                }
+                timeout = timeout - 1000;
+                $.when(
+                    $.ajax({
+                        type: "GET",
+                        url: jobStatusUri
+                    })
+                ).then(
+                    function(jobResponse) {
+                        var responseDesc = jobResponse.responseDescriptor;
+                        if(responseDesc.status === 'finished' || responseDesc.status === 'error') {
+                            timerDefer.resolve(responseDesc);
+                        }
+                    }
+                );
+            };
+            var timerId = setInterval(fun, 1000);
+            $.when(timerDefer).then(
+                function(responseDesc) {
+                    clearInterval(timerId);
+                    if(responseDesc.status === 'finished') {
+                        $.when(
+                            deleteNetworkServiceInstance(gatewayService, nsUri, instanceId)
+                        ).then(
+                            function(nsResponse) {
+                                if(nsResponse.status === 'success') {
+                                    remove();
+                                } else {
+                                    failFun(nsResponse);
+                                }
+                            }
+                        ).fail(function() {
+                            failFun({status: "fail", statusDescription: "delete service failed.", errorCode: "500"}});
+                        });
+                    } else {
+                        failFun(responseDesc);
+                    }
+                }
+            );
         }
-    ).then(
-        function() {
-            remove();
-        }
-    );
+    ).fail(function() {
+        failFun({status: "fail", statusDescription: "delete service failed.", errorCode: "500"}});
+    });
 }
 
 function deleteNetworkServiceInstance(gatewayService, nsUri, instanceId) {
