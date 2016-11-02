@@ -118,11 +118,11 @@ function initParameterTab() {
 	).then(
 	    function(template) {
 	    	if(template.serviceType === 'GSO') {
-	    		return fetchGsoTemplateInputParameters(templateId);
+	    		return fetchGsoTemplateInputParameters(templateId, template);
 	    	} else if(template.serviceType === 'NFVO') {
-	    		return fetchNfvoTemplateInputParameters(templateId);
+	    		return fetchNfvoTemplateInputParameters(templateId, template);
 	    	} else if(template.serviceType === 'SDNO') {
-	    		return fetchSdnoTemplateInputParameters(templateId);
+	    		return fetchSdnoTemplateInputParameters(templateId, template);
 	    	}
 	    }
 	).then(
@@ -148,6 +148,7 @@ function fetchServiceTemplateBy(templateId) {
             template.name = response.templateName;
             template.gsarId = response.csarId;
             template.id = response.id;
+            template.nodeType = response.substitution.nodeType;
             return fetchCsar(template.gsarId);
         }
     ).then(
@@ -174,7 +175,7 @@ function fetchCsar(csarId) {
 	});
 }
 
-function fetchGsoTemplateInputParameters(templateId) {
+function fetchGsoTemplateInputParameters(templateId, template) {
 	var defer = $.Deferred();
     $.when(
         fetchTemplateParameterDefinitions(templateId),
@@ -185,6 +186,11 @@ function fetchGsoTemplateInputParameters(templateId) {
         function (templateParameterResponse, nestingTempatesParas, vimInfoResponse, sdnControllersResponse) {
             var inputs = templateParameterResponse[0].inputs.map(function(input) {
                 input.showName = input.name;
+                if(template.nodeType === null || template.nodeType === undefined || template.nodeType.length === 0) {
+                    input.i18nKey = input.name;    
+                } else {
+                    input.i18nKey = template.nodeType + '.' +input.name;    
+                }
                 return input;
             });
         	var inputParas = concat(inputs, nestingTempatesParas);
@@ -232,6 +238,7 @@ function fetchGsoNestingTemplateParameters(templateId) {
 	    		    		var inputs = serviceTemplate.inputs.map(function(input) {
                                 input.showName = input.name;
 	    		    			input.name = nodeTemplate.type + '.' + input.name;
+                                input.i18nKey = nodeTemplate.type + '.' + input.name;
 	    		    			return input;
 	    		    		});
 	    		    		$.when(
@@ -244,14 +251,16 @@ function fetchGsoNestingTemplateParameters(templateId) {
 	    		    		    			type: 'location',
 	    		    		    			description: nodeTemplate.name + ' Location',
 	    		    		    			required: 'true',
-                                            showName: nodeTemplate.name + ' Location'
+                                            showName: nodeTemplate.name + ' Location',
+                                            i18nKey: nodeTemplate.name + ' Location'
 	    		    		    		});
                                         inputs.push({
                                             name: nodeTemplate.type + '.sdncontroller',
                                             type: 'sdncontroller',
                                             description: nodeTemplate.name + ' SDN Controller',
                                             required: 'true',
-                                            showName: nodeTemplate.name + ' SDN Controller'
+                                            showName: nodeTemplate.name + ' SDN Controller',
+                                            i18nKey: nodeTemplate.name + ' SDN Controller'
                                         });
                                     }
 	    		    		    	nodeAggregatation.notify(inputs);
@@ -321,7 +330,7 @@ function translateToTemplateParameters(inputs, vims, controllers) {
     return {changed: false, parameters: inputParameters, vimInfos: vims, sdnControllers: controllers};
 }
 
-function fetchNfvoTemplateInputParameters(templateId) {
+function fetchNfvoTemplateInputParameters(templateId, template) {
 	var defer = $.Deferred();
 	$.when(
 		fetchTemplateParameterDefinitions(templateId),
@@ -334,6 +343,7 @@ function fetchNfvoTemplateInputParameters(templateId) {
 	    	var inputParas = templateParameterResponse[0].inputs;
             inputParas = inputParas.map(function(input) {
                 input.showName = input.name;
+                input.i18nKey = template.nodeType + '.' + input.name;
                 return input;
             });
 	    	inputParas.push({
@@ -341,14 +351,16 @@ function fetchNfvoTemplateInputParameters(templateId) {
 	    		type: 'location',
 	    		description: 'Location',
 	    		required: 'true',
-                showName: 'Location'
+                showName: 'Location',
+                input.i18nKey = 'Location'
 	    	});
             inputParas.push({
                 name: 'sdncontroller',
                 type: 'sdncontroller',
                 description: 'SDN Controller',
                 required: 'true',
-                showName: 'SDN Controller'
+                showName: 'SDN Controller',
+                input.i18nKey = 'SDN Controller'
             });
 	    	templateParameters = translateToTemplateParameters(inputParas, vims, sdnControllers);
             defer.resolve(templateParameters);	
@@ -357,7 +369,7 @@ function fetchNfvoTemplateInputParameters(templateId) {
 	return defer;
 }
 
-function fetchSdnoTemplateInputParameters(templateId) {
+function fetchSdnoTemplateInputParameters(templateId, template) {
 	var defer = $.Deferred();
 	$.when(
 		fetchTemplateParameterDefinitions(templateId)
@@ -365,6 +377,7 @@ function fetchSdnoTemplateInputParameters(templateId) {
 	    function (templateParameterResponse) {
             var inputs = templateParameterResponse.inputs.map(function(input) {
                 input.showName = input.name;
+                input.i18nKey = template.nodeType + '.' + input.name;
                 return input;
             })
 	    	templateParameters = translateToTemplateParameters(inputs, [], []);
@@ -470,7 +483,7 @@ function generateComponent(inputPara) {
 }
 
 function showName(inputPara) {
-    var name = $.i18n.prop(inputPara.name)
+    var name = $.i18n.prop(inputPara.i18nKey)
     if(name.length === 0 || name.slice(0, 1) === '[') {
         name = inputPara.showName;
     }
