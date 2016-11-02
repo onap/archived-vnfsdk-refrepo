@@ -66,8 +66,8 @@ function printCharts(v11, v12, v21, v22, v31, v32,dc_id) {
             labels: ["used", "available"],
             datasets: [{
                 data: [v21, v22-v21],
-                backgroundColor: ["#FF6384", "#36A2EB"],
-                hoverBackgroundColor: ["#FF6384", "#36A2EB"]
+                backgroundColor: ["#FFCE56", "#36A2EB"],
+                hoverBackgroundColor: ["#FFCE56", "#36A2EB"]
             }]
         },
         options: {
@@ -85,8 +85,8 @@ function printCharts(v11, v12, v21, v22, v31, v32,dc_id) {
             labels: ["used", "available"],
             datasets: [{
                 data: [v31, v32-v31],
-                backgroundColor: ["#FF6384", "green"],
-                hoverBackgroundColor: ["#FF6384", "green"]
+                backgroundColor: ["#FFCE56", "#36A2EB"],
+                hoverBackgroundColor: ["#FFCE56", "#36A2EB"]
             }]
         },
         options: {

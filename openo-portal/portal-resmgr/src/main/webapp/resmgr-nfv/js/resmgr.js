@@ -1,6 +1,7 @@
 function hideFirstCol() {
-//	$('table tr').find('th:eq(0)').hide();
-//	$('table tr').find('td:eq(0)').hide();
+	$('#location_table').bootstrapTable('refresh');
+	$('table tr').find('th:eq(0)').hide();
+	$('table tr').find('td:eq(0)').hide();
 }
 function deleteLocation(objectId) {
     var requestUrl = app_url+"/openoapi/resmgr/v1/locations/" + objectId;
@@ -14,11 +15,13 @@ function deleteLocation(objectId) {
                 values: [objectId]
             });
             bootbox.alert("Delete  successfull !!!");
+            hideFirstCol()();
         },
         error: function (xhr, ajaxOptions, thrownError) {
             bootbox.alert("Error on deleting data: " + xhr.responseText);
         }
     });
+    
 }
 
 function editLocation(row) {
@@ -45,7 +48,7 @@ function loadLocationData() {
                 striped: true,
                 data: jsonobj.locations
             });
-            $('#location_table').bootstrapTable('refresh');
+            hideFirstCol();
 
         },
         error: function (xhr, ajaxOptions, thrownError) {
@@ -159,7 +162,9 @@ $(function () {
                         data: formData,
                         success: function (jsonResp) {
                             loadLocationData();
-                            bootbox.alert(jsonResp.msg);
+                            bootbox.alert(jsonResp.msg,function(){
+                            	window.location.reload();
+                            });
                             $('#vmAppDialog').removeClass('in').css({
                                 'display': 'none'
                             });

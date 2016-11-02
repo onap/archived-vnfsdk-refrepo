@@ -1,6 +1,10 @@
+function trim(str) {
+
+    return str.replace(/(^\s*)|(\s*$)/g,'');
+}
 function hideFirstCol() {
-//	$('table tr').find('th:eq(0)').hide();
-//	$('table tr').find('td:eq(0)').hide();
+	$('table tr').find('th:eq(0)').hide();
+	$('table tr').find('td:eq(0)').hide();
 }
 
 function deleteDatacenter(objectId) {
@@ -15,6 +19,7 @@ function deleteDatacenter(objectId) {
                 values: [objectId]
             });
             bootbox.alert("Delete  successfull !!!");
+            hideFirstCol();
         },
         error: function (xhr, ajaxOptions, thrownError) {
             bootbox.alert("Error on deleting data: " + xhr.responseText);
@@ -44,6 +49,8 @@ function loadDatacenterData() {
             bootbox.alert("Error on getting site data : " + xhr.responseText);
         }
     });
+    $('#location_table').bootstrapTable('refresh');
+    hideFirstCol();
 }
 function loadNetWorkData() {
     var requestUrl = app_url+"/openoapi/resmgr/v1/networks";
@@ -120,13 +127,13 @@ function fillCountryData() {
 function fillVimNameData() {
 
     var requestUrl = app_url+"/openoapi/resmgr/v1/datacenters/vims";
-    var htmlContent = "";
+    var htmlContent = "<option value=''>--select--</option>";
     $.ajax({
         type: "GET",
         url: requestUrl,
         contentType: "application/json",
         success: function (jsonobj) {
-            var str = jsonobj.data.replace('[', '').replace(']', '').split(',')
+            var str = jsonobj.data;
             $.each(str, function (n, v) {
                 htmlContent += "<option value='" + v.vimId + "'>" + v.name + "</option>";
                 $("#vimName").html(htmlContent);
@@ -207,7 +214,9 @@ $(function () {
                     data: formData,
                     success: function (jsonResp) {
                         loadDatacenterData();
-                        bootbox.alert(jsonResp.msg);
+                        bootbox.alert(jsonResp.msg,function(){
+                        	window.location.reload();
+                        });
                         $('#vmAppDialog').removeClass('in').css({
                             'display': 'none'
                         });
@@ -220,8 +229,8 @@ $(function () {
 
     $('#country').change(function () {
         var country = $(this).children('option:selected').val();
-        var requestUrl = app_url+"/openoapi/resmgr/v1/locations/locationbycountry?country=" + country;
-
+        country = trim(country);
+        var requestUrl = app_url+"/openoapi/resmgr/v1/locations/locationbycountry?country="+country;
         var htmlContent = "<option value=''>--select--</option>";
         $.ajax({
             type: "GET",
@@ -236,6 +245,26 @@ $(function () {
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 bootbox.alert("Error on getting location data : " + xhr.responseText);
+            }
+        });
+
+    })
+    
+     $('#vimName').change(function () {
+        var vimName = $(this).children('option:selected').val();
+        vimName = trim(vimName);
+        var requestUrl = app_url+"/openoapi/resmgr/v1/limits?vimId="+vimName;
+        $.ajax({
+            type: "GET",
+            url: requestUrl,
+            contentType: "application/json",
+            success: function (jsonobj) {
+            	$('#totalCPU').html(jsonobj.totalCPU);
+            	$('#totalMemory').html(jsonobj.totalMemory);
+            	$('#totalDisk').html(jsonobj.totalDisk);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                bootbox.alert("Error on getting data : " + xhr.responseText);
             }
         });
 
