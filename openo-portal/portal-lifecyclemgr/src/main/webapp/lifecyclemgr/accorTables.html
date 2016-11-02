@@ -43,12 +43,12 @@
 			debugger;
 			if("SSAR" === serviceType)
 			{
-				object.name  = "sdno"
+				object.nodeType  = "sdn"
 				jsonData[0] = object;
 			}
 			else if("NSAR" == serviceType || "NFAR" == serviceType || "NFVO" == serviceType)
 			{
-				object.name  = "nfvo";
+				object.nodeType  = "nfv";
 				jsonData[0] = object;
 			}
 			else{
@@ -60,19 +60,19 @@
 			//TODO check for the 
             console.log("jsonData length: " + jsonData.length);
             for (i = 0; i < jsonData.length; i++) {
-                console.log("jsonData Name: " + jsonData[i].name);
-                if (jsonData[i].name == "sdno") {
+               // console.log("jsonData Name: " + jsonData[i].nodeType);
+                if (jsonData[i].nodeType.indexOf('sdn') != -1) {
                     //$("#sdnoLink").text(jsonData[i].name.toUpperCase());
                     console.log("Adding Accordian to SDNO");
-                    $("#accordion").append(addAccordionData("sdno", jsonData[i].name.toUpperCase()));
+                    $("#accordion").append(addAccordionData("sdno", "SDNO"));
                 }
-                else if (jsonData[i].name == "gso") {
+                else if (jsonData[i].nodeType.indexOf('gso') != -1) {
                     console.log("Adding Accordian to GSO");
-                    $("#accordion").append(addAccordionData("gso", jsonData[i].name.toUpperCase()));
+                    $("#accordion").append(addAccordionData("gso", "GSO"));
                 }
-                else if (jsonData[i].name == "nfvo") {
+                else if (jsonData[i].nodeType.indexOf('nfv') != -1) {
                     console.log("Adding Accordian to NFVO");
-                    $("#accordion").append(addAccordionData("nfvo", jsonData[i].name.toUpperCase()));
+                    $("#accordion").append(addAccordionData("nfvo", "NFVO"));
                 }
                 else {
 
