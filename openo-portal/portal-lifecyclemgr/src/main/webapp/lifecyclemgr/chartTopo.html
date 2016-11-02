@@ -96,27 +96,7 @@
             var serviceId = getQueryStringValue("serviceId");
             console.log("TOPO - serviceId : "+ serviceId);
 
-            var jsonData = loadServiceDetails(serviceId);
-            console.log("jsonData length: "+jsonData.length);
-            for(i = 0; i < jsonData.length; i++) {
-                console.log("jsonData Name: "+jsonData[i].name);
-                if(jsonData[i].name == "sdno") {
-                    //$("#sdnoLink").text(jsonData[i].name.toUpperCase());
-                    console.log("Adding Accordian to SDNO");
-                    $("#accordion").append(addAccordionData("sdno", jsonData[i].name.toUpperCase()));
-                }
-                else if(jsonData[i].name == "gso") {
-                    console.log("Adding Accordian to GSO");
-                    $("#accordion").append(addAccordionData("gso", jsonData[i].name.toUpperCase()));
-                }
-                else if(jsonData[i].name == "nfvo") {
-                    console.log("Adding Accordian to NFVO");
-                    $("#accordion").append(addAccordionData("nfvo", jsonData[i].name.toUpperCase()));
-                }
-                else {
-
-                }
-            }
+           
 
             $('#container').highcharts({
                 chart: {
@@ -149,7 +129,7 @@
                             ren.path(rightArrow)
                                     .attr({
                                         'stroke-width': 1,
-                                        stroke: colors[3]
+                                        stroke: colors[1]
                                     })
                                     .translate(95, 95)
                                     .add();
@@ -211,7 +191,7 @@
                             ren.path(rightArrow)
                                     .attr({
                                         'stroke-width': 1,
-                                        stroke: colors[3]
+                                        stroke: colors[1]
                                     })
                                     .translate(300, 95)
                                     .add();
@@ -219,7 +199,7 @@
                             ren.path(rightArrow)
                                     .attr({
                                         'stroke-width': 1,
-                                        stroke: colors[3]
+                                        stroke: colors[1]
                                     })
                                     .translate(500, 95)
                                     .add();
