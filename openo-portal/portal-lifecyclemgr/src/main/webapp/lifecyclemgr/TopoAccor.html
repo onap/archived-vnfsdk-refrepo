@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link href="css/bootstrap.min.css" rel="stylesheet" />
-       
-        <link href="css/bootstrap-table.min.css" rel="stylesheet" />
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
 
-        <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
-        <script type="text/javascript" src="js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="js/rest.js"></script>
-        <script type="text/javascript" src="js/bootstrap-table.min.js"></script>
+    <link href="css/bootstrap-table.min.css" rel="stylesheet" />
+
+    <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/rest.js"></script>
+    <script type="text/javascript" src="js/bootstrap-table.min.js"></script>
     <script>
         $(document).ready(function () {
             var serviceId = getQueryStringValue("serviceId");
@@ -22,122 +22,133 @@
             var params = new URLSearchParams(window.location.search.slice(1));
             return params.get(key);
         }
+        function acordClick_sdno() {
+            $("#topoContObj").show();
+            $("#nfvotopoContObj").hide();
+        }
+        function acordClick_nfvo() {
+            $("#nfvotopoContObj").show();
+            $("#topoContObj").hide();
+        }
+
     </script>
-  <meta charset="utf-8">
-  <title>JS Bin</title>
-  <style>
- 
-.panel-group .panel-heading + .panel-collapse > .panel-body {
-  border: 1px solid #ddd;
-}
-.panel-group,
-.panel-group .panel,
-.panel-group .panel-heading,
-.panel-group .panel-heading a,
-.panel-group .panel-title,
-.panel-group .panel-title a,
-.panel-group .panel-body,
-.panel-group .panel-group .panel-heading + .panel-collapse > .panel-body {
-  border-radius: 2px;
-  border: 0;
-}
-.panel-group .panel-heading {
-  padding: 0;
-}
-.panel-group .panel-heading a {
-  display: block;
-  background: #428bca;
-  color: #ffffff;
-  padding: 15px;
-  text-decoration: none;
-  position: relative;
-}
+    <meta charset="utf-8">
+    <title>JS Bin</title>
+    <style>
+        body {
+            overflow: hidden;
+            margin: 15px;
+        }
+        .panel-heading:hover {
+            border: 1px solid #4ac9ff;
+            color: #4ac9ff;
+        }
 
-.panel-group .panel-heading a:hover {
- border: 1px solid #4AC9FF;
- 
-}
+        li:hover {
+            cursor: pointer;
+            color: #4ac9ff;
+        }
+        #accordion .glyphicon {
+            margin-right: 10px;
+        }
 
- 
-.panel-group .panel-heading a.collapsed {
-  background: #eeeeee;
-  color: inherit;
-}
-.panel-group .panel-heading a:after {
-  content: '-';
-  position: absolute;
-  right: 20px;
-  top:5px;
-  font-size:30px;
-}
-.panel-group .panel-heading a.collapsed:after {
-  content: '+';
-}
-.panel-group .panel-collapse {
-  margin-top: 5px !important;
-}
-.panel-group .panel-body {
-  background: #ffffff;
-  padding: 15px;
-}
-.panel-group .panel {
-  background-color: transparent;
-}
-.panel-group .panel-body p:last-child,
-.panel-group .panel-body ul:last-child,
-.panel-group .panel-body ol:last-child {
-  margin-bottom: 0;
-}
+        .panel-collapse > .list-group .list-group-item:first-child {
+            border-top-right-radius: 0;
+            border-top-left-radius: 0;
+        }
 
-  </style>
+        .panel-collapse > .list-group .list-group-item {
+            border-width: 1px 0;
+        }
+
+        .panel-collapse > .list-group {
+            margin-bottom: 0;
+        }
+
+        .panel-collapse .list-group-item {
+            border-radius: 0;
+        }
+
+        .panel-collapse .list-group .list-group {
+            margin: 0;
+            margin-top: 10px;
+        }
+
+        .panel-collapse .list-group-item li.list-group-item {
+            margin: 0 -15px;
+            border-top: 1px solid #ddd !important;
+            border-bottom: 0;
+            padding-left: 30px;
+        }
+
+        .panel-collapse .list-group-item li.list-group-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .panel-collapse div.list-group div.list-group {
+            margin: 0;
+        }
+
+        .panel-collapse div.list-group .list-group a.list-group-item {
+            border-top: 1px solid #ddd !important;
+            border-bottom: 0;
+            padding-left: 30px;
+        }
+
+        .panel-collapse .list-group-item li.list-group-item {
+            border-top: 1px solid #DDD !important;
+        }
+
+        .selected {
+            /*background-color: #ddd;*/
+            color: #4ac9ff;
+        }
+        .panel-title>a {
+            display: inline-block;
+            width: 100%;
+        }
+
+    </style>
 </head>
 <body>
-  
-<div class="container" style="margin-top:10px;">
 
-         <div class="panel-group" id="accordion">
-         
+    <div class="row">
+        <div class="col-sm-3" style="width: 18%; padding-right: 0;">
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a id="sdno" style="text-decoration:none;" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onClick="acordClick_sdno();">
+                                SDNO
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+            </div>
             <div class="panel panel-default">
-               <div class="panel-heading">
-                  <h4 class="panel-title">
-                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                     SDNO
-                     </a>
-                  </h4>
-               </div><!--/.panel-heading -->
-               <div id="collapseOne" class="panel-collapse collapse in">
-                  <div class="panel-body">
-                     <!--iframe src="chartTopo.html" name="" style="width:100%" allowTransparency="true" scrolling="no" frameborder="0">
-                                        </iframe>-->
-                      <object id="topoContObj" data="chartTopo.html" width="100%" height="300" type="text/html">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a id="nfvo" style="text-decoration:none;" class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" onClick="acordClick_nfvo();">
+                            NFVO
+                        </a>
+                    </h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3" style="width: 82%; padding-right: 0;">
+            <div class="panel-body" style="padding: 0">
+                <object id="topoContObj" data="chartTopo.html" width="100%" height="300" type="text/html">
 
-                      </object>
-                  </div><!--/.panel-body -->
-               </div><!--/.panel-collapse -->
-            </div><!-- /.panel -->
+                </object>
+            </div>
+            <div class="panel-body" style="padding: 0">
+                <object id="nfvotopoContObj" data="lcm_detail_nfvo_topology.html" width="100%" height="300" type="text/html">
 
-            
-            <div class="panel panel-default">
-               <div class="panel-heading">
-                  <h4 class="panel-title">
-                     <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-                     NFVO
-                     </a>
-                  </h4>
-               </div><!--/.panel-heading -->
-               <div id="collapseThree" class="panel-collapse collapse">
-                  <div class="panel-body">
-                      <object id="nfvotopoContObj" data="lcm_detail_nfvo_topology.html" width="100%" height="300" type="text/html">
+                </object>
+            </div>
+        </div>
+    </div>
 
-                      </object>
-                  </div><!--/.panel-body -->
-               </div><!--/.panel-collapse -->
-            </div><!-- /.panel -->
-         </div><!-- /.panel-group -->
-
-</div><!-- /.container -->  
-  
-  
 
 </body>
 </html>

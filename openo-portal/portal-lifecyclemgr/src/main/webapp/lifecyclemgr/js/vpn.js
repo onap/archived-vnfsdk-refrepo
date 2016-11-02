@@ -21,7 +21,7 @@ $.getJSON("./conf/dataconfig.json", function (jsonData){
 
 function deleteSite(objectId) {
     alert(objectId);
-    var requestUrl = url + "/openoapi/sdnobrs/v1/sites" + objectId;
+    var requestUrl = "/openoapi/sdnobrs/v1/sites" + objectId;
     $
         .ajax({
             type: "DELETE",
@@ -37,7 +37,7 @@ function deleteSite(objectId) {
         });
 }
 function deleteLink(objectId) {
-    var requestUrl = url + "/openoapi/sdnobrs/v1/topological-links" + objectId;
+    var requestUrl = "/openoapi/sdnobrs/v1/topological-links" + objectId;
     $
         .ajax({
             type: "DELETE",
@@ -54,7 +54,7 @@ function deleteLink(objectId) {
 }
 
 function deleteNe(objectId) {
-    var requestUrl = url + "/sdnobrs/v1/managed-elements" + objectId;
+    var requestUrl = "/sdnobrs/v1/managed-elements" + objectId;
     $
         .ajax({
             type: "DELETE",
@@ -71,7 +71,7 @@ function deleteNe(objectId) {
 }
 
 function deletePort(objectId) {
-    var requestUrl = url + "/openoapi/sdnobrs/v1/logical-termination-points" + objectId;
+    var requestUrl = "/openoapi/sdnobrs/v1/logical-termination-points" + objectId;
     $
         .ajax({
             type: "DELETE",
@@ -87,7 +87,7 @@ function deletePort(objectId) {
         });
 }
 function loadSiteData() {
-    var requestUrl = url + "/openoapi/sdnobrs/v1/sites";
+    var requestUrl = "/openoapi/sdnobrs/v1/sites";
     $
         .ajax({
             type: "GET",
@@ -103,7 +103,7 @@ function loadSiteData() {
         });
 }
 function loadLinkData() {
-    var requestUrl = url + "/openoapi/sdnobrs/v1/topological-links";
+    var requestUrl = "/openoapi/sdnobrs/v1/topological-links";
     $
         .ajax({
             type: "GET",
@@ -119,7 +119,7 @@ function loadLinkData() {
         });
 }
 function loadNeData() {
-    var requestUrl = url + "/sdnobrs/v1/managed-elements";
+    var requestUrl = "/sdnobrs/v1/managed-elements";
     $
         .ajax({
             type: "GET",
@@ -135,7 +135,7 @@ function loadNeData() {
         });
 }
 function loadPortData() {
-    var requestUrl = url + "/openoapi/sdnobrs/v1/logical-termination-points";
+    var requestUrl = "/openoapi/sdnobrs/v1/logical-termination-points";
     $
         .ajax({
             type: "GET",

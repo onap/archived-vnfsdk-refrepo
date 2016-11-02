@@ -42,36 +42,44 @@
                     //Assigning data to table
                     data: jsondata
                 });
-            $('.table tbody tr').click(function () {
-                $(this).addClass('openoTable_row_selected').siblings().removeClass('openoTable_row_selected');
-          });
+                $('.table tbody tr').click(function () {
+                    $(this).addClass('openoTable_row_selected').siblings().removeClass('openoTable_row_selected');
+                });
 
-            $('#sai').on('sort.bs.table', function () {
-   
+                $('#sai').on('sort.bs.table', function () {
 
-            }).on('click-row.bs.table', function () {
-       
-         
-         $('.table tbody tr').click(function() {
-                    
-                $(this).addClass('openoTable_row_selected').siblings().removeClass('openoTable_row_selected');
-          });
-        
-         });
-    });
 
-    function operateFormatter(value, row, index) {
-        return [
-            '<img class="siteDeleteImg" src="images/delete.png" href="javascript:void(0)" style="cursor: pointer" name="title" title="Delete" />'
-        ].join('');
-    }
-    window.operateEvents = {
-        'click .siteDeleteImg': function(e, value, row, index) {
-            // TO DO ajex call for delete
-            console.log(value, row, index);
-        }
-    };
-    </script>
+                }).on('click-row.bs.table', function () {
+
+
+                    $('.table tbody tr').click(function() {
+
+                        $(this).addClass('openoTable_row_selected').siblings().removeClass('openoTable_row_selected');
+                    });
+
+                });
+
+                var serviceId = getQueryStringValue("serviceId");
+                console.log("overlayvpn - serviceId : " + serviceId);
+            });
+
+            function getQueryStringValue (key) {
+                var params = new URLSearchParams(window.location.search.slice(1));
+                return params.get(key);
+            }
+
+            function operateFormatter(value, row, index) {
+                return [
+                    '<img class="siteDeleteImg" src="images/delete.png" href="javascript:void(0)" style="cursor: pointer" name="title" title="Delete" />'
+                ].join('');
+            }
+            window.operateEvents = {
+                'click .siteDeleteImg': function(e, value, row, index) {
+                    // TO DO ajex call for delete
+                    console.log(value, row, index);
+                }
+            };
+        </script>
     <style>
     .dropdown-menu {
             min-width: 10px;

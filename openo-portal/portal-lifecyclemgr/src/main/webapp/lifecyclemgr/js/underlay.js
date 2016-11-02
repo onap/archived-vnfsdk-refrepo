@@ -21,7 +21,7 @@ $.getJSON("./conf/dataconfig.json", function (jsonData){
 });
 
 function loadUnderlayData() {
-    var requestUrl = url.underlay + "/openoapi/sdnol3vpn/v1/l3vpns";
+    var requestUrl = "/openoapi/sdnol3vpn/v1/l3vpns";
     $
         .ajax({
             type: "GET",
@@ -37,7 +37,7 @@ function loadUnderlayData() {
         });
 }
 function deleteUnderlayData(objectId) {
-    var requestUrl = url.underlay + "/openoapi/sdnol3vpn/v1/l3vpns/" + objectId;
+    var requestUrl = "/openoapi/sdnol3vpn/v1/l3vpns/" + objectId;
     $
         .ajax({
             type: "DELETE",
@@ -53,7 +53,7 @@ function deleteUnderlayData(objectId) {
         });
 }
 function loadOverlayData() {
-    var requestUrl = url.overlay + "/openoapi/sdnooverlayvpn/v1/site2dc-vpn";
+    var requestUrl =  "/openoapi/sdnooverlayvpn/v1/site2dc-vpn";
     $
         .ajax({
             type: "GET",
@@ -91,7 +91,7 @@ $(function () {
         var formData = JSON.stringify($("#underlayForm").serializeObject());
         alert(formData);
         var jsonobj = JSON.parse(formData);
-        var requestUrl = url.underlay + "/openoapi/sdnol3vpn/v1/l3vpns";
+        var requestUrl = "/openoapi/sdnol3vpn/v1/l3vpns";
         $
             .ajax({
                 type: "POST",
