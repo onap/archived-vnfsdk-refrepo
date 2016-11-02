@@ -21,6 +21,12 @@ var templateParameters = {
 
 var lcmHandler = function () {
     this._addOwnEvents();
+    jQuery.i18n.properties({
+        language:'en-US',
+        name:'lcm-template-parameters-i18n',
+        path:'i18n/',
+        mode:'map'
+    });
 };
 
 lcmHandler.prototype = {
@@ -454,13 +460,21 @@ function transformToOptions(items) {
 function generateComponent(inputPara) {
 	var component = '<div class="mT15 form-group" style="margin-left:25px;">' +
             '<label class="col-sm-3 control-label">' +
-            '<span>' + inputPara.showName + '</span>' + generateRequiredLabel(inputPara) +
+            '<span>' + showName(inputPara) + '</span>' + generateRequiredLabel(inputPara) +
             '</label>' +
             '<div class="col-sm-7">' +
             '<input type="text" id="' + inputPara.id + '" name="parameter description" class="form-control" placeholder="' +
-            inputPara.showName + '" value="' + inputPara.value + '" />' +
+            showName(inputPara) + '" value="' + inputPara.value + '" />' +
             '</div></div>';
     return component;
+}
+
+function showName(inputPara) {
+    var name = $.i18n.prop(inputPara.name)
+    if(name.length === 0 || name.slice(0, 1) === '[') {
+        name = inputPara.showName;
+    }
+    return name;
 }
 
 function generateRequiredLabel(parameter) {
@@ -602,7 +616,7 @@ function createServiceInstance(gatewayService, lcmUri, serviceInstance) {
                                 status: responseDesc.status, 
                                 statusDescription: responseDesc.statusDescription, 
                                 errorCode: responseDesc.errorCode
-                            }}});
+                            }});
                     }
                 }
              );
@@ -729,7 +743,7 @@ function deleteNonGsoServiceInstance(gatewayService, lcmUri, instanceId, remove,
                                 }
                             }
                         ).fail(function() {
-                            failFun({status: "fail", statusDescription: "delete service failed.", errorCode: "500"}});
+                            failFun({status: "fail", statusDescription: "delete service failed.", errorCode: "500"});
                         });
                     } else {
                         failFun(responseDesc);
@@ -738,7 +752,7 @@ function deleteNonGsoServiceInstance(gatewayService, lcmUri, instanceId, remove,
             );
         }
     ).fail(function() {
-        failFun({status: "fail", statusDescription: "delete service failed.", errorCode: "500"}});
+        failFun({status: "fail", statusDescription: "delete service failed.", errorCode: "500"});
     });
 }
 
