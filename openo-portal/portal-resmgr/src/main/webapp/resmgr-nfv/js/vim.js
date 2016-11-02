@@ -1,17 +1,22 @@
-/* Copyright 2016, Huawei Technologies Co., Ltd.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+function loadDatacenterData() {
+    var requestUrl = app_url+"/openoapi/resmgr/v1/datacenters";
+    $.ajax({
+        type: "GET",
+        url: requestUrl,
+        contentType: "application/json",
+        success: function (jsonobj) {
+            $.each(jsonobj.datacenters, function (n, v) {
+                printCharts(v.usedCPU, v.totalCPU, v.usedMemory, v.totalMemory, v.usedDisk, v.totalDisk,v.name);
+            });
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            bootbox.alert("Error on getting site data : " + xhr.responseText);
+            printCharts(11, 12, 21, 22, 31, 32,1);
+        }
+    });
+}
+
+
 function loadVimData() {
     var requestUrl = app_url+"/v1/resmanage/vim/vimInfo";
     $.ajax({
@@ -20,22 +25,29 @@ function loadVimData() {
         contentType: "application/json",
         success: function (jsonobj) {
             printCharts(jsonobj.data[0].used.cpu,
-                jsonobj.data[0].total.cpu, jsonobj.data[0].used.memory, jsonobj.data[0].total.memory, jsonobj.data[0].used.disk, jsonobj.data[0].total.disk);
+                jsonobj.data[0].total.cpu, jsonobj.data[0].used.memory, jsonobj.data[0].total.memory, jsonobj.data[0].used.disk, jsonobj.data[0].total.disk,1);
 
         },
         error: function (xhr, ajaxOptions, thrownError) {
             bootbox.alert("Error on getting data (here display the test data) : " + xhr.responseText);
-            printCharts(11, 12, 21, 22, 31, 32);
+            printCharts(11, 12, 21, 22, 31, 32,1);
         }
     });
 }
-function printCharts(v11, v12, v21, v22, v31, v32) {
-    var cpuChart = new Chart($("#cpuChart"), {
+
+function addHtmlTemplate(dc_id){
+	var htmlTemplate= '<div><br/><div>DataCenter[ '+dc_id+' ]</div><div style="width: 33%; float: left; text-align: center; display: inline"> <canvas id="cpuChart_'+dc_id+'"></canvas> <br> <label style="font-size: 14px;">Cpu status</label> </div> <div style="width: 33%; float: left; text-align: center; display: inline"> <canvas id="memoryChart_'+dc_id+'"></canvas> <br> <label style="font-size: 14px;">Memory status</label> </div> <div style="width: 34%; float: left; text-align: center; display: inline"> <canvas id="diskChart_'+dc_id+'"></canvas> <br> <label style="font-size: 14px;">Disk status</label> </div> </div>';
+	$('#chartArea').append(htmlTemplate);
+}
+
+function printCharts(v11, v12, v21, v22, v31, v32,dc_id) {
+	addHtmlTemplate(dc_id);
+    var cpuChart = new Chart($("#cpuChart_"+dc_id+""), {
         type: 'doughnut',
         data: {
             labels: ["used", "available"],
             datasets: [{
-                data: [v11, v12],
+                data: [v11, v12-v11],
                 backgroundColor: ["#FFCE56", "#36A2EB"],
                 hoverBackgroundColor: ["#FFCE56", "#36A2EB"]
             }]
@@ -48,12 +60,12 @@ function printCharts(v11, v12, v21, v22, v31, v32) {
             }
         }
     });
-    var memoryChart = new Chart($("#memoryChart"), {
+    var memoryChart = new Chart($("#memoryChart_"+dc_id+""), {
         type: 'doughnut',
         data: {
             labels: ["used", "available"],
             datasets: [{
-                data: [v21, v22],
+                data: [v21, v22-v21],
                 backgroundColor: ["#FF6384", "#36A2EB"],
                 hoverBackgroundColor: ["#FF6384", "#36A2EB"]
             }]
@@ -67,12 +79,12 @@ function printCharts(v11, v12, v21, v22, v31, v32) {
             }
         }
     });
-    var diskChart = new Chart($("#diskChart"), {
+    var diskChart = new Chart($("#diskChart_"+dc_id+""), {
         type: 'doughnut',
         data: {
             labels: ["used", "available"],
             datasets: [{
-                data: [v31, v32],
+                data: [v31, v32-v31],
                 backgroundColor: ["#FF6384", "green"],
                 hoverBackgroundColor: ["#FF6384", "green"]
             }]
@@ -88,6 +100,6 @@ function printCharts(v11, v12, v21, v22, v31, v32) {
 }
 
 $(function () {
-    loadVimData();
+	loadDatacenterData();
 
 })
