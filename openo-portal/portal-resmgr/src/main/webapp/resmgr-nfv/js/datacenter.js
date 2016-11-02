@@ -1,17 +1,3 @@
-/* Copyright 2016, Huawei Technologies Co., Ltd.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 function hideFirstCol() {
 //	$('table tr').find('th:eq(0)').hide();
 //	$('table tr').find('td:eq(0)').hide();
@@ -112,7 +98,7 @@ function loadHostData() {
 function fillCountryData() {
 
     var requestUrl = app_url+"/openoapi/resmgr/v1/locations/country";
-    var htmlContent = "";
+    var htmlContent = "<option value=''>--select--</option>";
     $.ajax({
         type: "GET",
         url: requestUrl,
@@ -133,7 +119,7 @@ function fillCountryData() {
 
 function fillVimNameData() {
 
-    var requestUrl = app_url+"/openoapi/resmgr/v1/locations/cloudservice";
+    var requestUrl = app_url+"/openoapi/resmgr/v1/datacenters/vims";
     var htmlContent = "";
     $.ajax({
         type: "GET",
@@ -142,7 +128,7 @@ function fillVimNameData() {
         success: function (jsonobj) {
             var str = jsonobj.data.replace('[', '').replace(']', '').split(',')
             $.each(str, function (n, v) {
-                htmlContent += "<option value='" + v + "'>" + v + "</option>";
+                htmlContent += "<option value='" + v.vimId + "'>" + v.name + "</option>";
                 $("#vimName").html(htmlContent);
 
             });
