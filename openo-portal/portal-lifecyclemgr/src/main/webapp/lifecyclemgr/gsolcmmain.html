@@ -73,7 +73,7 @@
                 document.getElementById("tabContainer").style.display = "block";
 
                 //loadIframe("topoFrame", "chartTopo.html?serviceId="+row.serviceId);
-                document.getElementById("topoCont").setAttribute('data', 'chartTopo.html?serviceId='+row.serviceId);
+                document.getElementById("topoContObj").setAttribute('data', 'TopoAccor.html?serviceId='+row.serviceId);
 				document.getElementById('inputcontent').setAttribute('data', 'InputData.html?json='+ JSON.stringify(row));
                 document.getElementById('inputcontentDlg').setAttribute('data', 'InputData.html?json='+ JSON.stringify(row));
            	});
@@ -456,7 +456,10 @@
             <div id="topoCont" style="display:none;">
                 <!--<iframe src="chartTopo.html" name="" style="width:100%" allowTransparency="true" scrolling="no" frameborder="0">
                 </iframe>-->
-                <object data="chartTopo.html" width="100%" height="300" type="text/html">
+                <!--<object data="chartTopo.html" width="100%" height="300" type="text/html">
+
+                </object>-->
+                <object id="topoContObj" data="TopoAccor.html" width="100%" height="300" type="text/html">
 
                 </object>
             </div>
