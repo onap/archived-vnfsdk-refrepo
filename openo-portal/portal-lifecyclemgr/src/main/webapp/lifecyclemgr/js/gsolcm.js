@@ -52,7 +52,7 @@ lcmHandler.prototype = {
             function(response) {
                 $.isLoading('hide');
                 if(response.status === 'success') {
-                    updateTable(response.serviceInstance);
+                    updateTable(response.instance);
                     $('#vmAppDialog').removeClass('in').css('display', 'none');
                 } else {
                     showErrorMessage('Create service failed', response.errorResult);
@@ -504,9 +504,51 @@ function createGsoServiceInstance(gatewayService, serviceInstance, serviceTempla
     })).then(function(response) {
         if(response.result.status === 'success') {
             serviceInstance.serviceId = response.serviceId;
-            defer.resolve({status: 'success', instance: serviceInstance});
+            var gsoServiceUri = '/openoapi/gso/v1/services/' + response.serviceId;
+            var timerDefer = $.Deferred();
+            var timeout = 600000;
+            var fun = function() {
+                if(timeout === 0) {
+                    timerDefer.resolve({
+                        status: 'fail', 
+                        statusDescription: 'Operation is timeout!', 
+                        errorCode: ''
+                    });
+                    return;
+                }
+                timeout = timeout - 1000;
+                $.when(
+                    $.ajax({
+                        type: "GET",
+                        url: gsoServiceUri
+                    })
+                ).then(
+                    function(response) {
+                        if(response.result === 'success' || response.result === 'failed') {
+                            timerDefer.resolve(response);
+                        }
+                    }
+                );
+            };
+            var timerId = setInterval(fun, 1000);
+            $.when(timerDefer).then(
+                function(responseDesc) {
+                    clearInterval(timerId);
+                    if(responseDesc.result === 'success') {
+                        defer.resolve({status: 'success', instance: serviceInstance});
+                    } else {
+                        defer.resolve({
+                            status: 'fail', 
+                            errorResult: {
+                                status: responseDesc.result, 
+                                statusDescription: 'fail to create the service', 
+                                errorCode: ''
+                            }});
+                    }
+                }
+             );
         } else {
-            defer.resolve({status: 'fail', errorResult: response.result});
+            defer.resolve({status: 'fail', errorResult: {status:'fail', statusDescription: 'fail to create the service', errorCode: ''}});
         }
     });
     return defer;
@@ -602,7 +644,7 @@ function createServiceInstance(gatewayService, lcmUri, serviceInstance) {
                                 status: responseDesc.status, 
                                 statusDescription: responseDesc.statusDescription, 
                                 errorCode: responseDesc.errorCode
-                            }}});
+                            }});
                     }
                 }
              );
@@ -655,7 +697,7 @@ function deleteNe(rowId, row) {
                 showErrorMessage("Delete service failed", responseDesc);
             }
             if(serviceType === 'GSO') {
-                deleteGsoServiceInstance(gatewayService, instanceId, remove);
+                deleteGsoServiceInstance(gatewayService, instanceId, remove, failFun);
             } else if (serviceType === 'NFVO') {
                 var nfvoLcmUri = '/openoapi/nslcm/v1';
                 deleteNonGsoServiceInstance(gatewayService, nfvoLcmUri, instanceId, remove, failFun);
@@ -668,13 +710,48 @@ function deleteNe(rowId, row) {
     bootbox.confirm("Do you confirm to delete service?", deleteHandle);
 }
 
-function deleteGsoServiceInstance(gatewayService, instanceId, remove) {
+function deleteGsoServiceInstance(gatewayService, instanceId, remove, failFun) {
     var gsoLcmUri = '/openoapi/gso/v1/services';
     $.when(
         deleteNetworkServiceInstance(gatewayService, gsoLcmUri, instanceId)
     ).then(
-        function() {
-            remove();
+        function(response) {
+            var gsoServiceUri = '/openoapi/gso/v1/services/toposequence/' + instanceId;
+            var timerDefer = $.Deferred();
+            var timeout = 600000;
+            var fun = function() {
+                if(timeout === 0) {
+                    timerDefer.resolve({
+                        status: 'fail', 
+                        statusDescription: 'Operation is timeout!', 
+                        errorCode: ''
+                    });
+                    return;
+                }
+                timeout = timeout - 1000;
+                $.when(
+                    $.ajax({
+                        type: "GET",
+                        url: gsoServiceUri
+                    })
+                ).then(
+                    function(response) {
+                        if(response.length == 0) {
+                            timerDefer.resolve({status:'success', statusDescription: 'success to delete the service', errorCode: ''});
+                        }
+                    }
+                );
+            };
+            var timerId = setInterval(fun, 1000);
+            $.when(timerDefer).then(
+                function(responseDesc) {
+                    clearInterval(timerId);
+                    remove();
+                    if(responseDesc.status != 'success'){
+                    	failFun({status: "fail", statusDescription: "delete service failed.", errorCode: "500"});
+                    }              
+                }
+             );           
         }
     );
 }
@@ -729,7 +806,7 @@ function deleteNonGsoServiceInstance(gatewayService, lcmUri, instanceId, remove,
                                 }
                             }
                         ).fail(function() {
-                            failFun({status: "fail", statusDescription: "delete service failed.", errorCode: "500"}});
+                            failFun({status: "fail", statusDescription: "delete service failed.", errorCode: "500"});
                         });
                     } else {
                         failFun(responseDesc);
@@ -738,7 +815,7 @@ function deleteNonGsoServiceInstance(gatewayService, lcmUri, instanceId, remove,
             );
         }
     ).fail(function() {
-        failFun({status: "fail", statusDescription: "delete service failed.", errorCode: "500"}});
+        failFun({status: "fail", statusDescription: "delete service failed.", errorCode: "500"});
     });
 }
 
