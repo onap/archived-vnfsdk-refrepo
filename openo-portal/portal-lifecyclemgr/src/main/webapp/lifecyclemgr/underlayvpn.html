@@ -105,49 +105,58 @@
                     //Assigning data to table
                     data: {}
                 });
-            $('.table tbody tr').click(function () {
-                $(this).addClass('openoTable_row_selected').siblings().removeClass('openoTable_row_selected');
-          });
+                $('.table tbody tr').click(function () {
+                    $(this).addClass('openoTable_row_selected').siblings().removeClass('openoTable_row_selected');
+                });
 
-            $('#sai').on('sort.bs.table', function () {
-   
+                $('#sai').on('sort.bs.table', function () {
 
-            }).on('click-row.bs.table', function () {
-       
-         
-         $('.table tbody tr').click(function() {
-                    
-                $(this).addClass('openoTable_row_selected').siblings().removeClass('openoTable_row_selected');
-          });
-        
-         });
-    });
 
-    function operateFormatter(value, row, index) {
-        return [
-            '<img class="siteDeleteImg" src="images/delete.png" href="javascript:void(0)" style="cursor: pointer" name="title" title="Delete" />'
-        ].join('');
-    }
-    window.operateEvents = {
-        'click .siteDeleteImg': function(e, value, row, index) {
-            // TO DO ajex call for delete
-            console.log(value, row, index);
-        }
-    };
-    /* function nameFormatter(value, row) {
-		jsonForTP = row.json.data;
-		var name=JSON.stringify(row.json.data);
-	  	var temp = "<a class='underlayNameLink' onclick='getMethod(this)' name='"+ name + "' data-events='operateEventsU'>" + value + "</a>";
-        return temp;
-    }*/
-    function getMethod(obj) {
-        //Update the lower table here
-        $('#underlayTpDataTable').bootstrapTable(
-            //Assigning data to table
-            "append", JSON.parse(obj.name)
-        );
-    }
-    </script>
+                }).on('click-row.bs.table', function () {
+
+
+                    $('.table tbody tr').click(function() {
+
+                        $(this).addClass('openoTable_row_selected').siblings().removeClass('openoTable_row_selected');
+                    });
+
+                });
+
+                var serviceId = getQueryStringValue("serviceId");
+                console.log("underlayvpn - serviceId : " + serviceId);
+
+            });
+
+            function getQueryStringValue (key) {
+                var params = new URLSearchParams(window.location.search.slice(1));
+                return params.get(key);
+            }
+
+            function operateFormatter(value, row, index) {
+                return [
+                    '<img class="siteDeleteImg" src="images/delete.png" href="javascript:void(0)" style="cursor: pointer" name="title" title="Delete" />'
+                ].join('');
+            }
+            window.operateEvents = {
+                'click .siteDeleteImg': function(e, value, row, index) {
+                    // TO DO ajex call for delete
+                    console.log(value, row, index);
+                }
+            };
+            /* function nameFormatter(value, row) {
+             jsonForTP = row.json.data;
+             var name=JSON.stringify(row.json.data);
+             var temp = "<a class='underlayNameLink' onclick='getMethod(this)' name='"+ name + "' data-events='operateEventsU'>" + value + "</a>";
+             return temp;
+             }*/
+            function getMethod(obj) {
+                //Update the lower table here
+                $('#underlayTpDataTable').bootstrapTable(
+                        //Assigning data to table
+                        "append", JSON.parse(obj.name)
+                );
+            }
+        </script>
 
 </head>
 

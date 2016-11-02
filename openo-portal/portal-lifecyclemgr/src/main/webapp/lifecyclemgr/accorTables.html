@@ -54,6 +54,11 @@
 
                 }
             }
+
+            $("#overlayContObj").attr('data', 'overlayvpn.html?serviceId='+serviceId);
+            $("#underlayContObj").attr('data', 'underlayvpn.html?serviceId='+serviceId);
+
+            $("#nfvoContObj").attr('data', 'lcm_detail_nfvo_nodesinfo.html?serviceId='+serviceId);
         });
 
         function fnOver() {
@@ -81,6 +86,7 @@
             el.classList.add('selected');
             switch (panelType) {
                 case "sdno":
+                    $("#nfvo_dashboard").hide();
                     if(el.id == "overLink") {
                         $("#dashboard").show();
                         $("#overDiv").show();
@@ -97,11 +103,13 @@
                     break;
                 case "gso":
                     $("#dashboard").hide();
+                    $("#nfvo_dashboard").hide();
                     $("#overDiv").hide();
                     $("#underDiv").hide();
                     break;
                 case "nfvo":
                     $("#dashboard").hide();
+                    $("#nfvo_dashboard").show();
                     $("#overDiv").hide();
                     $("#underDiv").hide();
                     break;
@@ -138,7 +146,7 @@
                 content += '<li onClick="fnLoadTblData(this, \''+type+'\');" id="linkgso" class="list-group-item"><span class="glyphicon glyphicon-pencil text-primary"></span><span>OPEN-O</span></li>';
             }
             else if(type == "nfvo"){
-                content += '<li onClick="fnLoadTblData(this, \''+type+'\');" id="linknfvo" class="list-group-item"><span class="glyphicon glyphicon-pencil text-primary"></span><span>ZTE</span></li>';
+                //content += '<li onClick="fnLoadTblData(this, \''+type+'\');" id="linknfvo" class="list-group-item"><span class="glyphicon glyphicon-pencil text-primary"></span><span>ZTE</span></li>';
             }
             content += '</ul></div></div>';
             return content;
@@ -268,26 +276,47 @@
 
             </div>
         </div>
-        <div class="col-sm-3" id="dashboard" style="width:82%; padding: 0;">
-            <div class="panel panel-default">
+        <div class="col-sm-3" style="width:82%; padding: 0;">
+            <div id="dashboard" class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">SDNO-VPN Manager</h3>
                 </div>
                 <div class="panel-body" style="height: 250px; overflow: auto; padding: 0; background-color: #fafafa">
 
                     <div id="overDiv">
-                        <iframe src="overlayvpn.html" style="width:100%;height:450px;" name="targetframe"
+                        <!--<iframe src="overlayvpn.html" style="width:100%;height:450px;" name="targetframe"
                                 allowTransparency="true" scrolling="no" frameborder="0">
-                        </iframe>
+                        </iframe>-->
+                        <object id="overlayContObj" data="overlayvpn.html" width="100%" height="450px" type="text/html">
+
+                        </object>
                     </div>
                     <div id="underDiv">
-                        <iframe src="underlayvpn.html" style="width:100%;height:500px;" name="targetframe"
+                        <!--<iframe src="underlayvpn.html" style="width:100%;height:500px;" name="targetframe"
                                 allowTransparency="true" scrolling="no" frameborder="0">
-                        </iframe>
+                        </iframe>-->
+                        <object id="underlayContObj" data="underlayvpn.html" width="100%" height="450px" type="text/html">
+
+                        </object>
                     </div>
                 </div>
                 </br>
             </div>
+
+            <div id="nfvo_dashboard" class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">NFVO</h3>
+                </div>
+                <div class="panel-body" style="height: 250px; overflow: auto; padding: 0; background-color: #fafafa">
+                    <div id="nodesInfo">
+                        <object id="nfvoContObj" data="lcm_detail_nfvo_nodesinfo.html" width="100%" height="450px" type="text/html">
+
+                        </object>
+                    </div>
+                </div>
+                </br>
+            </div>
+
         </div>
     </div>
 </div>
