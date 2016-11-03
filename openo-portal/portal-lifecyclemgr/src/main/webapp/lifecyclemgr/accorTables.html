@@ -40,7 +40,7 @@
 			
 			var jsonData = [];
 			var object = {};
-			debugger;
+
 			if("SSAR" === serviceType)
 			{
 				object.nodeType  = "sdn"
@@ -57,9 +57,9 @@
 			
             
 			
-			//TODO check for the 
+			//TODO check for the type and update the tab
             console.log("jsonData length: " + jsonData.length);
-            for (i = 0; i < jsonData.length; i++) {
+       /*     for (i = 0; i < jsonData.length; i++) {
                // console.log("jsonData Name: " + jsonData[i].nodeType);
                 if (jsonData[i].nodeType.indexOf('sdn') != -1) {
                     //$("#sdnoLink").text(jsonData[i].name.toUpperCase());
@@ -77,7 +77,7 @@
                 else {
 
                 }
-            }
+            } */
 
             $("#overlayContObj").attr('data', 'overlayvpn.html?serviceId='+serviceId);
             $("#underlayContObj").attr('data', 'underlayvpn.html?serviceId='+serviceId);
