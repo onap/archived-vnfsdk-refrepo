@@ -483,7 +483,7 @@ function generateComponent(inputPara) {
 }
 
 function showName(inputPara) {
-    var name = $.i18n.prop(inputPara.i18nKey)
+    var name = $.i18n.prop(inputPara.name)
     if(name.length === 0 || name.slice(0, 1) === '[') {
         name = inputPara.showName;
     }
