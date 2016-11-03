@@ -533,7 +533,7 @@ function createGsoServiceInstance(gatewayService, serviceInstance, serviceTempla
             serviceInstance.serviceId = response.serviceId;
             var gsoServiceUri = '/openoapi/gso/v1/services/' + response.serviceId;
             var timerDefer = $.Deferred();
-            var timeout = 600000;
+            var timeout = 3600000;
             var fun = function() {
                 if(timeout === 0) {
                     timerDefer.resolve({
@@ -633,7 +633,7 @@ function createServiceInstance(gatewayService, lcmUri, serviceInstance) {
             var jobId = response.serviceId;
             var jobStatusUri = lcmUri + '/jobs/' + jobId;
             var timerDefer = $.Deferred();
-            var timeout = 600000;
+            var timeout = 3600000;
             var fun = function() {
                 if(timeout === 0) {
                     timerDefer.resolve({
@@ -745,7 +745,7 @@ function deleteGsoServiceInstance(gatewayService, instanceId, remove, failFun) {
         function(response) {
             var gsoServiceUri = '/openoapi/gso/v1/services/toposequence/' + instanceId;
             var timerDefer = $.Deferred();
-            var timeout = 600000;
+            var timeout = 3600000;
             var fun = function() {
                 if(timeout === 0) {
                     timerDefer.resolve({
@@ -792,7 +792,7 @@ function deleteNonGsoServiceInstance(gatewayService, lcmUri, instanceId, remove,
             var jobId = response.jobId;
             var jobStatusUri = lcmUri + '/jobs/' + jobId;
             var timerDefer = $.Deferred();
-            var timeout = 600000;
+            var timeout = 3600000;
             var fun = function() {
                 if(timeout === 0) {
                     timerDefer.resolve({
