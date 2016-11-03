@@ -7,5 +7,5 @@
 	"ConnectTimeout":"1000",
 	"thread":"10",
 	"idletimeout":"500000",
-	"timeout":"10000"
+	"timeout":"600000"
 }
