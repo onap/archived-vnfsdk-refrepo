@@ -352,7 +352,7 @@ function fetchNfvoTemplateInputParameters(templateId, template) {
 	    		description: 'Location',
 	    		required: 'true',
                 showName: 'Location',
-                input.i18nKey: 'Location'
+                i18nKey: 'Location'
 	    	});
             inputParas.push({
                 name: 'sdncontroller',
@@ -360,7 +360,7 @@ function fetchNfvoTemplateInputParameters(templateId, template) {
                 description: 'SDN Controller',
                 required: 'true',
                 showName: 'SDN Controller',
-                input.i18nKey: 'SDN Controller'
+                i18nKey: 'SDN Controller'
             });
 	    	templateParameters = translateToTemplateParameters(inputParas, vims, sdnControllers);
             defer.resolve(templateParameters);	
