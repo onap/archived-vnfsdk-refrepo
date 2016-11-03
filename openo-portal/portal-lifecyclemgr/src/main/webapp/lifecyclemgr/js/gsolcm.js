@@ -148,7 +148,7 @@ function fetchServiceTemplateBy(templateId) {
             template.name = response.templateName;
             template.gsarId = response.csarId;
             template.id = response.id;
-            template.nodeType = response.substitution.nodeType;
+            template.nodeType = '';
             return fetchCsar(template.gsarId);
         }
     ).then(
