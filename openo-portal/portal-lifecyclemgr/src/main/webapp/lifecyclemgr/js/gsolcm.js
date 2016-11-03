@@ -21,6 +21,12 @@ var templateParameters = {
 
 var lcmHandler = function () {
     this._addOwnEvents();
+    jQuery.i18n.properties({
+        language:'en-US',
+        name:'lcm-template-parameters-i18n',
+        path:'i18n/',
+        mode:'map'
+    });
 };
 
 lcmHandler.prototype = {
@@ -454,13 +460,21 @@ function transformToOptions(items) {
 function generateComponent(inputPara) {
 	var component = '<div class="mT15 form-group" style="margin-left:25px;">' +
             '<label class="col-sm-3 control-label">' +
-            '<span>' + inputPara.showName + '</span>' + generateRequiredLabel(inputPara) +
+            '<span>' + showName(inputPara) + '</span>' + generateRequiredLabel(inputPara) +
             '</label>' +
             '<div class="col-sm-7">' +
             '<input type="text" id="' + inputPara.id + '" name="parameter description" class="form-control" placeholder="' +
-            inputPara.showName + '" value="' + inputPara.value + '" />' +
+            showName(inputPara) + '" value="' + inputPara.value + '" />' +
             '</div></div>';
     return component;
+}
+
+function showName(inputPara) {
+    var name = $.i18n.prop(inputPara.name)
+    if(name.length === 0 || name.slice(0, 1) === '[') {
+        name = inputPara.showName;
+    }
+    return name;
 }
 
 function generateRequiredLabel(parameter) {
@@ -701,7 +715,7 @@ function deleteNe(rowId, row) {
             } else if (serviceType === 'NFVO') {
                 var nfvoLcmUri = '/openoapi/nslcm/v1';
                 deleteNonGsoServiceInstance(gatewayService, nfvoLcmUri, instanceId, remove, failFun);
-            } else if (serviceType === 'SDNO') {
+            } else if (serviceType === 'SDNO' || serviceType === 'SSAR') {
                 var sdnoLcmUri = '/openoapi/sdnonslcm/v1';
                 deleteNonGsoServiceInstance(gatewayService, sdnoLcmUri, instanceId, remove, failFun);
             }

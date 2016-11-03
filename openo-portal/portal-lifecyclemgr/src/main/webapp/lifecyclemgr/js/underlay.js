@@ -20,24 +20,26 @@ $.getJSON("./conf/dataconfig.json", function (jsonData){
     console.log("URL = " + JSON.stringify(url));
 });
 
-function loadUnderlayData() {
-    var requestUrl = url.underlay + "/openoapi/sdnol3vpn/v1/l3vpns";
+function loadUnderlayData(serviceId) {
+    var requestUrl = "/openoapi/sdnol3vpn/v1/l3vpns/" + serviceId;
+	var returnObj;
     $
         .ajax({
             type: "GET",
             url: requestUrl,
+			async: false,
             contentType: "application/json",
             success: function (jsonobj) {
-                alert("loading underlay data");
-                //TODO: Update the table
+                returnObj = jsonobj;
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 //alert("Error on getting underlay data : " + xhr.responseText);
             }
         });
+    return returnObj;
 }
 function deleteUnderlayData(objectId) {
-    var requestUrl = url.underlay + "/openoapi/sdnol3vpn/v1/l3vpns/" + objectId;
+    var requestUrl = "/openoapi/sdnol3vpn/v1/l3vpns/" + objectId;
     $
         .ajax({
             type: "DELETE",
@@ -52,21 +54,23 @@ function deleteUnderlayData(objectId) {
             }
         });
 }
-function loadOverlayData() {
-    var requestUrl = url.overlay + "/openoapi/sdnooverlayvpn/v1/site2dc-vpn";
+function loadOverlayData(serviceId) {
+    var requestUrl =  "/openoapi/sdnooverlay/v1/site2dc-vpn/" + serviceId;
+	var returnObj;
     $
         .ajax({
             type: "GET",
             url: requestUrl,
+			async: false,
             contentType: "application/json",
             success: function (jsonobj) {
-                alert("loading Overlay data...");
-                //TODO: Update the table
+                returnObj = jsonobj;
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 //alert("Error on getting Overlayvpn data : " + xhr.responseText);
             }
         });
+	return returnObj;
 }
 function refressTpDataTable(overlayTable, TpTable) {
     alert("refesssing Tp data table");
@@ -91,7 +95,7 @@ $(function () {
         var formData = JSON.stringify($("#underlayForm").serializeObject());
         alert(formData);
         var jsonobj = JSON.parse(formData);
-        var requestUrl = url.underlay + "/openoapi/sdnol3vpn/v1/l3vpns";
+        var requestUrl = "/openoapi/sdnol3vpn/v1/l3vpns";
         $
             .ajax({
                 type: "POST",

@@ -60,10 +60,24 @@
     </style>
     <script type="text/javascript">
     $(document).ready(function() {
-        var jsondata = loadUnderlayData();
-        $('#tbl_overlay').bootstrapTable({
+        //var jsondata = loadUnderlayData();
+		
+        var params = new URLSearchParams(window.location.search.slice(1));
+        debugger;
+        var jsonData = JSON.parse((params.get("jsondata")));
+		var tblData= [];
+		jsonData.accessPointList.forEach(function(accessPoint){
+		    tblData.push({
+			    tname:accessPoint.name,
+				pname:'',
+				vlan:accessPoint.typeSpecList[0].ethernetTpSpec.dot1qVlanList,
+				site:'',
+				ip:accessPoint.typeSpecList[0].ipTpSpec.masterIp				
+			});
+		})
+        $('#sai').bootstrapTable({
             //Assigning data to table
-            data: jsondata
+            data: tblData
         });
         $('#underlayTpDataTable').bootstrapTable({
             //Assigning data to table

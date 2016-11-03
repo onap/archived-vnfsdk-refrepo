@@ -27,28 +27,52 @@
 
     <script>
         $(document).ready(function () {
-            $("#overDiv").show();
+		
+			$("#dashboard").hide();
+			$("#nfvo_dashboard").hide()
+            $("#overDiv").hide();
             $("#underDiv").hide();
 
             var serviceId = getQueryStringValue("serviceId");
+			 var serviceType = getQueryStringValue("serviceType");
+			
             console.log("serviceId : " + serviceId);
+			
+			var jsonData = [];
+			var object = {};
 
-            var jsonData = loadServiceDetails(serviceId);
+			if("SSAR" === serviceType || "SDNO" === serviceType)  
+			{
+				object.nodeType  = "sdno"
+				jsonData[0] = object;
+			}
+			else if("NSAR" == serviceType || "NFAR" == serviceType || "NFVO" == serviceType)
+			{
+				object.nodeType  = "nfvo";
+				jsonData[0] = object;
+			}
+			else{
+				jsonData = loadServiceDetails(serviceId);
+			}
+			
+            
+			
+			//TODO check for the 
             console.log("jsonData length: " + jsonData.length);
             for (i = 0; i < jsonData.length; i++) {
-                console.log("jsonData Name: " + jsonData[i].name);
-                if (jsonData[i].name == "sdno") {
+                console.log("jsonData Name: " + jsonData[i].nodeType);
+                if (jsonData[i].nodeType.indexOf('sdn') != -1) {
                     //$("#sdnoLink").text(jsonData[i].name.toUpperCase());
                     console.log("Adding Accordian to SDNO");
-                    $("#accordion").append(addAccordionData("sdno", jsonData[i].name.toUpperCase()));
+                    $("#accordion").append(addAccordionData("sdno", "SDNO"));
                 }
-                else if (jsonData[i].name == "gso") {
+                else if (jsonData[i].nodeType.indexOf('gso') != -1) {
                     console.log("Adding Accordian to GSO");
-                    $("#accordion").append(addAccordionData("gso", jsonData[i].name.toUpperCase()));
+                    $("#accordion").append(addAccordionData("gso", "GSO"));
                 }
-                else if (jsonData[i].name == "nfvo") {
+                else if (jsonData[i].nodeType.indexOf('nfv') != -1) {
                     console.log("Adding Accordian to NFVO");
-                    $("#accordion").append(addAccordionData("nfvo", jsonData[i].name.toUpperCase()));
+                    $("#accordion").append(addAccordionData("nfvo", "NFVO"));
                 }
                 else {
 
@@ -146,7 +170,7 @@
                 content += '<li onClick="fnLoadTblData(this, \''+type+'\');" id="linkgso" class="list-group-item"><span class="glyphicon glyphicon-pencil text-primary"></span><span>OPEN-O</span></li>';
             }
             else if(type == "nfvo"){
-                //content += '<li onClick="fnLoadTblData(this, \''+type+'\');" id="linknfvo" class="list-group-item"><span class="glyphicon glyphicon-pencil text-primary"></span><span>ZTE</span></li>';
+              //  content += '<li onClick="fnLoadTblData(this, \''+type+'\');" id="linknfvo" class="list-group-item"><span class="glyphicon glyphicon-pencil text-primary"></span><span>ZTE</span></li>';
             }
             content += '</ul></div></div>';
             return content;
@@ -316,6 +340,7 @@
                 </div>
                 </br>
             </div>
+
         </div>
     </div>
 </div>

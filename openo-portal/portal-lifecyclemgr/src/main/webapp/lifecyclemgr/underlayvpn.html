@@ -95,11 +95,18 @@
         <script type="text/javascript">
             $(document).ready(function () {
 
-
-                var jsondata = loadUnderlayData();
-                $('#tbl_overlay').bootstrapTable({
+				var params = new URLSearchParams(window.location.search.slice(1));
+				var serviceId = params.get("serviceId");
+                var jsondata = loadUnderlayData(serviceId);
+				var tabData = [];
+				var tableRow = {};
+				tableRow.name = jsondata.name;
+				tableRow.desc= jsondata.description;
+				tableRow.state= jsondata.operStatus;//TODO
+				tabData[0] = tableRow;
+                $('#sai').bootstrapTable({
                     //Assigning data to table
-                    data: jsondata
+                    data: tabData
                 });
                 $('#underlayTpDataTable').bootstrapTable({
                     //Assigning data to table
@@ -121,10 +128,8 @@
                     });
 
                 });
-
-                var serviceId = getQueryStringValue("serviceId");
                 console.log("underlayvpn - serviceId : " + serviceId);
-
+                 $("#underlay_tp").attr('data', 'UnderLay_TP.html?jsondata='+JSON.stringify(jsondata));
             });
 
             function getQueryStringValue (key) {
@@ -270,8 +275,9 @@
     </div>
 
     <div id="tpDiv">
-        <iframe src="UnderLay_TP.html" style="width:100%;height:450px;" name="targetframe" allowTransparency="true" scrolling="no" frameborder="0">
-        </iframe>
+	     <object id="underlay_tp" data="UnderLay_TP.html" width="100%" height="450" type="text/html"></object>
+        <!--<iframe src="UnderLay_TP.html" style="width:100%;height:450px;" name="targetframe" allowTransparency="true" scrolling="no" frameborder="0">
+        </iframe>-->
     </div>
     <div id="filterTpLogicalType_select_popupcontainer" class="openo openo-select-popup-container openo-hide"
          style="width: 155px; max-height: 130px; left: 628px; top: 104px; z-index: 1761;">

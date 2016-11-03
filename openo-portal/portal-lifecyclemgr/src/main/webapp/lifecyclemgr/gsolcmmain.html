@@ -30,6 +30,8 @@
     <script type="text/javascript" src="js/bootstrap-table.min.js"></script>
     <script type="text/javascript" src="js/gsolcm.js"></script>
     <script type="text/javascript" src="../common/thirdparty/bootbox/bootbox.min.js"></script>
+    <script type="text/javascript" src="../common/thirdparty/jquery.i18n/jquery.i18n.properties-1.0.9.js"></script>
+    <script type="text/javascript" src="js/jquery.bootstrap-growl.min.js"></script>
     <script type="text/javascript" src="js/jquery.isloading.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.12.1.min.js"></script>
     <link href="css/jquery-ui-1.12.1.min.css" rel="stylesheet" />
@@ -64,7 +66,9 @@
             $("#inpContMod").hide();
             
             $('#sai').bootstrapTable({}) .on('click-row.bs.table', function (e, row, $element) {
-                var newURL = "accorTables.html?serviceId="+row.serviceId;
+
+                var newURL = "accorTables.html?serviceId="+row.serviceId + "&serviceType="+row.serviceType;
+			  //  var newURL = "accorTables.html?serviceId="+row.serviceId ;
                 console.log("URL: "+newURL);
                 document.getElementById("tabContainer").style.display = "none";
                 document.getElementById("detailConObj").setAttribute('data', newURL);
