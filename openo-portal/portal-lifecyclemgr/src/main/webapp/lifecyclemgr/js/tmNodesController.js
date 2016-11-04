@@ -35,7 +35,7 @@ var vm = avalon.define({
         }
     },
     $restUrl: {
-        queryNodeInstanceUrl: "/openoapi/nslcm/v1/ns/"
+        queryNodeInstanceUrl: "/openoapi/nslcm/v1.0/ns/"
     },
     $init: function () {
         vm.$initInstanceData();
@@ -147,7 +147,7 @@ var vm = avalon.define({
             ],
             "aaData": tableData
         });
-    },
+    };
 
 //nodes list table
 nodesList :{
@@ -186,7 +186,7 @@ var initParam = function () {
         var instanceId = params[0].substring(params[0].indexOf('=') + 1);
 
         vm.instanceId = instanceId;
-        vm.$restUrl.queryNodeInstanceUrl = vm.$restUrl.queryNodeInstanceUrl + instanceId;
+        vm.$restUrl.queryNodeInstanceUrl = commonUtil.format(vm.$restUrl.queryNodeInstanceUrl, instanceId);
         vm.$init();
     }
 };

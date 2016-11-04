@@ -20,23 +20,21 @@ $.getJSON("./conf/dataconfig.json", function (jsonData){
     console.log("URL = " + JSON.stringify(url));
 });
 
-function loadUnderlayData(serviceId) {
-    var requestUrl = "/openoapi/sdnol3vpn/v1/l3vpns/" + serviceId;
-	var returnObj;
+function loadUnderlayData() {
+    var requestUrl = "/openoapi/sdnol3vpn/v1/l3vpns";
     $
         .ajax({
             type: "GET",
             url: requestUrl,
-			async: false,
             contentType: "application/json",
             success: function (jsonobj) {
-                returnObj = jsonobj;
+                alert("loading underlay data");
+                //TODO: Update the table
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 //alert("Error on getting underlay data : " + xhr.responseText);
             }
         });
-    return returnObj;
 }
 function deleteUnderlayData(objectId) {
     var requestUrl = "/openoapi/sdnol3vpn/v1/l3vpns/" + objectId;
@@ -54,23 +52,21 @@ function deleteUnderlayData(objectId) {
             }
         });
 }
-function loadOverlayData(serviceId) {
-    var requestUrl =  "/openoapi/sdnooverlay/v1/site2dc-vpn/" + serviceId;
-	var returnObj;
+function loadOverlayData() {
+    var requestUrl =  "/openoapi/sdnooverlayvpn/v1/site2dc-vpn";
     $
         .ajax({
             type: "GET",
             url: requestUrl,
-			async: false,
             contentType: "application/json",
             success: function (jsonobj) {
-                returnObj = jsonobj;
+                alert("loading Overlay data...");
+                //TODO: Update the table
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 //alert("Error on getting Overlayvpn data : " + xhr.responseText);
             }
         });
-	return returnObj;
 }
 function refressTpDataTable(overlayTable, TpTable) {
     alert("refesssing Tp data table");

@@ -41,14 +41,14 @@
 			var jsonData = [];
 			var object = {};
 
-			if("SSAR" === serviceType || "SDNO" === serviceType)  
+			if("SSAR" === serviceType)
 			{
-				object.nodeType  = "sdno"
+				object.nodeType  = "sdn"
 				jsonData[0] = object;
 			}
 			else if("NSAR" == serviceType || "NFAR" == serviceType || "NFVO" == serviceType)
 			{
-				object.nodeType  = "nfvo";
+				object.nodeType  = "nfv";
 				jsonData[0] = object;
 			}
 			else{
@@ -57,10 +57,10 @@
 			
             
 			
-			//TODO check for the 
+			//TODO check for the type and update the tab
             console.log("jsonData length: " + jsonData.length);
-            for (i = 0; i < jsonData.length; i++) {
-                console.log("jsonData Name: " + jsonData[i].nodeType);
+       /*     for (i = 0; i < jsonData.length; i++) {
+               // console.log("jsonData Name: " + jsonData[i].nodeType);
                 if (jsonData[i].nodeType.indexOf('sdn') != -1) {
                     //$("#sdnoLink").text(jsonData[i].name.toUpperCase());
                     console.log("Adding Accordian to SDNO");
@@ -77,7 +77,7 @@
                 else {
 
                 }
-            }
+            } */
 
             $("#overlayContObj").attr('data', 'overlayvpn.html?serviceId='+serviceId);
             $("#underlayContObj").attr('data', 'underlayvpn.html?serviceId='+serviceId);
@@ -170,7 +170,7 @@
                 content += '<li onClick="fnLoadTblData(this, \''+type+'\');" id="linkgso" class="list-group-item"><span class="glyphicon glyphicon-pencil text-primary"></span><span>OPEN-O</span></li>';
             }
             else if(type == "nfvo"){
-              //  content += '<li onClick="fnLoadTblData(this, \''+type+'\');" id="linknfvo" class="list-group-item"><span class="glyphicon glyphicon-pencil text-primary"></span><span>ZTE</span></li>';
+                //content += '<li onClick="fnLoadTblData(this, \''+type+'\');" id="linknfvo" class="list-group-item"><span class="glyphicon glyphicon-pencil text-primary"></span><span>ZTE</span></li>';
             }
             content += '</ul></div></div>';
             return content;

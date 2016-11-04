@@ -25,17 +25,20 @@
         <link href="css/bootstrap.min.css" rel="stylesheet"/>
         <link href="css/VMMain.css" rel="stylesheet"/>
         <link href="css/bootstrap-table.min.css" rel="stylesheet"/>
+
         <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
-        <script type="text/javascript" src="../common/thirdparty/jquery.i18n/jquery.i18n.properties-1.0.9.js"></script>
+		<script type="text/javascript" src="../common/thirdparty/jquery.i18n/jquery.i18n.properties-1.0.9.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/rest.js"></script>
-        <script type="text/javascript" src="js/gsolcm.js"></script>
+		<script type="text/javascript" src="js/gsolcm.js"></script>
         <script type="text/javascript" src="js/bootstrap-table.min.js"></script>
        <script>
             $(document).ready(function () {
-                new lcmHandler();
+			    new lcmHandler();
                 $('[data-toggle="tooltip"]').tooltip();
+
                 var params = new URLSearchParams(window.location.search.slice(1));
+
                 var jsonData = JSON.parse((params.get("json")));
                 if (jsonData != null) {
                     $("body").empty();
@@ -57,12 +60,12 @@
 							if(sdnControllerObj != undefined){
 								paramValue = sdnControllerObj.name;
 							}
-						}	
+						}		
                         else{
-                             var nameObj = {name:key,showName:key};
-                             name = showName(nameObj);
-                        }                                                     
-                        $("body").append('<div class="mT15 form-group row" style="margin-top:35px;margin-left:25%"><div class="col-sm-6" align="right"><label class="control-label"><span style="font-size:16px;">'+ name + ':</span></label></div><div class="col-sm-6"><input  type="text" name="" maxlength="256" style="margin-left:10px;width:250px;" data-toggle="tooltip" data-placement="top" title="'+ paramValue + '" value="'+ paramValue + '" readonly disabled/></div></div>');
+						    var nameObj = {name:key,showName:key};
+							name = showName(nameObj);
+                        }						
+                        $("body").append('<div class="mT15 form-group row" style="margin-top:35px;margin-left:15%"><div class="col-sm-5" align="left"><label class="control-label"><span style="font-size:16px;">'+ name + '</span></label></div><div class="col-sm-1" align="left"><span style="font-size:16px;">:</span></div><div class="col-sm-6"><input  type="text" name="" maxlength="256" style="margin-left:10px;width:250px;padding-left: 5px" data-toggle="tooltip" data-placement="top" title="'+ paramValue + '" value="'+ paramValue + '" readonly disabled/></div></div>');
                     }
                 }
 
@@ -71,7 +74,7 @@
 
         <style>
             html, body {
-                width: 800px;
+                width: 99%;/*800px;*/
             }
         </style>
     </head>

@@ -41,7 +41,7 @@
             new lcmHandler();
 
             $('.modal-dialog').draggable();
-            $("#detailCont").show();
+           // $("#detailCont").show();
             var jsondata = loadGetServiceData();
 			
 			$.each(jsondata,function(k,v){
@@ -60,23 +60,23 @@
                 $(this).addClass('current').siblings().removeClass('current');
             });
             $("#topoCont").hide();
-            $("#inpCont").hide();
+            $("#inpCont").show();
             $("#topoContMod").hide();
-            $("#detailContMod").show();
-            $("#inpContMod").hide();
+            $("#detailContMod").hide();
+            $("#inpContMod").show();
             
             $('#sai').bootstrapTable({}) .on('click-row.bs.table', function (e, row, $element) {
-
                 var newURL = "accorTables.html?serviceId="+row.serviceId + "&serviceType="+row.serviceType;
 			  //  var newURL = "accorTables.html?serviceId="+row.serviceId ;
                 console.log("URL: "+newURL);
                 document.getElementById("tabContainer").style.display = "none";
                 document.getElementById("detailConObj").setAttribute('data', newURL);
-                document.getElementById("detailContMod").setAttribute('data', newURL);
+                document.getElementById("detailContDlg").setAttribute('data', newURL);
                 document.getElementById("tabContainer").style.display = "block";
 
                 //loadIframe("topoFrame", "chartTopo.html?serviceId="+row.serviceId);
                 document.getElementById("topoContObj").setAttribute('data', 'TopoAccor.html?serviceId='+row.serviceId);
+                document.getElementById("topoContDlg").setAttribute('data', 'TopoAccor.html?serviceId='+row.serviceId);
 				document.getElementById('inputcontent').setAttribute('data', 'InputData.html?json='+ JSON.stringify(row));
                 document.getElementById('inputcontentDlg').setAttribute('data', 'InputData.html?json='+ JSON.stringify(row));
            	});
@@ -360,7 +360,12 @@
 
                     <div class="detail" style="margin:10px;border-radius:5px;">
                         <div class="detail-top" style="margin-top:10px;border-radius:5px;">
-                            <ul class="nav nav-tabs nav-justified vmapp-margin">
+                         <span><h2 style="margin-left: 1%">Detailed Info</h2></span>
+						
+
+						
+						
+                        <!--    <ul class="nav nav-tabs nav-justified vmapp-margin">
                                 <li class="active basic">
                                     <a href="#" onClick="showDetContMod();" id="" data-toggle="tab">
                                         <span>Detail Info</span>
@@ -376,15 +381,15 @@
                                         <span>Input Data</span>
                                     </a>
                                 </li>
-                            </ul>
+                            </ul> -->
 
                             <div id="detailContMod">
-                                <object data="accorTables.html" width="100%" height="300" type="text/html">
+                                <object id="detailContDlg" data="accorTables.html" width="100%" height="300" type="text/html">
 
                                 </object>
                             </div>
                             <div id="topoContMod" style="display:none;">
-                                <object data="chartTopo.html" width="100%" height="300" type="text/html">
+                                <object id="topoContDlg" data="TopoAccor.html" width="100%" height="300" type="text/html">
 
                                 </object>
                                 <!--<iframe id="topoFrame" src="chartTopo.html" name="" style="width:100%; height:400px;" allowTransparency="true" scrolling="no" frameborder="0">
@@ -426,7 +431,14 @@
 
     <div id="tabContainer" class="detail" style="border-radius:5px;display: none">
         <div class="detail-top" style="margin-top:2px;border-radius:5px;">
-            <ul class="nav nav-tabs nav-justified vmapp-margin">
+
+            <span><h2 style="margin-left: 1%">Detailed Info</h2></span>
+
+            <div id="inpCont" style="display:none;">
+                <object id="inputcontent" src="InputData.html" width="100%" height="300" type="text/html">
+                </object>
+            </div>
+         <!--   <ul class="nav nav-tabs nav-justified vmapp-margin">
 
                 <li class="active basic">
                     <a href="#" onClick="showDetCont();" id="detHov" data-toggle="tab">
@@ -446,7 +458,7 @@
                     </a>
                 </li>
 
-            </ul>
+            </ul> -->
         </div>
 
         <div style="border-radius:5px;">

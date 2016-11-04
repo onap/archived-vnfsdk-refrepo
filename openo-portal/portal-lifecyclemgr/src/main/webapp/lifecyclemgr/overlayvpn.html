@@ -36,56 +36,50 @@
         <script type="text/javascript">
             $(document).ready(function () {
                 var jsondata = [];
-				var params = new URLSearchParams(window.location.search.slice(1));
-				var serviceId = params.get("serviceId");
-                jsondata = loadOverlayData(serviceId);
-				var tabData = [];
-				
-				var tableRow = {};
-				tableRow.desc = jsondata.description;
-				tableRow.name= jsondata.name;
-				tableRow.thinCpe= jsondata.site.cidr;//TODO
-				tableRow.port = "";
-				//tableRow.dcName=jsondata.vpc.name;
-				tableRow.vpc = jsondata.vpc.name;
-				tableRow.vpcCidr= jsondata.vpc.site.cidr;
-				tabData[0]=tableRow;
-
+                jsondata = loadOverlayData();
 
                 $('#sai').bootstrapTable({
                     //Assigning data to table
-                    data: tabData
+                    data: jsondata
                 });
-            $('.table tbody tr').click(function () {
-                $(this).addClass('openoTable_row_selected').siblings().removeClass('openoTable_row_selected');
-          });
+                $('.table tbody tr').click(function () {
+                    $(this).addClass('openoTable_row_selected').siblings().removeClass('openoTable_row_selected');
+                });
 
-            $('#sai').on('sort.bs.table', function () {
-   
+                $('#sai').on('sort.bs.table', function () {
 
-            }).on('click-row.bs.table', function () {
-       
-         
-         $('.table tbody tr').click(function() {
-                    
-                $(this).addClass('openoTable_row_selected').siblings().removeClass('openoTable_row_selected');
-          });
-        
-         });
-    });
 
-    function operateFormatter(value, row, index) {
-        return [
-            '<img class="siteDeleteImg" src="images/delete.png" href="javascript:void(0)" style="cursor: pointer" name="title" title="Delete" />'
-        ].join('');
-    }
-    window.operateEvents = {
-        'click .siteDeleteImg': function(e, value, row, index) {
-            // TO DO ajex call for delete
-            console.log(value, row, index);
-        }
-    };
-    </script>
+                }).on('click-row.bs.table', function () {
+
+
+                    $('.table tbody tr').click(function() {
+
+                        $(this).addClass('openoTable_row_selected').siblings().removeClass('openoTable_row_selected');
+                    });
+
+                });
+
+                var serviceId = getQueryStringValue("serviceId");
+                console.log("overlayvpn - serviceId : " + serviceId);
+            });
+
+            function getQueryStringValue (key) {
+                var params = new URLSearchParams(window.location.search.slice(1));
+                return params.get(key);
+            }
+
+            function operateFormatter(value, row, index) {
+                return [
+                    '<img class="siteDeleteImg" src="images/delete.png" href="javascript:void(0)" style="cursor: pointer" name="title" title="Delete" />'
+                ].join('');
+            }
+            window.operateEvents = {
+                'click .siteDeleteImg': function(e, value, row, index) {
+                    // TO DO ajex call for delete
+                    console.log(value, row, index);
+                }
+            };
+        </script>
     <style>
     .dropdown-menu {
             min-width: 10px;
@@ -278,10 +272,10 @@
                         <tr>
                             <th data-field="name" data-sortable="true" data-filter-control="input">Name</th>
                             <th data-field="desc" data-sortable="true" data-filter-control="input">Description</th>
-                            <th data-field="thinCpe" data-sortable="true" data-filter-control="input">Site CIDR</th>
+                            <th data-field="thinCpe" data-sortable="true" data-filter-control="input">Thin CPE</th>
                             <th data-field="port" data-sortable="true" data-filter-control="input">Port:Vlan ID</th>
-                           <!-- <th data-field="dcName" data-sortable="true" data-filter-control="input">DC Name</th> -->
-                            <th data-field="vpc" data-sortable="true" data-filter-control="input">VPC Name</th>
+                            <th data-field="dcName" data-sortable="true" data-filter-control="input">DC Name</th>
+                            <th data-field="vpc" data-sortable="true" data-filter-control="input">VPC</th>
                             <th data-field="vpcCidr" data-sortable="true" data-filter-control="input">VPC CIDR</th>
                             <th data-field="action" data-sortable="">Action</th>
                         </tr>
@@ -292,6 +286,6 @@
         </div>
     </div>
 
-</div>
+
 </body>
 </html>
