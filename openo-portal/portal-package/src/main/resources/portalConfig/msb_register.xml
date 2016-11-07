@@ -24,7 +24,7 @@
         <registerInfo>
             <ip>127.0.0.1</ip>
             <port>8300</port>
-            <url>/openo-portal/common</url>
+            <url>/openoui/common</url>
             <serviceName>common</serviceName>
             <protocol>UI</protocol>
             <visualRange>1</visualRange>
@@ -34,7 +34,7 @@
         <registerInfo>
             <ip>127.0.0.1</ip>
             <port>8300</port>
-            <url>/openo-portal/catalog</url>
+            <url>/openoui/catalog</url>
             <serviceName>catalog</serviceName>
             <protocol>UI</protocol>
             <visualRange>1</visualRange>
@@ -44,7 +44,7 @@
         <registerInfo>
             <ip>127.0.0.1</ip>
             <port>8300</port>
-            <url>/openo-portal/extsys</url>
+            <url>/openoui/extsys</url>
             <serviceName>extsys</serviceName>
             <protocol>UI</protocol>
             <visualRange>1</visualRange>
@@ -54,7 +54,7 @@
         <registerInfo>
             <ip>127.0.0.1</ip>
             <port>8300</port>
-            <url>/openo-portal/performance</url>
+            <url>/openoui/performance</url>
             <serviceName>performance</serviceName>
             <protocol>UI</protocol>
             <visualRange>1</visualRange>
@@ -64,7 +64,17 @@
         <registerInfo>
             <ip>127.0.0.1</ip>
             <port>8300</port>
-            <url>/openo-portal/lifecyclemgr</url>
+            <url>/openoui/monitor</url>
+            <serviceName>monitor</serviceName>
+            <protocol>UI</protocol>
+            <visualRange>1</visualRange>
+            <lb_policy>hash</lb_policy>
+            <ttl>0</ttl>
+        </registerInfo>
+        <registerInfo>
+            <ip>127.0.0.1</ip>
+            <port>8300</port>
+            <url>/openoui/lifecyclemgr</url>
             <serviceName>lifecyclemgr</serviceName>
             <protocol>UI</protocol>
             <visualRange>1</visualRange>
@@ -74,7 +84,7 @@
         <registerInfo>
             <ip>127.0.0.1</ip>
             <port>8300</port>
-            <url>/openo-portal/resmgr-nfv</url>
+            <url>/openoui/resmgr-nfv</url>
             <serviceName>resmgr-nfv</serviceName>
             <protocol>UI</protocol>
             <visualRange>1</visualRange>
@@ -84,7 +94,7 @@
         <registerInfo>
             <ip>127.0.0.1</ip>
             <port>8300</port>
-            <url>/openo-portal/resmgr-sdn</url>
+            <url>/openoui/resmgr-sdn</url>
             <serviceName>resmgr-sdn</serviceName>
             <protocol>UI</protocol>
             <visualRange>1</visualRange>
@@ -94,7 +104,7 @@
         <registerInfo>
             <ip>127.0.0.1</ip>
             <port>8300</port>
-            <url>/openo-portal/user</url>
+            <url>/openoui/user</url>
             <serviceName>user</serviceName>
             <protocol>UI</protocol>
             <visualRange>1</visualRange>

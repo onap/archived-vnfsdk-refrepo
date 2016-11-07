@@ -17,39 +17,40 @@ String.prototype.trim = function() {
 	return this.replace(/(^\s*)|(\s*$)/g, "");
 };
 
-function loginSubmitHandler(form) {
-	var params = {};
-	params["username"] = $("#openo_input_userName").val().trim();
-	var sourcePass = $("#openo_input_password").val();
-	var pass = sourcePass;
-	if (FrameConst.isEncypt === "true") {
-		pass = ict_framework_func1(pass);
+function loginSubmitHandler() {
+	var loginData = {
+		"userName": $("#openo_input_userName").val(),
+		"password": $("#openo_input_password").val()
 	}
-	params["password"] = pass;
-	params["isEncypted"] = FrameConst.isEncypt;
-	saveUserInfo(params);
-	location.href = FrameConst.DEFAULT_LOGINSKIP_PAGE;
 
-//	$.ajax({
-//		url : FrameConst.REST_LOGIN,
-//		type : 'POST',
-//		data : JSON.stringify(params),
-//		dataType : 'json',
-//		contentType : 'application/json; charset=utf-8',
-//		success : function(data, status, xhr) {
-//			if (data.result == 0) {
-//				var epass = CryptoJS.MD5(params.username+sourcePass);
-//				store("icttka", epass.toLocaleString());
-//			}
-//			processLoginResult(data, params);
-//		},
-//		Error : function(xhr, error, exception) {
-//			if (console) {
-//				console.log("login fail:" + error);
-//				console.log(exception);
-//			}
-//		}
-//	});
+	$.ajax({
+		url : "/openoapi/auth/v1/tokens",
+		type : "POST",
+		contentType : 'application/json; charset=utf-8',
+		data : JSON.stringify(loginData)
+	}).done(function(data) {
+		var topURL = top.window.document.location.href;
+		if (topURL.indexOf("?service") != -1) {
+			top.window.document.location.href = decodeURIComponent(topURL.substring(topURL.indexOf("?service") + 9));
+		} else {
+			top.window.document.location.href = "/openoui/common/default.html";
+		}
+		store("loginUserName", $("#openo_input_userName").val());
+	}).fail(function(data) {
+		var tipDivId = $("#loginConnError");
+		if (data.status == 401) {
+			tipDivId = $("#nameOrpwdError");
+		}
+
+		tipDivId.addClass('alert-danger');
+		if (tipDivId.attr("tipstatus") == "normal") {
+			tipDivId.show();
+		} else if (tipDivId.attr("tipstatus") == "close") {
+			tipDivId.attr("tipstatus", "normal");
+		}
+	});
+
+	saveUserInfo();
 };
 
 var Login = function () {
@@ -103,75 +104,16 @@ var Login = function () {
 				return false;
 			}
 		});
-
-		$("input[name='remember']").bind("click", function () {
-			saveUserInfo();
-		});
-	}
-
-	var handleForgetPassword = function () {
-		$('.forget-form').validate({
-			errorElement: 'span', //default input error message container
-			errorClass: 'help-block', // default input error message class
-			focusInvalid: false, // do not focus the last invalid input
-			ignore: "",
-			rules: {
-				email: {
-					required: true,
-					email: true
-				}
-			},
-			messages: {
-				email: {
-					required: "Email is required."
-				}
-			},
-			invalidHandler: function (event, validator) { //display error alert on form submit   
-			},
-			highlight: function (element) { // hightlight error inputs
-				$(element).closest('.form-group').addClass('has-error'); // set error class to the control group
-			},
-			success: function (label) {
-				label.closest('.form-group').removeClass('has-error');
-				label.remove();
-			},
-			errorPlacement: function (error, element) {
-				error.insertAfter(element.closest('.input-icon'));
-			},
-			submitHandler: function (form) {
-				form.submit();
-			}
-		});
-
-		$('.forget-form input').keypress(function (e) {
-			if (e.which == 13) {
-				if ($('.forget-form').validate().form()) {
-					$('.forget-form').submit();
-				}
-				return false;
-			}
-		});
-
-		$('#forget-password').click(function () {
-			$('.login-form').hide();
-			$('.forget-form').show();
-		});
-
-		$('#back-btn').click(function () {
-			$('.login-form').show();
-			$('.forget-form').hide();
-		});
 	}
 
 	return {
 		//main function to initiate the module
 		init: function () {
 			handleLogin();
-			handleForgetPassword();
 			$.backstretch([
-				"./common/image/integration/openo_bg_1.jpg",
-				"./common/image/integration//openo_bg_2.jpg",
-				"./common/image/integration//openo_bg_3.jpg"
+				"image/integration/openo_bg_1.jpg",
+				"image/integration//openo_bg_2.jpg",
+				"image/integration//openo_bg_3.jpg"
 			], {
 				fade: 500,
 				duration: 15000
@@ -188,17 +130,29 @@ $(document).ready(function() {
 	}
 });
 
-function saveUserInfo(params) {
+function saveUserInfo() {
 	var rmbcheck = $("input[name='remember']");
 	if (rmbcheck.attr("checked") == true || rmbcheck.is(':checked')) {
-		var userName = $("#openo_input_userName").val();
-		var passWord = $("#openo_input_password").val();
 		store("remember", "true");
-		store("openo_input_userName", params.username);
-		store("openo_input_password", passWord);
+		store("openo_input_userName", $("#openo_input_userName").val());
+		store("openo_input_password", $("#openo_input_password").val());
 	} else {
 		store.remove("remember");
 		store.remove("openo_input_userName");
 		store.remove("openo_input_password");
 	}
+}
+
+function logoutSubmit() {
+	$.ajax({
+		url: "/openoapi/auth/v1/tokens" + "?=" + new Date().getTime(),
+		type: "DELETE",
+		contentType: "application/json",
+		dataType: "text",
+		success: function() {
+			top.window.location = "/openoui/common/login.html";
+		},
+		error: function() {
+		}
+	})
 }

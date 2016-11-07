@@ -173,7 +173,7 @@ alarmsUtil.loopDelAralms = function () {
 	if (aidArr.length > 0) {
 		bootbox.confirm('Are you sure to delete alarm(s)', function (result) { 
 			if (result) {
-				var sSource = "/api/umcfm/v1/curalarms?request={\"ids\":["+ aidArr +"]}";
+				var sSource = "/openoapi/umc/v1/fm/curalarms?request={\"ids\":["+ aidArr +"]}";
 				$.ajax({
 					type : "DELETE", 
 					dataType : "json",
@@ -204,7 +204,7 @@ alarmsUtil.affirm = function (alarmIdArr,tableId,divId) {
 	if (vm.ruleType == 1) { //当前告警
 		request.ackState=1;
 		getData.request = JSON.stringify(request);
-		url = "/api/umcfm/v1/curalarms";
+		url = "/openoapi/umc/v1/fm/curalarms";
 	} else { //历史告警
 		url = "/ngict/rest/fm/hisalarms"
 	}
@@ -240,7 +240,7 @@ alarmsUtil.unaffirm = function (alarmIdArr,tableId,divId) {
 	getData.request = JSON.stringify(request);
 	var url = "";
 	if (vm.ruleType == 1) { //当前告警
-		url = "/api/umcfm/v1/curalarms";
+		url = "/openoapi/umc/v1/fm/curalarms";
 		$.ajax({
 			"type" : "PUT",
 			"contentType" : 'application/json; charset=utf-8',
@@ -356,7 +356,7 @@ alarmsUtil.initProbableCausesTree = function () {
 			async : false,
 			"dataType" : 'json',
 			"type" : "GET",
-			"url" : "/api/umcfm/v1/probablecausestree",
+			"url" : "/openoapi/umc/v1/fm/probablecausestree",
 			"data" : getData,
 			"contentType" : 'application/json; charset=utf-8',
 			"success" : function (res, textStatus, jqXHR) {

@@ -79,8 +79,7 @@ pm.query.vmPmQuery = avalon.define({
 			async: false,
 			"dataType": 'json',
 			"type": "GET",
-			//"url": "/api/umcpm/v1/resources/" + resourceTypeId,
-			"url": "/api/umcpm/v1/resources/",
+			"url": "/openoapi/umc/v1/pm/resources",
 			"contentType": 'application/json; charset=utf-8',
 			"success": function (res, textStatus, jqXHR) {
 				//var nodes = res.content;	
@@ -161,7 +160,7 @@ pm.query.vmPmQuery = avalon.define({
 			async: false,
 			"dataType": 'json',
 			"type": "GET",
-			"url": "/api/umcpm/v1/meatasks/" + el.id,
+			"url": "/openoapi/umc/v1/pm/meatasks/" + el.id,
 			"data": null,
 			"contentType": 'application/json; charset=utf-8',
 			"success": function (res, textStatus, jqXHR) {
@@ -256,7 +255,7 @@ pm.query.vmPmQuery = avalon.define({
 			});
 		});	
 		//国际化
-		var i18nItems = $("[name_i18n=com_zte_ums_ict_pm_query]");
+		var i18nItems = $("[name_i18n=openo_performance_i18n]");
 		for(var i=0;i<i18nItems.length;i++){
 			var $item = $(i18nItems.eq(i));
 			var itemId = $item.attr('id');
@@ -284,29 +283,32 @@ pm.query.vmPmQuery = avalon.define({
 		for(var i=0;i<pm.query.vmPmQuery.resourceSlected.length;i++){
 			for(var j=0;j<pm.query.vmPmQuery.resources.length;j++){
 				if(pm.query.vmPmQuery.resourceSlected[i] == pm.query.vmPmQuery.resources[j].id){
-					resourcesToPut.push(pm.query.vmPmQuery.resources[j]);
+					var resource = {};
+					resource.id = pm.query.vmPmQuery.resources[j].id;
+					resource.name = pm.query.vmPmQuery.resources[j].name;
+					resource.resType = pm.query.vmPmQuery.resources[j].resType;
+					resourcesToPut.push(resource);
 					break;
 				}
 			}
 		}
 		
 		var postData = {
-		  "resourceTypeId": pm.query.vmPmQuery.selectedResourceTypeId,        
-		  "moTypeId": pm.query.vmPmQuery.selectedMoTypeId,        
-		  //"resources": pm.query.vmPmQuery.resourceSlected,	
-	      "resources": resourcesToPut,	  
-		  "counterOrIndexId": pm.query.vmPmQuery.selectedCounter,
-		  "granularity": pm.query.vmPmQuery.granularity,
-		  "beginTime": pm.query.vmPmQuery.beginTime,
-		  "endTime": pm.query.vmPmQuery.endTime,
-		  "pageNo": 0,
-		  "pageSize": 10
+			"resourceTypeId": pm.query.vmPmQuery.selectedResourceTypeId,        
+			"moTypeId": pm.query.vmPmQuery.selectedMoTypeId,        
+			"resources": resourcesToPut,	  
+			"counterOrIndexId": pm.query.vmPmQuery.selectedCounter,
+			"granularity": pm.query.vmPmQuery.granularity,
+			"beginTime": pm.query.vmPmQuery.beginTime,
+			"endTime": pm.query.vmPmQuery.endTime,
+			"pageNo": 0,
+			"pageSize": 10
 		}
 		pm.query.vmPmQuery.$postData = postData;
 		$.ajax({
 			//async:false,
 			"type": 'post',
-			"url": "/api/umcpm/v1/historydataqueries",
+			"url": "/openoapi/umc/v1/pm/historydataqueries",
 			"dataType": "json",
 			"data": JSON.stringify(postData),
 			"contentType": 'application/json; charset=utf-8',
@@ -338,7 +340,7 @@ pm.query.vmPmQuery = avalon.define({
 			async: false,
 			"dataType": 'json',
 			"type": "GET",
-			"url": "/api/umcpm/v1/meatasks/" + el.id,
+			"url": "/openoapi/umc/v1/pm/meatasks/" + el.id,
 			"data": null,
 			"contentType": 'application/json; charset=utf-8',
 			"success": function (res, textStatus, jqXHR) {
@@ -368,23 +370,7 @@ pm.query.vmPmQuery = avalon.define({
 		});
 		var counterOrIndexId = [];
 		var MoTypeId = modelItem.moType.id;
-		/* $.ajax({
-			async: false,
-			"dataType": 'json',
-			"type": "GET",
-			//"url": "/api/umcpm/v1/motypes/indexes",
-			"url": "/api/umcpm/v1/indexes",
-			"data": getData,
-			"contentType": 'application/json; charset=utf-8',
-			"success": function (res, textStatus, jqXHR) {
-				for(var i=0;i<res.length;i++){
-					counterOrIndexId.push(res[i].id);
-				}
-			},
-			"error": function () {
-			}
-		}); */
-		var url="/api/umcpm/v1/motypes/" + MoTypeId + "/counters";
+		var url="/openoapi/umc/v1/pm/motypes/" + MoTypeId + "/counters";
 		var data={};
 		data.moTypeId=MoTypeId;
 		$.ajax({
@@ -426,7 +412,7 @@ pm.query.vmPmQuery = avalon.define({
 		$.ajax({
 			//async:false,
 			"type": 'post',
-			"url": "/api/umcpm/v1/historydataqueries",
+			"url": "/openoapi/umc/v1/pm/historydataqueries",
 			"dataType": "json",
 			"data": JSON.stringify(postData),
 			"contentType": 'application/json; charset=utf-8',
@@ -517,9 +503,7 @@ pm.query.vmPmQuery = avalon.define({
 		setting.language = this.$language;
 		setting.columns = this.$queryDataTableFields;
 		setting.pageHtml="r<'table-scrollable't><'row page-info-bottom'<'col-md-12 col-sm-12'lip>>>";
-		//setting.restUrl ="/api/umcpm/v1/indexes";
-		//setting.restUrl ="../../json/thresholdList.json";
-		setting.restUrl = "/api/umcpm/v1/historydataqueries";
+		setting.restUrl = "/openoapi/umc/v1/pm/historydataqueries";
 		setting.tableId = "ict_pm_data";
 		serverPageTable.initDataTable(setting,  'ict_pm_data_div' );		
 	}
@@ -559,8 +543,7 @@ $.ajax({
 	async: false,
 	"dataType": 'json',
 	"type": "GET",
-	"url": "/api/umcpm/v1/meatasks",
-	//"url": "../../js/meatask/testList.json",
+	"url": "/openoapi/umc/v1/pm/meatasks",
 	"data": null,
 	"contentType": 'application/json; charset=utf-8',
 	"success": function (res, textStatus, jqXHR) {
@@ -633,9 +616,7 @@ function  fnServerData(sSource, aoData, fnCallback, oSettings) {
 	
 	oSettings.jqXHR = $.ajax({
 		"type": 'post',
-		//"type": 'get',
 		"url": sSource,
-		//"url": "../../js/meatask/testMulti1.json",
 		"dataType": "json",
 		"data": JSON.stringify(pm.query.vmPmQuery.$postData),
 		"contentType": 'application/json; charset=utf-8',
@@ -729,7 +710,6 @@ setTimeout(function(){
 
 newIndexWizard = function (idx,action) {	    
           //获取资源类型
-		//getResTypeArray();
 		var resourceTypeId;
 		var moTypeId;
          
@@ -743,27 +723,10 @@ newIndexWizard = function (idx,action) {
 		} */
 }();
 
-function  getResTypeArray(){
-	var url="/api/umcpm/v1/resourcetypes";
-	$.ajax({
-		"type": 'get',
-		"url": url,
-		"dataType": "json",
-		 "async": false,
-		"success": function (resp) {
-			//pm.query.vmPmQuery.resTypeArray= resp.content;
-			pm.query.vmPmQuery.resTypeArray= resp;
-		},
-		"error":function(resp){
-		  // pm.index.vm.ResTypeArray=resp; 
-		}
-	});
-}
-
 function  getMoTypeArray(resourceTypeId){
 	if(resourceTypeId){
 	//获取测量类型
-	var url="/api/umcpm/v1/motypes";
+	var url="/openoapi/umc/v1/pm/motypes";
 	var data={};
 	data.resourceTypeId=resourceTypeId;
 	$.ajax({
@@ -788,7 +751,7 @@ function  getMoTypeArray(resourceTypeId){
 
 function  getCounterArray(MoTypeId){
 	if(MoTypeId){
-		var url="/api/umcpm/v1/motypes/"+MoTypeId+"/counters";
+		var url="/openoapi/umc/v1/pm/motypes/"+MoTypeId+"/counters";
 		var data={};
 		data.moTypeId=MoTypeId;
 		$.ajax({
@@ -845,14 +808,3 @@ function getObjFromName(name,array){
 	  }
    }
 }
-
-/* function allCheckbox(obj) {
-	var isChecked = obj.checked;
-	var tableId = $(obj).parents(".table").attr("id");
-	$('td.checkBoxInFirstCol', $("#" + tableId)).each(function() {
-		var temp = $(this).children('input');
-		temp[0].checked = isChecked;
-	});
-} */
-
-

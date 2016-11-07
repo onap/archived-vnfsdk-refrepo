@@ -22,7 +22,7 @@ var ErrResult_LOGIN_SERV_ERROR = -1;
 
 function processLoginResult(data,params){
    if(data.home="web/res/web-framework/index.html"||data.home.indexOf("index.html")>0){
-       data.home=FrameConst.DEFAULT_LOGINSKIP_PAGE;
+       data.home=FrameConst.DEFAULT_PAGE;
 	   //下面这部分是为了演示需要临时增加的自动切换
        /*if(params.username=="admin1"){
 			data.home="/web/res/web-framework/default.html?menu=1";

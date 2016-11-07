@@ -1,0 +1,480 @@
+<!--
+    Copyright 2016, CMCC Technologies Co., Ltd.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="/openoui/common/thirdparty/font-awesome/css/font-awesome.min.css"/>
+	<link rel="stylesheet" type="text/css" href="/openoui/common/thirdparty/bootstrap/css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="/openoui/common/css/ngict-component.css"/>
+	<link rel="stylesheet" type="text/css" href="/openoui/common/css/ZteIctIcons/style.css"/>
+	<link rel="stylesheet" type="text/css" href="/openoui/common/thirdparty/animate/animate.min.css"/>
+	<link rel="stylesheet" type="text/css" href="css/monitorSetting.css"/>
+	<style>
+		.ms-controller {
+			visibility: hidden
+		}
+	</style>
+</head>
+<body>
+<div>
+ <div class="container-fluid" class="ms-controller"  ms-controller="monitorController">
+
+  <div id="monitorSettingDlg" class="modal  fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="content">
+                    <div class="modal-header">
+                        <button type="button" class="close" ms-click="cancelMonitorSet()">×</button>
+                        <h4 id="myModalLabel" ms-text="monitorSettingDlgInfo.titleName"></h4>
+                    </div>
+                    <div class="modal-body">
+                       <div class="alert alert-info" ms-visible="server_rtn.info_block" ms-text="server_rtn.rtn_info"></div>
+                    <div class="alert alert-danger " ms-visible="server_rtn.warning_block" ms-text="server_rtn.rtn_info"></div>
+                        <form class="form-horizontal" id="monitorSetting_form" role="form">                        
+                           <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span id="com_zte_openo_umc_monitor_dac_label" name_i18n="com_zte_openo_umc_monitor_ui_i18n"></span>
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <div class="col-sm-7">
+                                    <input type="text"  name="name" ms-duplex="monitorInfo.label" class="form-control"/>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span id="com_zte_openo_umc_monitor_monitorsetting_ipaddress" name_i18n="com_zte_openo_umc_monitor_ui_i18n">IP Address</span>
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <div class="col-sm-7">
+                                    <input type="text"  name="ipAddress" ms-duplex="monitorInfo.ipAddress" class="form-control"/>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+                              
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span id="com_zte_openo_umc_monitor_monitorsetting_dac" name_i18n="com_zte_openo_umc_monitor_ui_i18n">DAC</span>
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <div class="col-sm-7">
+                                    <select  ms-each="dac.selectItems"  name="PROXYIP" ms-duplex="monitorInfo.customPara.PROXYIP" class="form-control" style="width:150px">
+                                        <option ms-attr-value='el.ipAddress'>{{el.ipAddress}}</option>
+                                    </select>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+                            <div class="form-group" ms-if="monitorInfo.customPara.VERSION!=null">
+                                <label class="control-label col-sm-3">
+                                    <span id="com_zte_openo_umc_monitor_monitorsetting_version" name_i18n="com_zte_openo_umc_monitor_ui_i18n">version</span>
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <div class="col-sm-7">
+                                    <input type="text"  name="VERSION"  ms-duplex="monitorInfo.customPara.VERSION" class="form-control"/>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+                            <div class="form-group" ms-if="monitorInfo.customPara.USERNAME!=null">
+                                <label class="control-label col-sm-3">
+                                    <span id="com_zte_openo_umc_monitor_monitorsetting_user" name_i18n="com_zte_openo_umc_monitor_ui_i18n">Login User</span>
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <div class="col-sm-7">
+                                    <input type="text"  name="USERNAME"  ms-duplex="monitorInfo.customPara.USERNAME" class="form-control"/>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ms-if="monitorInfo.customPara.PASSWORD!=null">
+                                <label class="control-label col-sm-3">
+                                    <span id="com_zte_openo_umc_monitor_monitorsetting_password" name_i18n="com_zte_openo_umc_monitor_ui_i18n">Login Password</span>
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <div class="col-sm-7">
+                                    <input type="password"  name="PASSWORD"  ms-duplex="monitorInfo.customPara.PASSWORD" class="form-control"/>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ms-if="monitorInfo.customPara.PROTOCOL!=null">
+                                <label class="control-label col-sm-3">
+                                    <span id="com_zte_openo_umc_monitor_monitorsetting_protocol" name_i18n="com_zte_openo_umc_monitor_ui_i18n">Login Protocol</span>
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <div class="col-sm-7">
+                                    <select  ms-each="$loginProtocol.selectItems"  ms-duplex="monitorInfo.customPara.PROTOCOL" class="form-control" style="width:150px" name="ROTOCOL" id="select_protocol">
+                                        <option ms-attr-value='el.cond_value'>{{el.name}}</option>
+                                    </select>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ms-if="monitorInfo.customPara.PORT!=null">
+                                <label class="control-label col-sm-3">
+                                    <span id="com_zte_openo_umc_monitor_monitorsetting_port" name_i18n="com_zte_openo_umc_monitor_ui_i18n">Login Port</span>
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <div class="col-sm-7">
+                                    <input type="text"  name="PORT"  ms-duplex="monitorInfo.customPara.PORT" class="form-control"/>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ms-if="monitorInfo.customPara.DBPORT!=null">
+                                <label class="control-label col-sm-3">
+                                    <span id="com_zte_openo_umc_monitor_monitorsetting_port" name_i18n="com_zte_openo_umc_monitor_ui_i18n">Login Port</span>
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <div class="col-sm-7">
+                                    <input type="text"  name="DBPORT"  ms-duplex="monitorInfo.customPara.DBPORT" class="form-control"/>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ms-if="monitorInfo.customPara.SNMPPORT!=null">
+                                <label class="control-label col-sm-3">
+                                    <span id="com_zte_openo_umc_monitor_monitorsetting_snmpport" name_i18n="com_zte_openo_umc_monitor_ui_i18n">Snmp Port</span>
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <div class="col-sm-7">
+                                    <input type="text"  name="SNMPPORT"  ms-duplex="monitorInfo.customPara.SNMPPORT" class="form-control"/>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+                            <div class="form-group" ms-if="monitorInfo.customPara.SNMPVERSION!=null">
+                                <label class="control-label col-sm-3">
+                                    <span id="com_zte_openo_umc_monitor_monitorsetting_snmpversion" name_i18n="com_zte_openo_umc_monitor_ui_i18n">Snmp Version</span>
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <div class="col-sm-7">
+                                    <input type="text"  name="SNMPVERSION"  ms-duplex="monitorInfo.customPara.SNMPVERSION" class="form-control"/>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+                            <div class="form-group" ms-if="monitorInfo.customPara.SNMPCOMMUNITY!=null">
+                                <label class="control-label col-sm-3">
+                                    <span id="com_zte_openo_umc_monitor_monitorsetting_snmpcommunity" name_i18n="com_zte_openo_umc_monitor_ui_i18n">Snmp Community</span>
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <div class="col-sm-7">
+                                    <input type="text"  name="SNMPCOMMUNITY"  ms-duplex="monitorInfo.customPara.SNMPCOMMUNITY" class="form-control"/>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+							<div class="form-group" ms-if="monitorInfo.customPara.IPADDRESS2!=null">
+                                <label class="control-label col-sm-3">
+                                    <span id="com_zte_openo_umc_monitor_monitorsetting_agentIP" name_i18n="com_zte_openo_umc_monitor_ui_i18n">Agent IP</span>
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <div class="col-sm-7">
+                                    <input type="text"  name="IPADDRESS2"  ms-duplex="monitorInfo.customPara.IPADDRESS2" class="form-control"/>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+							<div class="form-group" ms-if="monitorInfo.customPara.USERNAME2!=null">
+                                <label class="control-label col-sm-3">
+                                    <span id="com_zte_openo_umc_monitor_monitorsetting_agentUsername" name_i18n="com_zte_openo_umc_monitor_ui_i18n">Agent Username</span>
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <div class="col-sm-7">
+                                    <input type="text"  name="USERNAME2"  ms-duplex="monitorInfo.customPara.USERNAME2" class="form-control"/>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+							<div class="form-group" ms-if="monitorInfo.customPara.PASSWORD2!=null">
+                                <label class="control-label col-sm-3">
+                                    <span id="com_zte_openo_umc_monitor_monitorsetting_agentPassword" name_i18n="com_zte_openo_umc_monitor_ui_i18n">Agent Password</span>
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <div class="col-sm-7">
+                                    <input type="text"  name="PASSWORD2"  ms-duplex="monitorInfo.customPara.PASSWORD2" class="form-control"/>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+							<div class="form-group" ms-if="monitorInfo.customPara.PROTOCOL2!=null">
+                                <label class="control-label col-sm-3">
+                                    <span id="com_zte_openo_umc_monitor_monitorsetting_agentProtocol" name_i18n="com_zte_openo_umc_monitor_ui_i18n">Agent Protocol</span>
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <div class="col-sm-7">
+                                    <input type="text"  name="PROTOCOL2"  ms-duplex="monitorInfo.customPara.PROTOCOL2" class="form-control"/>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+							<div class="form-group" ms-if="monitorInfo.customPara.PORT2!=null">
+                                <label class="control-label col-sm-3">
+                                    <span id="com_zte_openo_umc_monitor_monitorsetting_agentPort" name_i18n="com_zte_openo_umc_monitor_ui_i18n">Agent port</span>
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <div class="col-sm-7">
+                                    <input type="text"  name="PORT2"  ms-duplex="monitorInfo.customPara.PORT2" class="form-control"/>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+							<div class="form-group" ms-if="monitorInfo.customPara.PPMAXCOUNT!=null">
+                                <label class="control-label col-sm-3">
+                                    <span id="com_zte_openo_umc_monitor_monitorsetting_ppMaxCount" name_i18n="com_zte_openo_umc_monitor_ui_i18n">PP Max Count</span>
+									<span class="required" aria-required="true">*</span>
+								</label>
+                                <div class="col-sm-7">
+                                    <input type="text"  name="PPMAXCOUNT"  ms-duplex="monitorInfo.customPara.PPMAXCOUNT" class="form-control"/>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="submit"  ms-click="saveMonitorSet()" id="com_zte_openo_umc_monitor_btn_save" name_i18n="com_zte_openo_umc_monitor_ui_i18n">Save</button>
+                         <button class="btn" ms-click="cancelMonitorSet()" id="com_zte_openo_umc_monitor_btn_cancel" name_i18n="com_zte_openo_umc_monitor_ui_i18n">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  <div class="row" style=" margin-top: 15px;">
+         <div class="col-xs-6 col-sm-12 col-md-6  col-lg-6">
+           <span class=" titlefont" id="com_zte_openo_umc_monitor_monitorsetting_titlename" name_i18n="com_zte_openo_umc_monitor_ui_i18n">Monitor Para Setting </span>
+
+         </div>  
+         <div class="pull-right">  
+          <a href="#" ms-click="gotoMonitorListPage()" ><i class="fa fa-reply "></i> <span id="com_zte_openo_umc_monitor_return" name_i18n="com_zte_openo_umc_monitor_ui_i18n">return</span></a>
+
+         </div> 
+          
+   </div>
+   <div class="separator-line"></div>
+ 
+    <div class="row row-fluid">
+       
+     <button class="btn white radius_l" id="app-new-btn" style=" margin-bottom: 10px;" 
+                            ms-click="updateMonitorSet()">
+                       <i class="ict-gear"></i>  <span id="com_zte_openo_umc_monitor_btn_monitorset" name_i18n="com_zte_openo_umc_monitor_ui_i18n">Monitor Set</span>
+                   </button>
+
+
+       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 row" >
+
+          <div class="form-body">
+          
+            <div  style="width:100%;" id="MonitorContent" class="collapse in main collapseContent">
+              <div class="col-xs-6 col-md-6 col-sm-6 col-lg-6 border-right" >
+                 <div class="monitor-icon">
+                   <div class="timeline-badge info">
+                      <i class="ict-VDU"></i>
+                    </div>
+                 </div>
+                 <div style="float:left">
+                   <ul>
+                   <li><b><span id="com_zte_openo_umc_monitor_dac_label" name_i18n="com_zte_openo_umc_monitor_ui_i18n"></span>: </b> <span ms-text="monitorInfo.label"></span></li>
+                   <li><b><span id="com_zte_openo_umc_monitor_monitorsetting_ipaddress" name_i18n="com_zte_openo_umc_monitor_ui_i18n"></span>: </b> <span ms-text="monitorInfo.ipAddress"></span></li>
+                   <li><b><span id="com_zte_openo_umc_monitor_monitorsetting_dac" name_i18n="com_zte_openo_umc_monitor_ui_i18n"></span>: </b> <span ms-text="monitorInfo.customPara.PROXYIP"></span></li>
+                  
+                   </ul>
+                 </div>
+               </div>
+
+               <div class="col-xs-6 col-md-6 col-sm-6 col-lg-6" >
+                
+                 <div class="proxy_div">
+                   <ul>
+                   <li ms-if="monitorInfo.customPara.VERSION!=null"><b><span id="com_zte_openo_umc_monitor_monitorsetting_version" name_i18n="com_zte_openo_umc_monitor_ui_i18n"></span>: </b> <span ms-text="monitorInfo.customPara.VERSION"></span></li>
+                   <li ms-if="monitorInfo.customPara.USERNAME!=null"><b><span id="com_zte_openo_umc_monitor_monitorsetting_user" name_i18n="com_zte_openo_umc_monitor_ui_i18n"></span>: </b> <span ms-text="monitorInfo.customPara.USERNAME"></span></li>
+                   <li ms-if="monitorInfo.customPara.PROTOCOL!=null"><b><span id="com_zte_openo_umc_monitor_monitorsetting_protocol" name_i18n="com_zte_openo_umc_monitor_ui_i18n"></span>: </b> <span ms-text="monitorInfo.customPara.PROTOCOL"></span></li>
+                   <li ms-if="monitorInfo.customPara.PORT!=null"><b><span id="com_zte_openo_umc_monitor_monitorsetting_port" name_i18n="com_zte_openo_umc_monitor_ui_i18n"></span>: </b> <span ms-text="monitorInfo.customPara.PORT"></span></li>
+                   <li ms-if="monitorInfo.customPara.DBPORT!=null"><b><span id="com_zte_openo_umc_monitor_monitorsetting_port" name_i18n="com_zte_openo_umc_monitor_ui_i18n"></span>: </b> <span ms-text="monitorInfo.customPara.DBPORT"></span></li>
+                   <li ms-if="monitorInfo.customPara.SNMPPORT!=null"><b><span id="com_zte_openo_umc_monitor_monitorsetting_snmpport" name_i18n="com_zte_openo_umc_monitor_ui_i18n"></span>: </b> <span ms-text="monitorInfo.customPara.SNMPPORT"></span></li>
+                   <li ms-if="monitorInfo.customPara.SNMPVERSION!=null"><b><span id="com_zte_openo_umc_monitor_monitorsetting_snmpversion" name_i18n="com_zte_openo_umc_monitor_ui_i18n"></span>: </b> <span ms-text="monitorInfo.customPara.SNMPVERSION"></span></li>
+                   <li ms-if="monitorInfo.customPara.SNMPCOMMUNITY!=null"><b><span id="com_zte_openo_umc_monitor_monitorsetting_snmpcommunity" name_i18n="com_zte_openo_umc_monitor_ui_i18n"></span>: </b> <span ms-text="monitorInfo.customPara.SNMPCOMMUNITY"></span></li>
+                   <li ms-if="monitorInfo.customPara.IPADDRESS2!=null"><b><span id="com_zte_openo_umc_monitor_monitorsetting_agentIP" name_i18n="com_zte_openo_umc_monitor_ui_i18n"></span>: </b> <span ms-text="monitorInfo.customPara.IPADDRESS2"></span></li>
+                   <li ms-if="monitorInfo.customPara.USERNAME2!=null"><b><span id="com_zte_openo_umc_monitor_monitorsetting_agentUsername" name_i18n="com_zte_openo_umc_monitor_ui_i18n"></span>: </b> <span ms-text="monitorInfo.customPara.USERNAME2"></span></li>
+                   <li ms-if="monitorInfo.customPara.PASSWORD2!=null"><b><span id="com_zte_openo_umc_monitor_monitorsetting_agentPassword" name_i18n="com_zte_openo_umc_monitor_ui_i18n"></span>: </b> <span ms-text="monitorInfo.customPara.PASSWORD2"></span></li>
+                   <li ms-if="monitorInfo.customPara.PROTOCOL2!=null"><b><span id="com_zte_openo_umc_monitor_monitorsetting_agentProtocol" name_i18n="com_zte_openo_umc_monitor_ui_i18n"></span>: </b> <span ms-text="monitorInfo.customPara.PROTOCOL2"></span></li>
+                   <li ms-if="monitorInfo.customPara.PORT2!=null"><b><span id="com_zte_openo_umc_monitor_monitorsetting_agentPort" name_i18n="com_zte_openo_umc_monitor_ui_i18n"></span>: </b> <span ms-text="monitorInfo.customPara.PORT2"></span></li>
+                   <li ms-if="monitorInfo.customPara.PPMAXCOUNT!=null"><b><span id="com_zte_openo_umc_monitor_monitorsetting_ppMaxCount" name_i18n="com_zte_openo_umc_monitor_ui_i18n"></span>: </b> <span ms-text="monitorInfo.customPara.PPMAXCOUNT"></span></li>
+                   </ul>
+                 </div>
+               </div>
+
+            </div>      
+        </div>
+       </div>
+
+      
+
+ </div>
+
+
+</div>
+
+<script type="text/javascript" src="/openoui/common/thirdparty/jquery/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="/openoui/common/thirdparty/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/openoui/common/thirdparty/jquery-validation/js/jquery.validate.js"></script>
+<script type="text/javascript" src="/openoui/common/thirdparty/jquery.i18n/jquery.i18n.properties-1.0.9.js"></script>
+<script type="text/javascript" src="/openoui/common/thirdparty/bootstrap-growl/bootstrap-growl.min.js"></script>
+<script type="text/javascript" src="/openoui/common/thirdparty/avalon/avalon.js"></script>
+<script type="text/javascript" src="/openoui/common/js/tools.js"></script>
+<script type="text/javascript" src="/openoui/common/js/core/hk.min.js" ></script>
+<script type="text/javascript" src="js/monitorSettingUtil.js"></script>
+<script type="text/javascript" src="js/monitorSettingController.js"></script>
+<script type="text/javascript" src="js/loadi18nApp_ngict-umc-monitor.js"></script>
+
+<script>
+
+
+
+    var lang= getLanguage();
+    loadPropertiesSideMenu(lang, 'umc-monitor-iui-i18n', 'i18n/');
+  
+   
+   var monitorUrlParm = window.location.search.split(":");
+      if (monitorUrlParm && monitorUrlParm.length > 0) {
+        var oid = decodeURIComponent(monitorUrlParm[0]).replace("?","");
+       
+      }
+
+    vm.queryMonitorInstance(oid);
+    vm.queryDACs();
+
+
+
+
+  jQuery.validator.addMethod("ip", function(value, element) {    
+      return this.optional(element) || /^(([-9]|([1-9]\d)|(1\d\d)|(2([0-4]\d|5[0-5])))\.)(([0-9]|([1-9]\d)|(1\d\d)|(2([0-4]\d|5[0-5])))\.){2}([1-9]|([1-9]\d)|(1\d\d)|(2([0-4]\d|5[0-5])))$/.test(value);    
+    }, $.i18n.prop('com_zte_openo_umc_monitor_monitorsetting_ipaddress_format_errInfo'));
+
+ var form = $('#monitorSetting_form');
+  var error = $('.alert-danger', form);
+  var success = $('.alert-success', form);
+
+  form.validate({
+    doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
+    errorElement: 'span', //default input error message container
+    errorClass: 'help-block', // default input error message class
+    focusInvalid: false, // do not focus the last invalid input
+    rules: {     
+
+      USERNAME:{
+        required: true,
+        maxlength:30
+      },
+      PASSWORD:{
+        required: true,
+        maxlength:30
+      },
+      PORT:{
+        required: true,
+        digits:true,
+        maxlength:5
+      },
+      DBPORT:{
+        required: true,
+        digits:true,
+        maxlength:5
+      },
+      PROXYIP:{
+        required: true,
+      },
+      PROTOCOL:{
+        required: true
+      },
+      ipAddress:{
+        required: true,
+        ip:true,
+        maxlength:20
+      },
+       name:{
+        required: true,
+        maxlength:30
+      }
+    },
+    messages: { 
+        USERNAME:{
+        required: $.i18n.prop('com_zte_openo_umc_monitor_monitorsetting_user_empty_errInfo')
+       
+      },
+      PASSWORD:{
+        required: $.i18n.prop('com_zte_openo_umc_monitor_monitorsetting_password_empty_errInfo')
+      },
+      PORT:{
+        required: $.i18n.prop('com_zte_openo_umc_monitor_monitorsetting_port_empty_errInfo')
+      },
+      DBPORT:{
+        required: $.i18n.prop('com_zte_openo_umc_monitor_monitorsetting_port_empty_errInfo')
+      },
+      PROXYIP:{
+        required: $.i18n.prop('com_zte_openo_umc_monitor_monitorsetting_dac_empty_errInfo')
+      },
+      PROTOCOL:{
+        required: $.i18n.prop('com_zte_openo_umc_monitor_monitorsetting_protocol_empty_errInfo')
+      },
+      ipAddress:{
+        required: $.i18n.prop('com_zte_openo_umc_monitor_monitorsetting_ipaddress_empty_errInfo')     
+      }, 
+      name:{
+        required: $.i18n.prop('com_zte_openo_umc_monitor_monitorsetting_name_empty_errInfo')     
+      }    
+      
+    },
+    errorPlacement: function (error, element) { // render error placement for each input type
+      error.insertAfter(element); // for other inputs, just perform default behavior
+    },
+
+    invalidHandler: function (event, validator) { //display error alert on form submit   
+      success.hide();
+      error.show();
+      //ZteFrameWork.scrollTo(error, -200);
+    },
+
+    highlight: function (element) { // hightlight error inputs
+      $(element)
+        .closest('.form-group').removeClass('has-success').addClass('has-error'); // set error class to the control group
+    },
+
+    unhighlight: function (element) { // revert the change done by hightlight
+      $(element)
+        .closest('.form-group').removeClass('has-error'); // set error class to the control group
+    },
+
+    success: function (label) {
+      label
+        .addClass('valid') // mark the current input as valid and display OK icon
+        .closest('.form-group').removeClass('has-error'); // set success class to the control group
+    },
+    submitHandler: function (form) {
+      success.show();
+      error.hide();
+      //add here some ajax code to submit your form or just call form.submit() if you want to submit the form without ajax
+    }
+
+   });
+
+  $("#select_protocol").change(function(){
+    var checkValue=$("#select_protocol").val();
+    if(checkValue=="SSH"){
+      vm.monitorInfo.customPara.LOGINPORT="22";
+    }
+    else if(checkValue=="TELNET"){
+      vm.monitorInfo.customPara.LOGINPORT="23";
+    }
+  });
+
+</script>
+
+</body>
+</html>

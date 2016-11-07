@@ -23,8 +23,7 @@ Login page
 }
 
 .login .logo {
-  margin: 0 auto;   
-  margin-top:60px;
+  margin: 0 auto;
   padding: 15px;
   text-align: center;
 }  
@@ -33,14 +32,14 @@ Login page
 .login .content {
   background: url(../image/bg-white-lock.png) repeat;
   width: 360px;
-  margin: 0 auto; 
-  margin-bottom: 0px;
-  padding: 30px;  
-  padding-top: 20px;  
-  padding-bottom: 15px;  
+  margin: 0 auto;
+  margin-top: 150px;
+  padding: 30px;
+  padding-top: 20px;
+  padding-bottom: 15px;
   border-radius:5px;
-  -webkit-box-shadow: 2px 3px 3px #717171;   
-  -moz-box-shadow: 2px 3px 3px #717171;   
+  -webkit-box-shadow: 2px 3px 3px #717171;
+  -moz-box-shadow: 2px 3px 3px #717171;
   box-shadow: -1px 1px 1px rgba(255,255,255,0.6) inset,-3px 3px 5px rgba(0,0,0,0.2);
 }
 

@@ -128,7 +128,7 @@ var vm = avalon.define({
 		}
 	},
 
-	$queryAlarmsInfoUrl: '/api/umcfm/v1/curalarms',
+	$queryAlarmsInfoUrl: '/openoapi/umc/v1/fm/curalarms',
 	$saveCondUrl: '/web/rest/web/fm/rules?isc_dataFormat=json',
 	fmConds: {},
 	$sunburstSetting: {width: 450, height: 400},
