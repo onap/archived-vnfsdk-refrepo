@@ -20,17 +20,20 @@ import java.io.File;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class SystemListener implements ServletContextListener {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public void contextDestroyed(ServletContextEvent sce) {
     }
 
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        // TODO
-        System.out.println("portal register task begin");
+        logger.info("open-o portal register task begin.");
         String registerFilePath = SystemListener.class.getClassLoader().getResource("").getPath() + "portalConfig" + File.separator + "msb_register.xml";
         RegisterService.registerMsb(registerFilePath);
-        // TODO
-        System.out.println("portal register task ended.");
+        logger.info("open-o portal register task ended.");
     }
 }

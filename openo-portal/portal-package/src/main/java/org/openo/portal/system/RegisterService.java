@@ -34,8 +34,12 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.openo.portal.bean.MsbRegisterBean;
 import org.openo.portal.bean.ServiceNodeBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RegisterService {
+
+    private final static Logger logger = LoggerFactory.getLogger(RegisterService.class);
 
     public static HashMap<String, String> msbHostMap = new HashMap<String, String>();
     public static List<HashMap<String, String>> registerList = new ArrayList<HashMap<String, String>>();
@@ -70,13 +74,12 @@ public class RegisterService {
                 registerBean.setLb_policy(registerInfo.get("lb_policy"));
 
                 JSONObject registerObj = JSONObject.fromObject(registerBean);
-                String registerResponse = registerPortalService(url, registerObj, "");
-                // TODO
-                System.out.println(registerResponse);
+                String registerResponse = registerPortalService(registerBean.getServiceName(), url, registerObj, "");
             }
+            logger.info("open-o portal register task succeeded.");
         } catch (Exception e){
-            // TODO
-            e.printStackTrace();
+            logger.error("open-o portal register task failed.");
+            logger.error(e.getMessage());
         }
     }
 
@@ -107,7 +110,7 @@ public class RegisterService {
         }
     }
 
-    private static String registerPortalService(String url, JSONObject json, String token) {
+    private static String registerPortalService(String serviceName, String url, JSONObject json, String token) {
         DefaultHttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(url);
         String response = null;
@@ -132,9 +135,10 @@ public class RegisterService {
                     response = null;
                 }
             }
+            logger.info("register task [" + serviceName + "] completed successfully.");
         } catch (Exception e) {
-            // TODO
-            e.printStackTrace();;
+            logger.error("register task [" + serviceName + "] failed because of errors.");
+            logger.error(e.getMessage());
         }
 
         return response;
