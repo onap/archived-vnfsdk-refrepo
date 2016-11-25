@@ -56,6 +56,8 @@ public class HttpCode {
      * Http response is ok.
      */
     public static final int RESPOND_OK = 200;
+    
+    public static final int CREATED_OK = 201;
 
     /**
      * Conflict

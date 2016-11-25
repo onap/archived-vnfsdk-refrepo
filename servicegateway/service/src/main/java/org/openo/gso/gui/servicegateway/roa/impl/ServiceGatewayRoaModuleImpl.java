@@ -124,6 +124,6 @@ public class ServiceGatewayRoaModuleImpl implements IServiceGatewayRoaModule {
 	public void setServiceGateway(IServiceGateway serviceGateway) 
 	{
 		this.serviceGateway = serviceGateway;
-	}	
+	}
     
 }

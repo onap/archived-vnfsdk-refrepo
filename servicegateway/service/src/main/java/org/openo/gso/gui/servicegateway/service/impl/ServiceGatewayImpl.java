@@ -22,12 +22,14 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.openo.baseservice.remoteservice.exception.ExceptionArgs;
 import org.openo.baseservice.remoteservice.exception.ServiceException;
 import org.openo.baseservice.roa.util.restclient.RestfulFactory;
 import org.openo.baseservice.roa.util.restclient.RestfulParametes;
 import org.openo.baseservice.roa.util.restclient.RestfulResponse;
 import org.openo.baseservice.util.RestUtils;
 import org.openo.gso.gui.servicegateway.constant.Constant;
+import org.openo.gso.gui.servicegateway.exception.HttpCode;
 import org.openo.gso.gui.servicegateway.service.inf.IServiceGateway;
 import org.openo.gso.gui.servicegateway.util.json.JsonUtil;
 import org.openo.gso.gui.servicegateway.util.validate.ValidateUtil;
@@ -90,13 +92,24 @@ public class ServiceGatewayImpl implements IServiceGateway {
                     getRestfulParameters(JsonUtil.marshal(requestBody)));
         	LOGGER.info("Receive the cretation RESTful response from orchestrator.The status is:"+restfulRsp.getStatus()+" the content is:"+ 
                     restfulRsp.getResponseContent());
-            if (null != restfulRsp) {
+            if (null != restfulRsp) 
+            {
                 // Record the result of registration
                 // (201:success;415:Invalid Parameter;500:Internal Server Error)
-                LOGGER.info("restful call result:"+ restfulRsp.getStatus());
-                id = restfulRsp.getRespHeaderStr(Constant.SERVICE_ID);
-                id = (null == id) ? restfulRsp.getRespHeaderStr(Constant.NS_INSTANCE_ID) : id;
-                id = (null == id) ? restfulRsp.getRespHeaderStr(Constant.JOB_ID) : id;
+            	LOGGER.info("restful call result:"+ restfulRsp.getStatus());
+            	if(restfulRsp.getStatus() == HttpCode.RESPOND_ACCEPTED || restfulRsp.getStatus() == HttpCode.RESPOND_OK || restfulRsp.getStatus() == HttpCode.CREATED_OK)
+            	{       
+	                Map<String,Object> rspBody = JsonUtil.unMarshal(restfulRsp.getResponseContent(),Map.class);
+	                id = (String)rspBody.get(Constant.SERVICE_ID);
+	                id = (null == id) ? (String)rspBody.get(Constant.NS_INSTANCE_ID) : id;
+	                id = (null == id) ? (String)rspBody.get(Constant.JOB_ID) : id;
+            	}
+            	else
+            	{       		
+            		ExceptionArgs args = new ExceptionArgs();
+                    args.setDescArgs(new String[] {"Fail to create service:" + restfulRsp.getResponseContent()});  		
+                    throw new ServiceException(ServiceException.DEFAULT_ID, restfulRsp.getStatus(), args);
+            	}
             }
         } catch(ServiceException e) {
         	LOGGER.error("service gateway create restful call result:", e);
@@ -164,13 +177,14 @@ public class ServiceGatewayImpl implements IServiceGateway {
                 restfulRsp = RestfulFactory.getRestInstance("http").post(gatewayUri,
                         getRestfulParameters(JsonUtil.marshal(requestBody)));
                 if (null != restfulRsp) {
-                    String jobId = restfulRsp.getRespHeaderStr(Constant.JOB_ID);
+	                Map<String,Object> rspBody = JsonUtil.unMarshal(restfulRsp.getResponseContent(),Map.class);
+                    String jobId = (String)rspBody.get(Constant.JOB_ID);
                     result.put(Constant.JOB_ID, jobId);
                 }
             }
             if (null != restfulRsp) {
-                LOGGER.info("restful call result:", restfulRsp.getStatus());
-                LOGGER.info("restful call content:", restfulRsp.getResponseContent());
+                LOGGER.info("restful call result: {}", restfulRsp.getStatus());
+                LOGGER.info("restful call content:{}", restfulRsp.getResponseContent());
             }
             return result;
         } catch(ServiceException e) {
