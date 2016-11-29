@@ -27,7 +27,7 @@
     <groupId>org.openo.gso.gui</groupId>
     <artifactId>gso-gui</artifactId>
     <packaging>pom</packaging>
-    <name>gui</name>
+    <name>gso-gui</name>
     <modules>
         <module>openo-portal</module>
         <module>servicegateway</module>

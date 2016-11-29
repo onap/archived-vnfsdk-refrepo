@@ -23,7 +23,7 @@
     </parent>
 
     <artifactId>service-gateway-deployment</artifactId>
-    <name>ServiceGatewayRootDeployment</name>
+    <name>gso-gui/servicegateway/deployment</name>
     <packaging>pom</packaging>
 
     <properties>
