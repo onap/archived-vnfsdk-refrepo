@@ -30,6 +30,5 @@
     <name>gso-gui</name>
     <modules>
         <module>openo-portal</module>
-        <module>servicegateway</module>
     </modules>
 </project>
