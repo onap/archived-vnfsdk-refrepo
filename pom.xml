@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (C) 2015 ZTE, Inc. and others. All rights reserved. (ZTE)
+    Copyright (C) 2017 Huawei, Inc. and others. All rights reserved. (ZTE)
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -24,11 +24,19 @@
       <relativePath>../oparent</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.openo.gso.gui</groupId>
-    <artifactId>gso-gui</artifactId>
+    <groupId>org.openo.client.gui</groupId>
+    <artifactId>client-gui</artifactId>
     <packaging>pom</packaging>
-    <name>gso-gui</name>
+    <name>client-gui</name>
     <modules>
-        <module>openo-portal</module>
+        <module>portal-package</module>
+        <module>portal-framework</module>
+        <module>portal-resmgr</module>
+        <module>portal-extsys</module>
+        <module>portal-catalog</module>
+        <module>portal-auth</module>
+        <module>portal-lifecyclemgr</module>
+        <module>portal-performance</module>
+        <module>portal-monitor</module>        
     </modules>
 </project>
