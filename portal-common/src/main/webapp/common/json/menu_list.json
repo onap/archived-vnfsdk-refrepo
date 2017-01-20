@@ -1,0 +1,119 @@
+﻿{
+    "parentMenus":[
+        {
+            "id":"openo_menu_service",
+            "url":"",
+            "iconClass":"fa fa-comments"
+        },
+        {
+            "id":"openo_menu_resource_mgr",
+            "url":"",
+            "iconClass":"fa fa-folder-open-o"
+        },
+        {
+            "id":"openo_menu_user",
+            "url":"",
+            "iconClass":"fa fa-puzzle-piece"
+        },
+        {
+            "id":"openo_menu_orchestrator",
+            "url":"",
+            "iconClass":"fa fa-folder-open-o"
+        },
+        {
+            "id":"openo_menu_manage_view",
+            "url":"",
+            "iconClass":"fa fa-coffee"
+        },
+        {
+            "id":"openo_menu_performance",
+            "url":"",
+            "iconClass":"fa fa-bar-chart"
+        },
+        {
+            "id":"openo_menu_monitor",
+            "url":"",
+            "iconClass":"fa fa-desktop"
+        }
+    ],
+    "childMenus":[
+        {
+            "parentId":"openo_menu_service",
+            "id":"openo_menu_service_service_management",
+            "url":"../lifecyclemgr/gsolcmmain.html",
+            "iconClass":"fa fa-comments"
+        },
+        {
+                "parentId":"openo_menu_resource_mgr",
+                "id":"openo_menu_resource_mgr_sdno",
+                "url":"../resmgr-sdn/resource.html",
+                "iconClass":"fa fa-folder-open-o"
+        },
+        {
+                "parentId":"openo_menu_resource_mgr",
+                "id":"openo_menu_resource_mgr_nfvo",
+                "url":"../resmgr-nfv/resource.html",
+                "iconClass":"fa fa-folder-open-o"
+        },
+        {
+            "parentId":"openo_menu_user",
+            "id":"openo_menu_user_user_management",
+            "url":"../user/user.html",
+            "iconClass":"fa fa-puzzle-piece"
+        },
+		{
+            "parentId":"openo_menu_orchestrator",
+            "id":"openo_menu_orchestrator_model_design",
+            "url":"/winery/servicetemplates.html",
+            "iconClass":"fa fa-folder-open-o"
+        },
+        {
+            "parentId":"openo_menu_orchestrator",
+            "id":"openo_menu_orchestrator_package",
+            "url":"../catalog/csarPackage.html",
+            "iconClass":"fa fa-folder-open-o"
+        },
+        {
+            "parentId":"openo_menu_orchestrator",
+            "id":"openo_menu_orchestrator_service_template",
+            "url":"../catalog/template.html",
+            "iconClass":"fa fa-list-alt"
+        },
+        {
+            "parentId":"openo_menu_manage_view",
+            "id":"openo_menu_manage_view_vim_manage",
+            "url":"../extsys/vim/vimView.html",
+            "iconClass":"fa fa-coffee"
+        },
+        {
+            "parentId":"openo_menu_manage_view",
+            "id":"openo_menu_manage_view_vnfm",
+            "url":"../extsys/vnfm/vnfmView.html",
+            "iconClass":"fa fa-coffee"
+        },
+        {
+            "parentId":"openo_menu_manage_view",
+            "id":"openo_menu_manage_view_sdn_controller",
+            "url":"../extsys/sdncontroller/controller.html",
+            "iconClass":"fa fa-coffee"
+        },
+        {
+            "parentId":"openo_menu_performance",
+            "id":"openo_menu_performance_performance_query",
+            "url":"../performance/performance_view.html",
+            "iconClass":"fa fa-bar-chart"
+        },
+        {
+            "parentId":"openo_menu_performance",
+            "id":"openo_menu_alarm_alarm_query",
+            "url":"../performance/alarm_view.html",
+            "iconClass":"fa fa-bell"
+        },
+        {
+            "parentId":"openo_menu_monitor",
+            "id":"openo_menu_monitor_parameter_setting",
+            "url":"../monitor/monitorSettingList.html",
+            "iconClass":"fa fa-cogs"
+        }
+    ]
+}
