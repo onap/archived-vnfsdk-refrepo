@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016, CMCC Technologies Co., Ltd.
+ * Copyright 2016-2017, CMCC Technologies Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -303,7 +303,7 @@ pmUtil.setDateRange = function (dataRangeId, vm) {
 
 		startDate : "2015-12-31",
 
-		endDate : "2016-12-31",
+		endDate : "2016-2017-12-31",
 
 		//format: 'YYYY-MM-DD',
 		format : 'YYYY-MM-DD h:mm A',
