@@ -22,6 +22,7 @@ body {
     width: 100%;
     height: 100%;
     font-family: "Microsoft Yahei",Arial,Tahoma,Verdana,SimSun;
+    font-size: 12px;
 }
 
 .container{
@@ -74,12 +75,12 @@ body {
 }
 
 .openo_accordion_ui-icon-expand {
-    background: url(/images/collapse_arrow.png) right 20px no-repeat;
+    background: url(../thirdparty/images/collapse_arrow.png) right 20px no-repeat;
     margin-top: 8px;
 }
 
 .openo_accordion_ui-icon-expand.current {
-    background: url(../images/expand_arrow.png) right 20px no-repeat;
+    background: url(../thirdparty/images/expand_arrow.png) right 20px no-repeat;
 }
 
 .openoAccordian_showHideArrow_hide, .openoAccordian_showHideArrow_show {
@@ -232,7 +233,7 @@ a:hover {
     text-transform: capitalize;
     border-top: 2px solid #f1f1f1;
     border-bottom: 2px solid #f1f1f1;
-    padding: 15px 5px;
+    padding: 13px 5px;
     display: inline-block;
     letter-spacing: 5px;
     -webkit-animation: textScroll 500ms linear;
@@ -257,10 +258,10 @@ a:hover {
     to {opacity: 1;}
 }
 
-.modal-body span {
+/*.modal-body span {
     font-size: 18px;
     color: #00f;
-}
+}*/
 
 #msgModal .modal-body .container {
     width: 100%;
@@ -382,7 +383,7 @@ a:hover {
 
 #dropdown .dropup .dropdown-menu {
     top: auto;
-    bottom: 45% !important;
+    bottom: 34% !important;
     margin-bottom: 1px;
 }
 #dropdown .dropdown-menu {
@@ -666,7 +667,7 @@ a:hover {
 
 /* Functional & Notification*/
 
-#msgModal .modal-header, #funModal .modal-header {
+#myModal .modal-header, #msgModal .modal-header, #funModal .modal-header {
     padding: 9px 15px;
     border-radius: 5px 5px 0 0;
     color: #666;
@@ -688,7 +689,7 @@ a:hover {
 
 
 #myInput {
-    background-image: url('../images/searchicon.png'); /* Add a search icon to input */
+    background-image: url('../thirdparty/images/searchicon.png'); /* Add a search icon to input */
     background-position: 10px 9px; /* Position the search icon */
     background-repeat: no-repeat; /* Do not repeat the icon image */
     width: 100%; /* Full-width */
@@ -774,6 +775,9 @@ a:hover {
     text-align:center;
 }
 
+#provinceAction {
+    text-align: left;
+}
 #provinceTable th {
     background-color: #e3e3e3;
 }
@@ -797,10 +801,14 @@ a:hover {
     margin-top:50px;
     text-align:left;
     font-weight: bold;
+    font-family: "Microsoft Yahei",Arial,Tahoma,Verdana,SimSun;
 }
 .shortnoteText{
     margin-top:20px;
     text-align:left;
+    font-size:10px;
+    font-family: "Microsoft Yahei",Arial,Tahoma,Verdana,SimSun;
+
 }
 
 .ztree *{
@@ -820,7 +828,7 @@ a:hover {
 }
 
 #menu_accordion .collapsed span {
-    background: url(../images/expand_arrow.png) 1px 3px no-repeat;
+    background: url(../thirdparty/images/expand_arrow.png) 1px 3px no-repeat;
     display: block;
     float: left;
     margin-bottom: -1px;
@@ -829,7 +837,7 @@ a:hover {
     padding-left: 20px;
 }
 #menu_accordion span {
-    background: url(../images/collapse_arrow.png) 1px 3px no-repeat;
+    background: url(../thirdparty/images/collapse_arrow.png) 1px 3px no-repeat;
     display: block;
     float: left;
     margin-bottom: -1px;
@@ -870,4 +878,60 @@ a:hover {
 .errMsg{
 
     color:red;
+    float: left;
+}
+
+.customtable thead{
+    background: #ECECEC;
+}
+
+.customtable th,.table td{
+    /* padding-top: 3px!important; */
+    padding-bottom: 3px!important;
+}
+
+.customtable tr,.customtable td, .customtable th{
+    text-align:left;
+
+}
+
+.ng-table th.sortable .sort-indicator {
+    width:100%;
+    float:right;
+}
+
+.btn-group>.btn.active{
+    z-index: 2;
+    color: #fff;
+    background-color: #428bca;
+    border-color: #428bca;
+    cursor: default;
+}
+
+.customtable tbody tr:hover td{
+    background-color: #e6fbe0 !important;
+}
+
+.shortnote{
+    width:100%;
+    float:left;
+}
+
+.pagination{
+    float:left;
+}
+
+.btnmrg{
+    margin:0 5px 0 5px;
+}
+
+.labelstyle{
+    text-align:left;
+    font-size:12px;
+    font-family: "Microsoft Yahei",Arial,Tahoma,Verdana,SimSun;
+}
+
+.titlestyle{
+    font-size:14px !important;
+    font-family: "Microsoft Yahei",Arial,Tahoma,Verdana,SimSun;
 }

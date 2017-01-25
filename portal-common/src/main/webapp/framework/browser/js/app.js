@@ -16,6 +16,7 @@
 
 */
 
+
 var app = angular.module("POCApp", ["ui.router", "ngTable"])
 
     /*.run(function($rootScope, $location, $state, LoginService) {
@@ -116,13 +117,13 @@ var app = angular.module("POCApp", ["ui.router", "ngTable"])
             })
 
             .state("home.provinceMgmt", {
-                url: "/provinceMgmt",
-                templateUrl : "templates/provinceMgmt.html",
-                controller : "provinceMgmtCtrl",
+                url: "/management",
+                templateUrl : "templates/management.html",
+                controller : "managementCtrl",
                 authenticate: true
             })
             .state("home.tooltip", {
-                url: "/tooltip",
+                url: "/textarea",
                 templateUrl : "templates/textarea.html",
                 controller : "toolCtrl",
                 authenticate: true
@@ -781,7 +782,7 @@ var app = angular.module("POCApp", ["ui.router", "ngTable"])
 
 
         function loadTextArea() {
-            var text = $(modelTemplate).filter('#fname').html();
+            var text = $(modelTemplate).filter('#textfield').html();
             var email = $(modelTemplate).filter('#email').html();
             var url = $(modelTemplate).filter('#url').html();
             var password = $(modelTemplate).filter('#password').html();
@@ -797,7 +798,8 @@ var app = angular.module("POCApp", ["ui.router", "ngTable"])
 
             var note = $(modelTemplate).filter('#note').html();
 
-            var html = Mustache.to_html(text, $scope.errMsg);
+            var dataText = {"errMsg" :     {"textboxErr" : "The name is required.", "modalVar":"province.province_name", "placeholder":""}};
+            var html = Mustache.to_html(text, dataText.errMsg);
             $('#fname').html($compile(html)($scope));
 
             var html = Mustache.to_html(email, $scope.errMsg);
@@ -809,7 +811,8 @@ var app = angular.module("POCApp", ["ui.router", "ngTable"])
             var html = Mustache.to_html(password, $scope.errMsg);
             $('#password').html($compile(html)($scope));
 
-            var html = Mustache.to_html(numeric, $scope.errMsg);
+            var dataNum = {"errMsg" :     {"numericErr" : "The number is required.", "modalVar":"province.port", "placeholder":""}};
+            var html = Mustache.to_html(numeric, dataNum.errMsg);
             $('#numeric').html($compile(html)($scope));
 
 
@@ -828,7 +831,8 @@ var app = angular.module("POCApp", ["ui.router", "ngTable"])
             var html = Mustache.to_html(timeinput, $scope.errMsg);
             $('#timeinput').html($compile(html)($scope));
 
-            var html = Mustache.to_html(ipv4, $scope.errMsg);
+            var dataIP = {"errMsg" :     {"ipv4Err" : "The ipv4 is required.", "modalVar":"province.ip", "placeholder":""}};
+            var html = Mustache.to_html(ipv4, dataIP.errMsg);
             $('#ipv4').html($compile(html)($scope));
 
             var html = Mustache.to_html(ipv6, $scope.errMsg);
@@ -1095,8 +1099,8 @@ var app = angular.module("POCApp", ["ui.router", "ngTable"])
         }
     })
 
-    .controller("provinceMgmtCtrl", function($scope, $log, DataService, $state, $compile, NgTableParams){
-        $scope.message = "Province Management";
+    .controller("managementCtrl", function($scope, $log, DataService, $state, $compile, NgTableParams){
+        $scope.message = "Management";
         $scope.provinceTip = "shortNote";
         /*$scope.provinceData = [
             {id:1, province_name:'First', ip:'192.168.1.45', port:'8080'},
@@ -1149,7 +1153,7 @@ var app = angular.module("POCApp", ["ui.router", "ngTable"])
             $scope.checkboxes = { 'checked': false, items: {} };
 
             //var data = [{id: 1, name: "Moroni", age: 50}, {id: 2, name: "ABC", age: 30}, {id: 3, name: "Morhoni", age: 10}, {id: 4, name: "DABC", age: 31}, {id: 5, name: "Noor", age: 30}, {id: 6, name: "ABCD", age: 40}, {id: 7, name: "DABC", age: 31}, {id: 8, name: "Noor", age: 30}, {id: 9, name: "ABCD", age: 40}, {id: 10, name: "DABC", age: 31}, {id: 11, name: "Noor", age: 30}, {id: 12, name: "ABCD", age: 40}];
-            $scope.tableParams = new NgTableParams({count: 5, sorting: {id: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
+            $scope.tableParams = new NgTableParams({count: 5, sorting: {province_name: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
             }, { counts:[5, 10, 20, 50], dataset: $scope.provinceData});
 
             $scope.$watch('checkboxes.checked', function(value) {
@@ -1160,9 +1164,48 @@ var app = angular.module("POCApp", ["ui.router", "ngTable"])
                 });
             });
 
-            var modelBtn_data = {"title":"Close me", "clickAction":"closeModal()"};
-            var modelBtn_html = Mustache.to_html(def_button_tpl, modelBtn_data);
-            $('#myModal #footerBtns').append($compile(modelBtn_html)($scope));
+            var text = $(modelTemplate).filter('#textfield').html();
+            var ipv4 = $(modelTemplate).filter('#ipv4').html();
+            var number = $(modelTemplate).filter('#numeric').html();
+
+            var dataText = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"province.province_name", "placeholder":"Name"}};
+            $('#myModal .provinceName').html($compile(Mustache.to_html(text, dataText.ErrMsg))($scope));
+
+            var dataIP = {"ErrMsg" :     {"ipv4Err" : "The ipv4 is required.", "modalVar":"province.ip", "placeholder":"IP Address"}};
+            $('#myModal .ipAddress').html($compile(Mustache.to_html(ipv4, dataIP.ErrMsg))($scope));
+
+            var dataNum = {"ErrMsg" :     {"numericErr" : "The number is required.", "modalVar":"province.port", "placeholder":"Port"}};
+            $('#myModal .port').html($compile(Mustache.to_html(number, dataNum.ErrMsg))($scope));
+
+            var modelSubmit_data = {"title":"Submit", "clickAction":"saveData(province.id)"};
+            var modelSubmit_html = Mustache.to_html(def_button_tpl, modelSubmit_data);
+            $('#myModal #footerBtns').html($compile(modelSubmit_html)($scope));
+
+            var modelDelete_data = {"title":"Close", "clickAction":"closeModal()"};
+            var modelDelete_html = Mustache.to_html(def_button_tpl, modelDelete_data);
+            $('#myModal #footerBtns').append($compile(modelDelete_html)($scope));
+        }
+
+        $scope.validatetextbox = function (value){
+            if($scope.province.province_name) {
+                $scope.textboxErr = false;
+            }
+            else
+                $scope.textboxErr = true;
+        }
+        $scope.validateipv4 = function (value){
+            if($scope.province.ip) {
+                $scope.ipv4Err = false;
+            }
+            else
+                $scope.ipv4Err = true;
+        }
+        $scope.validatenumeric = function (value){
+            if($scope.province.port) {
+                $scope.numericErr = false;
+            }
+            else
+                $scope.numericErr = true;
         }
 
         $scope.closeModal = function() {
@@ -1182,6 +1225,9 @@ var app = angular.module("POCApp", ["ui.router", "ngTable"])
         $scope.showAddModal = function() {
             console.log("Showing Modal to Add data");
             $scope.province = {};
+            $scope.textboxErr = false;
+            $scope.ipv4Err = false;
+            $scope.numericErr = false;
             $("#myModal").modal();
         }
         $scope.saveData = function(id) {
@@ -1257,6 +1303,9 @@ var app = angular.module("POCApp", ["ui.router", "ngTable"])
         }
 
         $scope.editData = function(id) {
+            $scope.textboxErr = false;
+            $scope.ipv4Err = false;
+            $scope.numericErr = false;
             console.log("To be edited : " + id);
             var dataFound = false;
             angular.forEach($scope.provinceData, function(data) {
