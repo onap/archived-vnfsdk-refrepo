@@ -41,32 +41,7 @@
 
                 var jsonData = JSON.parse((params.get("json")));
                 if (jsonData != null) {
-                    $("body").empty();
-                    for(var key in jsonData.inputParameters){
-						var name = key;
-						if(name.includes('.'))
-						{
-							name = key.substring(key.lastIndexOf('.')+1,key.length);
-						}
-					    var paramValue = jsonData.inputParameters[key];
-						if(name.indexOf('location') != -1) {
-						    var vimObj  = getVimNameById(paramValue);
-							if(vimObj != undefined){
-								paramValue = vimObj.name;
-							}
-						}
-						else if(name.indexOf('sdncontroller') != -1){
-							var sdnControllerObj  = getSdnControllerNameById(paramValue);
-							if(sdnControllerObj != undefined){
-								paramValue = sdnControllerObj.name;
-							}
-						}		
-                        else{
-						    var nameObj = {name:key,showName:key};
-							name = showName(nameObj);
-                        }						
-                        $("body").append('<div class="mT15 form-group row" style="margin-top:35px;margin-left:15%"><div class="col-sm-5" align="left"><label class="control-label"><span style="font-size:16px;">'+ name + '</span></label></div><div class="col-sm-1" align="left"><span style="font-size:16px;">:</span></div><div class="col-sm-6"><input  type="text" name="" maxlength="256" style="margin-left:10px;width:250px;padding-left: 5px" data-toggle="tooltip" data-placement="top" title="'+ paramValue + '" value="'+ paramValue + '" readonly disabled/></div></div>');
-                    }
+                    document.getElementById("parametersDetail").innerHTML = convertInputsToUI('', 'show', jsonData.inputParameters);
                 }
 
             });
@@ -80,7 +55,9 @@
     </head>
 
 <body>
-
+<form class="form-horizontal" role="form">
+<div id="parametersDetail"></div>
+</form>
 </body>
 
 </html>
