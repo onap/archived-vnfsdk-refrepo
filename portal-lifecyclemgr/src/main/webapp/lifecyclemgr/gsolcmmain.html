@@ -44,11 +44,11 @@
             $('.modal-dialog').draggable();
            // $("#detailCont").show();
             var jsondata = loadGetServiceData();
-			
-			$.each(jsondata,function(k,v){
-			 jsondata[k].createTime=  new Date(jsondata[k].createTime).toUTCString();
-			});
-			
+            
+            $.each(jsondata,function(k,v){
+             jsondata[k].createTime=  new Date(jsondata[k].createTime).toUTCString();
+            });
+            
             $('#sai').bootstrapTable({
                 //Assigning data to table
                 data: jsondata
@@ -68,7 +68,7 @@
             
             $('#sai').bootstrapTable({}) .on('click-row.bs.table', function (e, row, $element) {
                 var newURL = "accorTables.html?serviceId="+row.serviceId + "&serviceType="+row.serviceType;
-			  //  var newURL = "accorTables.html?serviceId="+row.serviceId ;
+              //  var newURL = "accorTables.html?serviceId="+row.serviceId ;
                 console.log("URL: "+newURL);
                 document.getElementById("tabContainer").style.display = "none";
                 document.getElementById("detailConObj").setAttribute('data', newURL);
@@ -78,9 +78,9 @@
                 //loadIframe("topoFrame", "chartTopo.html?serviceId="+row.serviceId);
                 document.getElementById("topoContObj").setAttribute('data', 'TopoAccor.html?serviceId='+row.serviceId);
                 document.getElementById("topoContDlg").setAttribute('data', 'TopoAccor.html?serviceId='+row.serviceId);
-				document.getElementById('inputcontent').setAttribute('data', 'InputData.html?json='+ JSON.stringify(row));
+                document.getElementById('inputcontent').setAttribute('data', 'InputData.html?json='+ JSON.stringify(row));
                 document.getElementById('inputcontentDlg').setAttribute('data', 'InputData.html?json='+ JSON.stringify(row));
-           	});
+               });
             
         });
 
@@ -91,8 +91,8 @@
         }
         
         function operateFormatterServiceName(value, row, index){
-        	var temp = row.serviceId;
-        	return [
+            var temp = row.serviceId;
+            return [
                     '<a data-toggle="modal" href="#ModifyModal" style="text-decoration:underline" onclick="return anchorClick(' + temp + ')">' + value + '</a>'
                 ].join('');
         }
@@ -285,7 +285,7 @@
                                 <div class="DataTables_sort_wrapper openo-ellipsis ">
                                                 <span id="overlayDesc_sorticon"
                                                       class="openo-table-th-sorticon overflow_elip  leftHeaderAlign  openo-table-disable-element ">Service  Name
-							</span>
+                            </span>
                                 </div>
                             </th>
 
@@ -362,10 +362,10 @@
                     <div class="detail" style="margin:10px;border-radius:5px;">
                         <div class="detail-top" style="margin-top:10px;border-radius:5px;">
                          <span><h2 style="margin-left: 1%">Detailed Info</h2></span>
-						
+                        
 
-						
-						
+                        
+                        
                         <!--    <ul class="nav nav-tabs nav-justified vmapp-margin">
                                 <li class="active basic">
                                     <a href="#" onClick="showDetContMod();" id="" data-toggle="tab">
@@ -620,20 +620,20 @@
     </div>
 </div>
 <div class="modal fade" id="errorDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" 
-						aria-hidden="true">×
-				</button>
-				<h4 class="modal-title" id="errorDialogTitle"  style="text-align:center;"></h4>
-			</div>
-			<div class="modal-body" id = "errorDialogReason" style="margin-left:20px;margin-bottom:5px;margin-right:10px;"></div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">close</button>
-			</div>
-		</div>
-	</div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" 
+                        aria-hidden="true">×
+                </button>
+                <h4 class="modal-title" id="errorDialogTitle"  style="text-align:center;"></h4>
+            </div>
+            <div class="modal-body" id = "errorDialogReason" style="margin-left:20px;margin-bottom:5px;margin-right:10px;"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>

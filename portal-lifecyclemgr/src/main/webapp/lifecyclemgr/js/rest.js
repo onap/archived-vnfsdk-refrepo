@@ -51,7 +51,7 @@ $(function () {
     $('.table tr:odd').addClass('active');
     $('#false').click(function () {
         /*$('#vmAppDialog').addClass('in').css({'display': 'block'});*/
-	$('#vmAppDialog').modal();
+    $('#vmAppDialog').modal();
     });
     $('.close,.button-previous').click(function () {
         $('#vmAppDialog').removeClass('in').css('display', 'none');
@@ -126,9 +126,9 @@ $(function () {
  * @returns
  */
 function generateTemplatesComponent(){
-	var defer = $.Deferred();
-	$.when(
-    		queryTemplates()
+    var defer = $.Deferred();
+    $.when(
+            queryTemplates()
         ).then(
             function (tmplatesResponse) {
                 var templatesInfo = translateToTemplatesInfo(tmplatesResponse);
@@ -143,11 +143,11 @@ function generateTemplatesComponent(){
  * @returns
  */
 function queryTemplates() {
-	var queryTemplatesUrl = '/openoapi/catalog/v1/servicetemplates';
-	return $.ajax({
-		type : "GET",
-		url : queryTemplatesUrl
-	});
+    var queryTemplatesUrl = '/openoapi/catalog/v1/servicetemplates';
+    return $.ajax({
+        type : "GET",
+        url : queryTemplatesUrl
+    });
 }
 
 /**
@@ -156,14 +156,14 @@ function queryTemplates() {
  * @returns
  */
 function translateToTemplatesInfo(templates) {
-	var options = '<option value="select">--select--</option>';
-	var i;
-	for (i = 0; i < templates.length; i += 1) {
-		var option = '<option value="' + templates[i].serviceTemplateId + '">' + templates[i].templateName
-				+ '</option>';
-		options = options + option;
-	}
-	return options;
+    var options = '<option value="select">--select--</option>';
+    var i;
+    for (i = 0; i < templates.length; i += 1) {
+        var option = '<option value="' + templates[i].serviceTemplateId + '">' + templates[i].templateName
+                + '</option>';
+        options = options + option;
+    }
+    return options;
 }
 
 /*******************************************Get Service**********************************************/
@@ -188,7 +188,7 @@ function loadGetServiceData(){
             data: JSON.stringify(parameter),
             success : function(jsonobj) {
                 // TODO return according to the json data received.
-            	returnVal =  jsonobj;
+                returnVal =  jsonobj;
             },
             error : function(xhr, ajaxOptions, thrownError) {
                 alert("Error on getting link data : " + xhr.responseText);
@@ -211,7 +211,7 @@ function loadServiceDetails(serviceId){
             contentType : "application/json",
             success : function(jsonobj) {
                 // TODO return according to the json data received.
-            	returnObj = jsonobj;
+                returnObj = jsonobj;
             },
             error : function(xhr, ajaxOptions, thrownError) {
                 alert("Error on getting link data : " + xhr.responseText);
