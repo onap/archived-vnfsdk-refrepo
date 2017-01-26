@@ -1,0 +1,250 @@
+<!--
+    Copyright 2016-2017, CMCC Technologies Co., Ltd.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/openoui/common/thirdparty/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/openoui/common/thirdparty/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/openoui/common/css/ngict-component.css"/>
+    <link rel="stylesheet" type="text/css" href="/openoui/common/css/ZteIctIcons/style.css"/>
+    <link rel="stylesheet" type="text/css" href="/openoui/common/css/animate.css"/>
+    <link rel="stylesheet" type="text/css" href="css/dac.css"/>
+    <style>
+        .ms-controller {
+            visibility: hidden
+        }
+    </style>
+</head>
+<body>
+<div class="ms-controller container-fluid"  ms-controller="dacController">
+
+<div class="row" style=" margin-top: 15px;">
+         <div class="col-xs-6 col-sm-12 col-md-6  col-lg-6">
+           <span class=" titlefont" id="com_zte_openo_umc_monitor_monitorList_dac_manage" name_i18n="com_zte_openo_umc_monitor_ui_i18n">DAC Manage </span>
+         </div>  
+         <div class="pull-right">  
+          <a href="#" ms-click="gotoMonitorPage()" ><i class="fa fa-reply "></i> 
+          <span id="com_zte_openo_umc_monitor_return" name_i18n="com_zte_openo_umc_monitor_ui_i18n">return</span></a>
+
+         </div> 
+          
+   </div>
+   <div class="separator-line"></div>
+
+
+    <div id="dacDlg" class="modal  fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 id="myModalLabel" ms-text="dacDlgInfo.titleName"></h4>
+                    </div>
+                    <div class="modal-body">
+                       <div class="alert alert-info" ms-visible="server_rtn.info_block" ms-html="server_rtn.rtn_info"></div>
+                    <div class="alert alert-danger " ms-visible="server_rtn.warning_block" ms-text="server_rtn.rtn_info"></div>
+                        <form class="form-horizontal" id="dac_form" role="form">                        
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span id="com_zte_openo_umc_monitor_dac_label" name_i18n="com_zte_openo_umc_monitor_ui_i18n">Node Label</span>
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <div class="col-sm-7">
+                                    <input type="text"  ms-duplex="dacInfo.nodeLabel" name="nodeLabel" class="form-control"/>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span id="com_zte_openo_umc_monitor_dac_ipaddress" name_i18n="com_zte_openo_umc_monitor_ui_i18n">IP Address</span>
+                                    <span class="required" aria-required="true">*</span>
+                                </label>
+                                <div class="col-sm-7">
+                                    <input type="text"  name="ipAddress" ms-duplex="dacInfo.ipAddress" class="form-control" ms-attr-disabled="dacDlgInfo.saveType=='update'"/>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span id="com_zte_openo_umc_monitor_dac_note" name_i18n="com_zte_openo_umc_monitor_ui_i18n">Note</span>
+    
+                                </label>
+                                <div class="col-sm-7">
+                                    <textarea class="form-control"  name="note" ms-duplex="dacInfo.note"  rows="3"></textarea>
+                     
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                          <!--button class="btn btn-success" type="submit" ms-click="testDAC()">Access Test</button-->
+                        <button class="btn btn-primary" type="submit"  ms-click="saveDAC()" id="com_zte_openo_umc_monitor_btn_save" name_i18n="com_zte_openo_umc_monitor_ui_i18n" ms-attr-disabled="vm.dacChecking==true">Save</button>
+                         <button class="btn" data-dismiss="modal" aria-hidden="true" id="com_zte_openo_umc_monitor_btn_cancel" name_i18n="com_zte_openo_umc_monitor_ui_i18n">Cancel</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row-fluid" data-name="cond_zone">
+        <div class="col-sm-12">
+            <button class="btn white radius_l" id="app-new-btn" ms-click="addDAC()" >
+                <i class=" ict-new"></i> <span id="com_zte_openo_umc_monitor_dac_register" name_i18n="com_zte_openo_umc_monitor_ui_i18n">Register DAC</span>
+            </button>
+        </div>
+    </div>
+
+     <span class="response_throbber" ms-visible="vm.dacLoading"></span>
+
+     <div ms-visible="!vm.dacLoading">       
+    <div class="row" ms-each-dac="dacInfoArray">
+        <div class="col-sm-4 col-md-4  animated-panel zoomIn" style="-webkit-animation-delay: 0.1s;" >
+            <div class="hpanel stats" >
+          
+                <div class="panel-body h-200" >
+                    <div class="stats-icon pull-right">
+                        <i class="ict-it-net fa-5x color_cloud"></i>
+                    </div>
+                    <div class="m-t-xl">
+                        <h3>{{dac.nodeLabel}}</h3>
+                        <div class="hpanel_div_list"><span class="font-bold" id="com_zte_openo_umc_monitor_dac_panel_ipaddress" name_i18n="com_zte_openo_umc_monitor_ui_i18n">IP Address：</span><span>{{dac.ipAddress}}</span></div>
+                        <div class="hpanel_div_list"><span class="font-bold" id="com_zte_openo_umc_monitor_dac_panel_note" name_i18n="com_zte_openo_umc_monitor_ui_i18n">Note：</span><span>{{dac.note}}</span> </div>
+                    </div>
+                </div>
+               
+                <div class="panel-footer">
+                    <div  class="pull-right">
+                        <a class="btn btn-default btn-sm" ms-click="updateDAC(dac)"><i class="fa fa-pencil-square-o fa-lg"></i></a>
+                        <a class="btn btn-default btn-sm" ms-click="delDAC(dac.oid)"><i class="fa fa-trash-o fa-lg"> </i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    
+
+    </div>
+
+
+    <div class="row-fluid">
+        <div class="col-md-12" style="padding-left:0px;">
+            <div class="pull-left">
+                <small><span id="com_zte_openo_umc_monitor_monitorList_total" name_i18n="com_zte_openo_umc_monitor_ui_i18n">total</span>
+                 <span ms-text="dacInfoArray.size()"></span>
+                 <span id="com_zte_openo_umc_monitor_monitorList_records" name_i18n="com_zte_openo_umc_monitor_ui_i18n">records</span>
+                 </small>
+            </div>
+        </div>
+    </div>
+    </div>
+
+</div>
+
+<script type="text/javascript" src="/openoui/common/thirdparty/jquery/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="/openoui/common/thirdparty/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/openoui/common/thirdparty/jquery.i18n/jquery.i18n.properties-1.0.9.js"></script>
+<script type="text/javascript" src="/openoui/common/thirdparty/jquery-validation/js/jquery.validate.js"></script>
+<script type="text/javascript" src="/openoui/common/thirdparty/bootbox/bootbox.min.js"></script>
+<script type="text/javascript" src="/openoui/common/thirdparty/bootstrap-growl/bootstrap-growl.min.js"></script>
+<script type="text/javascript" src="/openoui/common/thirdparty/avalon/avalon.js"></script>
+<script type="text/javascript" src="/openoui/common/js/tools.js"></script>
+<script type="text/javascript" src="/openoui/common/js/core/hk.min.js" ></script>
+<script type="text/javascript" src="js/monitorSettingUtil.js"></script>
+<script type="text/javascript" src="js/dacController.js"></script>
+<script type="text/javascript" src="js/loadi18nApp_ngict-umc-monitor.js"></script>
+<script>
+  var lang= getLanguage();
+    loadPropertiesSideMenu(lang, 'umc-monitor-iui-i18n', 'i18n/');
+    
+    jQuery.validator.addMethod("ip", function(value, element) {    
+      return this.optional(element) || /^(([-9]|([1-9]\d)|(1\d\d)|(2([0-4]\d|5[0-5])))\.)(([0-9]|([1-9]\d)|(1\d\d)|(2([0-4]\d|5[0-5])))\.){2}([1-9]|([1-9]\d)|(1\d\d)|(2([0-4]\d|5[0-5])))$/.test(value);    
+    }, $.i18n.prop('com_zte_openo_umc_monitor_monitorsetting_ipaddress_format_errInfo'));
+
+ var form = $('#dac_form');
+  var error = $('.alert-danger', form);
+  var success = $('.alert-success', form);
+
+  form.validate({
+    doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
+    errorElement: 'span', //default input error message container
+    errorClass: 'help-block', // default input error message class
+    focusInvalid: false, // do not focus the last invalid input
+    rules: {     
+
+      nodeLabel:{
+        required: true,
+        maxlength:50
+      },
+      ipAddress:{
+        required: true,
+        ip:true,
+        maxlength:20
+      }
+    },
+    messages: { 
+        nodeLabel:{
+        required: $.i18n.prop('com_zte_openo_umc_monitor_dac_label_empty_errInfo')
+      },
+       ipAddress:{
+        required: $.i18n.prop('com_zte_openo_umc_monitor_dac_ipaddress_empty_errInfo')
+       
+      },     
+      
+    },
+    errorPlacement: function (error, element) { // render error placement for each input type
+      error.insertAfter(element); // for other inputs, just perform default behavior
+    },
+
+    invalidHandler: function (event, validator) { //display error alert on form submit   
+      success.hide();
+      error.show();
+      //ZteFrameWork.scrollTo(error, -200);
+    },
+
+    highlight: function (element) { // hightlight error inputs
+      $(element)
+        .closest('.form-group').removeClass('has-success').addClass('has-error'); // set error class to the control group
+    },
+
+    unhighlight: function (element) { // revert the change done by hightlight
+      $(element)
+        .closest('.form-group').removeClass('has-error'); // set error class to the control group
+    },
+
+    success: function (label) {
+      label
+        .addClass('valid') // mark the current input as valid and display OK icon
+        .closest('.form-group').removeClass('has-error'); // set success class to the control group
+    },
+    submitHandler: function (form) {
+      success.show();
+      error.hide();
+      //add here some ajax code to submit your form or just call form.submit() if you want to submit the form without ajax
+    }
+
+   });
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!--
+
+    Copyright 2016-2017, Huawei Technologies Co., Ltd.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+
+<h4>{{message}}</h4>
+<br><br>
+<div id="provinceAction" ng-init="init()">
+    <!--<button ng-click="showAddModal()" class="btnDefault pull-left">Add</button>-->
+    <!--<button ng-click="deleteData()" class="btnDefault pull-left prvdel">Delete Selected</button>-->
+</div>
+<br>
+<br>
+<!--<table id="provinceTable" class="table table-bordered table-striped">
+    <tr>
+        <th class="chkboxAlign"><input type="checkbox"  ng-model="selectAll" ng-click="checkAll()" /></th>
+        <th>Province Name</th>
+        <th>IP Address</th>
+        <th>Port</th>
+        <th></th>
+    </tr>
+    <tr ng-repeat="data in provinceData">
+        <td>
+            <input type="checkbox" ng-model="data.select">&lt;!&ndash;ng-true-value="'data.id'" ng-false-value="''"  ng-model="province.rows[$index]"&ndash;&gt;
+        </td>
+        <td class="tableAlign">{{data.province_name}}</td>
+        <td class="tableAlign">{{data.ip}}</td>
+        <td class="tableAlign">{{data.port}}</td>
+        <td>
+            <span class="pull-right glyphicon glyphicon-edit" ng-click="editData(data.id)" style="cursor: pointer;margin: 0 5px"></span>
+            <span class="pull-right glyphicon glyphicon-trash" ng-click="editData(data.id)" style="cursor: pointer;margin: 0 5px"></span>
+        </td>
+    </tr>
+</table>-->
+
+<table ng-table="tableParams" class="table table-bordered table-striped customtable" show-filter="true">
+    <tr ng-repeat="provinceData in $data">
+        <td header="'ng-table/headers/checkbox.html'">
+            <input type="checkbox" ng-model="checkboxes.items[provinceData.id]" />
+        </td>
+        <td title="'Name'" filter="{ province_name: 'text'}" sortable="'province_name'">
+            {{provinceData.province_name}}
+        </td>
+        <td title="'IP Address'" filter="{ ip: 'text'}" sortable="'ip'">
+            {{provinceData.ip}}
+        </td>
+        <td title="'Port'" filter="{ port: 'number'}" sortable="'port'">
+            {{provinceData.port}}
+        </td>
+        <td title="'Action'">
+            <span class="pull-right glyphicon glyphicon-edit" ng-click="editData(provinceData.id)" style="cursor: pointer;margin: 0 5px"></span>
+            <span class="pull-right glyphicon glyphicon-trash" ng-click="deleteIndividualData(provinceData.id)" style="cursor: pointer;margin: 0 5px"></span>
+        </td>
+    </tr>
+</table>
+
+
+<script type="text/ng-template" id="ng-table/headers/checkbox.html">
+    <input type="checkbox" ng-model="checkboxes.checked" name="filter-checkbox" value="" />
+</script>
+
+<div id="myTable"></div>
+
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h5 class="modal-title titlestyle">Modal Header</h5>
+            </div>
+            <form name="provinceForm" method="post"><!-- ng-submit="saveData(province.id)"-->
+                <div class="modal-body">
+
+                    <div class="form-group row">
+                        <label class="col-xs-4 col-form-label labelstyle">Name</label>
+                        <div class="col-xs-8 provinceName" >
+                            <!--<input class="form-control" ng-model="province.province_name" type="text" value="" placeholder="Province Name" id="pname" required><br>-->
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-xs-4 col-form-label labelstyle">IP Address</label>
+                        <div class="col-xs-8 ipAddress" >
+                            <!--<input class="form-control" ng-model="province.ip" type="ipv4" pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$" value="" placeholder="IP Address" id="ipaddress" required><br>-->
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="port" class="col-xs-4 col-form-label labelstyle">Port</label>
+                        <div class="col-xs-8 port" >
+                            <!--<input class="form-control" ng-model="province.port" type="number" value="" placeholder="Port" id="port"  required>-->
+
+                        </div>
+                    </div>
+
+                    <!--<input type="submit" class="btn btn-default" value="validate"/>-->
+
+                </div>
+
+                <div id="footerBtns" class="modal-footer">
+                    <!--<button type="button" class="btn btn-default" ng-click="addData(province._id)" data-dismiss="modal" ng-disabled="provinceForm.$invalid">OK</button>-->
+                    <!--<input type="submit" class="btn btn-default" value="Submit"/>-->
+                    <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+                </div>
+            </form>
+        </div>
+
+
+    </div>
+</div>
+
+<div class="shortnote">
+    <div class="shortnoteHeader">ShortNote</div>
+    <div class="shortnoteText"> {{provinceTipData}}</div>
+</div>
