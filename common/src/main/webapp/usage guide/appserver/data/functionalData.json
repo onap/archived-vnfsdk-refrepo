@@ -1,0 +1,6 @@
+{
+  "create_data" : {"title":"Create", "labels":[{"text": "Username", "input_id":"username", "type":"text"},{"text": "Password", "input_id":"username", "type":"password"}], "showClose":"true","closeBtnTxt":"Cancel","msg":"This is Create dialog box", "buttons":[{"text": "Ok"}]},
+  "modify_data" : {"title":"Modify", "labels":[{"text": "Username", "input_id":"username", "type":"text"},{"text": "Password", "input_id":"username", "type":"password"}], "showClose":"true","closeBtnTxt":"Cancel","msg":"This is Modify dialog box", "buttons":[{"text": "Ok"}]},
+  "delete_data" : {"title":"Delete", "showClose":"true","closeBtnTxt":"Cancel","msg":"This is Delete dialog box", "buttons":[{"text": "Ok"}]},
+  "workflow_data" : {"title":"Workflow","showClose":"true","closeBtnTxt":"Cancel","msg":"This is Workflow dialog box", "buttons":[{"text": "Ok"}]}
+}
