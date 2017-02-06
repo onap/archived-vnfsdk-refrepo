@@ -15,12 +15,87 @@
  */
 $(document).ready(function() {
     var USER_SERVICE = "/openoapi/auth/v1/users";
+    var ROLE_SERVICE = "/openoapi/auth/v1/roles";
     var userId;
+    var roleMap=[];
     function initialPage() {
         userId = getId();
         getUserDetails(userId).done(function(data) {
             listUserDetails(data);
         });
+
+        //init listener
+    $(".dropdown dt a").on('click', function() {
+    $(".dropdown dd ul").slideToggle('fast');
+    });
+
+    $(".dropdown dd ul li a").on('click', function() {
+      $(".dropdown dd ul").hide();
+    });
+
+    function getSelectedValue(id) {
+      return $("#" + id).find("dt a span.value").html();
+    }
+
+    $(document).bind('click', function(e) {
+      var $clicked = $(e.target);
+      if (!$clicked.parents().hasClass("dropdown")) $(".dropdown dd ul").hide();
+    });
+
+		$('.mutliSelect input[type="checkbox"]').on('click', function() {
+			if($('.hida')[0].innerHTML=='Please select roles')
+			{
+			$('.hida')[0].innerHTML='';    
+			}
+			
+		  var title;
+		  if($('.multiSel').text() ==='')
+		  {
+			title = $(this).closest('.mutliSelect').find('input[type="checkbox"]').val(),
+			title = $(this).val();
+			}
+			else
+			{
+			title = $(this).closest('.mutliSelect').find('input[type="checkbox"]').val(),
+			title ="," + $(this).val();
+			
+			}
+			var oldText=$('.hida')[0].innerHTML;
+		  if ($(this).is(':checked')) {
+			if(oldText.length>0)
+			{
+				$('.hida')[0].innerHTML=oldText+','+title;
+			}
+			else
+			{
+				 $('.hida')[0].innerHTML=title;    
+			}
+
+		  } else {
+		   
+		   var rolesData = oldText.split(',');
+		   var rolesList='';
+			 for (var i = 0; i < rolesData.length ; i++) {
+				   if(title!=rolesData[i])
+				   {
+					if(i==0 || rolesList.length==0 )
+					{
+					rolesList=rolesData[i];
+					}
+					else
+					{
+					rolesList=rolesList+','+rolesData[i];
+					}
+				   }
+				}
+				if(rolesList.length ==0)
+				{
+					rolesList='Please select roles';
+				}
+			 $('.hida')[0].innerHTML=rolesList;   
+		  
+		  }
+		});
 
         /*initial the event*/
         $("#confirm").click(function(e) {
@@ -38,6 +113,16 @@ $(document).ready(function() {
         var data = {};
         data.description = $("#description").val();
         data.email = "xxxx@xxxx.com";
+        //get roles
+        var roles=[];
+        var rolesData = $('.hida').text().split(',');
+        for (var i = 0; i < rolesData.length ; i++) {
+            var temp = {};
+            temp.name=rolesData[i];
+            temp.id=roleMap[rolesData[i]];
+            roles.push(temp);
+        }
+        data.roles=roles;
         return data;
     }
     function getUserDetails(id) {
@@ -53,6 +138,75 @@ $(document).ready(function() {
     function listUserDetails(data) {
         $("#userName").val(data.name);
         $("#description").val(data.description);
+        var roles=formatRoles(data);
+        var rolesList='';
+        for (var i = 0; i < roles.length; i++) {
+           if(i==0 || rolesList.length==0 )
+            {
+            rolesList=roles[i].name;
+            }
+            else
+            {
+            rolesList=rolesList+','+roles[i].name;
+            }
+        }
+        if(rolesList.length ==0)
+        {
+            rolesList='Please select roles';
+        }
+        $('.hida')[0].innerHTML=rolesList; 
+     
+
+        //get and initialize roles
+         getRolesList().done(function(data) {
+                                    var allRoles = formatRoles(data);
+                                     for (var i = 0; i < allRoles.length; i++) {
+                                        var isExists=false;
+                                        for (var j = 0; j < roles.length; j++) {
+                                        if( roles[j].name== allRoles[i].name)
+                                        {
+                                        isExists=true;
+                                        break;
+                                        }
+                                        }
+                                         if(isExists)
+                                        {
+                                         var html = '<li><input type="checkbox" checked=true value="' + allRoles[i].name + '"/>' + allRoles[i].name + '</li>';
+                                         $('.mutliSelect ul').append(html);
+                                        }
+                                        else
+                                        {
+                                         var html = '<li><input type="checkbox" value="' + allRoles[i].name + '"/>' + allRoles[i].name + '</li>';
+                                         $('.mutliSelect ul').append(html);
+                                        }
+                                    }
+                                })
+    }
+
+
+        function getRolesList() {
+        return Rest.http({
+            url: ROLE_SERVICE + "?=" + new Date().getTime(),
+            type: "GET",
+            async: false,
+            contentType: 'application/json',
+            'beforeSend' : function(xhr) {
+            xhr.setRequestHeader("X-Auth-Token", "ffbf55c328464a9dbb1920aca768e0d2");
+    },
+            dataType: "json"
+        })
+    }
+
+     function formatRoles(data) {
+        var rolesData = [];
+        for (var i = 0; i < data.roles.length; i++) {
+            var temp = {};
+            temp.roleid = data.roles[i].id;
+            temp.name = data.roles[i].name;
+            rolesData.push(temp);
+            roleMap[temp.name]=temp.roleid;
+        }
+        return rolesData;
     }
 
     function modifyUser(data) {

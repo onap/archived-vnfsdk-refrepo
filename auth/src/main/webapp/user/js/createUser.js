@@ -16,12 +16,14 @@
 $(document).ready(function() {
 
     var USER_SERVICE = "/openoapi/auth/v1/users";
+    var ROLE_SERVICE = "/openoapi/auth/v1/roles";
     var $userName = $("#userName");
     var $password = $("#password");
     var $cfPsdError = $("#cfPsdError");
     var $userNameError = $("#userNameError");
     var $passwordError = $("#passwordError");
-
+    var $rolesError = $("#rolesError");
+    var roleMap=[];
     function initialPage() {
         /*initial the event*/
         $("#confirm").click(function(e) {
@@ -36,6 +38,110 @@ $(document).ready(function() {
         $("#cancel").click(function(e) {
             window.document.location = "/openoui/user/user.html";
         })
+    //get and initialize roles
+     getRolesList().done(function(data) {
+                                var data = formatRoles(data);
+                                   for (var i = 0; i < data.length; i++) {
+                                 var html = '<li><input type="checkbox" value="' + data[i].name + '"/>' + data[i].name + '</li>';
+                                 $('.mutliSelect ul').append(html);
+                                }
+                            })
+    
+    //init listener
+		$(".dropdown dt a").on('click', function() {
+		  $(".dropdown dd ul").slideToggle('fast');
+		});
+
+		$(".dropdown dd ul li a").on('click', function() {
+		  $(".dropdown dd ul").hide();
+		});
+
+		function getSelectedValue(id) {
+		  return $("#" + id).find("dt a span.value").html();
+		}
+
+		$(document).bind('click', function(e) {
+		  var $clicked = $(e.target);
+		  if (!$clicked.parents().hasClass("dropdown")) $(".dropdown dd ul").hide();
+		});
+
+		$('.mutliSelect input[type="checkbox"]').on('click', function() {
+			if($('.hida')[0].innerHTML=='Please select roles')
+			{
+			$('.hida')[0].innerHTML='';    
+			}
+			
+		  var title;
+		  if($('.multiSel').text() ==='')
+		  {
+			title = $(this).closest('.mutliSelect').find('input[type="checkbox"]').val(),
+			title = $(this).val();
+			}
+			else
+			{
+			title = $(this).closest('.mutliSelect').find('input[type="checkbox"]').val(),
+			title ="," + $(this).val();
+			
+			}
+			var oldText=$('.hida')[0].innerHTML;
+		  if ($(this).is(':checked')) {
+			if(oldText.length>0)
+			{
+				$('.hida')[0].innerHTML=oldText+','+title;
+			}
+			else
+			{
+				 $('.hida')[0].innerHTML=title;    
+			}
+
+		  } else {
+		   
+		   var rolesData = oldText.split(',');
+		   var rolesList='';
+			 for (var i = 0; i < rolesData.length ; i++) {
+				   if(title!=rolesData[i])
+				   {
+					if(i==0 || rolesList.length==0 )
+					{
+					rolesList=rolesData[i];
+					}
+					else
+					{
+					rolesList=rolesList+','+rolesData[i];
+					}
+				   }
+				}
+				if(rolesList.length ==0)
+				{
+					rolesList='Please select roles';
+				}
+			 $('.hida')[0].innerHTML=rolesList;   
+		  
+		  }
+		});
+
+    }
+
+    function getRolesList() {
+        return Rest.http({
+            url: ROLE_SERVICE + "?=" + new Date().getTime(),
+            type: "GET",
+            async: false,
+            contentType: 'application/json',
+	    dataType: "json"
+        })
+    }
+
+    function formatRoles(data) {
+        var rolesData = [];
+        for (var i = 0; i < data.roles.length; i++) {
+            var temp = {};
+            temp.roleid = data.roles[i].id;
+            temp.name = data.roles[i].name;
+            rolesData.push(temp);
+            roleMap[temp.name]=temp.roleid;
+        }
+        return rolesData;
     }
 
     function getCreateUser() {
@@ -44,6 +150,16 @@ $(document).ready(function() {
         data.password = $password.val();
         data.description = $("#description").val();
         data.email = "xxxx@xxxx.com";
+        //get roles
+        var roles=[];
+        var rolesData = $('.hida').text().split(',');
+        for (var i = 0; i < rolesData.length ; i++) {
+            var temp = {};
+            temp.name=rolesData[i];
+            temp.id=roleMap[rolesData[i]];
+            roles.push(temp);
+        }
+        data.roles=roles;
         return data;
     }
 
@@ -85,6 +201,11 @@ $(document).ready(function() {
 
         if ($password.val() == "") {
             showError($passwordError, "Mandatory.");
+            return false;
+        }
+		if($('.hida')[0].innerHTML=='Please select roles')
+		{
+			showError($rolesError, "Mandatory.");
             return false;
         }
         return true;

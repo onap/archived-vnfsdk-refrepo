@@ -20,7 +20,8 @@ $(document).ready(function() {
 
     var userListHeader = [
         { title: "User", data: "User",width: "20%"},
-        { title: "Description", data: "Description",width: "60%"},
+        { title: "Description", data: "Description",width: "30%"},
+        { title: "Roles", data: "Roles",width: "30%"},
         { title: "Operations", data: "Operations",width: "20%"}
     ];
     function initialPage() {
@@ -32,6 +33,15 @@ $(document).ready(function() {
         }).error(function(data) {
             if (data.status == 403) {
                 $(".hw_body").html("<span style='font-size:20px;'>" + JSON.parse(data.responseText).error.message + "</span>");
+            } else {
+                var userListHeader = [
+                    { title: "User", data: "User",width: "20%"},
+                    { title: "Description", data: "Description",width: "30%"},
+                    { title: "Roles", data: "Roles",width: "30%"},
+                    { title: "Operations", data: "Operations",width: "20%"}
+                ];
+                Table.create("", "table_id", userListHeader);
+                $(".hw_body").css("visibility", "visible");
             }
         });
 
@@ -92,6 +102,20 @@ $(document).ready(function() {
             temp.rowid = data[i].id;
             temp.User = data[i].name;
             temp.Description = data[i].description;
+            temp.Roles='';
+            
+            for (var j = 0; j < data[i].roles.length; j++) {
+                if(temp.Roles.length>0)
+                {
+                    temp.Roles=temp.Roles+','+data[i].roles[j].name;
+                }
+                else
+                {
+                    temp.Roles=data[i].roles[j].name;
+                }
+                
+            }
+           
             if (data[i].name == "admin") {
                 temp.Operations = editOpt;
             } else {
