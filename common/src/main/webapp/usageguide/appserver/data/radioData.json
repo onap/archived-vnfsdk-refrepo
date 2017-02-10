@@ -1,0 +1,14 @@
+{
+  "radio_btn_default_data" : {"id":1, "label":"Default Radio Btn", "type":"default", "checked":false},
+  "radio_btn_primary_data" : {"id":2, "label":"Primary Radio Btn", "type":"primary", "checked":false},
+  "radio_btn_success_data" : {"id":3, "label":"Success Radio Btn", "type":"success", "checked":true},
+  "radio_btn_danger_data" : {"id":4, "label":"Error Radio Btn", "type":"danger", "checked":false},
+  "radio_btn_Warn_data" : {"id":5, "label":"Warn Radio Btn", "type":"warning", "checked":false},
+  "radio_btn_info_data" : {"id":6, "label":"Info Radio Btn", "type":"info", "checked":false}
+}
+
+
+
+
+
+

@@ -1,0 +1,93 @@
+<!--
+
+    Copyright 2016-2017, Huawei Technologies Co., Ltd.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+
+<div class="container col-sm-12 col-md-12 col-lg-12">
+    <h4>{{message}}</h4>
+
+    <div id="listArea" class="container col-sm-12 col-md-12 col-lg-12" ng-init="init()">
+        <div id="list1" class="list col-sm-4 col-md-4 col-lg-4">
+            <div ng-repeat="item in mainlistItem">
+                <button type="button" class="btn btn-primary btn-block" ng-click="loadSubMenuPage($index)">{{item.title}}</button>
+            </div>
+        </div>
+        <div id="list2" class="list col-sm-4 col-md-4 col-lg-4">
+            <div ng-repeat="subitem in subMenuListItem">
+                <button type="button" class="btn btn-primary btn-block" ng-click="loadSubSubMenuPage($index)">{{subitem.title}}</button>
+            </div>
+        </div>
+        <div id="list3" class="list col-sm-4 col-md-4 col-lg-4">
+            <div ng-repeat="subsubitem in subsubMenuListItem">
+                <button type="button" class="btn btn-primary btn-block">{{subsubitem.title}}</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!--    <test method='parentClick()'></test>-->
+    <div class="col-sm-12 col-md-12 col-lg-12 shortnote">
+        <div class="shortnoteHeader">Usage</div>
+        <div class="shortnoteText">Create a div tag  in html file with specific id  for example listArea and write a specific function in javascript file to perform your business logic. An sample example as shown below:</div>
+        <br>
+        <div>HTML file:</div>
+        <pre><code> &ltdiv id="listArea" ng-init="init()"&gt
+        &ltdiv id="list1"&gt
+            &ltdiv ng-repeat="item in mainlistItem"&gt
+                &ltbutton type="button" class="btn btn-primary btn-block" ng-click="loadSubMenuPage($index)"&gt&#123 &#123item.title&#125 &#125&lt/button&gt
+            &lt/div&gt
+        &lt/div&gt
+        &ltdiv id="list2"&gt
+            &ltdiv ng-repeat="subitem in subMenuListItem"&gt
+                &ltbutton type="button" class="btn btn-primary btn-block" ng-click="loadSubSubMenuPage($index)"&gt&#123 &#123subitem.title&#125 &#125&lt/button&gt
+            &lt/div&gt
+        &lt/div&gt
+        &ltdiv id="list3"&gt
+            &ltdiv ng-repeat="subsubitem in subsubMenuListItem"&gt
+                &ltbutton type="button" class="btn btn-primary btn-block"&gt&#123 &#123subsubitem.title&#125 &#125&lt/button&gt
+            &lt/div&gt
+        &lt/div&gt
+
+    &lt/div&gt</code></pre>
+        <br>
+        <div>Javascript file:</div>
+        <pre><code>
+        var data ={"id": "113","title": "Movies","subMenu": [{"title":"Sci-fi","subsubMenu":[{"title":"Intersteller"},{"title":"Inception"},{"title":"The Arrival"},
+            {"title":"The Paycheck"}]}};
+
+        $scope.init = function() {
+            $scope.mainlistItem = data;
+        }
+
+        $scope.loadSubMenuPage = function(index) {
+            $log.info($scope.mainlistItem);
+            $scope.subMenuListItem = $scope.mainlistItem[index].subMenu;
+            $scope.subsubMenuListItem = [];
+        }
+        $scope.loadSubSubMenuPage = function(index) {
+            $log.info($scope.subMenuListItem);
+            console.log("index: "+index);
+            $scope.subsubMenuListItem = $scope.subMenuListItem[index].subsubMenu;
+        }</code></pre>
+
+
+
+
+
+        </div>
+    </div>
+</div>
+

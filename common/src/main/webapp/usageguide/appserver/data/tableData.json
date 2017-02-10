@@ -1,0 +1,71 @@
+{
+  "basic_table_data": {
+    "itemHeader": ["First Name", "Last Name", "Age"],
+    "rowitem": [
+      {"values": ["A", "B","1"]},
+      {"values": ["C", "D", "2"]},
+      {"values": ["E", "F", "3"]}
+    ],
+    "striped": false,
+    "border": false,
+    "hover": true,
+    "condensed": false,
+    "filter": false,
+    "action": "",
+    "searchField": ""
+  },
+
+  "str_table_data": {
+    "itemHeader": [
+      "First Name",
+      "Last Name",
+      "Age"
+    ],
+    "rowitem": [
+      {
+        "values": [
+          "A",
+          "B",
+          "1"
+        ]
+      },
+      {
+        "values": [
+          "C",
+          "D",
+          "2"
+        ]
+      },
+      {
+        "values": [
+          "E",
+          "F",
+          "3"
+        ]
+      }
+    ],
+    "striped": true,
+    "border": true,
+    "hover": false,
+    "condensed": true,
+    "filter": false,
+    "action": "",
+    "searchField": ""
+  },
+
+  "cond_table_data": [
+    {
+      "countryName": "China",
+      "language": "Mandrain"
+    },
+    {
+      "countryName": "India",
+      "language": "English"
+    },
+    {
+      "countryName": "USA",
+      "language": "English"
+    }
+  ]
+}
+

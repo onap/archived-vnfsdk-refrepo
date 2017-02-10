@@ -1,0 +1,30 @@
+{
+  "default_btn_data" : {
+    "def_button" : {"title":"Default"},
+    "def_print_button" : {"title":"Print", "type":"btn btn-default", "gType": "glyphicon-print", "iconPosition":"left"},
+    "def_print_button_right" : {"title":"Search", "type":"btn btn-default", "gType": "glyphicon-search", "iconPosition":"right"}
+  },
+
+  "visual_btn_data" : {
+    "vis_pri_btn_data" : {"title":"Primary", "type":"primary"},
+    "vis_sec_btn_data" : {"title":"Secondary", "type":"secondary"},
+    "vis_succ_btn_data" : {"title":"Success", "type":"success"},
+    "vis_inf_btn_data" : {"title":"Info", "type":"info"},
+    "vis_warn_btn_data" : {"title":"Warning", "type":"warning"},
+    "vis_dang_btn_data" : {"title":"Danger", "type":"danger"},
+    "vis_link_btn_data" : {"title":"Link", "type":"link"}
+  },
+
+  "diffSize_btn_data" : {
+    "size_small_btn_data" : {"title": "Small Button", "type": "primary", "size": "btn-sm"},
+    "size_large_btn_data" : {"title": "Large Button", "type": "primary", "size": "btn-lg"},
+    "size_block_btn_data" : {"title": "Large Block Button", "type": "primary", "size": "btn-lg btn-block"}
+  },
+
+  "icon_btn_data" : {
+    "search_icon_btn_data" : {"title": "Search Icon", "type": "btn-default", "gType": "glyphicon-search"},
+    "search_icon_styled_btn_data" : {"title": "Styled Search Icon", "type": "primary", "gType": "glyphicon-search"},
+    "print_icon_btn_data" : {"title": "Print", "type": "primary btn-lg", "gType": "glyphicon-print"}
+  }
+
+}

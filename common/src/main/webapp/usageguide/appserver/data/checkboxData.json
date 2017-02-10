@@ -1,0 +1,8 @@
+{
+  "checkbox_default_data" : {"id":1, "label":"Default check box", "type":"default", "checked":true},
+  "checkbox_primary_data" : {"id":2, "label":"Primary check box", "type":"primary", "checked":false},
+  "checkbox_success_data" : {"id":3, "label":"Success check box", "type":"success", "checked":true},
+  "checkbox_danger_data" : {"id":4, "label":"Error check box", "type":"danger", "checked":true},
+  "checkbox_warn_data" : {"id":5, "label":"Warn check box", "type":"warning", "checked":false},
+  "checkbox_info_data" : {"id":6, "label":"Info check box", "type":"info", "checked":true}
+}

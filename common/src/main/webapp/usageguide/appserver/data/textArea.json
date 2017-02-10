@@ -1,0 +1,111 @@
+{
+  "Note" : {
+    "message" : "Hi I am Note",
+    "placement" : "bottom"
+ },
+ 
+ "Textbox" : {
+    "errmsg" : "The name is required.",
+    "placeholder" : "Text",
+    "modalVar":"textbox",
+    "errtag":"textboxErr",
+    "errfunc":"validatetextbox"
+},
+
+ "Email" : {
+    "errmsg" : "The email is required.",
+    "placeholder" : "Email",
+    "modalVar":"email",
+    "errtag":"emailErr",
+    "errfunc":"validateemail"
+},
+
+"Url" : {
+    "errmsg" : "The url is required.",
+    "placeholder" : "Url",
+    "modalVar":"url",
+    "errtag":"urlErr",
+    "errfunc":"validateurl"
+},
+
+"Password" : {
+    "errmsg" : "The password is required.",
+    "placeholder" : "Password",
+    "modalVar":"password",
+    "errtag":"passwordErr",
+    "errfunc":"validatepassword"
+},
+
+"Number" : {
+    "errmsg" : "The number is required.",
+    "placeholder" : "Number",
+    "modalVar":"number",
+    "errtag":"numericErr",
+    "errfunc":"validatenumeric"
+},
+
+"Datetime" : {
+    "errmsg" : "The datetime is required.",
+    "placeholder" : "Datetime",
+    "modalVar":"datetime",
+    "errtag":"dotErr",
+     "errfunc":"validatedot"
+},
+
+"Date" : {
+    "errmsg" : "The date is required.",
+    "placeholder" : "Date",
+    "modalVar":"date",
+    "errtag":"dateinputErr",
+    "errfunc":"validatedateinput"
+},
+
+"Month" : {
+    "errmsg" : "The month is required.",
+    "placeholder" : "Month",
+    "modalVar":"month",
+    "errtag":"monthinputErr",
+    "errfunc":"validatemonthinput"
+},
+
+"Week" : {
+    "errmsg" : "The week is required.",
+    "placeholder" : "Week",
+    "modalVar":"week",
+    "errtag":"weekinputErr",
+    "errfunc":"validateweek"
+},
+
+"Time" : {
+    "errmsg" : "The time is required.",
+    "placeholder" : "Time",
+    "modalVar":"time",
+    "errtag":"timeinputErr",
+    "errfunc":"validatetime"
+},
+
+"Ipv4" : {
+    "errmsg" : "The Ipv4 is required.",
+    "placeholder" : "Ipv4",
+    "modalVar":"ipv4",
+    "errtag":"ipv4Err",
+    "errfunc":"validateipv4"
+},
+
+"Ipv6" : {
+    "errmsg" : "The Ipv6 is required.",
+    "placeholder" : "Ipv6",
+    "modalVar":"ipv6",
+    "errtag":"ipv6Err",
+    "errfunc":"validateipv6"
+},
+
+"TextArea" : {
+    "errmsg" : "The textarea is required.",
+    "placeholder" : "Textarea",
+    "modalVar":"textarea",
+    "errtag":"ipv6Err",
+    "errfunc":"validateipv6"
+}
+
+}

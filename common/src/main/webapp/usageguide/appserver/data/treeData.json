@@ -1,0 +1,43 @@
+[
+  {
+    "name": "Java and its divisions",
+    "open": true,
+    "children": [
+      { "name": "Java Standard Edition, J2SE" },
+      { "name": "Java Enterprise Edition, J2EE" },
+      { "name": "Java Mobile Edition, J2ME"}
+    ]
+  },
+  {
+    "name": "UI",
+    "open": true,
+    "children": [
+      { "name": "Hyper Text Markup Language, HTML"},
+      { "name": "Cascading Style Sheets, CSS"},
+      { "name": "JavaScript, JS",
+        "children": [
+          { "name": "Bootstrap JS" },
+          { "name": "Mustache JS" },
+          { "name": "Angular JS" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Server",
+    "open": true,
+    "children" : [
+      { "name": "Node JS"},
+      { "name": "Express JS"},
+      { "name": "PHP"}
+    ]
+  },
+  {
+    "name": "Java backend",
+    "open": true,
+    "children" : [
+      { "name": "Spring MVC"},
+      { "name": "Hibernate"}
+    ]
+  }
+]
