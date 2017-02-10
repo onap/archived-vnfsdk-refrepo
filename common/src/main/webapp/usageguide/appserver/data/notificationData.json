@@ -1,0 +1,42 @@
+{
+  "err_data" : {
+    "title": "Error",
+    "showClose": "true",
+    "closeBtnTxt": "Ok",
+    "icon": "glyphicon glyphicon-exclamation-sign",
+    "iconColor": "icon_error",
+    "msg": "<<Please input your message here>>",
+    "buttons": []
+  },
+  "warn_data" : {
+    "title": "Warning",
+    "showClose": "true",
+    "closeBtnTxt": "Ok",
+    "icon": "glyphicon glyphicon-warning-sign",
+    "iconColor": "icon_warning",
+    "msg": "<<Please input your message here>>",
+    "buttons": []
+  },
+  "info_data" : {
+    "title": "Information",
+    "showClose": "true",
+    "closeBtnTxt": "Ok",
+    "icon": "glyphicon glyphicon-info-sign",
+    "iconColor": "icon_info",
+    "msg": "<<Please input your message here>>",
+    "buttons": []
+  },
+  "confirm_data" : {
+    "title": "Confirmation",
+    "showClose": "true",
+    "closeBtnTxt": "Cancel",
+    "icon": "glyphicon glyphicon-info-sign",
+    "iconColor": "con_confirm",
+    "msg": "<<Please input your message here>>",
+    "buttons": [
+      {
+        "text": "Ok"
+      }
+    ]
+  }
+}

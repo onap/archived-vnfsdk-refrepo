@@ -1,0 +1,18 @@
+{
+  "dropped_down_data" :{"title":"DropDown","position":"down", "items":[{"itemLabel": "Node JS"},{"itemLabel": "JS"}]},
+  "dropped_up_data" : {"title":"DropUp","position":"up", "items":[{"itemLabel": "PHP"},{"itemLabel": "ASP"}]},
+  "dropHeader_data" :{"title":"DropHeader","position":"down",
+    "items":[{"itemLabel": "Web UI", "isheader":true},
+      {"itemLabel": "HTML", "isheader":false},
+      {"itemLabel": "CSS", "isheader":false},
+      {"itemLabel": "JS", "isheader":false},
+      {"itemLabel": "Programming", "isheader":true},
+      {"itemLabel": "C", "isheader":false},
+      {"itemLabel": "C++", "isheader":false}]
+  },
+  "dropSimple_data" : {"title":"--Please Select--",
+    "items":[
+      {"itemLabel": "Cameras"},{"itemLabel": "Mobile Phones"},{"itemLabel": "Computers"},{"itemLabel": "Monitors"},{"itemLabel": "Tablets"},{"itemLabel": "Others"}
+    ]
+  }
+}

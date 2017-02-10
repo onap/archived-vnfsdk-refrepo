@@ -1,0 +1,24 @@
+{
+  "accordion_data": {
+    "items": [
+      {
+        "tabId": "tab1",
+        "header": "Tab1",
+        "isActive": true,
+        "msg": "This is in Collapsible Group 1 and this attribute makes sure that all collapsible elements under the specified parent will be closed when one of the collapsible item is shown."
+      },
+      {
+        "tabId": "tab2",
+        "header": "Tab2",
+        "isActive": false,
+        "msg": "This is in Collapsible Group 2 and this attribute makes sure that all collapsible elements under the specified parent will be closed when one of the collapsible item is shown."
+      },
+      {
+        "tabId": "tab3",
+        "header": "Tab3",
+        "isActive": false,
+        "msg": "This is in Collapsible Group 3 and this attribute makes sure that all collapsible elements under the specified parent will be closed when one of the collapsible item is shown."
+      }
+    ]
+  }
+}

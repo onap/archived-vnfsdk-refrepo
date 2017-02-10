@@ -1,0 +1,76 @@
+[
+  {
+    "id": "113",
+    "title": "Movies",
+     "subMenu": [
+       {
+         "title":"Sci-fi",
+         "subsubMenu":[
+           {"title":"Intersteller"},
+           {"title":"Inception"},
+           {"title":"The Arrival"},
+           {"title":"The Paycheck"}
+         ]
+       },
+       {
+         "title":"Animation",
+         "subsubMenu":[
+           {"title":"Big Hero"},
+           {"title":"Monster University"},
+           {"title":"Frozen"},
+           {"title":"Car"}
+         ]
+       },
+       {
+         "title":"Action",
+         "subsubMenu":[
+           {"title":"Mission Impossible"},
+           {"title":"The Expendables"}
+         ]
+       },
+       {
+         "title":"Horror",
+         "subsubMenu":[
+           {"title":"Evil Dead"},
+           {"title":"Anebelle"}
+         ]
+       },
+       {
+         "title":"Comedy",
+         "subsubMenu":[
+           {"title":"Superbad"},
+           {"title":"Airplane"},
+           {"title":"Clueless"}
+         ]
+       }
+     ]
+  },
+  {
+    "id": "211",
+    "title": "Games",
+    "subMenu": [{"title":"Outdoor Games", "subsubMenu":[{"title":"Cricket"},{"title":"Football"}, {"title":"Volleyball"}, {"title":"Hockey"}]}, {"title":"Indoor Games", "subsubMenu":[{"title":"Carroms"},{"title":"Table Tennis"}]}, {"title":"Puzzles", "subsubMenu":[{"title":"Sudoku"},{"title":"Chess"}]}, {"title":"Card Games", "subsubMenu":[{"title":"UNO"},{"title":"RUMMY"}]}]
+  },
+  {
+    "id": "037",
+    "title": "Animals",
+    "subMenu": [{"title":"Mammals", "subsubMenu":[{"title":"Monkey"},{"title":"Elephant"}]}, {"title":"Birds", "subsubMenu":[{"title":"Parrot"},{"title":"Ostrich"},{"title":"Eagle"}]}, {"title":"Reptiles", "subsubMenu":[{"title":"Snake"},{"title":"Lizard"},{"title":"Cameleon"}]}]
+  },
+  {
+    "id": "127",
+    "title": "Vehicles",
+    "subMenu": [{"title":"Cars", "subsubMenu":[{"title":"Audi"},{"title":"Range Rover"}]}, {"title":"Bikes", "subsubMenu":[{"title":"Apache"},{"title":"Pulsar"},{"title":"FZ"},{"title":"Jupiter"},{"title":"Victor"},{"title":"Avengers"}]}, {"title":"Cycles", "subsubMenu":[{"title":"Hero"},{"title":"Lady Bird"},{"title":"Firefox"}]}]
+  },
+  {
+    "id": "181",
+    "title": "Languages",
+    "subMenu": [{"title":"English"}, {"title":"French"}, {"title":"Chinese"}, {"title":"Hindi"}]
+  },
+  {
+    "id": "210",
+    "title": "Continents",
+    "subMenu": [{"title":"Asia", "subsubMenu":[{"title":"India"},{"title":"China"}]}, {"title":"Africa", "subsubMenu":[{"title":"South Africa"},{"title":"Kenya"},{"title":"Zimbabwe"}]}]
+  }
+]
+
+
+
