@@ -33,7 +33,7 @@ app.use(function(req, res, next) {
     next();
 });
 //app.use(express.static(path.join(__dirname, '../' , 'browser')));
-app.use(express.static(path.join(__dirname, '../../../', 'common')));
+app.use(express.static(path.join(__dirname, '../../../', 'webapp')));
 app.use(express.static(path.join(__dirname, '../' , 'browser')));
 
 // Routes
