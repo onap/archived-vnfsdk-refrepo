@@ -1,6 +1,3 @@
-@ECHO OFF
-ECHO.
-ECHO Starting Node Server
-ECHO.
+echo "Starting Node Server"
 node server.js
-EXIT
+exit
