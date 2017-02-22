@@ -1,0 +1,61 @@
+
+<div class="headerTitle">{{message}}</div>
+<br>
+
+<div class="underlayAction" ng-init="init()">
+    <!--<button ng-click="showAddModal()" class="btnDefault pull-left">Add</button>-->
+    <!--<button ng-click="deleteData()" class="btnDefault pull-left prvdel">Delete Selected</button>-->
+</div>
+<br>
+<div class="panel panel-default">
+<table ng-table="tableParams" class="table table table-striped table-hover table-bordered lctable" show-filter="true">
+    <tr ng-repeat="underlayData in $data">
+        <td header="'ng-table/headers/checkbox.html'">
+            <input type="checkbox" ng-model="checkboxes.items[underlayData.id]" />
+        </td>
+        <td title="'Name'" filter="{ name: 'text'}" sortable="'name'">
+            {{underlayData.name}}
+        </td>
+        <td title="'State'" filter="{ thinCPE: 'text'}" sortable="'thinCPE'">
+            {{underlayData.thinCPE}}
+        </td>
+        <td title="'Description'" filter="{ desc: 'text'}" sortable="'desc'">
+            {{underlayData.desc}}
+        </td>
+        <td title="'Action'">
+            <!--<span class="pull-right glyphicon glyphicon-edit" ng-click="editData(underlayData.id)" style="cursor: pointer;margin: 0 5px"></span>-->
+            <span class="pull-right glyphicon glyphicon-trash" ng-click="deleteIndividualData(underlayData.id)" style="cursor: pointer;margin: 0 5px"></span>
+        </td>
+    </tr>
+</table>
+</div>
+
+<script type="text/ng-template" id="ng-table/headers/checkbox.html">
+    <input type="checkbox" ng-model="checkboxes.checked" name="filter-checkbox" value="" />
+</script>
+
+<br>
+<div id="tpLinkBlock">
+    <div class="headerTitle">TP Details</div>
+    <div class="panel panel-default">
+    <table ng-table="tableParams_tpDetails" class="table table table-striped table-hover table-bordered lctable" show-filter="true">
+        <tr ng-repeat="tpDetailsData in $data">
+            <td title="'TP Name'" filter="{ tp_name: 'text'}" sortable="'tp_name'">
+                {{tpDetailsData.tp_name}}
+            </td>
+            <td title="'PE Name'" filter="{ pe_name: 'text'}" sortable="'pe_name'">
+                {{tpDetailsData.pe_name}}
+            </td>
+            <td title="'VLAN ID'" filter="{ vlanId: 'text'}" sortable="'vlanId'">
+                {{tpDetailsData.vlanId}}
+            </td>
+            <td title="'Site CIDR'" filter="{ site_cidr: 'text'}" sortable="'site_cidr'">
+                {{tpDetailsData.site_cidr}}
+            </td>
+            <td title="'IP'" filter="{ ip: 'text'}" sortable="'ip'">
+                {{tpDetailsData.ip}}
+            </td>
+        </tr>
+    </table>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+<!--
+<h3>hi1</h3>
+<h4>{{currentId}}</h4>
+
+-->
+
+<div class="row tabContainer nomargin">
+    <div id="leftContainer" class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <!--<ul>
+            <li>
+                <a ui-sref=".overlayVPN" ui-sref-active="link_active">Overlay VPN</a>
+            </li>
+            <li>
+                <a ui-sref=".underlayVPN" ui-sref-active="link_active">Underlay VPN</a>
+            </li>
+        </ul>-->
+        <!--<div class="panel panel-default">
+            <div class="panel-heading">
+                <h5 class="panel-title">
+                    <a style="text-decoration:none;" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                        <span id="sdnoLink">SDNO1223</span></a>
+                </h5>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+                <ul class="list-group">
+                    &lt;!&ndash;<li onClick="fnOver();" id="overLink" class="list-group-item"><span class="glyphicon glyphicon-pencil text-primary"></span><span>Overlay VPN</span>
+
+                    </li>
+                    <li id="underLink" onClick="fnUnder();" class="list-group-item"><span class="glyphicon glyphicon-pencil text-primary"></span><span>Underlay VPN</span>
+
+                    </li>&ndash;&gt;
+                    <li>
+                        <a ui-sref=".overlayVPN" ui-sref-active="link_active">Overlay VPN</a>
+                    </li>
+                    <li>
+                        <a ui-sref=".underlayVPN" ui-sref-active="link_active">Underlay VPN</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h5 class="panel-title">
+                    <a style="text-decoration:none;" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+                        </span>NFVO</a>
+                </h5>
+            </div>
+            <div id="collapseFour" class="panel-collapse collapse">
+                <div class="list-group">
+                    <li onClick="clZte();" id="underLink" class="list-group-item"><span class="glyphicon glyphicon-pencil text-primary"></span><span>ZTE</span>
+
+                    </li>
+
+                </div>
+            </div>
+        </div>-->
+        <div class="panel-group accordion"></div>
+    </div>
+
+    <!--<div id="rightContainer" class="col-xs-9 col-sm-9 col-md-10 col-lg-10">
+        <ui-view></ui-view>
+    </div>-->
+    <div id="rightContainer" class="panel panel-default col-xs-9 col-sm-9 col-md-9 col-lg-9 nomargin">
+        <div class="panel-heading">
+            <h2 class="panel-title">{{rightPanelHeader}}</h2>
+        </div>
+        <div class="panel-body" style="height: 350px; overflow: auto; padding: 0; background-color: #fafafa">
+            <ui-view></ui-view>
+        </div>
+        <br>
+    </div>
+</div>

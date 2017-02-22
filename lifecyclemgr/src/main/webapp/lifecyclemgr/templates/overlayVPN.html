@@ -1,0 +1,47 @@
+
+<div class="headerTitle">{{message}}</div>
+<br>
+
+<div class="overlayAction" ng-init="init()">
+    <!--<button ng-click="showAddModal()" class="btnDefault pull-left">Add</button>-->
+    <!--<button ng-click="deleteData()" class="btnDefault pull-left prvdel">Delete Selected</button>-->
+</div>
+<br>
+<div class="panel panel-default">
+<table ng-table="tableParams" class="table table table-striped table-hover table-bordered lctable" show-filter="true">
+    <tr ng-repeat="overlayData in $data">
+        <td header="'ng-table/headers/checkbox.html'">
+            <input type="checkbox" ng-model="checkboxes.items[overlayData.id]" />
+        </td>
+        <td title="'Name'" filter="{ name: 'text'}" sortable="'name'">
+            {{overlayData.name}}
+        </td>
+        <td title="'Description'" filter="{ desc: 'text'}" sortable="'desc'">
+            {{overlayData.desc}}
+        </td>
+        <td title="'Thin CPE'" filter="{ thinCPE: 'text'}" sortable="'thinCPE'">
+            {{overlayData.thinCPE}}
+        </td>
+        <td title="'Port:Vlan ID'" filter="{ portVlan: 'number'}" sortable="'portVlan'">
+            {{overlayData.portVlan}}
+        </td>
+        <td title="'DC Name'" filter="{ dcName: 'text'}" sortable="'dcName'">
+            {{overlayData.dcName}}
+        </td>
+        <td title="'VPC'" filter="{ vpc: 'text'}" sortable="'vpc'">
+            {{overlayData.vpc}}
+        </td>
+        <td title="'VPC CIDR'" filter="{ vpcCIDR: 'text'}" sortable="'vpcCIDR'">
+            {{overlayData.vpcCIDR}}
+        </td>
+        <td title="'Action'">
+            <!--<span class="pull-right glyphicon glyphicon-edit" ng-click="editData(overlayData.id)" style="cursor: pointer;margin: 0 5px"></span>-->
+            <span class="pull-right glyphicon glyphicon-trash" ng-click="deleteIndividualData(overlayData.id)" style="cursor: pointer;margin: 0 5px"></span>
+        </td>
+    </tr>
+</table>
+</div>
+
+<script type="text/ng-template" id="ng-table/headers/checkbox.html">
+    <input type="checkbox" ng-model="checkboxes.checked" name="filter-checkbox" value="" />
+</script>
