@@ -1,0 +1,45 @@
+<!--<div id="lctabArea" ng-init="init()"></div>-->
+
+
+<div id="lctabArea" ng-init="init()">
+
+    <ul class="nav nav-tabs">
+        <li class="col-md-4 col-sm-4 col-xs-4 nopadding detailinfo"><a ui-sref=".detailInfo" ui-sref-active="link_active" class="nomargin">Detail Info</a></li>
+        <li class="col-md-4 col-sm-4 col-xs-4 nopadding topo"><a  ui-sref=".topo" ui-sref-active="link_active" class="nomargin" >Topo</a></li>
+        <li class="col-md-4 col-sm-4 col-xs-4 nopadding inputdata"><a  ui-sref=".inputData" ui-sref-active="link_active" class="nomargin" >Input Data</a></li>
+    </ul>
+
+    <div class="tab-content"></div>
+    <ui-view></ui-view>
+
+    <div id="popupModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h5 class="modal-title titlestyle">Create</h5>
+                </div>
+
+                <div class="modal-body">
+                    <ul class="nav nav-tabs">
+                        <li class="col-md-4 col-sm-4 col-xs-4 nopadding detailinfo"><a ui-sref=".detailInfo" ui-sref-active="link_active" class="nomargin">Detail Info</a></li>
+                        <li class="col-md-4 col-sm-4 col-xs-4 nopadding topo"><a  ui-sref=".topo" ui-sref-active="link_active" class="nomargin" >Topo</a></li>
+                        <li class="col-md-4 col-sm-4 col-xs-4 nopadding inputdata"><a  ui-sref=".inputData" ui-sref-active="link_active"  class="nomargin">Input Data</a></li>
+                    </ul>
+
+                    <div class="tab-content"></div>
+                    <ui-view></ui-view>
+
+                </div>
+
+                <div id="footerBtns" class="modal-footer"></div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
