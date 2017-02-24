@@ -137,8 +137,20 @@
     text-align: left;
 }
 
-.selected-row {
-    background-color:black;
-    color:red;
-    font-weight:bold;
+/* Table row selection */
+.table-striped>tbody>tr.selected-row>td {
+    background-color:#e8f8fe;
+}
+
+#base, #templateParameters{
+    margin-top:25px;
+}
+
+.nav>li>a:hover, .nav>li>a:focus {
+    text-decoration: none;
+    background-color: #eee;
+}
+
+select {
+    padding: 0 !important;
 }

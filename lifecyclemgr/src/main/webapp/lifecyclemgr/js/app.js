@@ -45,9 +45,12 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
         //$locationProvider.html5Mode(true).hashPrefix('!');
         $stateProvider
             .state("home", {
+
                 url: "/home",
+
                 templateUrl : "templates/home.html",
                 controller : "homeCtrl"
+
             })
             .state("home.lcTabs", {
                 url: "/lcTabs/:id",
@@ -90,10 +93,11 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
 
     })
 
-    .controller('homeCtrl', function($scope, $compile, $state, DataService, NgTableParams) {
+    .controller('homeCtrl', function($scope, $compile, $state, $log, DataService, NgTableParams) {
         $scope.param="lctableData";
+
         $scope.init = function() {
-            DataService.getLCData()
+            DataService.loadGetServiceData()
                 .then(function (data) {
                     if (data) {
                         $scope.tableData = data.lcData;
@@ -107,6 +111,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
                     $scope.error = "Error ! " + reason;
                 });
         };
+
         //loadTableData();
         $scope.callLcTab = function(id) {
             /*console.log("Call ME as hi" + id);
@@ -181,6 +186,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             }
 
 
+
             var text = $(modelTemplate).filter('#textfield').html();
             var number = $(modelTemplate).filter('#numeric').html();
             var dropDown = $(modelTemplate).filter('#simpleDropdownTmpl').html();
@@ -192,7 +198,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             $('#myModal .templateName').html($compile(Mustache.to_html(text, TempNameText.ErrMsg))($scope));
 
             //var creatorText = {"ErrMsg" :     {"textboxErr" : "Creator is required.", "modalVar":"lifecycleData.creator", "placeholder":"Creator"}};
-            $scope.data = {
+            /*$scope.data = {
                 "dropSimple_data": {
                     "title": "--Select--",
                     "items": [
@@ -200,7 +206,23 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
                     ]
                 }
             }
-            $('#myModal .serviceTemplate').html($compile(Mustache.to_html(dropDown, $scope.data.dropSimple_data))($scope));
+            $('#myModal #plainDropDown').html($compile(Mustache.to_html(dropDown, $scope.data.dropSimple_data))($scope));*/
+
+            DataService.generateTemplatesComponent()
+                .then(function (tmplatesResponse) {
+                    console.log("Data Template :: ");
+                    $log.info(tmplatesResponse);
+                   // var templatesInfo = translateToTemplatesInfo(tmplatesResponse);
+                  //  document.getElementById("svcTempl").innerHTML = templatesInfo;
+                    $scope.optionsValue = tmplatesResponse;
+                    //$scope.someOptions = [{serviceTemplateId:"1",templateName:"1.1"}, {serviceTemplateId:"2",templateName:"1.2"}];
+                    // $scope.someOptions = [{"serviceTemplateId": '1', "templateName": "1.1"},{"serviceTemplateId": '2', "templateName": "1.2"}]
+                    // console.log(":: " + JSON.stringify($scope.optionsValue));
+                }, function (reason) {
+                    $scope.error = "Error ! " + reason;
+                });
+
+
 
             //$('#myModal .creator').html($compile(Mustache.to_html(text, creatorText.ErrMsg))($scope));
 
@@ -211,6 +233,24 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             var modelDelete_data = {"title":"Close", "clickAction":"closeModal()"};
             var modelDelete_html = Mustache.to_html(def_button_tpl, modelDelete_data);
             $('#myModal #footerBtns').append($compile(modelDelete_html)($scope));
+        }
+
+
+        /**
+         * generate templates html string
+         * @param templates
+         * @returns
+         */
+        function translateToTemplatesInfo(templates) {
+            var options = '<option value="select">--select--</option>';
+            var i;
+            for (i = 0; i < templates.length; i += 1) {
+                var option = '<option value="' + templates[i].serviceTemplateId + '">' + templates[i].templateName
+                    + '</option>';
+                options = options + option;
+            }
+
+            return options;
         }
 
         $scope.validatetextbox = function (value){
@@ -229,6 +269,29 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
                 $scope.checkboxes.items[data.id]
             });
         };
+        $scope.test = function(id) {
+            $state.go('home.lcTabs.detailInfo', {'id': id});
+
+        }
+
+        $scope.templateParam = function() {
+            //$scope.lifecycleData.optSelect = 1.2;
+            //$log.info($scope.lifecycleData);
+
+            DataService.fetchCreateParameters($scope.lifecycleData.optSelect)
+                .then(function (tmplatesParamResponse) {
+                    console.log("Data Param Template :: ");
+                    $log.info(tmplatesParamResponse);
+                    $scope.paramJsonObj= tmplatesParamResponse.templateName;
+
+                }, function (reason) {
+                    $scope.error = "Error ! " + reason;
+                });
+
+        }
+
+
+
 
         $scope.showAddModal = function() {
             console.log("Showing Modal to Add data");
@@ -265,6 +328,61 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             });
         }
 
+        $scope.saveData = function() {
+            //TODO
+            var sengMsgObj = {};//collectCreateParamfromUI('', 'create', $scope.templateParameters.paramJsonObj);
+            //createServiceInstance(sengMsgObj)
+            DataService.createServiceInstance(lifecycleData, sengMsgObj)
+                .then(function (response) {
+                    $log.info(response);
+                    //TODO
+                }, function (reason) {
+                    $scope.error = "Error ! " + reason;
+                });
+        }
+
+        /**
+         * convert the template params obj to html UI string
+         *
+         * @param identify the object identify, it should be different every time
+         * @return the html component string
+         */
+        function collectCreateParamfromUI(parentHost,identify, createParam) {
+            // the create params used for create msg
+            var paramSentObj = {
+                domainHost:'',
+                nodeTemplateName:'',
+                nodeType:'',
+                segments:[],
+                additionalParamForNs:{}
+            };
+            // get the domain value
+            if (undefined !=  createParam.domainHost && 'enum' === createParam.domainHost.type) {
+                var domain = collectParamValue(identify, createParam.domainHost);
+                paramSentObj.domainHost = collectParamValue(identify, createParam.domainHost)
+            }
+            //if parent domainHost is not '' and local domain host is'', it should be setted as parent
+            if('' != parentHost && '' == paramSentObj.domainHost){
+                paramSentObj.domainHost = parentHost;
+            }
+            paramSentObj.nodeTemplateName = createParam.nodeTemplateName;
+            paramSentObj.nodeType = createParam.nodeType;
+
+            // get own param value from UI
+            createParam.additionalParamForNs.forEach(function(param) {
+                paramSentObj.additionalParamForNs[param.name] = collectParamValue(identify, param);
+            });
+            // get segments param value from UI
+            createParam.segments.forEach(function(segment) {
+                // the identify for segment
+                var segmentIdentify = '' == identify ? segment.nodeTemplateName
+                    : identify + '_' + segment.nodeTemplateName;
+                var segmentObj = collectCreateParamfromUI(paramSentObj.domainHost, segmentIdentify, segment);
+                paramSentObj.segments.push(segmentObj);
+            });
+            return paramSentObj;
+        }
+
 
     })
 
@@ -272,7 +390,9 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
         //console.log("$stateParams.id:: " + $stateParams.id);
         //$state.transitionTo("home.lcTabs({id: "+$stateParams.id+"})");
 
+
         $state.go('home.lcTabs.detailInfo', {'id': $stateParams.id});
+
     })
 
     .controller('detailInfoCtrl', function($scope, $stateParams, $compile, DataService) {
@@ -287,22 +407,23 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             if (jsonData[i].name == "sdno") {
                 //$("#sdnoLink").text(jsonData[i].name.toUpperCase());
                 //console.log("Adding Accordian to SDNO");
-                $(".accordion").append($compile(addAccordionData("sdno", jsonData[i].name.toUpperCase()))($scope));
+                $(".accordion").append($compile(addAccordionData("sdno", jsonData[i].name.toUpperCase(), $stateParams.id))($scope));
             }
             else if (jsonData[i].name == "gso") {
                 //console.log("Adding Accordian to GSO");
-                $(".accordion").append($compile(addAccordionData("gso", jsonData[i].name.toUpperCase()))($scope));
+                $(".accordion").append($compile(addAccordionData("gso", jsonData[i].name.toUpperCase(), $stateParams.id))($scope));
             }
             else if (jsonData[i].name == "nfvo") {
                 //console.log("Adding Accordian to NFVO");
-                $(".accordion").append($compile(addAccordionData("nfvo", jsonData[i].name.toUpperCase()))($scope));
+                $(".accordion").append($compile(addAccordionData("nfvo", jsonData[i].name.toUpperCase(), $stateParams.id))($scope));
             }
             else {
 
             }
         }
 
-        function addAccordionData(type, text) {
+        function addAccordionData(type, text, id) {
+            console.log("id:"+id);
             var content = '';
             content += '<div class="panel panel-default"><div class="panel-heading">';
             content += '<h6 class="panel-title">';
@@ -317,9 +438,9 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             content += '<ul class="list-group nomargin">';
 
             if(type == "sdno") {
-                content += '<li id="overLink" class="list-group-item selected textAlign"><span class="glyphicon glyphicon-pencil text-primary pencilimg"></span><a ui-sref=".overlayVPN" ui-sref-active="link_active_DetailInfo">Overlay VPN</a>';
+                content += '<li id="overLink" class="list-group-item selected textAlign"><span class="glyphicon glyphicon-pencil text-primary pencilimg"></span><a ui-sref=".overlayVPN" ui-sref-active="link_active_DetailInfo" href="#/home/lcTabs/'+id+'/detailInfo/overlayVPN">Overlay VPN</a>';
                 content += '</li>';
-                content += '<li id="underLink" class="list-group-item textAlign"><span class="glyphicon glyphicon-pencil text-primary pencilimg"></span><a ui-sref=".underlayVPN" ui-sref-active="link_active_DetailInfo">Underlay VPN</a>';
+                content += '<li id="underLink" class="list-group-item textAlign"><span class="glyphicon glyphicon-pencil text-primary pencilimg"></span><a ui-sref=".underlayVPN" ui-sref-active="link_active_DetailInfo" href="#/home/lcTabs/'+id+'/detailInfo/underlayVPN">Underlay VPN</a>';
                 content += '</li>';
             }
             else if(type == "gso"){

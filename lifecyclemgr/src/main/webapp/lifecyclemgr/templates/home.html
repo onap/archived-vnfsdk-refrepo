@@ -7,13 +7,15 @@
     <br>
     <div class="panel panel-default">
     <table ng-table="tableParams" class="table table table-striped table-hover table-bordered lctable" show-filter="true">
-        <tr ng-repeat="lcData in $data" ng-class="{'selected-row':$index == selectedRow}" ui-sref=".lcTabs({id: lcData.id})" ui-sref-opts="{reload: true}"><!--ng-click="setClickedRow($index, lcData.id)" -->
+        <tr ng-repeat="lcData in $data" ui-sref=".lcTabs({id: lcData.id})" ui-sref-active="selected-row" ui-sref-opts="{reload: true}"><!--target="_self" ng-click="setClickedRow($index, lcData.id)" -->
             <td header="'ng-table/headers/checkbox.html'">
                 <input type="checkbox" ng-model="checkboxes.items[lcData.id]" />
             </td>
             <td  title="'Service Name'" filter="{ name: 'text'}" sortable="'name'">
-                <!--<a  class="srvname" ng-click="callModal(lcData.id)">{{lcData.name}}</a></td>-->
-                <a data-toggle="modal" href="#popupModal" class="srvname">{{lcData.name}}</a></td><!-- ui-sref=".modal1"-->
+                <!--<a data-toggle="modal" class="srvname" ng-click="callModal(lcData.id)">{{lcData.name}}</a>-->
+                <a data-toggle="modal" ng-click="test(lcData.id)" href="#popupModal" class="srvname">{{lcData.name}}</a>
+                <!--<a data-toggle="modal" ng-href="#popupModal" class="srvname">{{lcData.name}}</a>--><!-- ui-sref=".modal1"-->
+            </td>
             <td title="'Template Name'" filter="{ template: 'text'}" sortable="'template'">
                 {{lcData.template}}</td>
             <td title="'Create time'" filter="{ createtime: 'text'}" sortable="'createtime'">
@@ -50,34 +52,46 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h5 class="modal-title titlestyle">Create</h5>
             </div>
-            <form name="lcForm" method="post"><!-- ng-submit="saveData(province.id)"-->
-                <div class="modal-body">
+            <div class="modal-body">
+                <ul class="nav nav-tabs">
+                    <li class="active col-md-6 col-sm-6 col-xs-6 nopadding "><a data-toggle="tab" data-target="#base" class="nomargin">Base</a></li>
+                    <li class="col-md-6 col-sm-6 col-xs-6 nopadding"><a data-toggle="tab" data-target="#templateParameters" class="nomargin" ng-click="templateParam()">Template Parameters</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="base" class="tab-pane fade in active">
+                        <div class="form-group row">
+                            <label class="col-xs-4 col-form-label labelstyle">Service Name</label>
+                            <div class="col-xs-8 serviceName" >
+                                <!--<input class="form-control" ng-model="province.service_name" type="text" value="" placeholder="Service Name"  ng-blur="validatetextbox(province.service_name)" required><br>-->
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-xs-4 col-form-label labelstyle">Template Name</label>
+                            <div class="col-xs-8 templateName" >
+                                <!--<input class="form-control" ng-model="province.ip" type="ipv4" pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$" value="" placeholder="IP Address" id="ipaddress" required><br>-->
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-xs-4 col-form-label labelstyle">Service Template</label>
+                            <div id="plainDropDown" class="col-xs-8 port">
+                                <!--<input class="form-control" ng-model="province.port" type="number" value="" placeholder="Port" id="port"  required>-->
+                                <!--<select id="svcTempl" class="form-control" ng-modal="lifecycleData.optSelect" ng-options="item.serviceTemplateId as item.templateName for item in someOptions">
 
-                    <div class="form-group row">
-                        <label class="col-xs-4 col-form-label labelstyle">Service Name</label>
-                        <div class="col-xs-8 serviceName" >
-                            <!--<input class="form-control" ng-model="province.service_name" type="text" value="" placeholder="Service Name"  ng-blur="validatetextbox(province.service_name)" required><br>-->
+                                </select>-->
+                                <select id="svcTempl" class="form-control" ng-model="lifecycleData.optSelect" ng-options="item.templateName for item in optionsValue"></select>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-xs-4 col-form-label labelstyle">Template Name</label>
-                        <div class="col-xs-8 templateName" >
-                            <!--<input class="form-control" ng-model="province.ip" type="ipv4" pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$" value="" placeholder="IP Address" id="ipaddress" required><br>-->
+                    <div id="templateParameters" class="tab-pane fade">
+                        <div class="form-group row">
+                            <label class="col-xs-4 col-form-label labelstyle">Template version</label>
+                            <div  class="col-xs-8" > {{paramJsonObj}}</div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-xs-4 col-form-label labelstyle">Service Template</label>
-                        <div class="col-xs-8 port serviceTemplate">
-                            <!--<input class="form-control" ng-model="province.port" type="number" value="" placeholder="Port" id="port"  required>-->
 
-                        </div>
                     </div>
                 </div>
-
                 <div id="footerBtns" class="modal-footer"></div>
-            </form>
+            </div>
         </div>
-
-
     </div>
 </div>

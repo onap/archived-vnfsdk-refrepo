@@ -1,23 +1,23 @@
 app.factory("DataService", function($http, $log){
     var lcData = null;
     return {
-        getAllData: function (value) {
-            //var value = $scope.param;
-            return $http({
-                url: 'http://localhost:8080/POC_NodeToServletPorting_Server/?widgetType=' + value,
-                headers: {'Content-Type': 'application/json'},
-                method: 'GET'
-            }).then(function (response) {
-                //$log.info(response.data);
-                return response.data;
-            })
-        },
+        loadGetServiceData : function() {
 
-        getLCData : function() {
+            //load main Table
             return $http({
-                url: 'http://localhost:4000/api/getLCData',
+                url: '/openoapi/inventory/v1/services',
+                //url: 'http://localhost:5000/api/getLCData',
                 method: 'GET',
                 headers: {'Content-Type': 'application/json'}
+
+                /*url: '/openoapi/inventory/v1/services',
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                data: JSON.stringify({'sort': [],
+                 'pagination': 0,
+                 'pagesize': 10000,
+                 'condition': {},
+                 'serviceId': ""})*/
             }).then(function(response){
                 //$log.info(response);
                 lcData = response.data.lcData;
@@ -40,7 +40,7 @@ app.factory("DataService", function($http, $log){
         },
         getOverlayData : function() {
             return $http({
-                url: 'http://localhost:4000/api/getOverlayVPNData',
+                url: 'http://localhost:5000/api/getOverlayVPNData',
                 method: 'GET',
                 headers: {'Content-Type': 'application/json'}
             }).then(function(response){
@@ -50,7 +50,7 @@ app.factory("DataService", function($http, $log){
         },
         getUnderlayData : function() {
             return $http({
-                url: 'http://localhost:4000/api/getUnderlayVPNData',
+                url: 'http://localhost:5000/api/getUnderlayVPNData',
                 method: 'GET',
                 headers: {'Content-Type': 'application/json'}
             }).then(function(response){
@@ -62,41 +62,52 @@ app.factory("DataService", function($http, $log){
             return JSON.parse('[{"id":"12345", "name":"sdno"}, {"id":"23456", "name":"gso"},{"id":"12345", "name":"nfvo"}]');
         },
 
+        generateTemplatesComponent : function() {
+            //dropdown data
+            return $http({
+                url: '/openoapi/catalog/v1/servicetemplates',
+                //url: 'http://localhost:5000/api/getTemplateData',
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'}
+            }).then(function(response){
+                //$log.info(response);
+                return response.data.templateData;
+            });
+        },
+	
+	fetchCreateParameters : function(templateId) {
+            //For Template parameters tab in popup
+            return $http({
+                url: '/openoapi/catalog/v1/servicetemplates/'+templateId,
+               // url: 'http://localhost:5000/api/getTemplateParameter',
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'}
+            }).then(function(response){
+                //$log.info(response);
+                return response.data;
+            });
+        },
 
-        addProvinceData : function(provinceDetail) {
+        createServiceInstance : function(lifecycleData, sengMsgObj) {
+            ///For submit of OK button
+            var parameter = {
+                'service' : {
+                    'name' :  lifecycleData.name,
+                    'description' : lifecycleData.desc,
+                    'serviceDefId' : '', //no need now, reserved
+                    'templateId' :  lifecycleData.optSelect,
+                    'parameters' : sengMsgObj
+                }
+            };
             return $http({
-                url: 'http://localhost:3000/api/addProvinceData',
+                url: '/openoapi/servicegateway/v1/services',
+                //url: 'http://localhost:5000/api/getTemplateData',
                 method: 'POST',
-                data: provinceDetail,
-                headers: {'Content-Type': 'application/json '}
+                headers: {'Content-Type': 'application/json'},
+                data : JSON.stringify(parameter)
             }).then(function(response){
-                console.log("Response : ");
-                $log.info(response.data);
-                return response.data;
-            });
-        },
-        deleteProvinceData : function(idList) {
-            return $http({
-                url: 'http://localhost:3000/api/deleteProvinceData',
-                method: 'POST',
-                data: {'idList':idList},
-                headers: {'Content-Type': 'application/json'}
-            }).then(function(response){
-                console.log("Successfully Deleted..");
-                $log.info(response);
-                return response.data;
-            });
-        },
-        editProvinceData : function(provinceDetail) {
-            return $http({
-                url: 'http://localhost:3000/api/editProvinceData',
-                method: 'POST',
-                data: provinceDetail,
-                headers: {'Content-Type': 'application/json'}
-            }).then(function(response){
-                console.log("Successfully Edited...");
-                $log.info(response);
-                return response.data;
+                //$log.info(response);
+                return response.data.templateData;
             });
         }
     }
