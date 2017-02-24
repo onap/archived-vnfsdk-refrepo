@@ -13,66 +13,57 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<div class="container">
+<div class="container" style="margin-top: 20px">
     <form  class="form-inline" >
         <div class="form-body">
-            
             <div class="row form-group col-xs-12">
-               
-                <div class="checkbox-list col-lg-4">
-                     <label class="col-lg-3 control-label myclass" >
+                <div class="col-xs-4">
+                     <label class="col-xs-3 control-label myclass" >
                         {{"common_status"|translate}}
                     </label>
                     <select #selection class="form-control" style="width: 60%" id="status" (change)="switch(selection.value)" [(ngModel)]="activeText" name="activestatus">
-						<option *ngFor="let a of activeStatus" [value]="a">{{a|translate}}</option>
-                        
-					</select>
+                      <option *ngFor="let a of activeStatus" [value]="a">{{a|translate}}</option>
+                    </select>
                 </div>
-                              
-                <div class="col-lg-4">
-                     <label for="userName" class="myclass">
+
+                <div class="col-xs-4">
+                     <label for="userName" class="col-xs-3 control-label myclass">
                         <span>{{"common_keyword"|translate}}</span>
                     </label>
                     <input class="form-control ng-untouched ng-pristine ng-valid" style="width: 60%"  placeholder='{{"field_rule_name"|translate}}'
-                        type="text"  [(ngModel)]="ruleModel.rulename" name="name" id="teseselect">
-                   
+                        type="text"  [(ngModel)]="ruleModel.rulename" name="name">
                 </div>
+
                 <div class="fmrule_btn_group display_table">
                     <div class="inline">
-                        <button id="batchDeleteButton" class="btn radius_s white" (click)="searchRules()">
-                            <span class="ict-Magnifier"></span>
+                        <button id="batchDeleteButton" class="btn btn-primary" (click)="searchRules()">
                             <span>{{"common_query"|translate}}</span>
+                            <span class="glyphicon glyphicon-search pull-right" style="padding-left: 10px"></span>
                         </button>
-                        <button class="btn radius_s white" (click)="reset()">
-                            <span class="ict-clearAlarm"></span>
+                        <button class="btn btn-secondary" (click)="reset()" style="margin-left: 10px">
+                            <span class="glyphicon glyphicon-refresh"></span>
                             <span>{{"common_reset"|translate}}</span>
-
                         </button>
                     </div>
-                    
                 </div>
             </div>
-<br>
-        <div class="row form-group col-xs-12">
-            <div class="fmrule_btn_group display_table">
+
+        <div class="row form-group col-xs-12" style="margin-top: 10px">
+            <div class="">
                 <div class="inline">
-                    <button type="button" routerLink='/ruleInfo' class="btn radius_s white">
-                    <span class="ict-new"></span>
+                    <button type="button" routerLink='/ruleInfo' class="btn btn-info">
+                    <span class="glyphicon glyphicon-plus"></span>
                     <span>{{"common_add"|translate}}</span>
                     </button>
                 </div>
             </div>
         </div>
-        </div>
-
+    </div>
+        
     </form>
-    <br>
 <div>
-    <br>
-    <br>
-    <br>
-    <p>{{"common_total1"|translate}}{{totalcount}}{{"common_total2"|translate}}</p>
-    <table class="table table-striped table-bordered fmrule_table_border table-hover dataTable" >
+    <div class="row form-group col-xs-12 myclass">{{"common_total1"|translate}}{{totalcount}}{{"common_total2"|translate}}</div>
+    <table class="table table-bordered table-striped customtable table-hover" >
         <thead class="nf_thead">
             <tr class="heading">
                 <td>{{"field_rule_name"|translate}}</td>
@@ -86,38 +77,43 @@
         <tbody>
             <tr *ngFor="let rule of rules">
                 <td><a routerLink="/ruleInfo/{{rule.ruleid}}&add">{{rule.rulename}}</a></td>
-                 
-                <td [hidden]="rule.enabled === 0" ><span class="ict-circle rule_table_btn" value=0></span></td>
-                <td [hidden]="rule.enabled === 1"><span class="ict-circle rule_table_btn"  value=1></span></td>
+                <td [hidden]="rule.enabled === 0" style="text-align: center"><span value=0><img src="../../../public/thirdparty/images/round_off.png" alt=""></span></td>
+                <td [hidden]="rule.enabled === 1" style="text-align: center"><span value=1><img src="../../../public/thirdparty/images/round_on.png" alt=""></span></td>
                 <td>{{rule.createtime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                 <td>{{rule.creator}}</td>
                 <td>{{rule.updatetime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                 <td>
-                    <button class="btn-xs radius_s white task_table_btn rule_table_btn" (click)="updateRule(rule); $event.stopPropagation()">{{"update"|translate}}</button>
-                   
-                    <button [hidden]="rule.enabled===0" class="btn-xs radius_s white task_table_btn rule_table_btn"  (click)="on_off(rule); $event.stopPropagation()">{{"off"|translate}}</button>
-                    <button [hidden]="rule.enabled===1" class="btn-xs radius_s white task_table_btn rule_table_btn" (click)="on_off(rule); $event.stopPropagation()">{{"on"|translate}}</button>
+                    <span (click)="updateRule(rule); $event.stopPropagation()" style="cursor: pointer;margin: 0 5px">
+                        <img src="../../../public/thirdparty/images/edit.png" alt="">
+                    </span>
+                    <span>
+                        
+                    </span>
+                    <span [hidden]="rule.enabled===0" class=""  (click)="on_off(rule); $event.stopPropagation()">
+                        <img src="../../../public/thirdparty/images/off.png" alt="">
+                    </span>
+                    <span [hidden]="rule.enabled===1" class="" (click)="on_off(rule); $event.stopPropagation()">
+                        <img src="../../../public/thirdparty/images/on.png" alt="">
+                    </span>
                 
-                    <button  class="btn-xs radius_s white task_table_btn rule_table_btn" id={{rule.ruleid}} (click)="delete(rule)">{{"delete"|translate}}</button>
+                    <span  class="" id={{rule.ruleid}} (click)="delete(rule)" style="cursor: pointer;margin: 0 5px">
+                         <img src="../../../public/thirdparty/images/delete.png" alt="">
+                    </span>
                 </td>
             </tr>
-           
         </tbody>
     </table>
 </div>
-
-
-
  <div id="deleteTimingTaskDlg" style="display: none;" >
         <div id="deleteTimingTaskContent">
             <div class="deletePromptMessage">
                 <span>{{"message_is_delete"|translate}}</span>
             </div>
-            <div style="float:right" class="">
-                <button class="btn-xs radius_s over-grey" type="button" data-popmodal-but="cancel">
+            <div style="float:rightl;padding-top: 10px;margin-bottom: -20px" class="">
+                <button class="btn btnDefault btnmrg" type="button" data-popmodal-but="cancel">
                     <span>{{"common_cancel"|translate}}</span>
                 </button>
-                <button class="blue1-active btn-xs white radius_s btn-dialog" data-popmodal-but="ok">
+                <button class="btn btnDefault btnmrg" data-popmodal-but="ok">
                     <span>{{"common_confirm"|translate}}</span>
                 </button>
             </div>
@@ -129,8 +125,8 @@
             <div class="deletePromptMessage">
                 <span>{{"warn_delete_info"|translate}}</span>
             </div>
-            <div style="float:right" >
-                <button class="blue1-active btn-xs white radius_s btn-dialog" data-popmodal-but="ok">
+            <div style="float:right;padding-top:10px" >
+                <button class="btn btnDefault btnmrg" data-popmodal-but="ok">
                     <span>{{"common_confirm"|translate}}</span>
                 </button>
             </div>
