@@ -100,8 +100,8 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             DataService.loadGetServiceData()
                 .then(function (data) {
                     if (data) {
-                        $scope.tableData = data.lcData;
-                        var tableData = data.lcData;
+                        $scope.tableData = data.data;
+                        var tableData = data.data;
                         loadTableData();
                     }
                     else {
@@ -191,11 +191,11 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             var number = $(modelTemplate).filter('#numeric').html();
             var dropDown = $(modelTemplate).filter('#simpleDropdownTmpl').html();
 
-            var dataText = {"ErrMsg" :     {"textboxErr" : "Service name is required.", "modalVar":"lifecycleData.name", "placeholder":"Service Name"}};
+            var dataText = {"ErrMsg" :     {"textboxErr" : "Service name is required.", "modalVar":"lifecycleData.serviceName", "placeholder":"Service Name"}};
             $('#myModal .serviceName').html($compile(Mustache.to_html(text, dataText.ErrMsg))($scope));
 
-            var TempNameText = {"ErrMsg" :     {"textboxErr" : "Template name is required.", "modalVar":"lifecycleData.template", "placeholder":"Template Name"}};
-            $('#myModal .templateName').html($compile(Mustache.to_html(text, TempNameText.ErrMsg))($scope));
+            var serviceDescriptionText = {"ErrMsg" :     {"textboxErr" : "Description is required.", "modalVar":"lifecycleData.description", "placeholder":"Descritpion"}};
+            $('#myModal .serviceDescription').html($compile(Mustache.to_html(text, serviceDescriptionText.ErrMsg))($scope));
 
             //var creatorText = {"ErrMsg" :     {"textboxErr" : "Creator is required.", "modalVar":"lifecycleData.creator", "placeholder":"Creator"}};
             /*$scope.data = {
@@ -275,15 +275,18 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
         }
 
         $scope.templateParam = function() {
-            //$scope.lifecycleData.optSelect = 1.2;
-            //$log.info($scope.lifecycleData);
-
-            DataService.fetchCreateParameters($scope.lifecycleData.optSelect)
+            
+            var template = $scope.lifecycleData.optSelect;
+            var lastSelTempCreateParam = DataService.getCreateParamJsonObj();
+            //if the template not changed, no need to update the page.
+            if(lastSelTempCreateParam.templateId == template.serviceTemplateId){
+                return;
+            }
+            $.when(DataService.generateCreateParameters(template))
                 .then(function (tmplatesParamResponse) {
                     console.log("Data Param Template :: ");
                     $log.info(tmplatesParamResponse);
-                    $scope.paramJsonObj= tmplatesParamResponse.templateName;
-
+                    document.getElementById("templateParameters").innerHTML = tmplatesParamResponse;
                 }, function (reason) {
                     $scope.error = "Error ! " + reason;
                 });
@@ -329,60 +332,57 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
         }
 
         $scope.saveData = function() {
-            //TODO
-            var sengMsgObj = {};//collectCreateParamfromUI('', 'create', $scope.templateParameters.paramJsonObj);
-            //createServiceInstance(sengMsgObj)
-            DataService.createServiceInstance(lifecycleData, sengMsgObj)
+            //collect service  base info
+            var serviceBaseInfo = {
+                 'name' :  $scope.lifecycleData.serviceName,
+                 'description' : $scope.lifecycleData.description,
+                 'templateId' :  $scope.lifecycleData.optSelect.serviceTemplateId,
+            };
+            //send message
+            $.when(DataService.createService(serviceBaseInfo))
                 .then(function (response) {
                     $log.info(response);
-                    //TODO
-                }, function (reason) {
-                    $scope.error = "Error ! " + reason;
+                    if(response.sataus === 'checkfailed'){
+                        return;
+                    }else if (response.status === 'finished') {
+                        $.when(queryService(response.serviceId)).then(function(serviceInstance){  
+                            $scope.tableData.push(serviceInstance);
+                            $scope.$apply();
+                            $scope.tableParams.reload();
+                            $('#myModal').modal('hide');
+                        });
+                    } else{
+                        showErrorMessage('Create service failed',response);
+                    }
                 });
         }
-
-        /**
-         * convert the template params obj to html UI string
-         *
-         * @param identify the object identify, it should be different every time
-         * @return the html component string
-         */
-        function collectCreateParamfromUI(parentHost,identify, createParam) {
-            // the create params used for create msg
-            var paramSentObj = {
-                domainHost:'',
-                nodeTemplateName:'',
-                nodeType:'',
-                segments:[],
-                additionalParamForNs:{}
+        $scope.deleteIndividualData = function(id){
+            var deleteHandle = function(result) {
+                if (result) {
+                    var remove = function() {
+                        var pos = 0;
+                        for(var i= 0; i < $scope.tableData.length; i++){    
+                            if($scope.tableData[i].serviceId === id){
+                                pos = i;
+                                break;
+                            }
+                        }
+                        $scope.tableData.splice(pos, 1);
+                        $scope.$apply();
+                        $scope.tableParams.reload();
+                    };
+                    $.when(DataService.deleteService(id))
+                    .then(function(response) {
+                        if (response.status === 'finished') {
+                            remove();
+                        } else {
+                            showErrorMessage('Delete service failed',response);
+                        }
+                    });
+                }
             };
-            // get the domain value
-            if (undefined !=  createParam.domainHost && 'enum' === createParam.domainHost.type) {
-                var domain = collectParamValue(identify, createParam.domainHost);
-                paramSentObj.domainHost = collectParamValue(identify, createParam.domainHost)
-            }
-            //if parent domainHost is not '' and local domain host is'', it should be setted as parent
-            if('' != parentHost && '' == paramSentObj.domainHost){
-                paramSentObj.domainHost = parentHost;
-            }
-            paramSentObj.nodeTemplateName = createParam.nodeTemplateName;
-            paramSentObj.nodeType = createParam.nodeType;
-
-            // get own param value from UI
-            createParam.additionalParamForNs.forEach(function(param) {
-                paramSentObj.additionalParamForNs[param.name] = collectParamValue(identify, param);
-            });
-            // get segments param value from UI
-            createParam.segments.forEach(function(segment) {
-                // the identify for segment
-                var segmentIdentify = '' == identify ? segment.nodeTemplateName
-                    : identify + '_' + segment.nodeTemplateName;
-                var segmentObj = collectCreateParamfromUI(paramSentObj.domainHost, segmentIdentify, segment);
-                paramSentObj.segments.push(segmentObj);
-            });
-            return paramSentObj;
+            bootbox.confirm("Do you confirm to delete service?", deleteHandle);     
         }
-
 
     })
 
