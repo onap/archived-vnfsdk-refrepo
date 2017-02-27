@@ -28,7 +28,7 @@ app.factory("DataService", function($http, $log){
                  'serviceId': ""})*/
             }).then(function(response){
                 //$log.info(response);
-                lcData = response;
+                lcData = response.data;
                 return response;
             });
         },
@@ -36,7 +36,7 @@ app.factory("DataService", function($http, $log){
             var returnData = null;
             if(lcData) {
                 for (var i = 0; i < lcData.length; i++) {
-                    if(lcData[i].id == id) {
+                    if(lcData[i].serviceId == id) {
                         returnData = lcData[i].inputParameters;
                         break;
                     }
@@ -341,8 +341,7 @@ function getParamId(identify, param) {
  * @returns resource string
  */
 function getParamLabel(nodeType, param) {
-    //var name = $.i18n.prop(nodeType + '.' + param.name);
-    var name = param.name;
+    var name = $.i18n.prop(nodeType + '.' + param.name);
     if (name.length === 0 || name.slice(0, 1) === '[') {
         name = param.name;
     }

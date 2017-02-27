@@ -97,6 +97,12 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
         $scope.param="lctableData";
 
         $scope.init = function() {
+            jQuery.i18n.properties({
+                language : 'en-US',
+                name : 'lcm-template-parameters-i18n',
+                path : 'i18n/',
+                mode : 'map'
+            });
             DataService.loadGetServiceData()
                 .then(function (data) {
                     if (data) {
@@ -342,7 +348,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             $.when(DataService.createService(serviceBaseInfo))
                 .then(function (response) {
                     $log.info(response);
-                    if(response.sataus === 'checkfailed'){
+                    if(response.status === 'checkfailed'){
                         return;
                     }else if (response.status === 'finished') {
                         $.when(queryService(response.serviceId)).then(function(serviceInstance){  
@@ -552,18 +558,9 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
         console.log("inputDataCtrl --> $stateParams.id:: " + $stateParams.id);
         $scope.inputData = DataService.getSavedLCData($stateParams.id);
         $log.info($scope.inputData);
-        /*for(var i = 0; i < $scope.inputData.length; i++) {
-            //var def_button_tpl = $(modelTemplate).filter('#defaultButtons').html();
-            $("#inputDataElements").appendChild("<span>Shahid</span>");
-
-        }*/
-
         $("div.inputDataElements").html("");
-        for (var prop in $scope.inputData) {
-            //console.log('obj.' + prop, '=', $scope.inputData[prop]);
-            //$("#inputDataElements").append("<div><span>"+prop+": </span><span>"+$scope.inputData[prop]+"</span></div>");
-            $("div.inputDataElements").append('<div class="mT15 form-group row" style="margin-top:35px;"><div class="col-md-2 col-xs-2 col-lg-2 col-sm-2" align="left"><label class="control-label"><span style="font-size:16px;">'+ prop + ':</span></label></div><div class="col-md-3 col-xs-3 col-lg-3 col-sm-3"><input  type="text" name="" maxlength="256" data-toggle="tooltip" data-placement="top" title="'+ $scope.inputData[prop] + '" value="'+ $scope.inputData[prop] + '" readonly disabled/></div></div>');
-        }
+        $("div.inputDataElements").append(convertInputsToUI('', 'show', $scope.inputData));
+
     })
 
 
