@@ -1,6 +1,6 @@
 /*
 
-    Copyright 2016-2017, Huawei Technologies Co., Ltd.
+    Copyright 2017, Huawei Technologies Co., Ltd.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -223,7 +223,7 @@ a:hover {
 }
 
 .homecontent {
-    text-align: center;
+    /* text-align: center; */
     letter-spacing: 1.4px;
 }
 
@@ -315,7 +315,6 @@ a:hover {
     transform: translateY(-50%);
     padding-left: 70px;
     white-space: normal;
-    color:blue;
 }
 
 /* Functional */
@@ -562,6 +561,7 @@ a:hover {
 .modal-header {
 	/*background-color: #cccccc;*/
     background: linear-gradient(to bottom, #fbfbfb 0, #f6f6f6 70%, #f0f0f0 100%);
+    padding:0px;
 }
 
 /* Tree */
@@ -622,6 +622,10 @@ a:hover {
     font-size: 12px;
 }
 
+tr{
+	text-align:center;
+}
+
 /* Vertical Tab */
 .nav-stacked {
     margin-top: 20px;
@@ -640,9 +644,10 @@ a:hover {
     background-color: transparent;
 }
 .nav-stacked>li.active>a {
-    background-color: #ccc;
+    background-color: #fff;
     border: none;
     border-radius: 4px;
+    border-left: 3px solid #4ac9ff;
 }
 
 #vtabArea .tab-content .tab-pane {
@@ -767,10 +772,10 @@ a:hover {
     letter-spacing: 3px;
     width:100%;
 }
-#notifications h5, #functional h5{
+ #functional h5{
     padding : 0;
 }
-#notifications a, #functional a{
+ #functional a{
     padding: 12px 14px;
 }
 .tableAlign{
@@ -836,7 +841,7 @@ a:hover {
 }
 
 #menu_accordion .collapsed span {
-    background: url(../thirdparty/images/expand_arrow.png) 1px 3px no-repeat;
+    background: url(../../thirdparty/images/expand_arrow.png) 1px 3px no-repeat;
     display: block;
     float: left;
     margin-bottom: -1px;
@@ -845,7 +850,7 @@ a:hover {
     padding-left: 20px;
 }
 #menu_accordion span {
-    background: url(../thirdparty/images/collapse_arrow.png) 1px 3px no-repeat;
+    background: url(../../thirdparty/images/collapse_arrow.png) 1px 3px no-repeat;
     display: block;
     float: left;
     margin-bottom: -1px;
@@ -939,7 +944,8 @@ a:hover {
 
 .labelstyle{
     text-align:left;
-    font-size:12px;
+    font-size:14px;
+    font-weight: 700;
     font-family: "Microsoft Yahei",Arial,Tahoma,Verdana,SimSun;
 }
 
@@ -947,12 +953,68 @@ a:hover {
     font-size:14px !important;
     font-family: "Microsoft Yahei",Arial,Tahoma,Verdana,SimSun;
 }
+
+.header{
+    text-align:left;
+    font-size:14px;
+    font-family: "Microsoft Yahei",Arial,Tahoma,Verdana,SimSun;
+}
+
+.message{
+    font-size:12px;
+    font-family: "Microsoft Yahei",Arial,Tahoma,Verdana,SimSun;
+}
+
 .shortnoteHeader {
     color : blue;
 }
 .shortnoteText {
-    font-size : 12px;
+    font-size : 10px;
 }
-tr{
-    text-align:center;
+.form-group, .modal-header{
+    text-align: left;
+}
+
+.labelHeader, .labelTitle {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    text-transform: capitalize;
+    border-top: 2px solid #f1f1f1;
+    border-bottom: 2px solid #f1f1f1;
+    padding: 13px 5px;
+    display: inline-block;
+    letter-spacing: 5px;
+}
+
+.labelTitle {
+    font-size: 24px;
+    font-weight: normal;
+    text-align: left;
+    border: none;
+}
+
+pre code {
+    white-space: pre-line;
+
+}
+.plus-icon {
+    background-image: url("../../thirdparty/images/add.png");
+}
+.edit-icon {
+    background-image: url("../../thirdparty/images/edit.png");
+}
+.delete-icon {
+    background-image: url("../../thirdparty/images/delete.png");
+}
+
+.staricon{
+    color: red;
+    float: right;
+}
+
+.inputfield{
+    width:95%;
+    display:inline-block;
+
 }

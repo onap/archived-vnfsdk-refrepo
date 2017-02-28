@@ -38,6 +38,7 @@
 
 #lctabArea{
     margin-top:100px;
+    text-align: center;
 }
 #lctabArea .nav-tabs{
     border-bottom: 1px solid #4ac9ff;
@@ -119,10 +120,10 @@
 }
 
 .mT15 input {
-    margin-left: 10px;
+    /*margin-left: 10px;*/
     width: 100%;
     padding: 8px 12px;
-    background: #f1f1f1;
+    /*background: #f1f1f1;*/
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
@@ -146,11 +147,30 @@
     margin-top:25px;
 }
 
-.nav>li>a:hover, .nav>li>a:focus {
+.nav>li>a:hover {
     text-decoration: none;
     background-color: #eee;
 }
 
 select {
     padding: 0 !important;
+}
+
+#myModal {
+    text-align: center;
+}
+#myModal .modal-content .modal-body .tab-content {
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 500px;
+}
+
+.row-content {
+    overflow: hidden;
+    margin-bottom: 7px;
+}
+
+.delete-icon {
+    background: url("../images/delete.png") no-repeat;
+    height: 16px;
 }
