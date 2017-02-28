@@ -1,0 +1,79 @@
+<!--
+
+    Copyright 2016-2017, Huawei Technologies Co., Ltd.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<!-- Accordion -->
+<script id="accordion" type="text/html">
+    {{#items}}
+    <div class="panel panel-default">
+        <h3 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" data-target="#{{tabId}}">{{header}}</a>
+        </h3>
+        <div id="{{tabId}}" class="panel-collapse collapse {{#isActive}}in{{/isActive}}">
+            <div class="panel-body"> {{msg}} </div>
+        </div>
+    </div>
+    {{/items}}
+</script>
+
+<!--Tabs-->
+<script id="tabs" type="text/html">
+    <ul class="nav nav-tabs">
+        {{#items}}<li {{#isActive}}class="active"{{/isActive}}><a data-toggle="tab" data-target="#{{target}}">{{tablabel}}</a></li>{{/items}}
+    </ul>
+    <div class="tab-content">
+        {{#items}}
+        <div id="{{target}}" class="tab-pane fade {{#isActive}}in active{{/isActive}}">
+            <h3>{{tablabel}}</h3>
+            <p>{{msg}}</p>
+        </div>
+        {{/items}}
+    </div>
+</script>
+
+<!--Vertical Tabs-->
+<script id="vtabs" type="text/html">
+    <ul class="nav nav-stacked col-sm-4 col-md-4 col-lg-4">
+        {{#items}}<li {{#isActive}}class="active"{{/isActive}}><a data-toggle="tab" data-target="#{{target}}">{{tablabel}}</a></li>{{/items}}
+    </ul>
+    <div class="tab-content col-sm-8 col-md-8 col-lg-8">
+        {{#items}}
+        <div id="{{target}}" class="tab-pane fade {{#isActive}}in active{{/isActive}}">
+            <h3>{{tablabel}}</h3>
+            <p>{{msg}}</p>
+        </div>
+        {{/items}}
+    </div>
+</script>
+
+<!--Table-->
+<script id="table" type="text/html">
+    {{#filter}}<input type="text" id="myInput" onkeyup="{{action}}" placeholder="Search for {{searchField}}">{{/filter}}
+    <table id="myTable{{#filter}}_search{{/filter}}" class="table {{#striped}}table-striped{{/striped}} {{#border}}table-bordered{{/border}} {{#hover}}table-hover{{/hover}} {{#condensed}}table-condensed{{/condensed}}">
+        <thead>
+        <tr>
+            {{#itemHeader}}<th>{{.}}</th>{{/itemHeader}}
+        </tr>
+        </thead>
+        <tbody>
+        {{#rowitem}}
+        <tr>
+            {{#values}}<td>{{.}}</td>{{/values}}
+        </tr>
+        {{/rowitem}}
+        </tbody>
+    </table>
+</script>
