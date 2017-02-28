@@ -164,7 +164,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             var addhtml = Mustache.to_html(def_iconbutton_tpl, add_data);
             var deletehtml = Mustache.to_html(def_button_tpl, delete_data);
             $('#lcTableAction').html($compile(addhtml)($scope));
-            $('#lcTableAction').append($compile(deletehtml)($scope));
+            //$('#lcTableAction').append($compile(deletehtml)($scope));
 
             $scope.checkboxes = { 'checked': false, items: {} };
 
@@ -197,10 +197,12 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             var number = $(modelTemplate).filter('#numeric').html();
             var dropDown = $(modelTemplate).filter('#simpleDropdownTmpl').html();
 
-            var dataText = {"ErrMsg" :     {"textboxErr" : "Service name is required.", "modalVar":"lifecycleData.serviceName", "placeholder":"Service Name"}};
+            var dataText = {"ErrMsg" :     {"errmsg" : "Service name is required.", "modalVar":"lifecycleData.serviceName", "placeholder":"", "errtag":"lcnameErr", "errfunc":"validatename", "required":true}};
+    
             $('#myModal .serviceName').html($compile(Mustache.to_html(text, dataText.ErrMsg))($scope));
 
-            var serviceDescriptionText = {"ErrMsg" :     {"textboxErr" : "Description is required.", "modalVar":"lifecycleData.description", "placeholder":"Descritpion"}};
+            var serviceDescriptionText = {"ErrMsg" :     {"errmsg" : "Description is required.", "modalVar":"lifecycleData.description", "placeholder":"", "errtag":"lctemplateErr", "errfunc":"validatetemplate", "required":true}};
+
             $('#myModal .serviceDescription').html($compile(Mustache.to_html(text, serviceDescriptionText.ErrMsg))($scope));
 
             //var creatorText = {"ErrMsg" :     {"textboxErr" : "Creator is required.", "modalVar":"lifecycleData.creator", "placeholder":"Creator"}};
@@ -221,15 +223,21 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
                    // var templatesInfo = translateToTemplatesInfo(tmplatesResponse);
                   //  document.getElementById("svcTempl").innerHTML = templatesInfo;
                     $scope.optionsValue = tmplatesResponse;
-                    //$scope.someOptions = [{serviceTemplateId:"1",templateName:"1.1"}, {serviceTemplateId:"2",templateName:"1.2"}];
-                    // $scope.someOptions = [{"serviceTemplateId": '1', "templateName": "1.1"},{"serviceTemplateId": '2', "templateName": "1.2"}]
-                    // console.log(":: " + JSON.stringify($scope.optionsValue));
+                    var dropSimple_data = {
+                        "errmsg" : "Template version is required.",
+                        "modalVar" : "lifecycleData.optSelect",
+                        "labelField" : "templateName",
+                        "optionsValue" : JSON.stringify(tmplatesResponse),
+                        "errtag":"lcdropdownErr",
+                        "errfunc":"validatedropdown",
+                        "required":true
+                    }
+		    $('#myModal #plainDropDown').html($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));
                 }, function (reason) {
                     $scope.error = "Error ! " + reason;
                 });
-
-
-
+		
+		
             //$('#myModal .creator').html($compile(Mustache.to_html(text, creatorText.ErrMsg))($scope));
 
             var modelSubmit_data = {"title":"Submit", "clickAction":"saveData(lifecycleData.id)"};
@@ -239,6 +247,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             var modelDelete_data = {"title":"Close", "clickAction":"closeModal()"};
             var modelDelete_html = Mustache.to_html(def_button_tpl, modelDelete_data);
             $('#myModal #footerBtns').append($compile(modelDelete_html)($scope));
+	    
         }
 
 
@@ -279,6 +288,31 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             $state.go('home.lcTabs.detailInfo', {'id': id});
 
         }
+	
+	$scope.validatename = function (value){
+                if($scope.lifecycleData.serviceName) {
+                    $scope.lcnameErr = false;
+                }
+                else
+                    $scope.lcnameErr = true;
+            }
+
+
+
+            $scope.validatetemplate = function (value){
+                if($scope.lifecycleData.description) {
+                    $scope.lctemplateErr = false;
+                }
+                else
+                    $scope.lctemplateErr = true;
+            }
+            $scope.validatedropdown = function (value){
+                if($scope.lifecycleData.optSelect) {
+                    $scope.lcdropdownErr = false;
+                }
+                else
+                    $scope.lcdropdownErr = true;
+            }
 
         $scope.templateParam = function() {
             
@@ -313,6 +347,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
         $scope.closeModal = function() {
             console.log("Closing Modal...");
             $('#myModal').modal('hide');
+            $state.reload();
         }
 
         $scope.editData = function(id) {
@@ -564,10 +599,21 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
     })
 
 
-var modelTemplate;
+var modelTemplate = "";
 function loadTemplate() {
-    $.get('template.html', function(template) {
-        modelTemplate = template;
+
+    $.get('templateContainer.html', function (template) {
+        modelTemplate += template;
+    });
+    $.get('templateWidget.html', function (template) {
+        //console.log("Template is : "+template);
+        modelTemplate += template;
+    });
+    $.get('templateNotification.html', function (template) {
+        modelTemplate += template;
+    });
+    $.get('templateFunctional.html', function (template) {
+        modelTemplate += template;
     });
 }
 

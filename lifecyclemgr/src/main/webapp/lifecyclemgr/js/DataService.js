@@ -361,13 +361,13 @@ function generateParamComponent(nodeType, identify, param, strReadOnly) {
     var id = getParamId(identify,param);
     var component = '';
     if (param.type === 'string') {
-        component = '<div class="mT15 form-group" style="margin-left:0px;">'
-                + '<label class="col-sm-5 control-label">'
+        component = '<div class="mT15 form-group row-content" style="margin-left:0px;">'
+                + '<label class="col-sm-6 control-label labelstyle">'
                 + '<span>' + name + '</span>' + generateRequiredLabel(param)
                 + '</label>' 
-                + '<div class="col-sm-5"><input type="text" id="' + id 
+                + '<div class="col-sm-6"><input type="text" id="' + id
                 + '" name="parameter description" class="form-control" placeholder="'
-                + name + '" value="' + param.defaultValue;
+                + '"value="' + param.defaultValue;
         if(strReadOnly){
             component = component + '" readonly="' + strReadOnly + '"/>'+ '</div></div>';
         }else{
@@ -375,12 +375,12 @@ function generateParamComponent(nodeType, identify, param, strReadOnly) {
         }
                 
     } else if (param.type === 'enum') {
-        component = '<div class="form-group" style="margin-left:0px;margin-bottom:5px;">'
-                + '<label class="col-sm-5 control-label">'
+        component = '<div class="form-group row-content" style="margin-left:0px;margin-bottom:5px;">'
+                + '<label class="col-sm-6 control-label labelstyle">'
                 + '<span>' + name + '</span>'
                 + '<span class="required">*</span>'
                 + '</label>'
-                + '<div class="col-sm-5">'
+                + '<div class="col-sm-6">'
                 + '<select class="form-control" style ="padding-top: 0px;padding-bottom: 0px;"'
                 + ' id="' + id + '" name="' + param.name + '" value="' + param.defaultValue 
                 + '">'
