@@ -95,7 +95,6 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
 
     .controller('homeCtrl', function($scope, $compile, $state, $log, DataService, NgTableParams) {
         $scope.param="lctableData";
-
         $scope.init = function() {
             jQuery.i18n.properties({
                 language : 'en-US',
@@ -224,7 +223,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
                   //  document.getElementById("svcTempl").innerHTML = templatesInfo;
                     $scope.optionsValue = tmplatesResponse;
                     var dropSimple_data = {
-                        "errmsg" : "Template version is required.",
+                        "errmsg" : "Service template is required.",
                         "modalVar" : "lifecycleData.optSelect",
                         "labelField" : "templateName",
                         "optionsValue" : JSON.stringify(tmplatesResponse),
@@ -240,7 +239,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
 		
             //$('#myModal .creator').html($compile(Mustache.to_html(text, creatorText.ErrMsg))($scope));
 
-            var modelSubmit_data = {"title":"Submit", "clickAction":"saveData(lifecycleData.id)"};
+            var modelSubmit_data = {"title":"Submit", "clickAction":"saveData()"};
             var modelSubmit_html = Mustache.to_html(def_button_tpl, modelSubmit_data);
             $('#myModal #footerBtns').html($compile(modelSubmit_html)($scope));
 
@@ -318,8 +317,12 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             
             var template = $scope.lifecycleData.optSelect;
             var lastSelTempCreateParam = DataService.getCreateParamJsonObj();
+            if(template == undefined){
+                document.getElementById("templateParameters").innerHTML = "";
+                return;
+            }            
             //if the template not changed, no need to update the page.
-            if(lastSelTempCreateParam.templateId == template.serviceTemplateId){
+            if(lastSelTempCreateParam.templateId == template.serviceTemplateId &&  document.getElementById("templateParameters").innerHTML != ""){
                 return;
             }
             $.when(DataService.generateCreateParameters(template))
@@ -338,16 +341,15 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
 
         $scope.showAddModal = function() {
             console.log("Showing Modal to Add data");
-            $scope.lifecycleData = {};
-            $scope.textboxErr = false;
-
+            //$scope.lifecycleData = {};
+            //$scope.textboxErr = false;
             //$("#myModal").modal();
             $("#myModal").modal({}).draggable();
         }
         $scope.closeModal = function() {
             console.log("Closing Modal...");
             $('#myModal').modal('hide');
-            $state.reload();
+            //$state.reload();
         }
 
         $scope.editData = function(id) {
