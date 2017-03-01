@@ -139,41 +139,49 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var dropDown = $(modelTemplate).filter('#simpleDropdownTmpl').html();
 
 
-            var portName = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.name", "errtag":"textboxErr", "errfunc":"validatetextbox", "required":true}};
+            var portName = {"ErrMsg" :     {"errmsg" : "Name is required.", "modalVar":"port.name", "errtag":"textboxErrName", "errfunc":"validatetextboxName", "required":true}};
             $('#myModal #name').append($compile(Mustache.to_html(text, portName.ErrMsg))($scope));
 
-            var portMe = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.me", "errtag":"textboxErr", "errfunc":"validatetextbox", "required":true}};
+            var portMe = {"ErrMsg" :     {"errmsg" : "ME is required.", "modalVar":"port.me", "errtag":"textboxErrMe", "errfunc":"validatetextboxMe", "required":true}};
             $('#myModal #me').append($compile(Mustache.to_html(text, portMe.ErrMsg))($scope));
 
             //var portType = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"port.type"}};
             $('#myModal #type').append($compile(Mustache.to_html(dropDown, $scope.data.dropdowntypeData))($scope));
 
-            var portLayerRate = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"port.layerrate"}};
+            var portLayerRate = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.layerrate"}};
             $('#myModal #layerrate').append($compile(Mustache.to_html(text, portLayerRate.ErrMsg))($scope));
 
             //var portEdgePoint = {"ErrMsg" :     {"ipv4Err" : "IP Address is required.", "modalVar":"port.Edgepoint"}};
             $('#myModal #Edgepoint').append($compile(Mustache.to_html(dropDown, $scope.data.dropdownEdgeData))($scope));
 
-            var portIndex = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"port.portindex"}};
+            var portIndex = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.portindex"}};
             $('#myModal #portindex').append($compile(Mustache.to_html(text, portIndex.ErrMsg))($scope));
 
-            var portIp = {"ErrMsg" :     {"textboxErr" : "The ip is required.", "modalVar":"port.ipaddress"}};
+            var portIp = {"ErrMsg" :     {"errmsg" : "The ip is required.", "modalVar":"port.ipaddress"}};
             $('#myModal #ipaddress').append($compile(Mustache.to_html(text, portIp.ErrMsg))($scope));
 
-            var portAdmin = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"port.adminState"}};
+            var portAdmin = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.adminState"}};
             $('#myModal #adminState').append($compile(Mustache.to_html(text, portAdmin.ErrMsg))($scope));
 
-            var portOperatingState = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"port.operatingState"}};
+            var portOperatingState = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.operatingState"}};
             $('#myModal #operatingState').append($compile(Mustache.to_html(text, portOperatingState.ErrMsg))($scope));
 
         }
 
-        $scope.validatetextbox = function (value){
+        $scope.validatetextboxName = function (value){
             if($scope.port.name) {
-                $scope.textboxErr = false;
+                $scope.textboxErrName = false;
             }
             else
-                $scope.textboxErr = true;
+                $scope.textboxErrName = true;
+        }
+
+        $scope.validatetextboxMe = function (value){
+            if($scope.port.me) {
+                $scope.textboxErrMe = false;
+            }
+            else
+                $scope.textboxErrMe = true;
         }
 
         $scope.validateipv4 = function (value){
@@ -219,7 +227,8 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $scope.port = {};
             //$("#myModal").modal();
             $("#myModal").modal({}).draggable();
-            $scope.textboxErr = false;
+            $scope.textboxErrName = false;
+            $scope.textboxErrMe = false;
             $scope.ipv4Err = false;
             $scope.numericErr = false;
         }
@@ -367,29 +376,29 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var text = $(modelTemplate).filter('#textfield').html();
             var dropDown = $(modelTemplate).filter('#simpleDropdownTmpl').html();
 
-            var siteName = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"site.name", "errtag":"textboxErr", "errfunc":"validatetextbox", "required":true}};
+            var siteName = {"ErrMsg" :     {"errmsg" : "Name is required.", "modalVar":"site.name", "errtag":"textboxErrName", "errfunc":"validatetextboxName", "required":true}};
             $('#myModal #name').append($compile(Mustache.to_html(text, siteName.ErrMsg))($scope));
 
             $('#myModal #type').append($compile(Mustache.to_html(dropDown, $scope.data.dropdownsiteData))($scope));
 
-            var siteTenantName = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"site.tenatname"}};
+            var siteTenantName = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"site.tenatname"}};
             $('#myModal #tenantname').append($compile(Mustache.to_html(text, siteTenantName.ErrMsg))($scope));
 
-            var siteTenantType = {"ErrMsg" :     {"textboxErr" : "The tenanttype is required.", "modalVar":"site.tenanttype"}};
+            var siteTenantType = {"ErrMsg" :     {"errmsg" : "The tenanttype is required.", "modalVar":"site.tenanttype"}};
             $('#myModal #tenanttype').append($compile(Mustache.to_html(text, siteTenantType.ErrMsg))($scope));
 
-            var siteLocation = {"ErrMsg" :     {"textboxErr" : "Location is required.", "modalVar":"site.location", "placeholder":"Location"}};
+            var siteLocation = {"ErrMsg" :     {"errmsg" : "Location is required.", "modalVar":"site.location", "placeholder":"Location"}};
             $('#myModal #location').append($compile(Mustache.to_html(text, siteLocation.ErrMsg))($scope));
 
 
         }
 
-        $scope.validatetextbox = function (value){
+        $scope.validatetextboxName = function (value){
             if($scope.site.name) {
-                $scope.textboxErr = false;
+                $scope.textboxErrName = false;
             }
             else
-                $scope.textboxErr = true;
+                $scope.textboxErrName = true;
         }
 
 
@@ -409,7 +418,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $scope.site = {};
             //$("#myModal").modal();
             $("#myModal").modal({}).draggable();
-            $scope.textboxErr = false;
+            $scope.textboxErrName = false;
         }
         $scope.saveData = function(id) {
             if(id) {
@@ -558,81 +567,56 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var ipv4 = $(modelTemplate).filter('#ipv4').html();
             var number = $(modelTemplate).filter('#numeric').html();
 
-            var locId = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"loc.Id", "errtag":"textboxErr", "errfunc":"validatetextbox", "placeholder":"Country", "placeholder":"Id"}};
+            var locId = {"ErrMsg" :     {"errmsg" : "Name is required.", "modalVar":"loc.Id", "errtag":"textboxErrId", "errfunc":"validatetextboxId", "placeholder":"Country", "placeholder":"Id"}};
             $('#myModal #Name').append($compile(Mustache.to_html(text, locId.ErrMsg))($scope));
 
-            var locCountry = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"loc.Country", "errtag":"textboxErr", "errfunc":"validatetextbox", "placeholder":"Country","required":true}};
+            var locCountry = {"ErrMsg" :     {"errmsg" : "Country is required.", "modalVar":"loc.Country", "errtag":"textboxErrCountry", "errfunc":"validatetextboxCountry", "placeholder":"Country","required":true}};
             $('#myModal #Country').append($compile(Mustache.to_html(text, locCountry.ErrMsg))($scope));
 
-            var locLocation = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"loc.Location", "errtag":"textboxErr", "errfunc":"validatetextbox", "placeholder":"Location","required":true}};
+            var locLocation = {"ErrMsg" :     {"errmsg" : "Location is required.", "modalVar":"loc.Location", "errtag":"textboxErrLocation", "errfunc":"validatetextboxLocation", "placeholder":"Location","required":true}};
             $('#myModal #Location').append($compile(Mustache.to_html(text, locLocation.ErrMsg))($scope));
 
             var locDescription = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"loc.Description", "errtag":"textboxErr", "errfunc":"validatetextbox", "placeholder":"Description "}};
             $('#myModal #Description').append($compile(Mustache.to_html(text, locDescription.ErrMsg))($scope));
 
-            var locLatitude = {"ErrMsg" :     {"ipv4Err" : "IP Address is required.", "modalVar":"loc.Latitude", "errtag":"textboxErr", "errfunc":"validatetextbox", "placeholder":"Latitude","required":true}};
+            var locLatitude = {"ErrMsg" :     {"errmsg" : "Latitude is required.", "modalVar":"loc.Latitude", "errtag":"textboxErrLatitude", "errfunc":"validatetextboxLatitude", "placeholder":"Latitude","required":true}};
             $('#myModal #Latitude').append($compile(Mustache.to_html(text, locLatitude.ErrMsg))($scope));
 
-            var locLongitude = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"loc.Longitude", "errtag":"textboxErr", "errfunc":"validatetextbox", "placeholder":"Longitude","required":true}};
+            var locLongitude = {"ErrMsg" :     {"errmsg" : "Longitude is required.", "modalVar":"loc.Longitude", "errtag":"textboxErrLongitude", "errfunc":"validatetextboxLongitude", "placeholder":"Longitude","required":true}};
             $('#myModal #Longitude').append($compile(Mustache.to_html(text, locLongitude.ErrMsg))($scope));
         }
 
-        $scope.validatetextbox = function (value){
-            if($scope.loc.Id) {
-                $scope.textboxErr = false;
-            }
-            else
-                $scope.textboxErr = true;
-        }
-
-        $scope.validatetextbox = function (value){
-            if($scope.loc.Country) {
-                $scope.textboxErr = false;
-            }
-            else
-                $scope.textboxErr = true;
-        }
-
-        $scope.validatetextbox = function (value){
+        $scope.validatetextboxLocation = function (value){
             if($scope.loc.Location) {
-                $scope.textboxErr = false;
+                $scope.textboxErrLocation = false;
             }
             else
-                $scope.textboxErr = true;
+                $scope.textboxErrLocation = true;
         }
 
-        $scope.validatetextbox = function (value){
+        $scope.validatetextboxCountry = function (value){
+            if($scope.loc.Country) {
+                $scope.textboxErrCountry = false;
+            }
+            else
+                $scope.textboxErrCountry = true;
+        }
+
+        $scope.validatetextboxLatitude = function (value){
             if($scope.loc.Latitude) {
-                $scope.textboxErr = false;
+                $scope.textboxErrLatitude = false;
             }
             else
-                $scope.textboxErr = true;
+                $scope.textboxErrLatitude = true;
         }
 
-        $scope.validatetextbox = function (value){
+        $scope.validatetextboxLongitude = function (value){
             if($scope.loc.Longitude) {
-                $scope.textboxErr = false;
+                $scope.textboxErrLongitude = false;
             }
             else
-                $scope.textboxErr = true;
+                $scope.textboxErrLongitude = true;
         }
-
-        $scope.validatenumeric = function (value){
-            if($scope.loc.Latitude) {
-                $scope.numericErr = false;
-            }
-            else
-                $scope.numericErr = true;
-        }
-
-        $scope.validatenumeric = function (value){
-            if($scope.loc.Longitude) {
-                $scope.numericErr = false;
-            }
-            else
-                $scope.numericErr = true;
-        }
-
 
         $scope.closeModal = function() {
             console.log("Closing Modal...");
@@ -651,8 +635,10 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $scope.location = {};
             //$("#myModal").modal();
             $("#myModal").modal({}).draggable();
-            $scope.textboxErr = false;
-            $scope.numericErr = false;
+            $scope.textboxErrLocation = false;
+            $scope.textboxErrCountry = false;
+            $scope.textboxErrLatitude = false;
+            $scope.textboxErrLongitude = false;
         }
         $scope.saveData = function(id) {
             if(id) {
@@ -806,25 +792,25 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             //var linkType = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"link.type"}};
             $('#myModal #type').append($compile(Mustache.to_html(dropDown, $scope.data.dropdownlinkData))($scope));
 
-            var linkLayerRate = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"link.layerRate"}};
+            var linkLayerRate = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"link.layerRate"}};
             $('#myModal #layerRate').append($compile(Mustache.to_html(text, linkLayerRate.ErrMsg))($scope));
 
-            var linkSourcePort = {"ErrMsg" :     {"numericErr" : "The name is required.", "modalVar":"link.sourcePort"}};
+            var linkSourcePort = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"link.sourcePort"}};
             $('#myModal #sourcePort').append($compile(Mustache.to_html(text, linkSourcePort.ErrMsg))($scope));
 
-            var linkSinkPort = {"ErrMsg" :     {"numericErr" : "IP Address is required.", "modalVar":"link.sinkPort"}};
+            var linkSinkPort = {"ErrMsg" :     {"errmsg" : "IP Address is required.", "modalVar":"link.sinkPort"}};
             $('#myModal #sinkPort').append($compile(Mustache.to_html(text, linkSinkPort.ErrMsg))($scope));
 
-            var linkSourceNe = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"link.sourceNE"}};
+            var linkSourceNe = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"link.sourceNE"}};
             $('#myModal #sourceNE').append($compile(Mustache.to_html(text, linkSourceNe.ErrMsg))($scope));
 
-            var linkSinkNe = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"link.sinkNE"}};
+            var linkSinkNe = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"link.sinkNE"}};
             $('#myModal #sinkNE').append($compile(Mustache.to_html(text, linkSinkNe.ErrMsg))($scope));
 
-            var linkAdminState = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"link.adminState"}};
+            var linkAdminState = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"link.adminState"}};
             $('#myModal #adminState').append($compile(Mustache.to_html(text, linkAdminState.ErrMsg))($scope));
 
-            var linkOperatingState = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"link.operatingState"}};
+            var linkOperatingState = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"link.operatingState"}};
             $('#myModal #operatingState').append($compile(Mustache.to_html(text, linkOperatingState.ErrMsg))($scope));
 
         }
@@ -1018,58 +1004,51 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var number = $(modelTemplate).filter('#numeric').html();
             var dropDown = $(modelTemplate).filter('#simpleDropdownTmpl').html();
 
-            var neName = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.name", "errtag":"textboxErr", "errfunc":"validatetextbox","required":true}};
+            var neName = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.name", "errtag":"textboxErrName", "errfunc":"validatetextboxName","required":true}};
             $('#myModal #name').append($compile(Mustache.to_html(text, neName.ErrMsg))($scope));
 
-            var neVersion = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.version","errtag":"textboxErr", "errfunc":"validatetextbox","required":true}};
+            var neVersion = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.version","errtag":"textboxErrVersion", "errfunc":"validatetextboxVersion","required":true}};
             $('#myModal #version').append($compile(Mustache.to_html(text, neVersion.ErrMsg))($scope));
 
-            var neProductName = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"ne.productname" }};
+            var neProductName = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.productname" }};
             $('#myModal #productname').append($compile(Mustache.to_html(text, neProductName.ErrMsg))($scope));
 
             $('#myModal #controller').append($compile(Mustache.to_html(dropDown, $scope.data.dropdownneData))($scope));
 
-            var neIPAddress = {"ErrMsg" :     {"ipv4Err" : "IP Address is required.", "modalVar":"ne.ipaddress"}};
+            var neIPAddress = {"ErrMsg" :     {"errmsg" : "IP Address is required.", "modalVar":"ne.ipaddress"}};
             $('#myModal #ipaddress').append($compile(Mustache.to_html(text, neIPAddress.ErrMsg))($scope));
 
-            var neNERole = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"ne.nerole"}};
+            var neNERole = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.nerole"}};
             $('#myModal #nerole').append($compile(Mustache.to_html(text, neNERole.ErrMsg))($scope));
 
-            var neAdminState = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"ne.adminState"}};
+            var neAdminState = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.adminState"}};
             $('#myModal #adminState').append($compile(Mustache.to_html(text, neAdminState.ErrMsg))($scope));
 
-            var neOperatingState = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"ne.operatingState"}};
+            var neOperatingState = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.operatingState"}};
             $('#myModal #operatingState').append($compile(Mustache.to_html(text, neOperatingState.ErrMsg))($scope));
 
         }
 
-        $scope.validatetextbox = function (value){
+        $scope.validatetextboxName = function (value){
             if($scope.ne.name) {
-                $scope.textboxErr = false;
+                $scope.textboxErrName = false;
             }
             else
-                $scope.textboxErr = true;
+                $scope.textboxErrName = true;
         }
 
-        $scope.validatetextbox = function (value){
+        $scope.validatetextboxVersion = function (value){
             if($scope.ne.version) {
-                $scope.textboxErr = false;
+                $scope.textboxErrVersion = false;
             }
             else
-                $scope.textboxErr = true;
-        }
-
-        $scope.validateipv4 = function (value){
-            if($scope.ne.ipaddress) {
-                $scope.ipv4Err = false;
-            }
-            else
-                $scope.ipv4Err = true;
+                $scope.textboxErrVersion = true;
         }
 
         $scope.closeModal = function() {
             console.log("Closing Modal...");
             $('#myModal').modal('hide');
+            $scope.textboxErrName = false;
         }
 
 
@@ -1083,9 +1062,8 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         $scope.showAddModal = function() {
             console.log("Showing Modal to Add data");
             $scope.ne = {};
-            $scope.textboxErr = false;
-            $scope.ipv4Err = false;
-            $scope.numericErr = false;
+            $scope.textboxErrName = false;
+            $scope.textboxErrVersion = false;
             //$("#myModal").modal();
             $("#myModal").modal({}).draggable();
         }
