@@ -12,11 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import 'core-js/es6';
-import 'core-js/es7/reflect';
-require('zone.js/dist/zone');
-if (process.env.ENV === 'production') {
-} else {
-    Error['stackTraceLimit'] = Infinity;
-    require('zone.js/dist/long-stack-trace-zone');
+var path = require('path');
+var _root = path.resolve(__dirname, '..');
+function root(args) {
+    args = Array.prototype.slice.call(arguments, 0);
+    return path.join.apply(path, [_root].concat(args));
 }
+exports.root = root;

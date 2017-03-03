@@ -12,11 +12,4 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import 'core-js/es6';
-import 'core-js/es7/reflect';
-require('zone.js/dist/zone');
-if (process.env.ENV === 'production') {
-} else {
-    Error['stackTraceLimit'] = Infinity;
-    require('zone.js/dist/long-stack-trace-zone');
-}
+module.exports = require('./config/webpack.dev.js');

@@ -1,0 +1,54 @@
+/* Copyright 2017 ZTE Corporation.
+ *
+ *Licensed under the Apache License, Version 2.0 (the "License");
+ *you may not use this file except in compliance with the License.
+ *You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ {
+  "common_status":"Status",
+  "common_keyword":"Keyword",
+  "field_rule_name":"Rulename",
+  "common_query":"Query",
+  "common_reset":"Reset",
+  "common_add":"Add",
+  "common_total1":"Total ",
+  "common_total2":" Rules",
+  "field_create_time":"Createtime",
+  "field_creator":"Creator",
+  "field_update_time":"Updatetime",
+  "common_operator":"Operator",
+  "common_update":"Update",
+  "common_off":"OFF",
+  "common_on":"ON",
+  "common_delete":"Delete",
+  "message_is_delete":"Isdelete",
+  "common_cancel":"Cancel",
+  "common_confirm":"Confirm",
+  "option_all":"All",
+  "common_enabled":"Enabled",
+  "common_disabled":"Disabled",
+  "field_description":"Description",
+  "common_check":"Check",
+  "common_save":"Save",
+  "common_file":"File",
+  "import":"Import",
+  "file_import":"Drag & drop file here ...",
+  "common_browse":"Browse",
+  "common_remove":"Remove",
+  "modalTitleDefault":"Rule Add",
+  "closeBtnTitleDefault":"Close",
+  "modalBodyMessageDefault":"Message Content",
+  "message_add_rule_success":"Add Success",
+  "exception_content_error":"Rule Content Error",
+  "exception_package_error":"Begin With Package",
+  "warn_delete_info": "only delete in stoped case rule "
+
+}
