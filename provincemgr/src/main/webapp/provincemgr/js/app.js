@@ -135,7 +135,9 @@ var app = angular.module("ProvinceManagementApp", ["ui.router", "ngTable"])
 
         $scope.closeModal = function() {
             console.log("Closing Modal...");
-            $('#managementDialog').modal('hide');
+            $('#uniModal').modal('hide');
+            console.log("@@@@@@@@@@@@@@@@@@");
+            $state.reload();
         }
 
         $scope.showAddModal = function() {
@@ -207,8 +209,15 @@ var app = angular.module("ProvinceManagementApp", ["ui.router", "ngTable"])
                         "text": "OK", "action": "deleteConfirmation("+id+")"
                     }]
             }};
-            var html = Mustache.to_html(dialog_tpl, error.err_data);
-            $($compile(html)($scope)).modal({backdrop: "static"});
+            angular.forEach($scope.checkboxes.items, function(value) {
+                if(value) {
+                    checkbox = true;
+                }
+            });
+            if (checkbox || (typeof id !== "undefined")) {
+                var html = Mustache.to_html(dialog_tpl, error.err_data);
+                $($compile(html)($scope)).modal({backdrop: "static"});
+            }
         }
 
         $scope.deleteConfirmation = function(id) {
