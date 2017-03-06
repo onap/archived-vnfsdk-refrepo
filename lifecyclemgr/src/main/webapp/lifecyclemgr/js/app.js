@@ -1,3 +1,21 @@
+/*
+
+    Copyright 2017, Huawei Technologies Co., Ltd.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+*/
+
 var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', 'ui.bootstrap.modal'*/
 
     /*.run(function($rootScope, $location, $state, LoginService) {
@@ -76,12 +94,18 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
                 templateUrl : "templates/inputData.html",
                 controller : "inputDataCtrl"
             })
-            .state("home.lcTabs.detailInfo.overlayVPN", {
+
+            .state("home.lcTabs.detailInfo.vpnManager", {
+                url : "/vpnManager",
+                templateUrl : "templates/vpnManager.html",
+                controller : "vpnManagerCtrl"
+            })
+            .state("home.lcTabs.detailInfo.vpnManager.overlayVPN", {
                 url: "/overlayVPN",
                 templateUrl : "templates/overlayVPN.html",
                 controller : "overlayVPNCtrl"
             })
-            .state("home.lcTabs.detailInfo.underlayVPN", {
+            .state("home.lcTabs.detailInfo.vpnManager.underlayVPN", {
                 url: "/underlayVPN",
                 templateUrl : "templates/underlayVPN.html",
                 controller : "underlayVPNCtrl"
@@ -379,7 +403,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             var serviceBaseInfo = {
                  'name' :  $scope.lifecycleData.serviceName,
                  'description' : $scope.lifecycleData.description,
-                 'templateId' :  $scope.lifecycleData.optSelect.serviceTemplateId,
+                 'templateId' :  $scope.lifecycleData.optSelect.serviceTemplateId
             };
             //send message
             $.when(DataService.createService(serviceBaseInfo))
@@ -441,7 +465,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
     .controller('detailInfoCtrl', function($scope, $stateParams, $compile, DataService) {
         console.log("detailInfoCtrl --> $stateParams.id:: " + $stateParams.id);
         //$scope.currentId = $stateParams.id;
-        $scope.rightPanelHeader = "SDNO-VPN Manager";
+        $scope.rightPanelHeader = "VPN Manager";
 
         var jsonData = DataService.loadServiceDetails($stateParams.id);
         $(".accordion").html("");
@@ -470,7 +494,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             var content = '';
             content += '<div class="panel panel-default"><div class="panel-heading">';
             content += '<h6 class="panel-title">';
-            content += '<a style="text-decoration:none;" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne_'+type+'" onClick="fnLoadTblData(this, \''+type+'\');">';
+            content += '<a style="text-decoration:none;" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne_'+type+'" ui-sref=".vpnManager" ui-sref-active="link_active_DetailInfo">';
             content += '<span id="sdnoLink">'+text+'</span></a>';
             content += '</h6></div>';
             if(type == "sdno") {
@@ -478,23 +502,45 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             } else {
                 content += '<div id="collapseOne_' + type + '" class="panel-collapse collapse">';
             }
+            //content += '<div id="collapseOne_' + type + '" class="panel-collapse collapse" ui-sref=".vpnManager" ui-sref-active="link_active_DetailInfo">';
+
             content += '<ul class="list-group nomargin">';
 
             if(type == "sdno") {
-                content += '<li id="overLink" class="list-group-item selected textAlign"><span class="glyphicon glyphicon-pencil text-primary pencilimg"></span><a ui-sref=".overlayVPN" ui-sref-active="link_active_DetailInfo" href="#/home/lcTabs/'+id+'/detailInfo/overlayVPN">Overlay VPN</a>';
+                /*content += '<li id="overLink" class="list-group-item selected textAlign"><span class="glyphicon glyphicon-pencil text-primary pencilimg"></span><a ui-sref=".overlayVPN" ui-sref-active="link_active_DetailInfo" href="#/home/lcTabs/'+id+'/detailInfo/overlayVPN">Overlay VPN</a>';
                 content += '</li>';
                 content += '<li id="underLink" class="list-group-item textAlign"><span class="glyphicon glyphicon-pencil text-primary pencilimg"></span><a ui-sref=".underlayVPN" ui-sref-active="link_active_DetailInfo" href="#/home/lcTabs/'+id+'/detailInfo/underlayVPN">Underlay VPN</a>';
-                content += '</li>';
+                content += '</li>';*/
             }
             else if(type == "gso"){
-                content += '<li id="linkgso" class="list-group-item textAlign"><!--<span class="glyphicon glyphicon-pencil text-primary"></span>--><span class="glyphicon glyphicon-pencil text-primary pencilimg"></span><span>OPEN-O</span></li>';
+                //content += '<li id="linkgso" class="list-group-item textAlign"><!--<span class="glyphicon glyphicon-pencil text-primary"></span>--><span class="glyphicon glyphicon-pencil text-primary pencilimg"></span><span>OPEN-O</span></li>';
             }
             else if(type == "nfvo"){
-                content += '<li id="linknfvo" class="list-group-item textAlign"><span class="glyphicon glyphicon-pencil text-primary pencilimg"></span><span>ZTE</span></li>';
+                //content += '<li id="linknfvo" class="list-group-item textAlign"><span class="glyphicon glyphicon-pencil text-primary pencilimg"></span><span>ZTE</span></li>';
             }
             content += '</ul></div></div>';
             return content;
         }
+    })
+
+    /*-------------------------------------------------------------------------------VPN Manager---------------------------------------------------------------------*/
+
+    .controller('vpnManagerCtrl', function($scope, $stateParams, $log, DataService) {
+        console.log("vpnManagerCtrl --> $stateParams.id:: " + $stateParams.id);
+        //$scope.rightPanelHeader = "VPN Manager";
+        /*var vtab_tpl = $(modelTemplate).filter('#vtabs').html();
+        var vTabData = {
+            "items": [{
+                "tablabel": "Overlay VPN",
+                "isActive": false
+            }, {
+                "tablabel": "Underlay VPN",
+                "isActive": false
+            }]
+        };
+        var html = Mustache.to_html(vtab_tpl, vTabData);
+        $('#vpnLinks').html(html);*/
+
     })
 
     /*-------------------------------------------------------------------------------OverlayVPN---------------------------------------------------------------------*/

@@ -25,24 +25,24 @@
     <br>
     <div class="panel panel-default">
     <table ng-table="tableParams" class="table table table-striped table-hover table-bordered lctable" show-filter="true">
-        <tr ng-repeat="lcData in $data" ui-sref=".lcTabs({id: lcData.serviceId})" ui-sref-active="selected-row" ui-sref-opts="{reload: false}"><!--target="_self" ng-click="setClickedRow($index, lcData.id)" -->
-            <td header="'ng-table/headers/checkbox.html'">
+        <tr ng-repeat="lcData in $data" ui-sref=".lcTabs({id: lcData.serviceId})" ui-sref-active="selected-row" ui-sref-opts="{reload: true}"><!--target="_self" ng-click="setClickedRow($index, lcData.id)" -->
+            <!--<td header="'ng-table/headers/checkbox.html'">
                 <input type="checkbox" ng-model="checkboxes.items[lcData.serviceId]" />
-            </td>
-            <td  title="'Service Name'" filter="{ name: 'text'}" sortable="'name'">
+            </td>-->
+            <td  title="'Service Name'" filter="{ serviceName: 'text'}" sortable="'serviceName'">
                 <!--<a data-toggle="modal" class="srvname" ng-click="callModal(lcData.id)">{{lcData.name}}</a>-->
-                <a data-toggle="modal" ng-click="test(lcData.id)" href="#popupModal" class="srvname">{{lcData.serviceName}}</a>
+                <a data-toggle="modal" ng-click="test(lcData.serviceId)" href="#popupModal" class="srvname">{{lcData.serviceName}}</a>
                 <!--<a data-toggle="modal" ng-href="#popupModal" class="srvname">{{lcData.name}}</a>--><!-- ui-sref=".modal1"-->
             </td>
-            <td title="'Template Name'" filter="{ template: 'text'}" sortable="'template'">
+            <td title="'Template Name'" filter="{ templateName: 'text'}" sortable="'templateName'">
                 {{lcData.templateName}}</td>
             <td title="'Create time'" filter="{ createtime: 'text'}" sortable="'createtime'">
-                {{lcData.createTime}}</td>
+                {{lcData.createtime}}</td>
             <td title="'Creator'" filter="{ creator: 'text'}" sortable="'creator'">
                 {{lcData.creator}}</td>
             <td title="'Action'">
                 <!--<img src="../images/delete.png" ng-click="editData(lcData.id)" style="cursor: pointer"></img>-->
-                <span class="pull-right glyphicon glyphicon-edit" ng-click="editData(lcData.serviceId)" style="cursor: pointer;margin: 0 5px"></span>
+                <!--<span class="pull-right glyphicon glyphicon-edit" ng-click="editData(lcData.serviceId)" style="cursor: pointer;margin: 0 5px"></span>-->
                 <span class="pull-right glyphicon glyphicon-trash" ng-click="deleteIndividualData(lcData.serviceId)" style="cursor: pointer;margin: 0 5px"></span>
             </td>
         </tr>
@@ -56,7 +56,7 @@
     <ui-view></ui-view>
 </div>
 
-<div id="popupModal" class="modal fade" role="dialog">
+<div id="popupModal" class="modal fade modal-lg" role="dialog">
     <ui-view></ui-view>
 </div>
 
