@@ -1,0 +1,147 @@
+ {
+	"common" : {
+		"actions" : {
+			"save" : "Save",
+			"upload":"Upload",
+			"delete" : "Delete",
+			"close" : "Close",
+			"search" : "Search",
+			"download" :"Download",
+			"yes" : "Yes",
+			"no" : "No",
+			"update" :"Update",
+			"clickHere" : "Click Here",
+			"getApp" : "get_app",
+			"fileUpload" : "file_upload",
+			"ok" : "Ok"
+		},
+		"message" : {
+			"statusTitle" : "Status : ",
+			"statusText" : "Status text : "
+		}
+	},
+	"module" : {
+		"marketplace" : {
+			"serviceDelete" : {
+				"title" : "Delete Service",
+				"confirmationMesaage" : "Are you sure that you want to delete "
+
+			},
+			"serviceUpload" : {
+				"title" : "Upload Service",
+				"fields" : {
+					"fileUpload" : {
+						 "label" : "Select File"
+					},
+					"shortDescription" : {
+						 "placeholder" : "Short Description"
+					},
+					"details" : {
+						 "placeholder" : "Details"
+					},
+					"remarks" : {
+						 "placeholder" : "Remarks"
+					},
+					"funcTestReport" : {
+						"label":"Function Test Report: "
+					}
+				},
+				"messages" : {
+					"onUploading" : "Please wait, Upload is in progress",
+					"onSuccessful" : "Service upload successful"
+				}
+
+			},
+			"serviceDetails" : {
+				"title" : "Service Name : ",
+				"info" : {
+					"details" : "Details",
+					"remarks" : "Remarks",
+					"provider" : "Provider",
+					"serviceType" : "Service Type",
+					"csarId" : "CSAR Id",
+					"fileSize" : "File Size",
+					"funcTestReport"  :"Function Test Report"
+
+				}
+			},
+			"sideNav" : {
+				"title" :  "VNF  Marketplace",
+				"marketplaceNav" : "Marketplace"
+			},
+			"main" : {
+				"headerTitle" : "Welcome to VNF Marketplace",
+				"description" : "Market place for VNF-SDK does the following task:",
+				"pointOne" : "Upload and download of VNF products and offerings",
+				"pointTwo" : "Show the interface about other component in VNF-SDK",
+				"sortBy" : {
+					"title" : "Sort By",
+					"options" : {
+						"name" : {
+							"key" :"Name",
+							"value" :"name"
+						},
+						"dateModified" : {
+							"key" :"Data Modified",
+							"value" : "date"
+						},
+						"downloads" : {
+							"key":"Downloads",
+							"value" : "downloads"
+						}
+					}
+				},
+				"search" :{
+					"label" : "Search",
+					"placeholder" : "Search keyword",
+					"close" : "Close"
+				},
+				"upload" : {
+					"label" : "Upload Service"
+				},
+				"gridView" : {
+					"label" :  "Grid View",
+					"serviceType" : {
+						"label" : "Service Type",
+						"value": "description"
+					},
+					"downloads" : {
+						"label" : "Number of Downloads",
+						"value":"get_app",
+						"tooltip" : "Download history",
+						"buttonLabel" :"Downloads"
+					},
+					"upload" : {
+						"tooltip" : "Uploads history",
+						"buttonLabel" : "Uploads"
+					},
+					"moreDetails" : {
+						"label" : "More details"
+					}
+				},
+				"listView" : {
+					"label" :  "List View",
+					"headers" : {
+						"name" : "Name",
+						"provider" : "Provider",
+						"description" : "Description",
+						"type" : "Type",
+						"size" : "Size",
+						"createdAt" : "Created at",
+						"lastModified" : "Last Modified at",
+						"donwloads" : "Downloads",
+						"actions" : "Actions"
+					}
+				},
+				"refresh" : {
+					"label" :  "Refresh"
+				},
+				"emptyList" : {
+					"label" : "Service list is empty. Would you like to upload one? If yes,",
+					"anchor" : "Click here",
+					"labelContinued" : "to upload a new service"
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,97 @@
+<!--
+  Copyright 2017 Huawei Technologies Co., Ltd.
+ 
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+ 
+      http://www.apache.org/licenses/LICENSE-2.0
+ 
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<md-dialog aria-label="Upload Service dialog" flex="40">
+    
+        <md-toolbar class="md-hue-2 dialogHeader">
+            <div class="md-toolbar-tools">
+                <h2>{{'module.marketplace.serviceUpload.title' | translate}}</h2>
+                <span flex></span>
+                <button class="btnTransparency" ng-click="vm.cancel()"  ng-hide="vm.status == 'progress'">
+                    <i class="fa fa-close fa-sm" aria-hidden="true"></i>
+                </button>
+            </div>
+        </md-toolbar>
+<form ng-cloak name="service">
+        <md-dialog-content ng-show="vm.status == 'Idle'">
+            <div class="md-dialog-content">
+                <div layout="column">
+                    <label>{{'module.marketplace.serviceUpload.fields.fileUpload.label' | translate}}</label>
+                    <input type="file" file-upload="vm.service.file" md-asterisk accept=".csar">
+                </div>
+                <div layout="column">
+                    <md-input-container md-no-float class="md-block">
+                        <input ng-model="vm.service.shortDesc" placeholder="{{'module.marketplace.serviceUpload.fields.shortDescription.placeholder' | translate}}">
+                    </md-input-container>
+                </div>
+                <div layout="column">
+                    <md-input-container md-no-float class="md-block">
+                        <textarea ng-model="vm.service.details" md-maxlength="150" rows="3" md-select-on-focus placeholder="{{'module.marketplace.serviceUpload.fields.details.placeholder' | translate}}"></textarea>
+                    </md-input-container>
+                </div>
+                <div layout="column">
+                    <md-input-container md-no-float class="md-block">
+                        <input ng-model="vm.service.remarks" placeholder="{{'module.marketplace.serviceUpload.fields.remarks.placeholder' | translate}}">
+                    </md-input-container>
+                </div>
+            </div>
+        </md-dialog-content>
+
+    </form>
+
+        <md-dialog-content ng-show="(vm.status == 'progress') || (vm.status == 'success')">
+            <div class="md-dialog-content" layout="column" layout-sm="column">
+                <div flex layout="row">
+                    <div flex="25" layout="column">
+                    </div>
+                    <div flex="50" layout="column">
+                        <h4 class="text-center" ng-if="vm.status != 'success'"> {{'module.marketplace.serviceUpload.messages.onUploading' | translate}} </h4>
+                        <!-- <h4 class="text-center" ng-if="vm.status == 'success'"> {{'module.marketplace.serviceUpload.messages.onSuccessful' | translate}} </h4> -->
+                        <div class="fullWidth center"  ng-if="vm.status == 'success'">
+                        <div class="row">
+                            <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1 deleteIconSize glyphicon glyphicon-info-sign icon_info con_confirm"></div>
+                            <div class="msg col-xs-10 col-sm-10 col-md-11 col-lg-11" style="text-align:left;vertical-align: middle;">{{'module.marketplace.serviceUpload.messages.onSuccessful' | translate}}</div>
+                        </div>
+                    </div>
+                        <md-progress-linear md-mode="determinate" value="{{vm.apiInfo}}"></md-progress-linear>
+                        <h4 class="text-center"> {{vm.apiInfo}} % </h4>
+                    </div>
+                    <div flex="25" layout="column">
+                    </div>
+                </div>
+                <div flex layout="row" ng-if="vm.status == 'success'">
+                    <h4>{{'module.marketplace.serviceUpload.fields.funcTestReport.label' | translate}} <a href="{{funcTestReportUrl}}" target="_blank">{{'common.actions.clickHere' | translate}}</a></h4>
+                </div>
+            </div>
+        </md-dialog-content>
+
+
+
+        <md-dialog-actions layout="row" ng-show="vm.status == 'Idle'">
+            <span flex></span>
+            <button ng-click="vm.cancel()" class="btn btnDefault btnSpacing">
+                {{'common.actions.close' | translate}}
+            </button>
+            <button ng-click="vm.answer('Uploaded')" class="btn btnDefault" ng-disabled="!vm.service.file || service.$invalid" ng-hide="vm.status == 'success'">
+                {{'common.actions.upload' | translate}}
+            </button>
+        </md-dialog-actions>
+        <md-dialog-actions layout="row" ng-show="vm.status == 'success'">
+            <md-button class="btn btn-primary" ng-click="vm.hide('Uploaded')">
+                {{'common.actions.ok' | translate}}
+            </md-button>
+        </md-dialog-actions>
+    
+</md-dialog>

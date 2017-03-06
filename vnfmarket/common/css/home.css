@@ -1,0 +1,462 @@
+/*
+ * Copyright 2017 Huawei Technologies Co., Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+#searchField {
+    position: relative;
+    top: 11px;
+    border-bottom-color:whitesmoke;
+}
+
+#searchFieldContainer{
+    padding-right:0;
+}
+
+.noMargin{
+	margin:0
+}
+
+.iconMargin{
+	margin-right:8px;
+}
+
+.iconAlignment{
+    position: relative;
+    bottom: 4px;
+}
+
+
+.gridViewMargin{
+	margin: 0 1.6% 1% 1.6%;
+    padding-top: 0px;
+}
+
+
+.mdl-color-text--white {
+    color: rgb(255,255,255) !important;
+}
+.mdl-color--teal {
+    background-color: rgb(66,139,202) !important;
+}
+
+.service-detail-tags .mdl-chip__contact {
+    height: 24px !important;
+    width: 24px !important;
+    line-height: 24px !important;
+}
+
+.mdl-chip__contact {
+    height: 32px;
+    width: 32px;
+    border-radius: 16px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+    overflow: hidden;
+    text-align: center;
+    font-size: 18px;
+    line-height: 32px;
+}
+
+.service-detail-tags .material-icons {
+    font-size: 16px !important;
+}
+
+
+.mdl-chip {
+  height: 24px;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  line-height: 24px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 16px;
+  background-color: #dedede;
+  display: inline-block;
+  color: rgba(0,0,0, 0.87);
+  margin: 2px 0;
+  font-size: 0;
+  white-space: nowrap; }
+  .mdl-chip__text {
+    font-size: 13px;
+    vertical-align: middle;
+    display: inline-block; }
+  .mdl-chip__action {
+    height: 24px;
+    width: 24px;
+    background: transparent;
+    opacity: 0.54;
+    display: inline-block;
+    cursor: pointer;
+    text-align: center;
+    vertical-align: middle;
+    padding: 0;
+    margin: 0 0 0 4px;
+    font-size: 13px;
+    text-decoration: none;
+    color: rgba(0,0,0, 0.87);
+    border: none;
+    outline: none;
+    overflow: hidden; }
+  .mdl-chip__contact {
+    height: 32px;
+    width: 32px;
+    border-radius: 16px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+    overflow: hidden;
+    text-align: center;
+    font-size: 18px;
+    line-height: 32px; }
+  .mdl-chip:focus {
+    outline: 0;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12); }
+  .mdl-chip:active {
+    background-color: #d6d6d6; }
+  .mdl-chip--deletable {
+    padding-right: 4px; }
+  .mdl-chip--contact {
+    padding-left: 0; }
+
+    .no-padding {
+    padding: 0 !important;
+}
+
+.mdl-card__title {
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    color: rgb(0,0,0);
+    display: block;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: stretch;
+    -ms-flex-pack: stretch;
+    justify-content: stretch;
+    line-height: normal;
+    padding: 16px 16px;
+    -webkit-perspective-origin: 165px 56px;
+    perspective-origin: 165px 56px;
+    -webkit-transform-origin: 165px 56px;
+    transform-origin: 165px 56px;
+    box-sizing: border-box;
+}
+
+.mdl-card__title-text {
+    -webkit-align-self: flex-end;
+    -ms-flex-item-align: end;
+    align-self: flex-end;
+    color: inherit;
+    display: block;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    font-size: 24px;
+    font-weight: 300;
+    line-height: normal;
+    overflow: hidden;
+    -webkit-transform-origin: 149px 48px;
+    transform-origin: 149px 48px;
+    margin: 0;
+}
+
+.mdl-button--primary.mdl-button--primary {
+    color: rgb(33,150,243);
+}
+
+.mdl-button {
+    background: transparent;
+    border: none;
+    border-radius: 2px;
+    color: rgb(0,0,0);
+    position: relative;
+    height: 36px;
+    margin: 0;
+    min-width: 64px;
+    padding: 0 16px;
+    display: inline-block;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    line-height: 1;
+    letter-spacing: 0;
+    overflow: hidden;
+    will-change: box-shadow;
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    line-height: 36px;
+    vertical-align: middle;
+}
+
+.mdl-layout-spacer {
+    -webkit-flex-grow: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+}
+
+.mdl-button--primary.mdl-button--primary {
+    color: rgb(33,150,243);
+}
+
+.mdl-button {
+    background: transparent;
+    border: none;
+    border-radius: 2px;
+    color: rgb(0,0,0);
+    position: relative;
+    height: 36px;
+    margin: 0;
+    min-width: 64px;
+    padding: 0 16px;
+    display: inline-block;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    line-height: 1;
+    letter-spacing: 0;
+    overflow: hidden;
+    will-change: box-shadow;
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    line-height: 36px;
+    vertical-align: middle;
+}
+
+.mdl-button .material-icons {
+    vertical-align: middle;
+}
+
+.mdl-button .material-icons {
+    vertical-align: middle;
+}
+
+#emptyList {
+    padding: 30px;
+}
+
+.mdl-card__actions.service-actions {
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+    margin: 0;
+}
+
+.mdl-card__supporting-text.service-desc {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    /* text-overflow: ellipsis; */
+    margin-bottom: 14px;
+    height: 60px;
+}
+
+
+.pagination-class .label {
+   color: rgba(0, 0, 0, 0.54) !important;
+}
+
+md-card-header{
+    padding: 16px 0 16px 0 !important;
+}
+#service-type-name{
+    margin-right: 6px;
+}
+
+.icon-red{
+    color: red;
+}
+
+#homeToolbar, .dialogHeader {
+    min-height: 40px;
+    height: 40px;
+}
+
+.fontSize{
+    font-size:18px;
+}
+md-option.fontSize{
+    font-size:16px;
+}
+th.fontSize{
+    font-size:15px !important;
+}
+
+.pointerClick{
+    cursor: pointer;
+}
+
+.actionIcon{
+    position: relative;
+    top: 4px;
+}
+
+#sideNav{
+    background-color : #f5f5f5 !important;
+}
+
+.btnDefault {
+    border-radius: 6px;
+    /* height: 24px; */
+    font-size: 12px;
+    font-family: "Microsoft Yahei",Arial,Tahoma,Verdana,SimSun;
+    line-height: 24px;
+    color: #000;
+    border: 1px solid #d3d3d3;
+    text-align: center;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    background: linear-gradient(to bottom, #fff, #fafafa);
+    padding: 0 19px;
+}
+
+.btnDefault:hover {
+    border-color: #4ac9ff;
+    color: #009ae7;
+}
+.actionBtnHeight{
+    height:22px;
+}
+#gridView .actionBtnHeight > .materialIconAdjustment{
+    font-size: 16px;
+    position: relative;
+    top: 2px;
+}
+#listView .materialIconAdjustment{
+    position: relative;
+    top: 4px;
+}
+.btnTransparency{
+    background-color: transparent;
+    border:none;
+}
+.btnSpacing{
+    margin-right: 5px;
+}
+.btn-danger {
+    border-radius: 6px;
+    font-size: 12px;
+    font-family: "Microsoft Yahei",Arial,Tahoma,Verdana,SimSun;
+    line-height: 24px;
+    text-align: center;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    padding: 0 19px;
+    color: #fff;
+    background: #d43f3a;
+}
+.btn-primary {
+    border-radius: 6px;
+    font-size: 12px;
+    font-family: "Microsoft Yahei",Arial,Tahoma,Verdana,SimSun;
+    line-height: 24px;
+    text-align: center;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    padding: 0 19px;
+}
+.btn-danger:hover{
+    border: 1px solid #d43f3a;
+    background: linear-gradient(to bottom, #fff, #fafafa);
+    color:#d43f3a;
+    background: #fafafa !important;
+}
+.msg{
+    text-align: left;
+    vertical-align: middle;
+    vertical-align: middle;
+    position: absolute;
+    top: 47%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    padding-left: 70px;
+    white-space: normal;
+}
+.deleteIconSize{
+    font-size: 37px;
+}
+.fullWidth{
+    width:100%;
+}
+
+.deleteAction{
+    margin: auto;
+    display: block;
+    text-align: center;
+    position: relative;
+    top: 15px;
+}
+.deleteBtn{
+    margin: 5px 5px 5px 0px;
+}
+ .icon_info {
+    color: green;
+}
+.icon_warning {
+    color: orange;
+}
+.btn[disabled]{
+    background: lightgray !important;
+}
+
+.serviceDelete{
+    font-size: 24px;
+    padding-right: 4px;
+    position: relative;
+    top: 3px;
+    color: red;
+}
+
+#description{
+    list-style-type: disc;
+}
+.icon_error {
+    color: red;
+}
+
+table tbody tr:nth-child(even)>td {
+    background-color:#fafafa;
+}
+
+table tbody tr:nth-child(odd)>td {
+    background-color:#f7f7f7
+}
+table tbody tr:hover td {
+    background-color: #e6fbe0 !important;
+}
+#serviceUpload{
+    box-shadow: 1px 2px 4px -1px;
+}
+
+table tr {
+    height:33px !important;
+}
+
+table thead{
+    text-align: left;
+    font-size: 14px;
+    background-color: gainsboro;
+}
+
+table tr {
+    border-color: grey;
+}
