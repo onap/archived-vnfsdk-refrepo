@@ -44,6 +44,7 @@
                 <!--<img src="../images/delete.png" ng-click="editData(lcData.id)" style="cursor: pointer"></img>-->
                 <!--<span class="pull-right glyphicon glyphicon-edit" ng-click="editData(lcData.serviceId)" style="cursor: pointer;margin: 0 5px"></span>-->
                 <span class="pull-right glyphicon glyphicon-trash" ng-click="deleteIndividualData(lcData.serviceId)" style="cursor: pointer;margin: 0 5px"></span>
+                <span class="pull-right glyphicon glyphicon-circle-arrow-right" ng-click="scaleData(lcData.serviceId)" style="cursor: pointer;margin: 0 5px"></span>
             </td>
         </tr>
     </table>
@@ -131,13 +132,81 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" 
-                        aria-hidden="true">¡Á
+                        aria-hidden="true">ï¿½ï¿½
                 </button>
                 <h4 class="modal-title" id="errorDialogTitle"  style="text-align:center;"></h4>
             </div>
             <div class="modal-body" id = "errorDialogReason" style="margin-left:20px;margin-bottom:5px;margin-right:10px;"></div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--scale option dialog-->
+<div id="scaleOptionDialog" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h5 class="modal-title titlestyle">Scale Option</h5>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row" style="height:26px;margin-top:15px; margin-left:25px;">
+                    <span class="col-xs-3" style="margin-left:20px">
+                        <input type="radio" id="scalingTypeIn"/>  Scale In
+                    </span>
+                    <span class="col-xs-offset-2 col-xs-3">
+                        <input type="radio" id="scalingTypeOut"/>  Scale Out
+                    </span>
+                </div>
+                <div class="form-group row" style="margin-left:25px;">
+                    <label class="col-xs-3 control-label">
+                        <span>Scaling Aspect</span>
+                        <span class="required">*</span>
+                    </label>
+                    <div class="col-xs-7">
+                        <input type="text" id="scalingAspect" name="scalingAspect" class="form-control" maxlength="256"/>
+                    </div>
+                </div>
+                <div class="form-group row" style="margin-left:25px;">
+                    <label class="col-xs-3 control-label">
+                        <span>Number of Steps</span>
+                        <span class="required">*</span>
+                    </label>
+                    <div class="col-xs-7">
+                        <input type="text" id="numberOfSteps" name="numberOfSteps" class="form-control"  maxlength="256"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" style="width:80px;" class="btn SDBtn" data-dismiss="modal"
+                            aria-hidden="true" id="scaleNS">
+                        <span>OK</span>
+                    </button>
+                    <button type="button" style="width:80px;" class="btn button-previous SDBtn" data-dismiss="modal">
+                        <span>Cancel</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--scale progress bar-->
+<div class="modal fade" id="scaleProgressDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="margin-left:10px;margin-bottom:5px;">
+                <h4 class="modal-title" id="idScaleProgressTitle" style="text-align:center;"></h4>
+            </div>
+            <div class="modal-body" style="margin-left:10px;margin-bottom:5px;margin-right:10px;">
+                <div class="progress">
+                    <div id="scaleProgressbar" class="progress-bar" role="progressbar" style="width: 10%;">
+                        <span id ="scaleProgressValue">0%</span>
+                    </div>
+                </div>
+                <div id="scaleProgressContent"></div>
             </div>
         </div>
     </div>

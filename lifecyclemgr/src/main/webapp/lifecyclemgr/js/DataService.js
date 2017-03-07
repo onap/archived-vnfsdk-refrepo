@@ -124,7 +124,10 @@ app.factory("DataService", function($http, $log){
         
         deleteService : function(serviceId) {
             return deleteServiceInstance(serviceId);    
-        }   
+        },
+        scaleService: function (nsInstanceId, scaleType, aspectId, numberOfSteps, resultHandleFun) {
+            scaleServiceInstance(nsInstanceId, scaleType, aspectId, numberOfSteps, resultHandleFun);
+        }
     }
 });
 
@@ -756,4 +759,106 @@ function queryServiceData(){
             }
         });
     return returnVal;
+}
+
+function scaleServiceInstance(nsInstanceId, scaleType, aspectId, numberOfSteps, resultHandleFun) {
+    var parameter = {
+        'nsInstanceId': nsInstanceId,
+        'scaleType': 'SCALE_NS',
+        'scaleNsData': [
+            {
+                'scaleNsByStepsData': [
+                    {
+                        'scalingDirection': scaleType,
+                        'aspectId': aspectId,
+                        'numberOfSteps': numberOfSteps
+                    }
+                ]
+            }
+        ]
+    };
+    var nfvoUri = '/openoapi/nslcm/1.0/ns/' + nsInstanceId + '/scale';
+    $.when(
+        $.ajax({
+            type: "POST",
+            url: nfvoUri,
+            contentType: "application/json",
+            dataType: "json",
+            data: JSON.stringify(parameter)
+        })
+    ).then(
+        function (response) {
+            var jobId = response.jobID;
+            //show the progress dialog
+            return queryScaleProgress(jobId);
+        }
+    ).then(function (response) {
+        resultHandleFun(response);
+    });
+}
+
+function queryScaleProgress(jobId) {
+    //show the progress dialog
+    var operation = 'scale network service';
+    $("#idScaleProgressTitle").text(operation);
+    $("#scaleProgressContent").text('status:');
+    $("#scaleProgressbar").attr("style", "width: 0%");
+    $("#scaleProgressDialog").modal({backdrop: 'static', keyboard: false});
+    //set a timer for query operation
+    var defer = $.Deferred();
+    var queryProgressUri = jobStatusUri(jobId);
+    var timerDefer = $.Deferred();
+    var timeout = 3600000;
+    var fun = function () {
+        if (timeout === 0) {
+            timerDefer.resolve({
+                status: 'error',
+                reason: operation + ' timeout!',
+            });
+            return;
+        }
+        timeout = timeout - 1000;
+        $.when($.ajax({
+            type: "GET",
+            url: queryProgressUri
+        }))
+            .then(function (response) {
+                //update progress
+                $("#scaleProgressbar").attr("style", "width: " + response.responseDescriptor.progress.toString() + "%");
+                $("#scaleProgressValue").text(response.responseDescriptor.progress.toString() + '%');
+                $("#scaleProgressContent").text('status: ' + response.responseDescriptor.statusDescription);
+                if (response.responseDescriptor.status == 'finished' || response.responseDescriptor.status == 'error') {
+                    timerDefer.resolve({
+                        status: response.responseDescriptor.status,
+                        reason: response.responseDescriptor.errorCode
+                    });
+                }
+            });
+    };
+    var timerId = setInterval(fun, 1000);
+    $.when(timerDefer)
+        .then(function (responseDesc) {
+            clearInterval(timerId);
+            $('#scaleProgressDialog').modal('hide');
+            defer.resolve({
+                status: responseDesc.status,
+                reason: responseDesc.reason
+            });
+
+        });
+    return defer;
+}
+
+/**
+ * generate url for querying operation status
+ * @param jobId
+ * @param responseId
+ * @returns
+ */
+function jobStatusUri(jobId, responseId) {
+    var responsePara = '';
+    if (undefined !== responseId) {
+        responsePara = '&responseId=' + responseId;
+    }
+    return '/openoapi/nslcm/v1/jobs/' + jobId + responsePara;
 }

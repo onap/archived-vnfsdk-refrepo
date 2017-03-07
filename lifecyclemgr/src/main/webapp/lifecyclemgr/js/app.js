@@ -139,6 +139,20 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
                 }, function (reason) {
                     $scope.error = "Error ! " + reason;
                 });
+            $('#scalingTypeIn').on("change", function (e) {
+                var value = $(e.target).val();
+                if ('on' === value) {
+                    $('#scalingTypeIn').attr("checked", "checked");
+                    $('#scalingTypeOut').removeAttr("checked");
+                }
+            });
+            $('#scalingTypeOut').on("change", function (e) {
+                var value = $(e.target).val();
+                if ('on' === value) {
+                    $('#scalingTypeOut').attr("checked", "checked");
+                    $('#scalingTypeIn').removeAttr("checked");
+                }
+            });
         };
 
         //loadTableData();
@@ -449,7 +463,30 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
                 }
             };
             bootbox.confirm("Do you confirm to delete service?", deleteHandle);     
-        }
+        };
+
+        $scope.scaleData = function (id) {
+            var nsInstanceId = id;
+            $('#scaleNS').click(
+                function() {
+                    var scaleIn = $('#scalingTypeIn').attr('checked');
+                    var scaleType = scaleIn === undefined ? 'SCALE_OUT' : 'SCALE_IN';
+                    var aspectId = $('#scalingAspect').val();
+                    var numberOfSteps = $('#numberOfSteps').val();
+                    var resultHandleFun = function(response) {
+                        if (response.status === 'finished') {
+                            console.log('scale successfully!');
+                        } else {
+                            console.log('Scaling service failed! ' + response);
+                            //showErrorMessage('Scaling service failed',response);
+                        }
+                    };
+                    DataService.scaleService(nsInstanceId, scaleType, aspectId, numberOfSteps, resultHandleFun);
+                    $('#scaleNS').unbind('click');
+                }
+            );
+            $('#scaleOptionDialog').modal();
+        };
 
     })
 
