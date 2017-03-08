@@ -28,31 +28,31 @@
         .module('vnfmarket')
         .constant("vnfConfig", {
             "common": {
-                "baseUrl": "http://54.254.186.22:3000"
+                "baseUrl": ""
             },
             "api": {
-                "home": {
-                    "postServiceUpload": {
-                        "url": "/Demo/rest/PackageResource/csars",
-                        "method": "POST"
-                    },
-                    "getFeaturesList": {
-                        "url": "/Demo/rest/PackageResource/csars",
-                        "method": "GET"
-                    },
-                    "downloadServiceFile": {
-                        "url": "/Demo/rest/PackageResource/csars/:csarId/files",
-                        "method": "GET"
-                    },
-                    "serviceDelete": {
-                        "url": "/Demo/rest/PackageResource/csars/:csarId",
-                        "method": "DELETE"
-                    },
-                    "serviceDetails": {
-                        "url": "/Demo/rest/PackageResource/csars/:csarId",
-                        "method": "GET"
-                    }
-                }
+            	"home": {
+            		"postServiceUpload": {
+            			"url": "/Demo/rest/PackageResource/csars",
+            			"method": "POST"
+            		},
+            		"getFeaturesList": {
+            			"url": "/Demo/rest/PackageResource/csars",
+            			"method": "GET"
+            		},
+            		"downloadServiceFile": {
+            			"url": "/Demo/rest/PackageResource/csars/:csarId/files",
+            			"method": "GET"
+            		},
+            		"serviceDelete": {
+            			"url": "/Demo/rest/PackageResource/csars/:csarId",
+            			"method": "DELETE"
+            		},
+            		"serviceDetails": {
+            			"url": "/Demo/rest/PackageResource/csars/:csarId",
+            			"method": "GET"
+            		}
+            	}
             },
             "modulePath": {
                 "home": "vnfmarket/app/modules/home"
