@@ -20,15 +20,14 @@ var helpers = require('./helpers');
 
 module.exports = {
     entry: {
-        'polyfills': './src/polyfills.ts',   
-        'vendor': './src/vendor.ts',        
-        'app': './src/main.ts'               
+        'polyfills': './alarm/polyfills.ts',  
+        'vendor': './alarm/vendor.ts',        
+        'app': './alarm/main.ts'              
     },
 
     resolve: {
-        extensions: ['', '.js', '.ts']        
+        extensions: ['', '.js', '.ts']      
     },
-    require:"../public/common/js/popModal.js",
 
     module: {
         loaders: [
@@ -38,37 +37,32 @@ module.exports = {
 
             },
             
-            {   
+            {  
                 test: /\.html$/,
                 loader: 'html'
             },
             {   
                 test: /\.(png|jpe?g|gif|ico|svg)$/,
-                include: [helpers.root('public', 'images'),helpers.root('public', 'component/thirdparty/uniform/images'),
-                    helpers.root('public', 'framework/img'),
-                    helpers.root('public', 'component/thirdparty/zTree/css/zTreeStyle/img'),
-                    helpers.root('public', 'component/thirdparty/icheck/skins/line'),
-                    helpers.root('public', 'component/thirdparty/icheck/skins/square'),
-                    helpers.root('public', 'component/'),
+                include: [helpers.root('public', 'thirdparty'),helpers.root('public', 'framework'),
+                helpers.root('public', 'thirdparty/images'),helpers.root('public', 'framework/browser/thirdparty/images')
                 ],
                 loader: 'file?name=public/images/[name].[hash].[ext]'
             },
             {   
                 test: /\.(svg|woff|woff2|ttf|eot)$/,
-                include: [helpers.root('public', 'fonts'),helpers.root('public', 'component/css/ZteIctIcons/fonts'),
-                    helpers.root('public', 'component/thirdparty/bootstrap/fonts')
+                include: [helpers.root('public', 'thirdparty')
                 ],
                 loader: 'file?name=public/fonts/[name].[hash].[ext]'
             },
-            {   
+            {  
                 test: /\.css$/,
-                exclude: [helpers.root('src', 'app'),helpers.root('public', 'component/thirdparty/icheck/skins/line')
+                exclude: [helpers.root('alarm', 'app'),helpers.root('public', 'component/thirdparty/icheck/skins/line')
             ],
                 loader: ExtractTextPlugin.extract('style', 'css?sourceMap')
             },
             {
                 test: /\.css$/,
-                include: helpers.root('src', 'app'),
+                include: helpers.root('alarm', 'app'),
                 loader: 'raw'
             }
         ]
@@ -80,7 +74,8 @@ module.exports = {
         }),
 
         new HtmlWebpackPlugin({
-            template: 'src/index.html',
+            template: 'alarm/index.html'
         })
+        
     ]
 };
