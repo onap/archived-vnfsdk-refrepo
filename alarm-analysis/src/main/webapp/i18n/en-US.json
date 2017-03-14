@@ -44,6 +44,7 @@
   "modalTitleCheck":"Check Rule",
   "message_rule_name_repeat_error":"Rule Name Repeat",
   "message_rule_content_repeat_error":"Rule Content Repeat",
-  "message_rule_content":"Rule Content"
+  "message_rule_content":"Rule Content",
+  "message_rule_update_error":"Rule Manage alredy delete they Engine,Please contact admin"
 
 }
