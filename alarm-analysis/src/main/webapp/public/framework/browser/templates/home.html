@@ -1,0 +1,154 @@
+<!--
+
+    Copyright 2016-2017, Huawei Technologies Co., Ltd.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+
+<div class="homecontent center" ng-init="loadTemplate()">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4 col-md-3 col-lg-3 rmpadding">
+                <div id="menu_accordion" class="openoAccordian_accordionmenu">
+                    <div id="container" class="panel panel-default panelbr">
+                        <h5 class="panel-title">
+                            <a data-toggle="collapse" data-target="#panel1"><span>Container</span></a>
+                        </h5>
+                        <div id="panel1" class="panel-collapse collapse in">
+                            <ul>
+                                <li>
+                                    <a ui-sref=".tree" ui-sref-active="link_active">Tree</a>
+                                </li>
+                                <li>
+                                    <a ui-sref=".accordion" ui-sref-active="link_active">Accordian</a>
+                                </li>
+                                <li>
+                                    <a ui-sref=".tabs" ui-sref-active="link_active">Tabs</a>
+                                </li>
+                                <li>
+                                    <a ui-sref=".vtabs" ui-sref-active="link_active">Vertical Tab</a>
+                                </li>
+                                <li>
+                                    <a ui-sref=".table" ui-sref-active="link_active">Table</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="widgets" class="panel panel-default panelbr">
+                        <h5 class="panel-title">
+                            <a data-toggle="collapse" data-target="#panel2"><span>Widgets</span></a>
+                        </h5>
+                        <div id="panel2" class="panel-collapse collapse in">
+                            <li>
+                                <a ui-sref=".buttons" ui-sref-active="link_active">Buttons</a>
+                            </li>
+                            <li>
+                                <a ui-sref=".dropdown" ui-sref-active="link_active">Drop Down</a>
+                            </li>
+                            <li>
+                                <a ui-sref=".radiobuttons" ui-sref-active="link_active">Radio Button</a>
+                            </li>
+                            <li>
+                                <a ui-sref=".checkboxes" ui-sref-active="link_active">Check Box</a>
+                            </li>
+                            <li>
+                                <a ui-sref=".tooltip" ui-sref-active="link_active">Text Area</a>
+                            </li>
+                            <li>
+                                <a ui-sref=".list" ui-sref-active="link_active">List</a>
+                            </li>
+                            <li>
+                                <a ui-sref=".provinceMgmt" ui-sref-active="link_active">Management</a>
+                            </li>
+                        </div>
+                    </div>
+                    <div id="notifications" class="panel panel-default panelbr">
+                        <h5 class="panel-title">
+
+                            <a ui-sref=".notification" ui-sref-active="noChid_link_active">Notification & Messages</a>
+                        </h5>
+                    </div>
+                    <div id="functional" class="panel panel-default panelbr">
+                        <h5 class="panel-title">
+
+                            <a ui-sref=".functional" ui-sref-active="noChid_link_active">Functional Flow</a>
+
+                        </h5>
+                    </div>
+
+                </div>
+                <!--<div id="accordionmenuid" allow-resize="true" dataset="dataArr" height="resHeight"
+                     listeners="callBacklisteners" resize-callback="resizehandler"
+                     current-select="currentselect" click="clickHandler"
+                     class="ng-isolate-scope accordion_parent openo_accordion_main_menu">
+                    <div class="openo-accordion-resizable-handle" style="cursor: auto;"></div>
+                    <ul id="accordionmenuid_ul" class="openoAccordian_accordionmenu">
+                        <li id="accordionmenuid_ul_0_0_brAppTopMenuID" nodeid="brAppTopMenuID">
+                            &lt;!&ndash;<span class="openo_accordion_ui-icon-expand" style="padding-left: 20px;cursor: pointer;"></span>&ndash;&gt;
+                            <span class="openoAccordian_showHideArrow_hide" id="accordionmenuid_arrow" style="cursor: pointer;"></span>
+                            <a title="brApp" class="header opened" style="padding-left: 10px; cursor: pointer;">Container</a>
+                            <ul>
+                                <li nodeid="brAppSiteMenuID" class="" style="display: list-item;">
+                                    <a ui-sref=".tree" ui-sref-active="link_active" class="" style="padding-left: 62px;">Tree</a>
+                                </li>
+                                <li nodeid="brAppMeMenuID" style="display: list-item;">
+                                    <a ui-sref=".accordion" ui-sref-active="link_active" style="padding-left: 62px;">Accordian</a>
+                                </li>
+                                <li nodeid="brAppTpMenuID" style="display: list-item;">
+                                    <a ui-sref=".tabs" ui-sref-active="link_active" style="padding-left: 62px;">Tabs</a>
+                                </li>
+                                <li nodeid="brAppTlMenuID" style="display: list-item;">
+                                    <a ui-sref=".vtabs" ui-sref-active="link_active" style="padding-left: 62px;">Vertical Tab</a>
+                                </li>
+                                <li nodeid="brAppTlMenuID" style="display: list-item;">
+                                    <a ui-sref=".table" ui-sref-active="link_active" style="padding-left: 62px;">Table</a>
+                                </li>
+                            </ul>
+                            <a title="brApp" class="header opened" style="padding-left: 10px; cursor: pointer;">Widgets</a>
+                            <ul>
+                                <li nodeid="brAppSiteMenuID" class="" style="display: list-item;">
+                                    <a ui-sref=".buttons" ui-sref-active="link_active" style="padding-left: 62px;">Buttons</a>
+                                </li>
+                                <li nodeid="brAppMeMenuID" style="display: list-item;">
+                                    <a ui-sref=".dropdown" ui-sref-active="link_active" style="padding-left: 62px;">Drop Down</a>
+                                </li>
+                                <li nodeid="brAppTpMenuID" style="display: list-item;">
+                                    <a ui-sref=".radiobuttons" ui-sref-active="link_active" style="padding-left: 62px;">Radio Button</a>
+                                </li>
+                                <li nodeid="brAppTlMenuID" style="display: list-item;">
+                                    <a ui-sref=".checkboxes" ui-sref-active="link_active" style="padding-left: 62px;">Check Box</a>
+                                </li>
+                                <li nodeid="brAppTlMenuID" style="display: list-item;">
+                                    <a ui-sref=".tooltip" ui-sref-active="link_active" style="padding-left: 62px;">Tool Tip</a>
+                                </li>
+                                <li nodeid="brAppTlMenuID" style="display: list-item;">
+                                    <a ui-sref=".list" ui-sref-active="link_active" style="padding-left: 62px;">List</a>
+                                </li>
+                                </li>
+
+                            </ul>
+                            <a ui-sref=".notification" ui-sref-active="link_active" class="header opened" style="padding-left: 10px; cursor: pointer;">Notification & Messages</a>
+                            <a ui-sref=".functional" ui-sref-active="link_active" class="header opened" style="padding-left: 10px; cursor: pointer;">Functional Flow</a>
+
+                        </li>
+                    </ul>
+                </div>-->
+            </div>
+            <div id="rightContainer" class="col-sm-8 col-md-9 col-lg-9">
+                <!--<div id="sampleArea"></div>-->
+                <ui-view></ui-view>
+            </div>
+        </div>
+    </div>
+</div>

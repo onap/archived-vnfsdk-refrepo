@@ -1,0 +1,47 @@
+<!--
+
+    Copyright 2016-2017, Huawei Technologies Co., Ltd.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+
+<div class="container col-sm-12 col-md-12 col-lg-12">
+    <h4>{{message}}</h4>
+
+    <div id="listArea" class="container col-sm-12 col-md-12 col-lg-12" ng-init="init()">
+        <div id="list1" class="list col-sm-4 col-md-4 col-lg-4">
+            <div ng-repeat="item in mainlistItem">
+                <button type="button" class="btn btn-primary btn-block" ng-click="loadSubMenuPage($index)">{{item.title}}</button>
+            </div>
+        </div>
+        <div id="list2" class="list col-sm-4 col-md-4 col-lg-4">
+            <div ng-repeat="subitem in subMenuListItem">
+                <button type="button" class="btn btn-primary btn-block" ng-click="loadSubSubMenuPage($index)">{{subitem.title}}</button>
+            </div>
+        </div>
+        <div id="list3" class="list col-sm-4 col-md-4 col-lg-4">
+            <div ng-repeat="subsubitem in subsubMenuListItem">
+                <button type="button" class="btn btn-primary btn-block">{{subsubitem.title}}</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!--    <test method='parentClick()'></test>-->
+    <div class="col-sm-12 col-md-12 col-lg-12 shortnote">
+        <div class="shortnoteHeader">ShortNote</div>
+        <div class="shortnoteText">{{listTipData}}</div>
+    </div>
+</div>
+
