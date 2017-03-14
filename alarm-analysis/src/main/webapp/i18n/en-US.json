@@ -1,18 +1,4 @@
-/* Copyright 2017 ZTE Corporation.
- *
- *Licensed under the Apache License, Version 2.0 (the "License");
- *you may not use this file except in compliance with the License.
- *You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
- {
+{
   "common_status":"Status",
   "common_keyword":"Keyword",
   "field_rule_name":"Rulename",
@@ -49,6 +35,15 @@
   "message_add_rule_success":"Add Success",
   "exception_content_error":"Rule Content Error",
   "exception_package_error":"Begin With Package",
-  "warn_delete_info": "only delete in stoped case rule "
+  "warn_delete_info": "only delete in stoped case rule ",
+  "message_update_rule_success":"Update Success",
+  "message_engine_error_rule_fail":"Call Engine Interface Fail",
+  "modalTitleUpdate":"Rule Update",
+  "message_other_exception_rule_fail":"Other error occurred",
+  "message_checkContent_rule_success":"Rule Content Correct",
+  "modalTitleCheck":"Check Rule",
+  "message_rule_name_repeat_error":"Rule Name Repeat",
+  "message_rule_content_repeat_error":"Rule Content Repeat",
+  "message_rule_content":"Rule Content"
 
 }
