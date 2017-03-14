@@ -13,14 +13,14 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 */
-export class RuleModel{
-    ruleid:string;
-    rulename:string;
-    description:string; 
-    content:string;
-    createtime:Date;
-    creator:number;
-    updatetime:Date;
-    modifier:string;
+export class RuleModel {
+    ruleid: string;
+    rulename: string;
+    description: string;
+    content: string;
+    createtime: Date;
+    creator: number;
+    updatetime: Date;
+    modifier: string;
     enabled?;
 }

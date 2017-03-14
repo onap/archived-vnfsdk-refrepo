@@ -13,10 +13,10 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 */
-export class RuleRequest{
-    ruleid:string;
-    rulename:string;
-    creator:number;
-    modifier:string;
-    enabled:number;
+export class RuleRequest {
+    ruleid: string;
+    rulename: string;
+    creator: number;
+    modifier: string;
+    enabled: number;
 }
