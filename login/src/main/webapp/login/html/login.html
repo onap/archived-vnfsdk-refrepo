@@ -1,5 +1,5 @@
 <!--
-    Copyright 2016, CMCC Technologies Co., Ltd.
+    Copyright 2016-2017, China Mobile Co., Ltd.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -13,19 +13,37 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<!DOCTYPE html>
-<html>
-	<head>
-		<title id="openo_login_title" name_i18n="openo_login_i18n_login"></title>
-		<meta charset="utf-8"/>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta http-equiv="pragma" content="no-cache"/>
-		<meta http-equiv="cache-control" content="no-cache, no-store, max-age=0, must-revalidate"/>
-		<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-		<meta content="" name="description"/>
-		<meta content="" name="author"/>
-	</head>
-	<body>
-demo
-	</body>
-</html>
+
+<h1>
+    <div id="login_container">
+        <div id="wrapper">
+            <div id="login" class="animate form">
+                <form ng-init="loginFormInit()" ng-submit="loginFormSubmit()">
+                    <img src="/openoui/login/image/openo_logo_pantone.png" width="100%" style="display:inline"/>
+                    <br/><br/><span style="color:red">{{error}}</span><br/><br/>
+                    <p>
+                        <label for="username" class="uname" data-icon="u">Your username</label>
+                        <input id="username" name="username" required="required" type="text" ng-model="user.username" placeholder="open-o user"/>
+                    </p>
+                    <p>
+                        <label for="password" class="youpasswd" data-icon="p">Your password</label>
+                        <input id="password" name="password" required="required" type="password" ng-model="user.password" placeholder="eg. X8df!90EO"/>
+                    </p>
+                    <p class="keeplogin">
+                        <input type="checkbox" name="loginkeeping" id="loginkeeping" ng-model="user.loginkeeping" ng-true-value="true" ng-false-value="false"/>
+                        <label for="loginkeeping">Keep me logged in</label>
+                    </p>
+                    <p class="login button">
+                        <input type="submit" value="Login"/>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</h1>
+<div class="slideshow">
+    <div class="slideshow-image" style="background-image: url('/openoui/login/image/loginBackground01.jpg')"></div>
+    <div class="slideshow-image" style="background-image: url('/openoui/login/image/loginBackground02.jpg')"></div>
+    <div class="slideshow-image" style="background-image: url('/openoui/login/image/loginBackground03.jpg')"></div>
+    <div class="slideshow-image" style="background-image: url('/openoui/login/image/loginBackground04.jpg')"></div>
+</div>
