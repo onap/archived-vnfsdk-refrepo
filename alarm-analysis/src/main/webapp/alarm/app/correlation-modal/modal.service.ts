@@ -13,12 +13,12 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 */
-import { Subject }           from 'rxjs/Subject';
-import { Injectable }     from '@angular/core';
+import { Subject } from 'rxjs/Subject';
+import { Injectable } from '@angular/core';
 @Injectable()
-export class ModalService{
-    private modalObservable=new Subject();
-    get getmodalObservable(){
+export class ModalService {
+    private modalObservable = new Subject();
+    get getmodalObservable() {
         return this.modalObservable;
     }
 }

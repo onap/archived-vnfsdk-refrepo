@@ -13,29 +13,29 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 */
-import {Component ,Input, OnInit} from '@angular/core';
-import {ModalService} from  './modal.service';
-import {Msg} from './Msg';
-declare var $:any;
+import { Component, Input, OnInit } from '@angular/core';
+import { ModalService } from './modal.service';
+import { Msg } from './Msg';
+declare var $: any;
 @Component({
 
     selector: 'sif-modal',
     templateUrl: './modal.component.html',
 
 })
-export class SifModalComponent implements OnInit{
-    constructor(private modalServer:ModalService){};
-    modalTitle:string="modalTitleDefault";
-    modalBodyMessage:string="modalBodyMessageDefault";
-    closeBtnTitle:string="closeBtnTitleDefault";
+export class SifModalComponent implements OnInit {
+    constructor(private modalServer: ModalService) { };
+    modalTitle: string = "modalTitleDefault";
+    modalBodyMessage: string = "modalBodyMessageDefault";
+    closeBtnTitle: string = "closeBtnTitleDefault";
 
     ngOnInit(): void {
         console.log('init');
-        this.modalServer.getmodalObservable.subscribe((msg:Msg)=>{
-            console.log('receive '+msg);
-            this.modalTitle=msg.title||this.modalTitle;
-            this.modalBodyMessage=msg.message||this.modalBodyMessage;
-            this.closeBtnTitle=msg.btn||this.closeBtnTitle;
+        this.modalServer.getmodalObservable.subscribe((msg: Msg) => {
+            console.log('receive ' + msg);
+            this.modalTitle = msg.title || this.modalTitle;
+            this.modalBodyMessage = msg.message || this.modalBodyMessage;
+            this.closeBtnTitle = msg.btn || this.closeBtnTitle;
             $('#myModal').modal('show');
         });
     }

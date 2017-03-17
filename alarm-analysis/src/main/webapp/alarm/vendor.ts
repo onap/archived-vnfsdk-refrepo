@@ -26,7 +26,7 @@ import '../public/thirdparty/css/bootstrap.min.css';
 import '../public/thirdparty/css/magic-check.css';
 import '../public/thirdparty/css/zTreeStyle.css';
 import '../public/framework/browser/css/open-ostyle.css';
-import '../public/css/alarm-rule.css'
+import '../public/thirdparty/css/alarm-rule.css'
 
 import '../public/thirdparty/js/bootstrap.min.js';
 import '../public/thirdparty/js/bootstrap-table.min.js';

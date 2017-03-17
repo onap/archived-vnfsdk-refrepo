@@ -25,7 +25,6 @@ import {HttpModule,Jsonp}   from  '@angular/http';
 import {AlarmRuleService} from './correlation-ruleList/alarmRule.service';
 import {TranslateModule} from "ng2-translate";
 import {SifModalComponent} from './correlation-modal/modal.component'
-import {TestBed,ComponentFixture} from '@angular/core/testing';
 @NgModule({
     imports: [
         BrowserModule,
@@ -39,12 +38,9 @@ import {TestBed,ComponentFixture} from '@angular/core/testing';
         AppComponent,
         AlarmRule,
         RuleInfo,
-        SifModalComponent,
-        TestBed,
-        ComponentFixture
+        SifModalComponent
     ],
     providers:[ModalService,AlarmRuleService,Jsonp],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
-
