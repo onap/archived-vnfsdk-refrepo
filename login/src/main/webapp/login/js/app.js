@@ -57,25 +57,25 @@ var app = angular.module("POCApp", ["ui.router", "ngTable"])
             })
             .state("menu.package", {
                 url: "/package",
-                templateUrl : "/openoui/login/html/temp/package.html",
+                templateUrl : "/openoui/catalog/csarPackage.html",
                 controller : "packageCtrl",
                 authenticate: true
             })
             .state("menu.serviceTemplate", {
                 url: "/serviceTemplate",
-                templateUrl : "/openoui/login/html/temp/serviceTemplate.html",
+                templateUrl : "/openoui/catalog/template.html",
                 controller : "serviceTemplateCtrl",
                 authenticate: true
             })
             .state("menu.vimManage", {
                 url: "/vimManage",
-                templateUrl : "/openoui/login/html/temp/vimManage.html",
+                templateUrl : "/openoui/extsys/vim/vimView.html",
                 controller : "vimManageCtrl",
                 authenticate: true
             })
             .state("menu.vnfm", {
                 url: "/vnfm",
-                templateUrl : "/openoui/login/html/temp/vnfm.html",
+                templateUrl : "/openoui/extsys/vnfm/vnfmView.html",
                 controller : "vnfmCtrl",
                 authenticate: true
             })
