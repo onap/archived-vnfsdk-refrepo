@@ -33,20 +33,20 @@ var app = angular.module("POCApp", ["ui.router", "ngTable"])
             })
             .state("menu.serviceManagement", {
                 url: "/serviceManagement",
-                templateUrl : "/openoui/login/html/temp/serviceManagement.html",
+                templateUrl : "/openoui/lifecyclemgr/index.html",
                 controller : "serviceManagementCtrl",
                 authenticate: true
             })
-            .state("menu.resourceSdno", {
-                url: "/resourceSdno",
-                templateUrl : "/openoui/login/html/temp/resourceSdno.html",
-                controller : "resourceSdnoCtrl",
+            .state("menu.resourceManagement", {
+                url: "/resourceManagement",
+                templateUrl : "/openoui/resmgr/index.html",
+                controller : "resourceManagementCtrl",
                 authenticate: true
             })
-            .state("menu.resourceNfvo", {
-                url: "/resourceNfvo",
-                templateUrl : "/openoui/login/html/temp/resourceNfvo.html",
-                controller : "resourceNfvoCtrl",
+            .state("menu.provinceManagement", {
+                url: "/provinceManagement",
+                templateUrl : "/openoui/provincemgr/index.html",
+                controller : "provinceManagementCtrl",
                 authenticate: true
             })
             .state("menu.modelDesign", {
@@ -159,14 +159,14 @@ var app = angular.module("POCApp", ["ui.router", "ngTable"])
         $scope.message = "Service Management";
     })
 
-    /*Resource Sdno Controller*/
-    .controller("resourceSdnoCtrl", function($scope, DataService, $log){
-        $scope.message = "Resource Sdno";
+    /*Resource Management Controller*/
+    .controller("resourceManagementCtrl", function($scope, DataService, $log){
+        $scope.message = "Resource Management";
     })
 
-    /*Resource Nfvo Controller*/
-    .controller("resourceNfvoCtrl", function($scope, DataService, $log){
-        $scope.message = "Resource Nfvo";
+    /*Province Management Controller*/
+    .controller("provinceManagementCtrl", function($scope, DataService, $log){
+        $scope.message = "Province Management";
     })
 
     /*Model Design Controller*/

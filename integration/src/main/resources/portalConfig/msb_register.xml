@@ -23,7 +23,7 @@
     <registerList>
         <registerInfo>
             <ip>127.0.0.1</ip>
-            <port>8300</port>
+            <port>9150</port>
             <url>/openoui/login</url>
             <serviceName>login</serviceName>
             <protocol>UI</protocol>
@@ -33,7 +33,7 @@
         </registerInfo>
         <registerInfo>
             <ip>127.0.0.1</ip>
-            <port>8300</port>
+            <port>9150</port>
             <url>/openoui/catalog</url>
             <serviceName>catalog</serviceName>
             <protocol>UI</protocol>
@@ -43,7 +43,7 @@
         </registerInfo>
         <registerInfo>
             <ip>127.0.0.1</ip>
-            <port>8300</port>
+            <port>9150</port>
             <url>/openoui/extsys</url>
             <serviceName>extsys</serviceName>
             <protocol>UI</protocol>
@@ -53,7 +53,7 @@
         </registerInfo>
         <registerInfo>
             <ip>127.0.0.1</ip>
-            <port>8300</port>
+            <port>9150</port>
             <url>/openoui/performance</url>
             <serviceName>performance</serviceName>
             <protocol>UI</protocol>
@@ -63,7 +63,7 @@
         </registerInfo>
         <registerInfo>
             <ip>127.0.0.1</ip>
-            <port>8300</port>
+            <port>9150</port>
             <url>/openoui/monitor</url>
             <serviceName>monitor</serviceName>
             <protocol>UI</protocol>
@@ -73,7 +73,7 @@
         </registerInfo>
         <registerInfo>
             <ip>127.0.0.1</ip>
-            <port>8300</port>
+            <port>9150</port>
             <url>/openoui/lifecyclemgr</url>
             <serviceName>lifecyclemgr</serviceName>
             <protocol>UI</protocol>
@@ -83,7 +83,7 @@
         </registerInfo>
         <registerInfo>
             <ip>127.0.0.1</ip>
-            <port>8300</port>
+            <port>9150</port>
             <url>/openoui/resmgr-nfv</url>
             <serviceName>resmgr-nfv</serviceName>
             <protocol>UI</protocol>
@@ -93,7 +93,7 @@
         </registerInfo>
         <registerInfo>
             <ip>127.0.0.1</ip>
-            <port>8300</port>
+            <port>9150</port>
             <url>/openoui/resmgr-sdn</url>
             <serviceName>resmgr-sdn</serviceName>
             <protocol>UI</protocol>
@@ -103,7 +103,7 @@
         </registerInfo>
         <registerInfo>
             <ip>127.0.0.1</ip>
-            <port>8300</port>
+            <port>9150</port>
             <url>/openoui/user</url>
             <serviceName>user</serviceName>
             <protocol>UI</protocol>
