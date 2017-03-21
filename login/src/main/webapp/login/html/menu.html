@@ -23,7 +23,7 @@
             <ul id="accordion" class="accordion">
                 <li>
                     <div class="link">
-                        <i class="fa fa-globe"></i>Service<i class="fa fa-chevron-down"></i>
+                        <i class="fa fa-cloud"></i>Service<i class="fa fa-chevron-down"></i>
                     </div>
                     <ul class="submenu">
                         <li><a ui-sref=".serviceManagement" ui-sref-active="submenu_active">Service Management</a></li>
@@ -31,11 +31,18 @@
                 </li>
                 <li>
                     <div class="link">
-                        <i class="fa fa-search-minus"></i>Resource Mgr<i class="fa fa-chevron-down"></i>
+                        <i class="fa fa-search-minus"></i>Resource<i class="fa fa-chevron-down"></i>
                     </div>
                     <ul class="submenu">
-                        <li><a ui-sref=".resourceSdno" ui-sref-active="submenu_active">Resource Mgr sdno</a></li>
-                        <li><a ui-sref=".resourceNfvo" ui-sref-active="submenu_active">Resource Mgr Nfvo</a></li>
+                        <li><a ui-sref=".resourceManagement" ui-sref-active="submenu_active">Resource Management</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="link">
+                        <i class="fa fa-map-marker"></i>Province<i class="fa fa-chevron-down"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li><a ui-sref=".provinceManagement" ui-sref-active="submenu_active">Province Management</a></li>
                     </ul>
                 </li>
                 <li>
@@ -84,7 +91,7 @@
             <div id="page-header-wrapper" class="clearfix">
                 <div class="top-icon-bar dropdown">
                     <a href="javascript:;" title="" class="user-ico clearfix" data-toggle="dropdown">
-                        <img width="36" src="/openoui/login/image/user.png" alt="">
+                        <img width="36" src="/openoui/login/image/user.png" alt="" style="border-radius: 15px;"/>
                         <span>User Name</span>
                         <i class="fa fa-chevron-down"></i>
                     </a>
