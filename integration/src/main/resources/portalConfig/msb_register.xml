@@ -24,6 +24,26 @@
         <registerInfo>
             <ip>127.0.0.1</ip>
             <port>9150</port>
+            <url>/openoui/framework</url>
+            <serviceName>framework</serviceName>
+            <protocol>UI</protocol>
+            <visualRange>1</visualRange>
+            <lb_policy>hash</lb_policy>
+            <ttl>0</ttl>
+        </registerInfo>
+        <registerInfo>
+            <ip>127.0.0.1</ip>
+            <port>9150</port>
+            <url>/openoui/thirdparty</url>
+            <serviceName>thirdparty</serviceName>
+            <protocol>UI</protocol>
+            <visualRange>1</visualRange>
+            <lb_policy>hash</lb_policy>
+            <ttl>0</ttl>
+        </registerInfo>
+        <registerInfo>
+            <ip>127.0.0.1</ip>
+            <port>9150</port>
             <url>/openoui/login</url>
             <serviceName>login</serviceName>
             <protocol>UI</protocol>
@@ -84,8 +104,8 @@
         <registerInfo>
             <ip>127.0.0.1</ip>
             <port>9150</port>
-            <url>/openoui/resmgr-nfv</url>
-            <serviceName>resmgr-nfv</serviceName>
+            <url>/openoui/resmgr</url>
+            <serviceName>resmgr</serviceName>
             <protocol>UI</protocol>
             <visualRange>1</visualRange>
             <lb_policy>hash</lb_policy>
@@ -94,8 +114,8 @@
         <registerInfo>
             <ip>127.0.0.1</ip>
             <port>9150</port>
-            <url>/openoui/resmgr-sdn</url>
-            <serviceName>resmgr-sdn</serviceName>
+            <url>/openoui/provincemgr</url>
+            <serviceName>provincemgr</serviceName>
             <protocol>UI</protocol>
             <visualRange>1</visualRange>
             <lb_policy>hash</lb_policy>
