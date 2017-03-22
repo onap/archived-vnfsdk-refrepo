@@ -21,7 +21,7 @@ import '@angular/router';
 import 'angular-in-memory-web-api';
 import 'rxjs';
 
-
+import '../public/thirdparty/js/jquery_1.12.4.min.js';
 import '../public/thirdparty/css/bootstrap.min.css';
 import '../public/thirdparty/css/magic-check.css';
 import '../public/thirdparty/css/zTreeStyle.css';
@@ -32,7 +32,7 @@ import '../public/thirdparty/js/bootstrap.min.js';
 import '../public/thirdparty/js/bootstrap-table.min.js';
 import '../public/thirdparty/js/bootstrap-table-filter-control.min.js';
 import '../public/thirdparty/js/jquery.ztree.core-3.5.js';
-import '../public/thirdparty/js/jquery_1.12.4.min.js';
+
 import '../public/thirdparty/js/mustache.js';
 
 

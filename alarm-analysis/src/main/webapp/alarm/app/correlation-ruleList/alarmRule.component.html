@@ -31,7 +31,7 @@
                     <label for="userName" class="col-xs-3 control-label" style="padding-top: 8px">
                         <span>{{"common_keyword"|translate}}</span>
                     </label>
-                    <input class="form-control ng-untouched ng-pristine ng-valid" style="width: 60%" placeholder='{{"field_rule_name"|translate}}'
+                    <input class="form-control ng-untouched ng-pristine ng-valid" style="width: 60%" placeholder='{{"field_rule_name_Add_Page"|translate}}'
                         type="text" [(ngModel)]="ruleModel.rulename" name="name">
                 </div>
 
@@ -67,7 +67,7 @@
         <table class="table table-bordered table-striped customtable table-hover">
             <thead class="nf_thead">
                 <tr class="heading">
-                    <td>{{"field_rule_name"|translate}}</td>
+                    <td>{{"field_rule_name_Add_Page"|translate}}</td>
                     <td>{{"common_status"|translate}}</td>
                     <td>{{"field_create_time"|translate}}</td>
                     <td>{{"field_creator"|translate}}</td>
@@ -111,11 +111,11 @@
                 <span>{{"message_is_delete"|translate}}</span>
             </div>
             <div style="float:rightl;padding-top: 10px;margin-bottom: -20px" class="">
-                <button class="btn btnDefault btnmrg" type="button" data-popmodal-but="cancel">
-                    <span>{{"common_cancel"|translate}}</span>
-                </button>
                 <button class="btn btnDefault btnmrg" data-popmodal-but="ok">
                     <span>{{"common_confirm"|translate}}</span>
+                </button>
+                 <button class="btn btnDefault btnmrg" type="button" data-popmodal-but="cancel">
+                    <span>{{"common_cancel"|translate}}</span>
                 </button>
             </div>
         </div>
