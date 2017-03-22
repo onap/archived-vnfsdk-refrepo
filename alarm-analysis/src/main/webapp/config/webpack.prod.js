@@ -12,41 +12,98 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var webpack = require('webpack');
-var webpackMerge = require('webpack-merge');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var commonConfig = require('./webpack.common.js');
-var helpers = require('./helpers');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const DefinePlugin = require('webpack/lib/DefinePlugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
+const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 
-const ENV = process.env.NODE_ENV = process.env.ENV = 'production';
+
+const webpack = require('webpack');
+const commonConfig = require('./webpack.common.js');
+const webpackMerge = require('webpack-merge');
+const helpers = require('./helpers');
+
 
 module.exports = webpackMerge(commonConfig, {
-    devtool: 'source-map',
+ 
 
-    output: {
-        path: helpers.root('dist'),
-        publicPath: '/',
-        filename: '[name].[hash].js',
-        chunkFilename: '[id].[hash].chunk.js'
-    },
+  devtool: 'source-map',
 
-    htmlLoader: {
-        minimize: false
-    },
+ 
+  output: {
+  
+    path: helpers.root('holmes'),
+    
+    filename: '[name].[chunkhash].bundle.js',//'[name].[hash].js',
 
-    plugins: [
-        new webpack.NoErrorsPlugin(),
-        new webpack.optimize.DedupePlugin(),
-        new webpack.optimize.UglifyJsPlugin({
-            mangle: {
-                keep_fnames: true
+    sourceMapFilename: '[name].[chunkhash].bundle.map',
+
+    
+    chunkFilename: '[id].[chunkhash].chunk.js'//'[id].[hash].chunk.js'
+  },
+
+
+
+
+  module: {
+
+    rules: [
+    
+      {
+        test: /\.css$/,
+        loader: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+              minimize: true
             }
+          }
         }),
-        new ExtractTextPlugin('[name].[hash].css'),
-        new webpack.DefinePlugin({
-            'process.env': {
-                'ENV': JSON.stringify(ENV)
-            }
-        })
+        include: [helpers.root('alarm/assets'), helpers.root('public'),helpers.root('alarm/app')]
+      },
     ]
+
+  },
+
+  plugins: [
+
+    new webpack.NoErrorsPlugin(),
+
+    new webpack.optimize.DedupePlugin(),
+
+    new webpack.optimize.UglifyJsPlugin({
+      sourceMap: true,
+      mangle: {
+        keep_fnames: true
+      }
+    }),
+
+   
+    new ExtractTextPlugin('[name].[contenthash].css'),
+    
+    new DefinePlugin({
+      'CONST': true,
+    }),
+
+   
+    new LoaderOptionsPlugin({
+      minimize: true,
+      debug: false,
+    })
+  ],
+
+
+  node: {
+    global: true,
+    crypto: 'empty',
+    process: false,
+    module: false,
+    clearImmediate: false,
+    setImmediate: false
+  }
+
+
 });

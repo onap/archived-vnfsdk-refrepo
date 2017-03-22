@@ -12,70 +12,104 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var helpers = require('./helpers');
+const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
+const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
+
+const webpack = require('webpack');
+const helpers = require('./helpers');
+const path = require('path');
+
+
+
 
 
 module.exports = {
     entry: {
-        'polyfills': './alarm/polyfills.ts',  
-        'vendor': './alarm/vendor.ts',        
-        'app': './alarm/main.ts'              
+        'main': './alarm/main.browser.ts',
+        'vendor': './alarm/vendor.ts',
+        'polyfills': './alarm/polyfills.browser.ts'
     },
-
     resolve: {
-        extensions: ['', '.js', '.ts']      
-    },
 
+        extensions: ['.js', '.ts', '.json'],
+    },
     module: {
-        loaders: [
+
+        rules: [
             {
                 test: /\.ts$/,
-                loaders: ['awesome-typescript-loader', 'angular2-template-loader']
+                use: [
 
-            },
-            
-            {  
-                test: /\.html$/,
-                loader: 'html'
-            },
-            {   
-                test: /\.(png|jpe?g|gif|ico|svg)$/,
-                include: [helpers.root('public', 'thirdparty'),helpers.root('public', 'framework'),
-                helpers.root('public', 'thirdparty/images'),helpers.root('public', 'framework/browser/thirdparty/images')
+                    {
+                        loader: 'awesome-typescript-loader',
+                        options: {
+                        }
+                    },
+                    {
+                        loader: 'angular2-template-loader'
+                    }
                 ],
-                loader: 'file?name=public/images/[name].[hash].[ext]'
+                exclude: [/\.(spec|e2e)\.ts$/]
             },
-            {   
-                test: /\.(svg|woff|woff2|ttf|eot)$/,
-                include: [helpers.root('public', 'thirdparty')
-                ],
-                loader: 'file?name=public/fonts/[name].[hash].[ext]'
-            },
-            {  
-                test: /\.css$/,
-                exclude: [helpers.root('alarm', 'app'),helpers.root('public', 'component/thirdparty/icheck/skins/line')
-            ],
-                loader: ExtractTextPlugin.extract('style', 'css?sourceMap')
+
+            {
+                test: /\.json$/,
+                use: 'json-loader'
             },
             {
                 test: /\.css$/,
+                use: ['to-string-loader', 'css-loader?sourceMap'],
                 include: helpers.root('alarm', 'app'),
-                loader: 'raw'
+                exclude: [helpers.root('alarm/assets'), helpers.root('public')]
+            },
+            {
+                test: /\.html$/,
+                use: 'raw-loader',
+                include: [helpers.root('alarm/app')],
+                exclude: [helpers.root('alarm/index.html')]
+            },
+
+
+            {
+                test: /\.(png|jpe?g|gif|ico|svg)$/,
+                include: [helpers.root('public')
+                ],
+                use: 'file-loader?name=assets/images/[name].[hash].[ext]'
+            },
+
+
+            {
+                test: /\.(eot|woff2?|svg|ttf)([\?]?.*)$/,
+                include: [helpers.root('public', 'thirdparty')
+                ],
+                use: 'file-loader?name=assets/fonts/[name].[hash].[ext]'
             }
-        ]
+
+        ],
+
     },
 
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin({
-            name: ['app', 'vendor', 'polyfills']
-        }),
+
+        new CheckerPlugin(),
+
+        new ContextReplacementPlugin(
+            /angular(\\|\/)core(\\|\/)alarm(\\|\/)linker/,
+            helpers.root('alarm'),
+            {
+            }
+        ),
 
         new HtmlWebpackPlugin({
-            template: 'alarm/index.html'
-        })
-        
+            template: 'alarm/index.html',
+        }),
+
+        new webpack.optimize.CommonsChunkPlugin({
+            name: ['main', 'vendor', 'polyfills']
+        }),
+
     ]
 };
