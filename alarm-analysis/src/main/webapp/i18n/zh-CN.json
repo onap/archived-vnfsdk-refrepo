@@ -45,5 +45,6 @@
   "message_rule_name_repeat_error":"规则名字重复",
   "message_rule_content_repeat_error":"规则内容重复",
   "message_rule_content":"规则内容",
-  "message_rule_update_error":"规则的引擎内容被删了，请联系管理员删除这条规则"
+  "message_rule_update_error":"规则的引擎内容被删了，请联系管理员删除这条规则",
+  "field_rule_name_Add_Page":"规则名称"
 }

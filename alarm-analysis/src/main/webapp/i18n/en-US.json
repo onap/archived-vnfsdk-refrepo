@@ -7,15 +7,15 @@
   "common_add":"Add",
   "common_total1":"Total ",
   "common_total2":" Rules",
-  "field_create_time":"Createtime",
+  "field_create_time":"Create Time",
   "field_creator":"Creator",
-  "field_update_time":"Updatetime",
-  "common_operator":"Operator",
+  "field_update_time":"Update Time",
+  "common_operator":"Operations",
   "common_update":"Update",
   "common_off":"OFF",
   "common_on":"ON",
   "common_delete":"Delete",
-  "message_is_delete":"Isdelete",
+  "message_is_delete":"Are you sure to delete the rule?",
   "common_cancel":"Cancel",
   "common_confirm":"Confirm",
   "option_all":"All",
@@ -44,7 +44,7 @@
   "modalTitleCheck":"Check Rule",
   "message_rule_name_repeat_error":"Rule Name Repeat",
   "message_rule_content_repeat_error":"Rule Content Repeat",
-  "message_rule_content":"Rule Content",
-  "message_rule_update_error":"Rule Manage alredy delete they Engine,Please contact admin"
-
+  "message_rule_content":"Rule Contents",
+  "message_rule_update_error":"Rule Manage alredy delete they Engine,Please contact admin",
+  "field_rule_name_Add_Page":"Rule Name"
 }
