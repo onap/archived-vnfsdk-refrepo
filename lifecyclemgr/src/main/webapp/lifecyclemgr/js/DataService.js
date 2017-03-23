@@ -87,6 +87,9 @@ app.factory("DataService", function($http, $log){
         loadServiceDetails : function(id) {
             return JSON.parse('[{"id":"12345", "name":"sdno"}, {"id":"23456", "name":"gso"},{"id":"12345", "name":"nfvo"}]');
         },
+        loadNfvoServiceDetails : function(id) {
+            return JSON.parse('{"vnfInfoId": [{ "vnfInstanceId": "123", "vnfInstanceName": "vnf instance 1", "vnfProfileId": "321" }, { "vnfInstanceId": "123", "vnfInstanceName": "vnf instance 1", "vnfProfileId": "321" }],  "vlInfo": [{ "networkResource": {"resourceName": "network resource 1"}, "linkPortResource": { "resourceName": "link port resource 1"}}, { "networkResource": {"resourceName": "network resource 1"}, "linkPortResource": { "resourceName": "link port resource 1"}}], "vnffgInfo": [{"vnfId": "vnfid-123", "virtualLinkId": "virtual link 123", "cpId": "cp id 123", "nfp": "nfp 123"}, {"vnfId": "vnfid-123", "virtualLinkId": "virtual link 123", "cpId": "cp id 123", "nfp": "nfp 123"}]}');
+        },
 
         generateTemplatesComponent : function() {
             //dropdown data

@@ -94,6 +94,11 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
                 templateUrl : "templates/inputData.html",
                 controller : "inputDataCtrl"
             })
+            .state("home.lcTabs.detailInfo.nfvoDetail", {
+                url : "/nfvoDetailInfo",
+                templateUrl: "templates/nfvoDetail.html",
+                controller: "nfvoDetailCtrl"
+            })
 
             .state("home.lcTabs.detailInfo.vpnManager", {
                 url : "/vpnManager",
@@ -680,6 +685,47 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
         $log.info($scope.inputData);
         $("div.inputDataElements").html("");
         $("div.inputDataElements").append(convertInputsToUI('', 'show', $scope.inputData));
+
+    })
+
+    .controller('nfvoDetailCtrl', function($scope, $stateParams, $compile, DataService) {
+        console.log("nfvoDetailCtrl --> $stateParams.id:: " + $stateParams.id);
+        //$scope.currentId = $stateParams.id;
+
+        var jsonData = DataService.loadNfvoServiceDetails($stateParams.id);
+        var table_tpl = $(modelTemplate).filter('#table').html();
+        var vnfData = fetchDataForVnf(jsonData);
+        $('#vnfInfoTable').html(Mustache.to_html(table_tpl, vnfData));
+
+        var vlData = fetchDataForVl(jsonData);
+        $('#vlInfoTable').html(Mustache.to_html(table_tpl, vlData));
+
+        var vnffgData = fetchDataForVnffg(jsonData);
+        $('#vnffgInfoTable').html(Mustache.to_html(table_tpl, vnffgData));
+
+        function fetchDataForVnf(jsonData) {
+            var header = ["Vnf instance Name"];
+            var rowData = jsonData.vnfInfoId.map(function (vnfInfo) {
+                return {"values": [vnfInfo.vnfInstanceName]}
+            });
+            return {"itemHeader": header,"rowitem": rowData,"striped": false,"border": true,"hover": true,"condensed": false,"filter": false,"action": "","searchField": ""}
+        }
+
+        function fetchDataForVl(jsonData) {
+            var header = ["Network Resource Name","Link Port Resource Name"];
+            var rowData = jsonData.vlInfo.map(function (vl) {
+                return {"values": [vl.networkResource.resourceName, vl.linkPortResource.resourceName]}
+            });
+            return {"itemHeader": header,"rowitem": rowData,"striped": false,"border": true,"hover": true,"condensed": false,"filter": false,"action": "","searchField": ""}
+        }
+
+        function fetchDataForVnffg(jsonData) {
+            var header = ["vnfInstanceId of vnffg instance","vlInstanceId of vnffg instance","cpInstanceId of vnffg instance", "nfpInstanceId of vnffg instance"];
+            var rowData = jsonData.vnffgInfo.map(function (vnffg) {
+                return {"values": [vnffg.vnfId, vnffg.virtualLinkId, vnffg.cpId, vnffg.nfp]}
+            });
+            return {"itemHeader": header,"rowitem": rowData,"striped": false,"border": true,"hover": true,"condensed": false,"filter": false,"action": "","searchField": ""}
+        }
 
     })
 
