@@ -15,7 +15,7 @@
 */
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalService } from './modal.service';
-import { Msg } from './Msg';
+import { Msg } from './msg';
 declare var $: any;
 @Component({
 
