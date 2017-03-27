@@ -131,5 +131,15 @@
             <lb_policy>hash</lb_policy>
             <ttl>0</ttl>
         </registerInfo>
+        <registerInfo>
+            <ip>127.0.0.1</ip>
+            <port>9150</port>
+            <url>/openoui/vnfmarket</url>
+            <serviceName>vnfmarket</serviceName>
+            <protocol>UI</protocol>
+            <visualRange>1</visualRange>
+            <lb_policy>hash</lb_policy>
+            <ttl>0</ttl>
+        </registerInfo>
     </registerList>
 </msbRegister>

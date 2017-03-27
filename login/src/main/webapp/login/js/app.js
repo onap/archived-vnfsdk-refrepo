@@ -103,6 +103,12 @@ var app = angular.module("POCApp", ["ui.router", "ngTable"])
                 controller : "parameterSettingCtrl",
                 authenticate: true
             })
+            .state("menu.vnfMarket", {
+                url: "/vnfMarket",
+                templateUrl : "/openoui/vnfMarket/index.html",
+                controller : "vnfMarketCtrl",
+                authenticate: true
+            })
     })
 
     /*Login Controller*/
@@ -212,6 +218,11 @@ var app = angular.module("POCApp", ["ui.router", "ngTable"])
     /*Parameter Setting Controller*/
     .controller("parameterSettingCtrl", function($scope, DataService, $log){
         $scope.message = "Parameter Setting";
+    })
+
+    /*VNF Market Controller*/
+    .controller("vnfMarketCtrl", function($scope, DataService, $log){
+        $scope.message = "VNF Market";
     })
 
 var modelTemplate = "";

@@ -41,5 +41,6 @@
         <module>monitor</module>
         <module>performance</module>
         <module>resmgr</module>
+        <module>vnfmarket</module>
     </modules>
 </project>
