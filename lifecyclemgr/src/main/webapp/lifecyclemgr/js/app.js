@@ -27,6 +27,17 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             }
         });
     })*/
+    .run(function($rootScope, $location, $state, $stateParams) {
+        $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){
+            console.log("STATE CHANGE toState " + JSON.stringify(toState));
+            console.log("STATE CHANGE fromState " + JSON.stringify(toParams));
+            if($stateParams.id && toState.name == "home.lcTabs" && toParams.id == fromParams.id) {
+                //$state.transitionTo("home.lcTabs.detailInfo");
+                $state.go('home.lcTabs.detailInfo', {'id': toParams.id});
+                event.preventDefault();
+            }
+        });
+    })
 
     /*.provider('modalState', function($stateProvider) {
         var provider = this;
@@ -87,7 +98,8 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             })*/
             .state("home.lcTabs.topo", {
                 url : "/topo",
-                templateUrl : "templates/topo.html"
+                templateUrl : "templates/topo.html",
+                controller : "topoCtrl"
             })
             .state("home.lcTabs.inputData", {
                 url : "/inputData",
@@ -131,19 +143,22 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
                 path : 'i18n/',
                 mode : 'map'
             });
-            DataService.loadGetServiceData()
-                .then(function (data) {
-                    if (data) {
-                        $scope.tableData = data.data;
-                        var tableData = data.data;
-                        loadTableData();
-                    }
-                    else {
-                        $scope.error = "Error!";
-                    }
-                }, function (reason) {
-                    $scope.error = "Error ! " + reason;
-                });
+            if(!DataService.getTableDataLoaded()) {
+                DataService.loadGetServiceData()
+                    .then(function (data) {
+                        if (data) {
+                            $scope.tableData = data.data.lcData;
+                            var tableData = data.data.lcData;
+                            loadTableData();
+                        }
+                        else {
+                            $scope.error = "Error!";
+                        }
+                    }, function (reason) {
+                        $scope.error = "Error ! " + reason;
+                    });
+                DataService.setTableDataLoaded();
+            }
             $('#scalingTypeIn').on("change", function (e) {
                 var value = $(e.target).val();
                 if ('on' === value) {
@@ -536,7 +551,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             var content = '';
             content += '<div class="panel panel-default"><div class="panel-heading">';
             content += '<h6 class="panel-title">';
-            content += '<a style="text-decoration:none;" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne_'+type+'" ui-sref=".vpnManager" ui-sref-active="link_active_DetailInfo">';
+            content += '<a style="text-decoration:none;" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne_'+type+'" ui-sref=".vpnManager" ui-sref-active="link_active_DetailInfo" href="#/home/lcTabs/'+id+'/detailInfo/vpnManager">';
             content += '<span id="sdnoLink">'+text+'</span></a>';
             content += '</h6></div>';
             if(type == "sdno") {
@@ -563,6 +578,11 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             content += '</ul></div></div>';
             return content;
         }
+    })
+
+    .controller('topoCtrl', function($scope, $stateParams, $log, DataService) {
+        console.log("vpnManagerCtrl --> $stateParams.id:: " + $stateParams.id);
+        $scope.msg = $stateParams.id;
     })
 
     /*-------------------------------------------------------------------------------VPN Manager---------------------------------------------------------------------*/
@@ -603,12 +623,12 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
         }
         function loadButtons() {
             //console.log("Got it : " + $scope.$parent.getTemplate("defaultButtons"));
-            var def_button_tpl = $(modelTemplate).filter('#defaultButtons').html();
+            /*var def_button_tpl = $(modelTemplate).filter('#defaultButtons').html();
             console.log("template: " + def_button_tpl);
 
             var delete_data = {"title":"Delete Selected", "clickAction":"deleteData()"};
             var deletehtml = Mustache.to_html(def_button_tpl, delete_data);
-            $('div.overlayAction').html($compile(deletehtml)($scope));
+            $('div.overlayAction').html($compile(deletehtml)($scope));*/
 
             $scope.tableParams = new NgTableParams({count: 5, sorting: {id: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
             }, { counts:[], dataset: $scope.overlayData});
@@ -648,12 +668,12 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
                 });
         }
         function loadButtons() {
-            var def_button_tpl = $(modelTemplate).filter('#defaultButtons').html();
+            /*var def_button_tpl = $(modelTemplate).filter('#defaultButtons').html();
             //console.log("template: " + def_button_tpl);
 
             var delete_data = {"title":"Delete Selected", "clickAction":"deleteData()"};
             var deletehtml = Mustache.to_html(def_button_tpl, delete_data);
-            $('div.underlayAction').html($compile(deletehtml)($scope));
+            $('div.underlayAction').html($compile(deletehtml)($scope));*/
 
             $scope.tableParams = new NgTableParams({count: 5, sorting: {id: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
             }, { counts:[5, 10], dataset: $scope.underlayVPN.underlayData});
@@ -733,17 +753,17 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
 var modelTemplate = "";
 function loadTemplate() {
 
-    $.get('templateContainer.html', function (template) {
+    $.get('./templateContainer.html', function (template) {
         modelTemplate += template;
     });
-    $.get('templateWidget.html', function (template) {
+    $.get('./templateWidget.html', function (template) {
         //console.log("Template is : "+template);
         modelTemplate += template;
     });
-    $.get('templateNotification.html', function (template) {
+    $.get('./templateNotification.html', function (template) {
         modelTemplate += template;
     });
-    $.get('templateFunctional.html', function (template) {
+    $.get('./templateFunctional.html', function (template) {
         modelTemplate += template;
     });
 }

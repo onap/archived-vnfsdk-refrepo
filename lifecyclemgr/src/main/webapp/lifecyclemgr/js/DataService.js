@@ -22,8 +22,15 @@ app.factory("DataService", function($http, $log){
         templateId:'',
         parameters: {}
     };
+    var tableDataLoaded = false;
     
     return {
+        setTableDataLoaded : function() {
+            tableDataLoaded = true;
+        },
+        getTableDataLoaded : function() {
+            return tableDataLoaded;
+        },
         getCreateParamJsonObj: function(){
             return createParamJsonObj;
         },
@@ -31,8 +38,8 @@ app.factory("DataService", function($http, $log){
 
             //load main Table
             return $http({
-                url: '/openoapi/servicegateway/v1/services',
-                //url: 'http://localhost:5000/api/getLCData',
+                //url: '/openoapi/servicegateway/v1/services',
+                url: 'http://localhost:5000/api/getLCData',
                 method: 'GET',
                 headers: {'Content-Type': 'application/json'}
 

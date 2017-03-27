@@ -673,7 +673,7 @@ tr{
 
 /* Functional & Notification*/
 
-#myModal .modal-header, #msgModal .modal-header, #funModal .modal-header {
+#myModal .modal-header, #msgModal .modal-header, #funModal .modal-header, #popupModal .modal-header {
     padding: 9px 15px;
     border-radius: 5px 5px 0 0;
     color: #666;

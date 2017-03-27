@@ -16,4 +16,12 @@
 
 -->
 
-<h3>{{msg}}</h3>
+<div id="vpnLinks" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 nomargin">
+    <ul class="nav nav-stacked col-sm-2 col-md-2 col-lg-2">
+        <li ui-sref-active="active"><a ui-sref=".overlayVPN" >Overlay VPN</a></li>
+        <li ui-sref-active="active"><a ui-sref=".underlayVPN">Underlay VPN</a></li>
+    </ul>
+    <div class="tab-content col-sm-10 col-md-10 col-lg-10">
+        <ui-view></ui-view>
+    </div>
+</div>
