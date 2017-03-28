@@ -14,7 +14,7 @@
  */
 
 app.factory("linkDataService", function($http, DataService, $log){
-    var uri = 'http://192.168.9.13:18008';
+    var uri = '';
     uri += "/openoapi/sdnobrs/v1/topological-links";
     return {
         getAllLinkData: function () {

@@ -15,6 +15,13 @@
 
 var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 
+    .run(function($rootScope, $location, $state, $stateParams) {
+        $rootScope.$on('$viewContentLoaded', function() {
+            //call it here
+            loadTemplate();
+        });
+    })
+
     .config(function($stateProvider, $urlRouterProvider, $urlMatcherFactoryProvider){
         $urlMatcherFactoryProvider.caseInsensitive(true);
         $urlRouterProvider.otherwise('/resource/site');
@@ -60,16 +67,12 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                 templateUrl : "nfv-resmgr/datacenter/datacenter.html",
                 controller : "datacenterCtrl"
             })
-            /*.state("resource.overlayVPN", {
-                url: "/overlayVPN",
-                templateUrl : "nfv-resmgr/vim/vim.html",
-                //controller : "overlayVPNCtrl"
-            })*/
-            .state("resource.vim", {
+
+           /* .state("resource.vim", {
                 url: "/vim",
                 templateUrl : "nfv-resmgr/vim/vim.html",
                 controller : "vimCtrl"
-            })
+            })*/
 
     })
 
@@ -88,6 +91,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 /*------------------------------------------------------------------------------PORT--------------------------------------------------------------------------------------*/
     .controller("portCtrl", function($scope,portDataService,$log, $compile,NgTableParams, $state ){
         $scope.title = "Port";
+        var def_button_tpl, def_iconbutton_tpl;
 
         $scope.init = function() {
             portDataService.getAllPortData()
@@ -98,6 +102,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                     loadButtons();
                 }, function (reason) {
                     $scope.message = "Error is :" + JSON.stringify(reason);
+                    loadButtons();
                 });
         }
 
@@ -111,19 +116,6 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var deletehtml = Mustache.to_html(def_iconbutton_tpl, delete_data);
             $('#portAction').html($compile(addhtml)($scope));
             $('#portAction').append($compile(deletehtml)($scope));
-
-            $scope.checkboxes = { 'checked': false, items: {} };
-
-            $scope.portTableParams = new NgTableParams({count: 5, sorting: {name: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
-            }, { counts:[5, 10, 20, 50], dataset: $scope.data.portData});
-
-            $scope.$watch('checkboxes.checked', function(value) {
-                angular.forEach($scope.data.portData, function(item) {
-                    if (angular.isDefined(item.id)) {
-                        $scope.checkboxes.items[item.id] = value;
-                    }
-                });
-            });
 
             var modelSubmit_data = {"title":"OK", "clickAction":"saveData(port.id)"};
             var modelSubmit_html = Mustache.to_html(def_button_tpl, modelSubmit_data);
@@ -146,13 +138,30 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $('#myModal #me').append($compile(Mustache.to_html(text, portMe.ErrMsg))($scope));
 
             //var portType = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"port.type"}};
-            $('#myModal #type').append($compile(Mustache.to_html(dropDown, $scope.data.dropdowntypeData))($scope));
+            //$('#myModal #type').append($compile(Mustache.to_html(dropDown, $scope.data.dropdowntypeData))($scope));
+
+            var dropSimple_data = {
+                "modalVar" : "port.type",
+                "labelField" : "itemLabel",
+                "optionsValue" : $scope.data ? JSON.stringify($scope.data.dropdowntypeData.item) : ""
+            };
+
+            $('#myModal #type').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));
+
 
             var portLayerRate = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.layerrate"}};
             $('#myModal #layerrate').append($compile(Mustache.to_html(text, portLayerRate.ErrMsg))($scope));
 
             //var portEdgePoint = {"ErrMsg" :     {"ipv4Err" : "IP Address is required.", "modalVar":"port.Edgepoint"}};
-            $('#myModal #Edgepoint').append($compile(Mustache.to_html(dropDown, $scope.data.dropdownEdgeData))($scope));
+            //$('#myModal #Edgepoint').append($compile(Mustache.to_html(dropDown, $scope.data.dropdownEdgeData))($scope));
+
+            var dropSimple_data = {
+                "modalVar" : "port.Edgepoint",
+                "labelField" : "itemLabel",
+                "optionsValue" : $scope.data ? JSON.stringify($scope.data.dropdownEdgeData.item) : ""
+            };
+
+            $('#myModal #Edgepoint').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));
 
             var portIndex = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.portindex"}};
             $('#myModal #portindex').append($compile(Mustache.to_html(text, portIndex.ErrMsg))($scope));
@@ -165,6 +174,19 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 
             var portOperatingState = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.operatingState"}};
             $('#myModal #operatingState').append($compile(Mustache.to_html(text, portOperatingState.ErrMsg))($scope));
+
+            $scope.checkboxes = { 'checked': false, items: {} };
+
+            $scope.portTableParams = new NgTableParams({count: 5, sorting: {name: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
+            }, { counts:[5, 10, 20, 50], dataset: $scope.data.portData});
+
+            $scope.$watch('checkboxes.checked', function(value) {
+                angular.forEach($scope.data.portData, function(item) {
+                    if (angular.isDefined(item.id)) {
+                        $scope.checkboxes.items[item.id] = value;
+                    }
+                });
+            });
 
         }
 
@@ -212,6 +234,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         $scope.closeModal = function() {
             console.log("Closing Modal...");
             $('#myModal').modal('hide');
+            $state.reload();
         }
 
 
@@ -233,30 +256,32 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $scope.numericErr = false;
         }
         $scope.saveData = function(id) {
-            if(id) {
-                //edit data
-                console.log("Editing data.." + JSON.stringify($scope.port));
-                portDataService.editPortData($scope.port)
-                    .then(function (data) {
+            if (!$scope.textboxErrName && $scope.textboxErrMe) {
+                if(id) {
+                    //edit data
+                    console.log("Editing data.." + JSON.stringify($scope.port));
+                    portDataService.editPortData($scope.port)
+                        .then(function (data) {
                             $scope.message = "Success :-)";
                             $state.reload();
                         },
                         function (reason) {
                             $scope.message = reason.status + " " + reason.statusText;
                         });
-            }
-            else {
-                console.log("Adding data.." + JSON.stringify($scope.port));
-                portDataService.addPortData($scope.port)
-                    .then(function (data) {
+                }
+                else {
+                    console.log("Adding data.." + JSON.stringify($scope.port));
+                    portDataService.addPortData($scope.port)
+                        .then(function (data) {
                             $scope.message = "Success :-)";
                             $state.reload();
                         },
                         function (reason) {
                             $scope.message = reason.status + " " + reason.statusText;
                         });
+                }
+                $('#myModal').modal('hide');
             }
-            $('#myModal').modal('hide');
         }
 
         $scope.deleteData = function(id) {
@@ -273,8 +298,15 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                         "text": "OK", "action": "deleteConfirmation("+id+")"
                     }]
             }};
-            var html = Mustache.to_html(dialog_tpl, error.err_data);
-            $($compile(html)($scope)).modal({backdrop: "static"});
+            angular.forEach($scope.checkboxes.items, function(value) {
+                if(value) {
+                    checkbox = true;
+                }
+            });
+            if (checkbox || (typeof id !== "undefined")) {
+                var html = Mustache.to_html(dialog_tpl, error.err_data);
+                $($compile(html)($scope)).modal({backdrop: "static"});
+            }
         }
 
         $scope.deleteConfirmation = function(id) {
@@ -326,7 +358,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 /*-----------------------------------------------------------------------------SITE-----------------------------------------------------------------------------------*/
     .controller("siteCtrl", function($scope,siteDataService, $log, $compile, $state, NgTableParams ){
         $scope.title = "Site";
-
+        var def_button_tpl, def_iconbutton_tpl;
         $scope.init = function() {
             siteDataService.getAllSiteData()
                 .then(function (data) {
@@ -337,14 +369,15 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                 }, function (reason) {
 
                     $scope.message = "Error is :" + JSON.stringify(reason);
+                    loadButtons();
                 });
         }
 
         function loadButtons() {
-            var def_button_tpl = $(modelTemplate).filter('#defaultButtons').html();
-            var def_iconbutton_tpl = $(modelTemplate).filter('#defaultIconButtons').html();
+            def_button_tpl = $(modelTemplate).filter('#defaultButtons').html();
+            def_iconbutton_tpl = $(modelTemplate).filter('#defaultIconButtons').html();
             var dialog = $(modelTemplate).filter('#dialog').html();
-            var add_data = {"title":"Create", "type":"btn btn-default", "gType": "plus-icon", "iconPosition":"left", "clickAction":"showAddModal()"};
+            var add_data = {"title":"Create", "type":"btn btn-default",  "gType": "plus-icon", "iconPosition":"left", "clickAction":"showAddModal()"};
             var delete_data = {"title":"Delete Selected", "type":"btn btn-default", "gType": "delete-icon", "iconPosition":"left", "clickAction":"deleteData()"};
             var addhtml = Mustache.to_html(def_iconbutton_tpl, add_data);
             var deletehtml = Mustache.to_html(def_iconbutton_tpl, delete_data);
@@ -352,6 +385,9 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $('#siteAction').append($compile(deletehtml)($scope));
 
             $scope.checkboxes = { 'checked': false, items: {} };
+
+            loadSiteDialog();
+
 
             $scope.siteTableParams = new NgTableParams({count: 5, sorting: {name: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
             }, { counts:[5, 10, 20, 50], dataset: $scope.data.siteData});
@@ -364,6 +400,13 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                     }
                 });
             });
+
+
+
+        }
+
+        function loadSiteDialog() {
+
 
             var modelSubmit_data = {"title":"OK", "clickAction":"saveData(site.id)"};
             var modelSubmit_html = Mustache.to_html(def_button_tpl, modelSubmit_data);
@@ -379,7 +422,13 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var siteName = {"ErrMsg" :     {"errmsg" : "Name is required.", "modalVar":"site.name", "errtag":"textboxErrName", "errfunc":"validatetextboxName", "required":true}};
             $('#myModal #name').append($compile(Mustache.to_html(text, siteName.ErrMsg))($scope));
 
-            $('#myModal #type').append($compile(Mustache.to_html(dropDown, $scope.data.dropdownsiteData))($scope));
+            var dropSimple_data = {
+                "modalVar" : "site.type",
+                "labelField" : "itemLabel",
+                "optionsValue" : $scope.data ? JSON.stringify($scope.data.dropdownsiteData.item): ""
+            };
+
+            $('#myModal #type').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));
 
             var siteTenantName = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"site.tenatname"}};
             $('#myModal #tenantname').append($compile(Mustache.to_html(text, siteTenantName.ErrMsg))($scope));
@@ -389,8 +438,6 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 
             var siteLocation = {"ErrMsg" :     {"errmsg" : "Location is required.", "modalVar":"site.location", "placeholder":"Location"}};
             $('#myModal #location').append($compile(Mustache.to_html(text, siteLocation.ErrMsg))($scope));
-
-
         }
 
         $scope.validatetextboxName = function (value){
@@ -405,6 +452,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         $scope.closeModal = function() {
             console.log("Closing Modal...");
             $('#myModal').modal('hide');
+            $state.reload();
         }
 
         $scope.checkAll = function() {
@@ -421,11 +469,12 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $scope.textboxErrName = false;
         }
         $scope.saveData = function(id) {
-            if(id) {
-                //edit data
-                console.log("Editing data.." + JSON.stringify($scope.site));
-                siteDataService.editSiteData($scope.site)
-                    .then(function (data) {
+            if (!$scope.textboxErrName) {
+                if(id) {
+                    //edit data
+                    console.log("Editing data.." + JSON.stringify($scope.site));
+                    siteDataService.editSiteData($scope.site)
+                        .then(function (data) {
                             $scope.message = "Success :-)";
                             $state.reload();
                         },
@@ -433,23 +482,25 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                             //$log.info(reason);
                             $scope.message = reason.status + " " + reason.statusText;
                         });
-            }
-            else {
-                console.log("Adding data.." + JSON.stringify($scope.site));
-                siteDataService.addSiteData($scope.site)
-                    .then(function (data) {
+                }
+                else {
+                    console.log("Adding data.." + JSON.stringify($scope.site));
+                    siteDataService.addSiteData($scope.site)
+                        .then(function (data) {
                             $scope.message = "Success :-)";
                             $state.reload();
                         },
                         function (reason) {
                             $scope.message = reason.status + " " + reason.statusText;
                         });
+                }
+                $('#myModal').modal('hide');
             }
-            $('#myModal').modal('hide');
         }
 
         $scope.deleteData = function(id) {
             var confirmation=false;
+            var checkbox = false;
             var dialog_tpl = $(modelTemplate).filter('#personDialog').html();
             var error = {"err_data" : { "title": "Error",
                 "showClose": "true",
@@ -462,8 +513,15 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                         "text": "Ok", "action": "deleteConfirmation("+id+")"
                     }]
             }};
-            var html = Mustache.to_html(dialog_tpl, error.err_data);
-            $($compile(html)($scope)).modal({backdrop: "static"});
+            angular.forEach($scope.checkboxes.items, function(value) {
+              if(value) {
+                  checkbox = true;
+              }
+            });
+            if (checkbox || (typeof id !== "undefined")) {
+                var html = Mustache.to_html(dialog_tpl, error.err_data);
+                $($compile(html)($scope)).modal({backdrop: "static"});
+            }
         }
 
         $scope.deleteConfirmation = function(id) {
@@ -502,7 +560,8 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             angular.forEach($scope.data.siteData, function(data) {
                 if(!dataFound) {
                     if (data.id == id) {
-                        console.log("Found : " + data.id);
+                        console.log("Found : " + data.name);
+                        console.log("Found : " + data);
                         $scope.site = data;
                         $("#myModal").modal();
                         dataFound = true;
@@ -526,6 +585,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                     loadButtons();
                 }, function (reason) {
                     $scope.message = "Error is :" + JSON.stringify(reason);
+                    loadButtons();
                 });
         }
 
@@ -541,19 +601,6 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $('#locationAction').html($compile(addhtml)($scope));
             $('#locationAction').append($compile(deletehtml)($scope));
 
-            $scope.checkboxes = { 'checked': false, items: {} };
-
-            $scope.neTableParams = new NgTableParams({count: 5, sorting: {Id: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
-            }, { counts:[5, 10, 20, 50], dataset: $scope.data.locationData});
-
-            $scope.$watch('checkboxes.checked', function(value) {
-                angular.forEach($scope.data.locationData, function(item) {
-                    if (angular.isDefined(item.Id)) {
-                        $scope.checkboxes.items[item.Id] = value;
-                    }
-                });
-            });
-
             var modelSubmit_data = {"title":"OK", "clickAction":"saveData(loc.Id)"};
             var modelSubmit_html = Mustache.to_html(def_button_tpl, modelSubmit_data);
             $('#myModal #footerBtns').html($compile(modelSubmit_html)($scope));
@@ -567,31 +614,37 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var ipv4 = $(modelTemplate).filter('#ipv4').html();
             var number = $(modelTemplate).filter('#numeric').html();
 
-            var locId = {"ErrMsg" :     {"errmsg" : "Name is required.", "modalVar":"loc.Id", "errtag":"textboxErrId", "errfunc":"validatetextboxId", "placeholder":"Country", "placeholder":"Id"}};
+            var locId = {"ErrMsg" :     {"errmsg" : "Name is required.", "modalVar":"loc.Id", "errtag":"textboxErrId", "errfunc":"validatetextboxId"}};
             $('#myModal #Name').append($compile(Mustache.to_html(text, locId.ErrMsg))($scope));
 
-            var locCountry = {"ErrMsg" :     {"errmsg" : "Country is required.", "modalVar":"loc.Country", "errtag":"textboxErrCountry", "errfunc":"validatetextboxCountry", "placeholder":"Country","required":true}};
+            var locCountry = {"ErrMsg" :     {"errmsg" : "Country is required.", "modalVar":"loc.Country", "errtag":"textboxErrCountry", "errfunc":"validatetextboxCountry","required":true}};
             $('#myModal #Country').append($compile(Mustache.to_html(text, locCountry.ErrMsg))($scope));
 
-            var locLocation = {"ErrMsg" :     {"errmsg" : "Location is required.", "modalVar":"loc.Location", "errtag":"textboxErrLocation", "errfunc":"validatetextboxLocation", "placeholder":"Location","required":true}};
+            var locLocation = {"ErrMsg" :     {"errmsg" : "Location is required.", "modalVar":"loc.Location", "errtag":"textboxErrLocation", "errfunc":"validatetextboxLocation","required":true}};
             $('#myModal #Location').append($compile(Mustache.to_html(text, locLocation.ErrMsg))($scope));
 
-            var locDescription = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"loc.Description", "errtag":"textboxErr", "errfunc":"validatetextbox", "placeholder":"Description "}};
+            var locDescription = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"loc.Description", "errtag":"textboxErr", "errfunc":"validatetextbox"}};
             $('#myModal #Description').append($compile(Mustache.to_html(text, locDescription.ErrMsg))($scope));
 
-            var locLatitude = {"ErrMsg" :     {"errmsg" : "Latitude is required.", "modalVar":"loc.Latitude", "errtag":"textboxErrLatitude", "errfunc":"validatetextboxLatitude", "placeholder":"Latitude","required":true}};
+            var locLatitude = {"ErrMsg" :     {"errmsg" : "Latitude is required.", "modalVar":"loc.Latitude", "errtag":"textboxErrLatitude", "errfunc":"validatetextboxLatitude", "required":true}};
             $('#myModal #Latitude').append($compile(Mustache.to_html(text, locLatitude.ErrMsg))($scope));
 
-            var locLongitude = {"ErrMsg" :     {"errmsg" : "Longitude is required.", "modalVar":"loc.Longitude", "errtag":"textboxErrLongitude", "errfunc":"validatetextboxLongitude", "placeholder":"Longitude","required":true}};
+            var locLongitude = {"ErrMsg" :     {"errmsg" : "Longitude is required.", "modalVar":"loc.Longitude", "errtag":"textboxErrLongitude", "errfunc":"validatetextboxLongitude", "required":true}};
             $('#myModal #Longitude').append($compile(Mustache.to_html(text, locLongitude.ErrMsg))($scope));
-        }
 
-        $scope.validatetextboxLocation = function (value){
-            if($scope.loc.Location) {
-                $scope.textboxErrLocation = false;
-            }
-            else
-                $scope.textboxErrLocation = true;
+            $scope.checkboxes = { 'checked': false, items: {} };
+
+            $scope.neTableParams = new NgTableParams({count: 5, sorting: {Id: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
+            }, { counts:[5, 10, 20, 50], dataset: $scope.data.locationData});
+
+            $scope.$watch('checkboxes.checked', function(value) {
+                angular.forEach($scope.data.locationData, function(item) {
+                    if (angular.isDefined(item.Id)) {
+                        $scope.checkboxes.items[item.Id] = value;
+                    }
+                });
+            });
+
         }
 
         $scope.validatetextboxCountry = function (value){
@@ -600,6 +653,14 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             }
             else
                 $scope.textboxErrCountry = true;
+        }
+
+        $scope.validatetextboxLocation = function (value){
+            if($scope.loc.Location) {
+                $scope.textboxErrLocation = false;
+            }
+            else
+                $scope.textboxErrLocation = true;
         }
 
         $scope.validatetextboxLatitude = function (value){
@@ -621,6 +682,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         $scope.closeModal = function() {
             console.log("Closing Modal...");
             $('#myModal').modal('hide');
+            $state.reload();
         }
 
 
@@ -632,7 +694,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 
         $scope.showAddModal = function() {
             console.log("Showing Modal to Add data");
-            $scope.location = {};
+            $scope.loc = {};
             //$("#myModal").modal();
             $("#myModal").modal({}).draggable();
             $scope.textboxErrLocation = false;
@@ -641,22 +703,23 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $scope.textboxErrLongitude = false;
         }
         $scope.saveData = function(id) {
-            if(id) {
-                //edit data
-                console.log("Editing data.." + JSON.stringify($scope.loc));
-                locationDataService.editLocationData($scope.loc)
-                    .then(function (data) {
+            if (!$scope.textboxErrLocation && !$scope.textboxErrCountry && !$scope.textboxErrLatitude && !$scope.textboxErrLongitude) {
+                if(id) {
+                    //edit data
+                    console.log("Editing data.." + JSON.stringify($scope.loc));
+                    locationDataService.editLocationData($scope.loc)
+                        .then(function (data) {
                             $scope.message = "Success :-)";
                             $state.reload();
                         },
                         function (reason) {
                             $scope.message = reason.status + " " + reason.statusText;
                         });
-            }
-            else {
-                console.log("Adding data.." + JSON.stringify($scope.loc));
-                locationDataService.addLocationData($scope.loc)
-                    .then(function (data) {
+                }
+                else {
+                    console.log("Adding data.." + JSON.stringify($scope.loc));
+                    locationDataService.addLocationData($scope.loc)
+                        .then(function (data) {
 
                             $scope.message = "Success :-)";
                             $state.reload();
@@ -664,8 +727,9 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                         function (reason) {
                             $scope.message = reason.status + " " + reason.statusText;
                         });
+                }
+                $('#myModal').modal('hide');
             }
-            $('#myModal').modal('hide');
         }
 
         $scope.deleteData = function(id) {
@@ -682,8 +746,15 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                         "text": "OK", "action": "deleteConfirmation("+id+")"
                     }]
             }};
-            var html = Mustache.to_html(dialog_tpl, error.err_data);
-            $($compile(html)($scope)).modal({backdrop: "static"});
+            angular.forEach($scope.checkboxes.items, function(value) {
+                if(value) {
+                    checkbox = true;
+                }
+            });
+            if (checkbox || (typeof id !== "undefined")) {
+                var html = Mustache.to_html(dialog_tpl, error.err_data);
+                $($compile(html)($scope)).modal({backdrop: "static"});
+            }
         }
 
         $scope.deleteConfirmation = function(id) {
@@ -745,6 +816,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                     loadButtons();
                 }, function (reason) {
                     $scope.message = "Error is :" + JSON.stringify(reason);
+                    loadButtons();
                 });
         }
 
@@ -758,20 +830,6 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var deletehtml = Mustache.to_html(def_iconbutton_tpl, delete_data);
             $('#linkAction').html($compile(addhtml)($scope));
             $('#linkAction').append($compile(deletehtml)($scope));
-
-            $scope.checkboxes = { 'checked': false, items: {} };
-
-            $scope.linkTableParams = new NgTableParams({count: 5, sorting: {name: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
-            }, { counts:[5, 10, 20, 50], dataset: $scope.data.linkData});
-
-            $scope.$watch('checkboxes.checked', function(value) {
-                angular.forEach($scope.data.linkData, function(item) {
-                    console.log(item.id);
-                    if (angular.isDefined(item.id)) {
-                        $scope.checkboxes.items[item.id] = value;
-                    }
-                });
-            });
 
             var modelSubmit_data = {"title":"OK", "clickAction":"saveData(link.id)"};
             var modelSubmit_html = Mustache.to_html(def_button_tpl, modelSubmit_data);
@@ -790,7 +848,15 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $('#myModal #name').append($compile(Mustache.to_html(text, linkName.ErrMsg))($scope));
 
             //var linkType = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"link.type"}};
-            $('#myModal #type').append($compile(Mustache.to_html(dropDown, $scope.data.dropdownlinkData))($scope));
+            //$('#myModal #type').append($compile(Mustache.to_html(dropDown, $scope.data.dropdownlinkData))($scope));
+
+            var dropSimple_data = {
+                "modalVar" : "link.type",
+                "labelField" : "itemLabel",
+                "optionsValue" : $scope.data ? JSON.stringify($scope.data.dropdownlinkData.item) : ""
+            };
+
+            $('#myModal #type').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));
 
             var linkLayerRate = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"link.layerRate"}};
             $('#myModal #layerRate').append($compile(Mustache.to_html(text, linkLayerRate.ErrMsg))($scope));
@@ -812,6 +878,20 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 
             var linkOperatingState = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"link.operatingState"}};
             $('#myModal #operatingState').append($compile(Mustache.to_html(text, linkOperatingState.ErrMsg))($scope));
+
+            $scope.checkboxes = { 'checked': false, items: {} };
+
+            $scope.linkTableParams = new NgTableParams({count: 5, sorting: {name: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
+            }, { counts:[5, 10, 20, 50], dataset: $scope.data.linkData});
+
+            $scope.$watch('checkboxes.checked', function(value) {
+                angular.forEach($scope.data.linkData, function(item) {
+                    console.log(item.id);
+                    if (angular.isDefined(item.id)) {
+                        $scope.checkboxes.items[item.id] = value;
+                    }
+                });
+            });
 
         }
 
@@ -842,6 +922,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         $scope.closeModal = function() {
             console.log("Closing Modal...");
             $('#myModal').modal('hide');
+            $state.reload();
         }
 
         $scope.checkAll = function() {
@@ -859,22 +940,23 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $scope.numericErr = false;
         }
         $scope.saveData = function(id) {
-            if(id) {
-                //edit data
-                console.log("Editing data.." + JSON.stringify($scope.link));
-                linkDataService.editLinkData($scope.link)
-                    .then(function (data) {
+            if (!$scope.textboxErr) {
+                if(id) {
+                    //edit data
+                    console.log("Editing data.." + JSON.stringify($scope.link));
+                    linkDataService.editLinkData($scope.link)
+                        .then(function (data) {
                             $scope.message = "Success :-)";
                             $state.reload();
                         },
                         function (reason) {
                             $scope.message = reason.status + " " + reason.statusText;
                         });
-            }
-            else {
-                console.log("Adding data.." + JSON.stringify($scope.link));
-                linkDataService.addLinkData($scope.link)
-                    .then(function (data) {
+                }
+                else {
+                    console.log("Adding data.." + JSON.stringify($scope.link));
+                    linkDataService.addLinkData($scope.link)
+                        .then(function (data) {
 
                             $scope.message = "Success :-)";
                             $state.reload();
@@ -882,8 +964,9 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                         function (reason) {
                             $scope.message = reason.status + " " + reason.statusText;
                         });
+                }
+                $('#myModal').modal('hide');
             }
-            $('#myModal').modal('hide');
         }
 
         $scope.deleteData = function(id) {
@@ -900,8 +983,15 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                         "text": "OK", "action": "deleteConfirmation("+id+")"
                     }]
             }};
-            var html = Mustache.to_html(dialog_tpl, error.err_data);
-            $($compile(html)($scope)).modal({backdrop: "static"});
+            angular.forEach($scope.checkboxes.items, function(value) {
+                if(value) {
+                    checkbox = true;
+                }
+            });
+            if (checkbox || (typeof id !== "undefined")) {
+                var html = Mustache.to_html(dialog_tpl, error.err_data);
+                $($compile(html)($scope)).modal({backdrop: "static"});
+            }
         }
 
         $scope.deleteConfirmation = function(id) {
@@ -963,6 +1053,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                     loadButtons();
                 }, function (reason) {
                     $scope.message = "Error is :" + JSON.stringify(reason);
+                    loadButtons();
                 });
         }
 
@@ -977,19 +1068,6 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var deletehtml = Mustache.to_html(def_iconbutton_tpl, delete_data);
             $('#neAction').html($compile(addhtml)($scope));
             $('#neAction').append($compile(deletehtml)($scope));
-
-            $scope.checkboxes = { 'checked': false, items: {} };
-
-            $scope.neTableParams = new NgTableParams({count: 5, sorting: {name: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
-            }, { counts:[5, 10, 20, 50], dataset: $scope.data.neData});
-
-            $scope.$watch('checkboxes.checked', function(value) {
-                angular.forEach($scope.data.neData, function(item) {
-                    if (angular.isDefined(item.id)) {
-                        $scope.checkboxes.items[item.id] = value;
-                    }
-                });
-            });
 
             var modelSubmit_data = {"title":"OK", "clickAction":"saveData(ne.id)"};
             var modelSubmit_html = Mustache.to_html(def_button_tpl, modelSubmit_data);
@@ -1013,7 +1091,15 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var neProductName = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.productname" }};
             $('#myModal #productname').append($compile(Mustache.to_html(text, neProductName.ErrMsg))($scope));
 
-            $('#myModal #controller').append($compile(Mustache.to_html(dropDown, $scope.data.dropdownneData))($scope));
+            //$('#myModal #controller').append($compile(Mustache.to_html(dropDown, $scope.data.dropdownneData))($scope));
+            var dropSimple_data = {
+                "modalVar" : "ne.controller",
+                "labelField" : "itemLabel",
+                "optionsValue" : $scope.data ? JSON.stringify($scope.data.dropdownneData.item): ""
+            };
+
+            $('#myModal #controller').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));
+
 
             var neIPAddress = {"ErrMsg" :     {"errmsg" : "IP Address is required.", "modalVar":"ne.ipaddress"}};
             $('#myModal #ipaddress').append($compile(Mustache.to_html(text, neIPAddress.ErrMsg))($scope));
@@ -1027,7 +1113,21 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var neOperatingState = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.operatingState"}};
             $('#myModal #operatingState').append($compile(Mustache.to_html(text, neOperatingState.ErrMsg))($scope));
 
+            $scope.checkboxes = { 'checked': false, items: {} };
+
+            $scope.neTableParams = new NgTableParams({count: 5, sorting: {name: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
+            }, { counts:[5, 10, 20, 50], dataset: $scope.data.neData});
+
+            $scope.$watch('checkboxes.checked', function(value) {
+                angular.forEach($scope.data.neData, function(item) {
+                    if (angular.isDefined(item.id)) {
+                        $scope.checkboxes.items[item.id] = value;
+                    }
+                });
+            });
+
         }
+
 
         $scope.validatetextboxName = function (value){
             if($scope.ne.name) {
@@ -1049,6 +1149,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             console.log("Closing Modal...");
             $('#myModal').modal('hide');
             $scope.textboxErrName = false;
+            $state.reload();
         }
 
 
@@ -1068,22 +1169,23 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $("#myModal").modal({}).draggable();
         }
         $scope.saveData = function(id) {
-            if(id) {
-                //edit data
-                console.log("Editing data.." + JSON.stringify($scope.ne));
-                neDataService.editNEData($scope.ne)
-                    .then(function (data) {
+            if (!$scope.textboxErrName && !$scope.textboxErrVersion) {
+                if(id) {
+                    //edit data
+                    console.log("Editing data.." + JSON.stringify($scope.ne));
+                    neDataService.editNEData($scope.ne)
+                        .then(function (data) {
                             $scope.message = "Success :-)";
                             $state.reload();
                         },
                         function (reason) {
                             $scope.message = reason.status + " " + reason.statusText;
                         });
-            }
-            else {
-                console.log("Adding data.." + JSON.stringify($scope.ne));
-                neDataService.addNEData($scope.ne)
-                    .then(function (data) {
+                }
+                else {
+                    console.log("Adding data.." + JSON.stringify($scope.ne));
+                    neDataService.addNEData($scope.ne)
+                        .then(function (data) {
 
                             $scope.message = "Success :-)";
                             $state.reload();
@@ -1091,8 +1193,9 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                         function (reason) {
                             $scope.message = reason.status + " " + reason.statusText;
                         });
+                }
+                $('#myModal').modal('hide');
             }
-            $('#myModal').modal('hide');
         }
 
         $scope.deleteData = function(id) {
@@ -1109,8 +1212,15 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                         "text": "OK", "action": "deleteConfirmation("+id+")"
                     }]
             }};
-            var html = Mustache.to_html(dialog_tpl, error.err_data);
-            $($compile(html)($scope)).modal({backdrop: "static"});
+            angular.forEach($scope.checkboxes.items, function(value) {
+                if(value) {
+                    checkbox = true;
+                }
+            });
+            if (checkbox || (typeof id !== "undefined")) {
+                var html = Mustache.to_html(dialog_tpl, error.err_data);
+                $($compile(html)($scope)).modal({backdrop: "static"});
+            }
         }
 
         $scope.deleteConfirmation = function(id) {
@@ -1173,6 +1283,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                     loadButtons();
                 }, function (reason) {
                     $scope.message = "Error is :" + JSON.stringify(reason);
+                    loadButtons();
                 });
         }
 
@@ -1187,19 +1298,6 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var deletehtml = Mustache.to_html(def_iconbutton_tpl, delete_data);
             $('#datacenterAction').html($compile(addhtml)($scope));
             $('#datacenterAction').append($compile(deletehtml)($scope));
-
-            $scope.checkboxes = { 'checked': false, items: {} };
-
-            $scope.neTableParams = new NgTableParams({count: 5, sorting: {Id: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
-            }, { counts:[5, 10, 20, 50], dataset: $scope.data.datacenterData});
-
-            $scope.$watch('checkboxes.checked', function(value) {
-                angular.forEach($scope.data.datacenterData, function(item) {
-                    if (angular.isDefined(item.Id)) {
-                        $scope.checkboxes.items[item.Id] = value;
-                    }
-                });
-            });
 
             var modelSubmit_data = {"title":"OK", "clickAction":"saveData(datacenter.Id)"};
             var modelSubmit_html = Mustache.to_html(def_button_tpl, modelSubmit_data);
@@ -1223,11 +1321,32 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var dataStatus = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"datacenter.Status"}};
             $('#myModal #Status').append($compile(Mustache.to_html(text, dataStatus.ErrMsg))($scope));
 
-            $('#myModal #Country').append($compile(Mustache.to_html(dropDown, $scope.data.dropdowncountryData))($scope));
+            //$('#myModal #Country').append($compile(Mustache.to_html(dropDown, $scope.data.dropdowncountryData))($scope));
+            var dropSimple_data = {
+                "modalVar" : "datacenter.Country",
+                "labelField" : "itemLabel",
+                "optionsValue" : $scope.data ? JSON.stringify($scope.data.dropdowncountryData.item) : ""
+            };
 
-            $('#myModal #Location').append($compile(Mustache.to_html(dropDown, $scope.data.dropdownlocationData))($scope));
+            $('#myModal #Country').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));
 
-            $('#myModal #ServiceName').append($compile(Mustache.to_html(dropDown, $scope.data.dropdownserviceData))($scope));
+            //$('#myModal #Location').append($compile(Mustache.to_html(dropDown, $scope.data.dropdownlocationData))($scope));
+            var dropSimple_data = {
+                "modalVar" : "datacenter.Location",
+                "labelField" : "itemLabel",
+                "optionsValue" : $scope.data ? JSON.stringify($scope.data.dropdownlocationData.item) : ""
+            };
+
+            $('#myModal #Location').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));
+
+            //$('#myModal #ServiceName').append($compile(Mustache.to_html(dropDown, $scope.data.dropdownserviceData))($scope));
+            var dropSimple_data = {
+                "modalVar" : "datacenter.ServiceName",
+                "labelField" : "itemLabel",
+                "optionsValue" : $scope.data ? JSON.stringify($scope.data.dropdownlocationData.item) : ""
+            };
+
+            $('#myModal #ServiceName').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));
 
             var dataCPU = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"datacenter.Cpu"}};
             $('#myModal #Cpu').append($compile(Mustache.to_html(text, dataCPU.ErrMsg))($scope));
@@ -1238,7 +1357,18 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var dataHarddisk = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"datacenter.HardDisk"}};
             $('#myModal #HardDisk').append($compile(Mustache.to_html(text, dataHarddisk.ErrMsg))($scope));
 
+            $scope.checkboxes = { 'checked': false, items: {} };
 
+            $scope.neTableParams = new NgTableParams({count: 5, sorting: {Id: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
+            }, { counts:[5, 10, 20, 50], dataset: $scope.data.datacenterData});
+
+            $scope.$watch('checkboxes.checked', function(value) {
+                angular.forEach($scope.data.datacenterData, function(item) {
+                    if (angular.isDefined(item.Id)) {
+                        $scope.checkboxes.items[item.Id] = value;
+                    }
+                });
+            });
 
         }
 
@@ -1261,6 +1391,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         $scope.closeModal = function() {
             console.log("Closing Modal...");
             $('#myModal').modal('hide');
+            $state.reload();
         }
 
 
@@ -1279,22 +1410,23 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $scope.numericErr = false;
         }
         $scope.saveData = function(id) {
-            if(id) {
-                //edit data
-                console.log("Editing data.." + JSON.stringify($scope.datacenter));
-                datacenterDataService.editDatacenterData($scope.datacenter)
-                    .then(function (data) {
+            if (!$scope.textboxErr && !$scope.numericErr) {
+                if(id) {
+                    //edit data
+                    console.log("Editing data.." + JSON.stringify($scope.datacenter));
+                    datacenterDataService.editDatacenterData($scope.datacenter)
+                        .then(function (data) {
                             $scope.message = "Success :-)";
                             $state.reload();
                         },
                         function (reason) {
                             $scope.message = reason.status + " " + reason.statusText;
                         });
-            }
-            else {
-                console.log("Adding data.." + JSON.stringify($scope.datacenter));
-                datacenterDataService.addDatacenterData($scope.datacenter)
-                    .then(function (data) {
+                }
+                else {
+                    console.log("Adding data.." + JSON.stringify($scope.datacenter));
+                    datacenterDataService.addDatacenterData($scope.datacenter)
+                        .then(function (data) {
 
                             $scope.message = "Success :-)";
                             $state.reload();
@@ -1302,8 +1434,9 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                         function (reason) {
                             $scope.message = reason.status + " " + reason.statusText;
                         });
+                }
+                $('#myModal').modal('hide');
             }
-            $('#myModal').modal('hide');
         }
 
         $scope.deleteData = function(id) {
@@ -1320,8 +1453,15 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                         "text": "OK", "action": "deleteConfirmation("+id+")"
                     }]
             }};
-            var html = Mustache.to_html(dialog_tpl, error.err_data);
-            $($compile(html)($scope)).modal({backdrop: "static"});
+            angular.forEach($scope.checkboxes.items, function(value) {
+                if(value) {
+                    checkbox = true;
+                }
+            });
+            if (checkbox || (typeof id !== "undefined")) {
+                var html = Mustache.to_html(dialog_tpl, error.err_data);
+                $($compile(html)($scope)).modal({backdrop: "static"});
+            }
         }
 
         $scope.deleteConfirmation = function(id) {
@@ -1376,18 +1516,21 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 
 var modelTemplate = "";
 function loadTemplate() {
-
-    $.get('framework/templateContainer.html', function (template) {
+    
+    $.get('/openoui/resmgr/templates/template.html', function (template) {
         modelTemplate += template;
     });
-    $.get('framework/templateWidget.html', function (template) {
+    $.get('/openoui/resmgr/templates/templateContainer.html', function (template) {
+        modelTemplate += template;
+    });
+    $.get('/openoui/resmgr/templates/templateWidget.html', function (template) {
         //console.log("Template is : "+template);
         modelTemplate += template;
     });
-    $.get('framework/templateNotification.html', function (template) {
+    $.get('/openoui/resmgr/templates/templateNotification.html', function (template) {
         modelTemplate += template;
     });
-    $.get('framework/templateFunctional.html', function (template) {
+    $.get('/openoui/resmgr/templates/templateFunctional.html', function (template) {
         modelTemplate += template;
     });
 }

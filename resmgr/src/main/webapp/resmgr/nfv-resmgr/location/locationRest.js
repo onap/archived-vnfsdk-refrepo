@@ -14,7 +14,7 @@
  */
 
 app.factory("locationDataService", function($http,DataService, $log){
-    var uri = 'http://192.168.9.13:18008';
+    var uri = '';
     uri += "/openoapi/resmgr/v1/locations/";
     return {
         getLocationData : function() {
