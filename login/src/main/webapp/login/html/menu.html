@@ -94,8 +94,8 @@
         </div>
     </div>
 
-    <div id="page-main-wrapper">
-        <div id="page-header">
+    <div id="page-main-wrapper" style="height:100%;">
+        <div id="page-header" >
             <div id="page-header-wrapper" class="clearfix">
                 <div class="top-icon-bar dropdown">
                     <a href="javascript:;" title="" class="user-ico clearfix" data-toggle="dropdown">
@@ -121,8 +121,10 @@
                 </div>
             </div>
         </div>
-        <div id="rightContainer" class="col-sm-8 col-md-9 col-lg-9">
-            <ui-view></ui-view>
-        </div>
+
+       <div id="rightContainer" class="col-sm-8 col-md-9 col-lg-9" style="height:100%; width:100%">
+			  <ui-view></ui-view>
+          
+        </div> 
     </div>
 </div>

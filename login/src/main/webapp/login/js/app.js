@@ -39,7 +39,8 @@ var app = angular.module("POCApp", ["ui.router", "ngTable"])
             })
             .state("menu.resourceManagement", {
                 url: "/resourceManagement",
-                templateUrl : "/openoui/resmgr/index.html",
+               // templateUrl : "/openoui/resmgr/index.html",
+		template : "<iframe src='../../openoui/resmgr/index.html' height=100% width=100%> </iframe>",
                 controller : "resourceManagementCtrl",
                 authenticate: true
             })
