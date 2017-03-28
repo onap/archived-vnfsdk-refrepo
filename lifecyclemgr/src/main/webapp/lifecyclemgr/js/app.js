@@ -37,6 +37,10 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
                 event.preventDefault();
             }
         });
+        $rootScope.$on('$viewContentLoaded', function() {
+            //call it here
+            loadTemplate();
+        });
     })
 
     /*.provider('modalState', function($stateProvider) {
@@ -134,7 +138,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
 
     })
 
-    .controller('homeCtrl', function($scope, $compile, $state, $log, DataService, NgTableParams) {
+    .controller('homeCtrl', function($scope, $compile, $state, $log, $timeout, DataService, NgTableParams) {
         $scope.param="lctableData";
         $scope.init = function() {
             jQuery.i18n.properties({
@@ -147,15 +151,20 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
                 DataService.loadGetServiceData()
                     .then(function (data) {
                         if (data) {
-                            $scope.tableData = data.data.lcData;
-                            var tableData = data.data.lcData;
+                            $scope.tableData = data.data;
+                            var tableData = data.data;
                             loadTableData();
+                            //$timeout(loadTableData, 0);
                         }
                         else {
                             $scope.error = "Error!";
+							loadTableData();
+                            //$timeout(loadTableData, 0);
                         }
                     }, function (reason) {
                         $scope.error = "Error ! " + reason;
+						loadTableData();
+                        //$timeout(loadTableData, 0);
                     });
                 DataService.setTableDataLoaded();
             }
@@ -205,7 +214,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
 
         function loadTabData() {
             console.log("hi tab");
-            var tab_tpl = $(modelTemplate).filter('#tabs').html();
+            var tab_tpl = $(lcmModelTemplate).filter('#tabs').html();
             var html = Mustache.to_html(tab_tpl, $scope.lctabsData.tabData);
             $('#lctabArea').html(html);
         }
@@ -213,8 +222,8 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
         function loadTableData() {
             console.log("In loadData()");
 
-            var def_button_tpl = $(modelTemplate).filter('#defaultButtons').html();
-            var def_iconbutton_tpl = $(modelTemplate).filter('#defaultIconButtons').html();
+            var def_button_tpl = $(lcmModelTemplate).filter('#defaultButtons').html();
+            var def_iconbutton_tpl = $(lcmModelTemplate).filter('#defaultIconButtons').html();
             /*var add_data = {"title":"Add", "clickAction":"showAddModal()"};*/
             var add_data = {"title":"Create", "type":"btn btn-default", "gType": "glyphicon-plus", "iconPosition":"left", "clickAction":"showAddModal()"};
             var delete_data = {"title":"Delete Selected", "clickAction":"deleteData()"};
@@ -250,9 +259,9 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
 
 
 
-            var text = $(modelTemplate).filter('#textfield').html();
-            var number = $(modelTemplate).filter('#numeric').html();
-            var dropDown = $(modelTemplate).filter('#simpleDropdownTmpl').html();
+            var text = $(lcmModelTemplate).filter('#textfield').html();
+            var number = $(lcmModelTemplate).filter('#numeric').html();
+            var dropDown = $(lcmModelTemplate).filter('#simpleDropdownTmpl').html();
 
             var dataText = {"ErrMsg" :     {"errmsg" : "Service name is required.", "modalVar":"lifecycleData.serviceName", "placeholder":"", "errtag":"lcnameErr", "errfunc":"validatename", "required":true}};
     
@@ -590,7 +599,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
     .controller('vpnManagerCtrl', function($scope, $stateParams, $log, DataService) {
         console.log("vpnManagerCtrl --> $stateParams.id:: " + $stateParams.id);
         //$scope.rightPanelHeader = "VPN Manager";
-        /*var vtab_tpl = $(modelTemplate).filter('#vtabs').html();
+        /*var vtab_tpl = $(lcmModelTemplate).filter('#vtabs').html();
         var vTabData = {
             "items": [{
                 "tablabel": "Overlay VPN",
@@ -611,7 +620,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
         $scope.message = "Overlay VPN";
 
         $scope.init = function() {
-            //console.log("Overlay VPN... ng-init + " +  $rootScope.modelTemplate);
+            //console.log("Overlay VPN... ng-init + " +  $rootScope.lcmModelTemplate);
             DataService.getOverlayData()
                 .then(function(data){
                     $scope.overlayData = data.overlayData;
@@ -623,7 +632,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
         }
         function loadButtons() {
             //console.log("Got it : " + $scope.$parent.getTemplate("defaultButtons"));
-            /*var def_button_tpl = $(modelTemplate).filter('#defaultButtons').html();
+            /*var def_button_tpl = $(lcmModelTemplate).filter('#defaultButtons').html();
             console.log("template: " + def_button_tpl);
 
             var delete_data = {"title":"Delete Selected", "clickAction":"deleteData()"};
@@ -657,7 +666,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
         $scope.message = "Underlay VPN";
 
         $scope.init = function() {
-            //console.log("Underlay VPN... ng-init + " +  $rootScope.modelTemplate);
+            //console.log("Underlay VPN... ng-init + " +  $rootScope.lcmModelTemplate);
             DataService.getUnderlayData()
                 .then(function(data){
                     $scope.underlayVPN = data.underlayVPN;
@@ -668,7 +677,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
                 });
         }
         function loadButtons() {
-            /*var def_button_tpl = $(modelTemplate).filter('#defaultButtons').html();
+            /*var def_button_tpl = $(lcmModelTemplate).filter('#defaultButtons').html();
             //console.log("template: " + def_button_tpl);
 
             var delete_data = {"title":"Delete Selected", "clickAction":"deleteData()"};
@@ -713,7 +722,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
         //$scope.currentId = $stateParams.id;
 
         var jsonData = DataService.loadNfvoServiceDetails($stateParams.id);
-        var table_tpl = $(modelTemplate).filter('#table').html();
+        var table_tpl = $(lcmModelTemplate).filter('#table').html();
         var vnfData = fetchDataForVnf(jsonData);
         $('#vnfInfoTable').html(Mustache.to_html(table_tpl, vnfData));
 
@@ -750,21 +759,24 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
     })
 
 
-var modelTemplate = "";
-function loadTemplate() {
 
-    $.get('./templateContainer.html', function (template) {
-        modelTemplate += template;
+var lcmModelTemplate = "";
+function loadTemplate() {
+	//alert("sai");
+    $.get('/openoui/framework/template.html', function (template) {
+        lcmModelTemplate += template;
     });
-    $.get('./templateWidget.html', function (template) {
+    $.get('/openoui/framework/templateContainer.html', function (template) {
+        lcmModelTemplate += template;
+    });
+    $.get('/openoui/framework/templateWidget.html', function (template) {
         //console.log("Template is : "+template);
-        modelTemplate += template;
+        lcmModelTemplate += template;
     });
-    $.get('./templateNotification.html', function (template) {
-        modelTemplate += template;
+    $.get('/openoui/framework/templateNotification.html', function (template) {
+        lcmModelTemplate += template;
     });
-    $.get('./templateFunctional.html', function (template) {
-        modelTemplate += template;
+    $.get('/openoui/framework/templateFunctional.html', function (template) {
+        lcmModelTemplate += template;
     });
 }
-

@@ -38,8 +38,8 @@ app.factory("DataService", function($http, $log){
 
             //load main Table
             return $http({
-                //url: '/openoapi/servicegateway/v1/services',
-                url: 'http://localhost:5000/api/getLCData',
+                url: '/openoapi/servicegateway/v1/services',
+                //url: 'http://localhost:5000/api/getLCData',
                 method: 'GET',
                 headers: {'Content-Type': 'application/json'}
 
@@ -73,7 +73,8 @@ app.factory("DataService", function($http, $log){
         },
         getOverlayData : function() {
             return $http({
-                url: 'http://localhost:5000/api/getOverlayVPNData',
+                url: '/openoapi/sdnooverlayvpn/v1/site2dc-vpn',
+                //url: 'http://localhost:5000/api/getOverlayVPNData',
                 method: 'GET',
                 headers: {'Content-Type': 'application/json'}
             }).then(function(response){
@@ -83,7 +84,8 @@ app.factory("DataService", function($http, $log){
         },
         getUnderlayData : function() {
             return $http({
-                url: 'http://localhost:5000/api/getUnderlayVPNData',
+                url: '/openoapi/sdnol3vpn/v1/l3vpns',
+                //url: 'http://localhost:5000/api/getUnderlayVPNData',
                 method: 'GET',
                 headers: {'Content-Type': 'application/json'}
             }).then(function(response){
