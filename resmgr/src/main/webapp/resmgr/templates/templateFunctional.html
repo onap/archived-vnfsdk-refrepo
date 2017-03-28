@@ -1,0 +1,82 @@
+<!--
+
+    Copyright 2016-2017, Huawei Technologies Co., Ltd.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+
+<script id="functionalDialog" type="text/html">
+    <div id="funModal" class="modal fade" role="dialog" ng-init="getDetail()">
+        <div class="modal-dialog modal-md">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title titlestyle">{{title}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <form class="form-horizontal" role="form">
+                            {{#labels}}
+                            <div class="form-group">
+                                <label class="control-label col-sm-3 labelstyle" for={{input_id}}>{{text}}</label>
+                                <div class="col-sm-7">
+                                    <input type={{type}} class="form-control" id={{input_id}}>
+                                </div>
+                            </div>
+                            {{/labels}}
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div>{{#buttons}} <button type="button" class="btn btnDefault btnmrg" data-dismiss="modal" >{{text}}</button> {{/buttons}}
+                        {{#showClose}}<button type="button" class="btn btnDefault btnmrg" data-dismiss="modal">{{closeBtnTxt}}</button>{{/showClose}}
+                    </div>
+                    <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+                </div>
+            </div>
+
+        </div>
+    </div>
+</script>
+
+
+<script id="dialog" type="text/html">
+    <div id="uniModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <div class="modalHeader"></div>
+                </div>
+                <form name="provinceForm" method="post"><!-- ng-submit="saveData(province.id)"-->
+                    <div class="modal-body">
+                        <div class="modalBodyContent">
+                        </div>
+                    </div>
+
+                    <div id="footerBtns" class="modal-footer">
+                    </div>
+
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+
+</script>
