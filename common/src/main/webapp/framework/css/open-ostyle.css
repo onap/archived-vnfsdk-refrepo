@@ -1007,3 +1007,14 @@ pre code {
 .delete-icon {
     background-image: url("../../thirdparty/images/delete.png");
 }
+
+.staricon{
+    color: red;
+    float: right;
+}
+
+.inputfield{
+    width:95%;
+    display:inline-block;
+
+}
