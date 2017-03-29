@@ -14,117 +14,151 @@
     limitations under the License.
 -->
 
-<div id="page-wrapper" class="main-menu fixed-sidebar fixed-header">
-    <div id="page-sidebar">
-        <div id="header-logo">
-            <img src="/openoui/login/image/openo_logo_white.png" width="75%" style="display:block; margin:0 auto;"/>
-        </div>
-        <div id="sidebar-menu">
-            <ul id="accordion" class="accordion">
-                <li>
-                    <div class="link">
-                        <i class="fa fa-cloud"></i>Service<i class="fa fa-chevron-down"></i>
-                    </div>
-                    <ul class="submenu">
-                        <li><a ui-sref=".serviceManagement" ui-sref-active="submenu_active">Service Management</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <div class="link">
-                        <i class="fa fa-search-minus"></i>Resource<i class="fa fa-chevron-down"></i>
-                    </div>
-                    <ul class="submenu">
-                        <li><a ui-sref=".resourceManagement" ui-sref-active="submenu_active">Resource Management</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <div class="link">
-                        <i class="fa fa-map-marker"></i>Province<i class="fa fa-chevron-down"></i>
-                    </div>
-                    <ul class="submenu">
-                        <li><a ui-sref=".provinceManagement" ui-sref-active="submenu_active">Province Management</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <div class="link">
-                        <i class="fa fa-edit"></i>Orchestrator<i class="fa fa-chevron-down"></i>
-                    </div>
-                    <ul class="submenu">
-                        <li><a ui-sref=".modelDesign" ui-sref-active="submenu_active">Model Design</a></li>
-                        <li><a ui-sref=".package" ui-sref-active="submenu_active">Package</a></li>
-                        <li><a ui-sref=".serviceTemplate" ui-sref-active="submenu_active">Service Template</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <div class="link">
-                        <i class="fa fa-cogs"></i>Manage View<i class="fa fa-chevron-down"></i>
-                    </div>
-                    <ul class="submenu">
-                        <li><a ui-sref=".vimManage" ui-sref-active="submenu_active">VIM Manage</a></li>
-                        <li><a ui-sref=".vnfm" ui-sref-active="submenu_active">VNFM</a></li>
-                        <li><a ui-sref=".sdbController" ui-sref-active="submenu_active">SDN Controller</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <div class="link">
-                        <i class="fa fa-line-chart"></i>Performance<i class="fa fa-chevron-down"></i>
-                    </div>
-                    <ul class="submenu">
-                        <li><a ui-sref=".performanceQuery" ui-sref-active="submenu_active">Performance Query</a></li>
-                        <li><a ui-sref=".alarmQuery" ui-sref-active="submenu_active">Alarm Query</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <div class="link">
-                        <i class="fa fa-eye"></i>Monitor<i class="fa fa-chevron-down"></i>
-                    </div>
-                    <ul class="submenu">
-                        <li><a ui-sref=".parameterSetting" ui-sref-active="submenu_active">Parameter Setting</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <div class="link">
-                        <i class="fa fa-puzzle-piece"></i>Market<i class="fa fa-chevron-down"></i>
-                    </div>
-                    <ul class="submenu">
-                        <li><a ui-sref=".vnfMarket" ui-sref-active="submenu_active">VNF Market Place</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>OPEN-O</title>
+        <link rel="shortcut icon" type="image/x-icon" href="/openoui/login/image/favicon.ico"/>
 
-    <div id="page-main-wrapper" style="height:100%;">
-        <div id="page-header" >
-            <div id="page-header-wrapper" class="clearfix">
-                <div class="top-icon-bar dropdown">
-                    <a href="javascript:;" title="" class="user-ico clearfix" data-toggle="dropdown">
-                        <img width="36" src="/openoui/login/image/user.png" alt="" style="border-radius: 15px;"/>
-                        <span>User Name</span>
-                        <i class="fa fa-chevron-down"></i>
-                    </a>
-                    <ul class="dropdown-menu float-right">
+        <link rel="stylesheet" type="text/css" href="/openoui/thirdparty/css/bootstrap.min.css"/>
+        <link rel="stylesheet" type="text/css" href="/openoui/thirdparty/css/font-awesome.min.css"/>
+        <link rel="stylesheet" type="text/css" href="/openoui/thirdparty/css/zTreeStyle.css"/>
+        <link rel="stylesheet" type="text/css" href="/openoui/thirdparty/css/magic-check.css"/>
+        <link rel="stylesheet" type="text/css" href="/openoui/thirdparty/css/ng-table.min.css"/>
+        <link rel="stylesheet" type="text/css" href="/openoui/thirdparty/css/animate-custom.css"/>
+        <link rel="stylesheet" type="text/css" href="/openoui/framework/css/open-ostyle.css"/>
+
+        <link rel="stylesheet" type="text/css" href="/openoui/login/css/menu_mainStyle.css"/>
+
+        <script type="text/javascript" src="/openoui/thirdparty/js/jquery_1.12.4.min.js"></script>
+        <script type="text/javascript" src="/openoui/thirdparty/js/jquery-ui.js"></script>
+        <script type="text/javascript" src="/openoui/thirdparty/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/openoui/thirdparty/js/jquery.cookie.js"></script>
+
+        <script type="text/javascript" src="/openoui/login/js/menuApp.js"></script>
+    </head>
+    <body onload="init_menu()">
+        <div id="page-wrapper" class="main-menu fixed-sidebar fixed-header">
+            <div id="page-sidebar">
+                <div id="header-logo">
+                    <img src="/openoui/login/image/openo_logo_white.png" width="75%" style="display:block; margin:0 auto;"/>
+                </div>
+                <div id="sidebar-menu">
+                    <ul id="accordion" class="accordion">
                         <li>
-                            <a href="javascript:;" title="">
-                                <span class="font-bold">Logout</span>
-                            </a>
+                            <div class="link">
+                                <i class="fa fa-cloud"></i>Service<i class="fa fa-chevron-down"></i>
+                            </div>
+                            <ul class="submenu">
+                                <li><a href="/openoui/lifecyclemgr/index.html" target="mainFrame" ui-sref-active="submenu_active">Service Management</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <div class="link">
+                                <i class="fa fa-search-minus"></i>Resource<i class="fa fa-chevron-down"></i>
+                            </div>
+                            <ul class="submenu">
+                                <li><a href="/openoui/resmgr/index.html" target="mainFrame" ui-sref-active="submenu_active">Resource Management</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <div class="link">
+                                <i class="fa fa-map-marker"></i>Province<i class="fa fa-chevron-down"></i>
+                            </div>
+                            <ul class="submenu">
+                                <li><a href="/openoui/provincemgr/index.html" target="mainFrame" ui-sref-active="submenu_active">Province Management</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <div class="link">
+                                <i class="fa fa-edit"></i>Orchestrator<i class="fa fa-chevron-down"></i>
+                            </div>
+                            <ul class="submenu">
+                                <li><a href="/winery/servicetemplates.html" target="mainFrame" ui-sref-active="submenu_active">Model Design</a></li>
+                                <li><a href="/openoui/catalog/csarPackage.html" target="mainFrame" ui-sref-active="submenu_active">Package</a></li>
+                                <li><a href="/openoui/catalog/template.html" target="mainFrame" ui-sref-active="submenu_active">Service Template</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <div class="link">
+                                <i class="fa fa-cogs"></i>Manage View<i class="fa fa-chevron-down"></i>
+                            </div>
+                            <ul class="submenu">
+                                <li><a href="/openoui/extsys/vim/vimView.html" target="mainFrame" ui-sref-active="submenu_active">VIM Manage</a></li>
+                                <li><a href="/openoui/extsys/vnfm/vnfmView.html" target="mainFrame" ui-sref-active="submenu_active">VNFM</a></li>
+                                <li><a href="/openoui/login/html/temp/sdbController.html" target="mainFrame" ui-sref-active="submenu_active">SDN Controller</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <div class="link">
+                                <i class="fa fa-line-chart"></i>Performance<i class="fa fa-chevron-down"></i>
+                            </div>
+                            <ul class="submenu">
+                                <li><a href="/openoui/login/html/temp/performanceQuery.html" target="mainFrame" ui-sref-active="submenu_active">Performance Query</a></li>
+                                <li><a href="/openoui/login/html/temp/alarmQuery.html" target="mainFrame" ui-sref-active="submenu_active">Alarm Query</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <div class="link">
+                                <i class="fa fa-eye"></i>Monitor<i class="fa fa-chevron-down"></i>
+                            </div>
+                            <ul class="submenu">
+                                <li><a href="/openoui/login/html/temp/parameterSetting.html" target="mainFrame" ui-sref-active="submenu_active">Parameter Setting</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <div class="link">
+                                <i class="fa fa-puzzle-piece"></i>Market<i class="fa fa-chevron-down"></i>
+                            </div>
+                            <ul class="submenu">
+                                <li><a href="/openoui/vnfmarket/index.html" target="mainFrame" ui-sref-active="submenu_active">VNF Market Place</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <div class="link">
+                                <i class="fa fa-database"></i>Holmes<i class="fa fa-chevron-down"></i>
+                            </div>
+                            <ul class="submenu">
+                                <li><a href="/openoui/holmes/index.html" target="mainFrame" ui-sref-active="submenu_active">Alarm Analysis</a></li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
-                <div class="top-icon-bar">
-                    <a href="javascript:;" class="popover-button" data-placement="bottom" title="Messages Widget" data-id="#msg-box">
-                        <i class="fa fa-envelope-o" style="color: green;"></i>
-                    </a>
-                    <a href="javascript:;" class="popover-button" data-placement="bottom" title="" data-id="#notif-box">
-                        <i class="fa fa-bell-o" style="color: red;"></i>
-                    </a>
+            </div>
+            <div id="page-main-wrapper">
+                <div id="page-header">
+                    <div id="page-header-wrapper" class="clearfix">
+                        <div class="top-icon-bar dropdown">
+                            <a href="javascript:;" title="" class="user-ico clearfix" data-toggle="dropdown">
+                                <img width="36" src="/openoui/login/image/user.png" alt="" style="border-radius: 15px;"/>
+                                <span>User Name</span>
+                                <i class="fa fa-chevron-down"></i>
+                            </a>
+                            <ul class="dropdown-menu float-right">
+                                <li>
+                                    <a href="javascript:;" title="">
+                                        <span class="font-bold">Logout</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="top-icon-bar">
+                            <a href="javascript:;" class="popover-button" data-placement="bottom" title="Messages Widget" data-id="#msg-box">
+                                <i class="fa fa-envelope-o" style="color: green;"></i>
+                            </a>
+                            <a href="javascript:;" class="popover-button" data-placement="bottom" title="" data-id="#notif-box">
+                                <i class="fa fa-bell-o" style="color: red;"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div id="rightContainer" class="col-sm-8 col-md-9 col-lg-9">
+                    <iframe id="mainFrame" name="mainFrame" frameBorder=0 scrolling=no width="100%" onLoad="iFrameHeight()"></iframe>
                 </div>
             </div>
         </div>
-
-       <div id="rightContainer" class="col-sm-8 col-md-9 col-lg-9" style="height:100%; width:100%">
-			  <ui-view></ui-view>
-          
-        </div> 
-    </div>
-</div>
+    </body>
+</html>
