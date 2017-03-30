@@ -34,13 +34,14 @@
         <td title="'Type'" filter="{ type: 'text'}" sortable="'type'">
             {{siteData.type}}
         </td>
-        <td title="'Tenant Name'" filter="{ tenantName: 'text'}" sortable="'tenantName'">
-            {{siteData.tenantName}}
+        <td title="'Tenant Name'" filter="{ tenantID: 'text'}" sortable="'tenantID'">
+            {{siteData.tenantID}}
         </td>
         </td>
-        <td title="'Tenant Type'" filter="{ tenantType: 'text'}" sortable="'tenantType'">
+		<!-- TODO check if tenant type is required in future-->
+       <!-- <td title="'Tenant Type'" filter="{ tenantType: 'text'}" sortable="'tenantType'">
             {{siteData.tenantType}}
-        </td>
+        </td>-->
         <td title="'Location'" filter="{ location: 'text'}" sortable="'location'">
             {{siteData.location}}
         </td>

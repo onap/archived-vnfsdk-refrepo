@@ -362,7 +362,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         $scope.init = function() {
             siteDataService.getAllSiteData()
                 .then(function (data) {
-                    $scope.data = data;
+                    $scope.data = data.sites;
                     console.log("Data: ");
                     $log.info(data);
                     loadButtons();
@@ -390,10 +390,10 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 
 
             $scope.siteTableParams = new NgTableParams({count: 5, sorting: {name: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
-            }, { counts:[5, 10, 20, 50], dataset: $scope.data.siteData});
+            }, { counts:[5, 10, 20, 50], dataset: $scope.data});
 
             $scope.$watch('checkboxes.checked', function(value) {
-                angular.forEach($scope.data.siteData, function(item) {
+                angular.forEach($scope.data, function(item) {
                     console.log(item.id);
                     if (angular.isDefined(item.id)) {
                         $scope.checkboxes.items[item.id] = value;
@@ -422,19 +422,23 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var siteName = {"ErrMsg" :     {"errmsg" : "Name is required.", "modalVar":"site.name", "errtag":"textboxErrName", "errfunc":"validatetextboxName", "required":true}};
             $('#myModal #name').append($compile(Mustache.to_html(text, siteName.ErrMsg))($scope));
 
-            var dropSimple_data = {
+//TODO check for the dropdown if possible based on static Site types
+            /*var dropSimple_data = {
                 "modalVar" : "site.type",
                 "labelField" : "itemLabel",
-                "optionsValue" : $scope.data ? JSON.stringify($scope.data.dropdownsiteData.item): ""
+                "optionsValue" : "$scope.data ? JSON.stringify($scope.data.dropdownsiteData.item)"
             };
 
-            $('#myModal #type').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));
+            $('#myModal #type').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));*/
 
-            var siteTenantName = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"site.tenatname"}};
-            $('#myModal #tenantname').append($compile(Mustache.to_html(text, siteTenantName.ErrMsg))($scope));
+            var siteType = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"site.type"}};
+            $('#myModal #type').append($compile(Mustache.to_html(text, siteType.ErrMsg))($scope));
 
-            var siteTenantType = {"ErrMsg" :     {"errmsg" : "The tenanttype is required.", "modalVar":"site.tenanttype"}};
-            $('#myModal #tenanttype').append($compile(Mustache.to_html(text, siteTenantType.ErrMsg))($scope));
+            var siteTenantName = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"site.tenantID"}};
+            $('#myModal #tenantID').append($compile(Mustache.to_html(text, siteTenantName.ErrMsg))($scope));
+
+            /*var siteTenantType = {"ErrMsg" :     {"errmsg" : "The tenanttype is required.", "modalVar":"site.tenanttype"}};
+            $('#myModal #tenanttype').append($compile(Mustache.to_html(text, siteTenantType.ErrMsg))($scope));*/
 
             var siteLocation = {"ErrMsg" :     {"errmsg" : "Location is required.", "modalVar":"site.location", "placeholder":"Location"}};
             $('#myModal #location').append($compile(Mustache.to_html(text, siteLocation.ErrMsg))($scope));
@@ -464,8 +468,8 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         $scope.showAddModal = function() {
             console.log("Showing Modal to Add data");
             $scope.site = {};
-            //$("#myModal").modal();
-            $("#myModal").modal({}).draggable();
+            $("#myModal").modal();
+            //$("#myModal").modal({}).draggable();
             $scope.textboxErrName = false;
         }
         $scope.saveData = function(id) {
@@ -557,7 +561,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         $scope.editData = function(id) {
             console.log("To be edited : " + id);
             var dataFound = false;
-            angular.forEach($scope.data.siteData, function(data) {
+            angular.forEach($scope.data, function(data) {
                 if(!dataFound) {
                     if (data.id == id) {
                         console.log("Found : " + data.name);
