@@ -29,6 +29,10 @@
     <version>1.1.0-SNAPSHOT</version>
 	<name>client-gui/holmes</name>
 
+    <properties>
+      <sonar.exclusions>src/main/webapp/node_modules/**,src/main/webapp/node/**</sonar.exclusions>
+    </properties>
+
 <build>
 <plugins>
         <plugin>
