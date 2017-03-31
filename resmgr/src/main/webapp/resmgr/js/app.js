@@ -96,7 +96,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         $scope.init = function() {
             portDataService.getAllPortData()
                 .then(function (data) {
-                    $scope.data = data;
+                    $scope.data = data.logicalTerminationPoints;
                     console.log("Data: ");
                     $log.info(data);
                     loadButtons();
@@ -134,54 +134,59 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var portName = {"ErrMsg" :     {"errmsg" : "Name is required.", "modalVar":"port.name", "errtag":"textboxErrName", "errfunc":"validatetextboxName", "required":true}};
             $('#myModal #name').append($compile(Mustache.to_html(text, portName.ErrMsg))($scope));
 
-            var portMe = {"ErrMsg" :     {"errmsg" : "ME is required.", "modalVar":"port.me", "errtag":"textboxErrMe", "errfunc":"validatetextboxMe", "required":true}};
-            $('#myModal #me').append($compile(Mustache.to_html(text, portMe.ErrMsg))($scope));
+            var portMe = {"ErrMsg" :     {"errmsg" : "ME is required.", "modalVar":"port.meID", "errtag":"textboxErrMe", "errfunc":"validatetextboxMe", "required":true}};
+            $('#myModal #meID').append($compile(Mustache.to_html(text, portMe.ErrMsg))($scope));
 
             //var portType = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"port.type"}};
             //$('#myModal #type').append($compile(Mustache.to_html(dropDown, $scope.data.dropdowntypeData))($scope));
 
-            var dropSimple_data = {
+            /*var dropSimple_data = {
                 "modalVar" : "port.type",
                 "labelField" : "itemLabel",
                 "optionsValue" : $scope.data ? JSON.stringify($scope.data.dropdowntypeData.item) : ""
             };
 
-            $('#myModal #type').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));
+            $('#myModal #type').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));*/
 
+            var portType = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.logicalType"}};
+            $('#myModal #logicalType').append($compile(Mustache.to_html(text, portType.ErrMsg))($scope));
 
-            var portLayerRate = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.layerrate"}};
-            $('#myModal #layerrate').append($compile(Mustache.to_html(text, portLayerRate.ErrMsg))($scope));
+            var portLayerRate = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.layerRate"}};
+            $('#myModal #layerRate').append($compile(Mustache.to_html(text, portLayerRate.ErrMsg))($scope));
 
             //var portEdgePoint = {"ErrMsg" :     {"ipv4Err" : "IP Address is required.", "modalVar":"port.Edgepoint"}};
             //$('#myModal #Edgepoint').append($compile(Mustache.to_html(dropDown, $scope.data.dropdownEdgeData))($scope));
 
-            var dropSimple_data = {
+           /* var dropSimple_data = {
                 "modalVar" : "port.Edgepoint",
                 "labelField" : "itemLabel",
                 "optionsValue" : $scope.data ? JSON.stringify($scope.data.dropdownEdgeData.item) : ""
             };
 
-            $('#myModal #Edgepoint').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));
+            $('#myModal #Edgepoint').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));*/
 
-            var portIndex = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.portindex"}};
-            $('#myModal #portindex').append($compile(Mustache.to_html(text, portIndex.ErrMsg))($scope));
+            var portEdgepoint = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.isEdgePoint"}};
+            $('#myModal #isEdgePoint').append($compile(Mustache.to_html(text, portEdgepoint.ErrMsg))($scope));
 
-            var portIp = {"ErrMsg" :     {"errmsg" : "The ip is required.", "modalVar":"port.ipaddress"}};
-            $('#myModal #ipaddress').append($compile(Mustache.to_html(text, portIp.ErrMsg))($scope));
+            var portIndex = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.portIndex"}};
+            $('#myModal #portIndex').append($compile(Mustache.to_html(text, portIndex.ErrMsg))($scope));
+
+            var portIp = {"ErrMsg" :     {"errmsg" : "The ip is required.", "modalVar":"port.ipAddress"}};
+            $('#myModal #ipAddress').append($compile(Mustache.to_html(text, portIp.ErrMsg))($scope));
 
             var portAdmin = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.adminState"}};
             $('#myModal #adminState').append($compile(Mustache.to_html(text, portAdmin.ErrMsg))($scope));
 
-            var portOperatingState = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.operatingState"}};
-            $('#myModal #operatingState').append($compile(Mustache.to_html(text, portOperatingState.ErrMsg))($scope));
+            var portOperatingState = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.operState"}};
+            $('#myModal #operState').append($compile(Mustache.to_html(text, portOperatingState.ErrMsg))($scope));
 
             $scope.checkboxes = { 'checked': false, items: {} };
 
             $scope.portTableParams = new NgTableParams({count: 5, sorting: {name: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
-            }, { counts:[5, 10, 20, 50], dataset: $scope.data.portData});
+            }, { counts:[5, 10, 20, 50], dataset: $scope.data});
 
             $scope.$watch('checkboxes.checked', function(value) {
-                angular.forEach($scope.data.portData, function(item) {
+                angular.forEach($scope.data, function(item) {
                     if (angular.isDefined(item.id)) {
                         $scope.checkboxes.items[item.id] = value;
                     }
@@ -199,7 +204,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         }
 
         $scope.validatetextboxMe = function (value){
-            if($scope.port.me) {
+            if($scope.port.meID) {
                 $scope.textboxErrMe = false;
             }
             else
@@ -342,7 +347,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         $scope.editData = function(id) {
             console.log("To be edited : " + id);
             var dataFound = false;
-            angular.forEach($scope.data.portData, function(data) {
+            angular.forEach($scope.data, function(data) {
                 if(!dataFound) {
                     if (data.id == id) {
                         console.log("Found : " + data.id);
@@ -422,7 +427,6 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var siteName = {"ErrMsg" :     {"errmsg" : "Name is required.", "modalVar":"site.name", "errtag":"textboxErrName", "errfunc":"validatetextboxName", "required":true}};
             $('#myModal #name').append($compile(Mustache.to_html(text, siteName.ErrMsg))($scope));
 
-//TODO check for the dropdown if possible based on static Site types
             /*var dropSimple_data = {
                 "modalVar" : "site.type",
                 "labelField" : "itemLabel",
@@ -517,6 +521,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                         "text": "Ok", "action": "deleteConfirmation("+id+")"
                     }]
             }};
+
             angular.forEach($scope.checkboxes.items, function(value) {
               if(value) {
                   checkbox = true;
@@ -814,7 +819,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         $scope.init = function() {
             linkDataService.getAllLinkData()
                 .then(function (data) {
-                    $scope.data = data;
+                    $scope.data = data.topologicalLinks;
                     console.log("Data: ");
                     $log.info(data);
                     loadButtons();
@@ -854,28 +859,31 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             //var linkType = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"link.type"}};
             //$('#myModal #type').append($compile(Mustache.to_html(dropDown, $scope.data.dropdownlinkData))($scope));
 
-            var dropSimple_data = {
+           /* var dropSimple_data = {
                 "modalVar" : "link.type",
                 "labelField" : "itemLabel",
                 "optionsValue" : $scope.data ? JSON.stringify($scope.data.dropdownlinkData.item) : ""
             };
 
-            $('#myModal #type').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));
+            $('#myModal #type').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));*/
+
+            var linkType = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"link.logicalType"}};
+            $('#myModal #logicalType').append($compile(Mustache.to_html(text, linkType.ErrMsg))($scope));
 
             var linkLayerRate = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"link.layerRate"}};
             $('#myModal #layerRate').append($compile(Mustache.to_html(text, linkLayerRate.ErrMsg))($scope));
 
-            var linkSourcePort = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"link.sourcePort"}};
-            $('#myModal #sourcePort').append($compile(Mustache.to_html(text, linkSourcePort.ErrMsg))($scope));
+            var linkSourcePort = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"link.aEnd"}};
+            $('#myModal #aEnd').append($compile(Mustache.to_html(text, linkSourcePort.ErrMsg))($scope));
 
-            var linkSinkPort = {"ErrMsg" :     {"errmsg" : "IP Address is required.", "modalVar":"link.sinkPort"}};
-            $('#myModal #sinkPort').append($compile(Mustache.to_html(text, linkSinkPort.ErrMsg))($scope));
+            var linkSinkPort = {"ErrMsg" :     {"errmsg" : "IP Address is required.", "modalVar":"link.zEnd"}};
+            $('#myModal #zEnd').append($compile(Mustache.to_html(text, linkSinkPort.ErrMsg))($scope));
 
-            var linkSourceNe = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"link.sourceNE"}};
-            $('#myModal #sourceNE').append($compile(Mustache.to_html(text, linkSourceNe.ErrMsg))($scope));
+            var linkSourceNe = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"link.aEndME"}};
+            $('#myModal #aEndME').append($compile(Mustache.to_html(text, linkSourceNe.ErrMsg))($scope));
 
-            var linkSinkNe = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"link.sinkNE"}};
-            $('#myModal #sinkNE').append($compile(Mustache.to_html(text, linkSinkNe.ErrMsg))($scope));
+            var linkSinkNe = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"link.zEndME"}};
+            $('#myModal #zEndME').append($compile(Mustache.to_html(text, linkSinkNe.ErrMsg))($scope));
 
             var linkAdminState = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"link.adminState"}};
             $('#myModal #adminState').append($compile(Mustache.to_html(text, linkAdminState.ErrMsg))($scope));
@@ -886,10 +894,10 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $scope.checkboxes = { 'checked': false, items: {} };
 
             $scope.linkTableParams = new NgTableParams({count: 5, sorting: {name: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
-            }, { counts:[5, 10, 20, 50], dataset: $scope.data.linkData});
+            }, { counts:[5, 10, 20, 50], dataset: $scope.data});
 
             $scope.$watch('checkboxes.checked', function(value) {
-                angular.forEach($scope.data.linkData, function(item) {
+                angular.forEach($scope.data, function(item) {
                     console.log(item.id);
                     if (angular.isDefined(item.id)) {
                         $scope.checkboxes.items[item.id] = value;
@@ -1031,7 +1039,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         $scope.editData = function(id) {
             console.log("To be edited : " + id);
             var dataFound = false;
-            angular.forEach($scope.data.linkData, function(data) {
+            angular.forEach($scope.data, function(data) {
                 if(!dataFound) {
                     if (data.id == id) {
                         console.log("Found : " + data.id);
@@ -1051,7 +1059,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         $scope.init = function() {
             neDataService.getAllNEData()
                 .then(function (data) {
-                    $scope.data = data;
+                    $scope.data = data.managedElements;
                     console.log("Data: ");
                     $log.info(data);
                     loadButtons();
@@ -1092,21 +1100,23 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var neVersion = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.version","errtag":"textboxErrVersion", "errfunc":"validatetextboxVersion","required":true}};
             $('#myModal #version').append($compile(Mustache.to_html(text, neVersion.ErrMsg))($scope));
 
-            var neProductName = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.productname" }};
-            $('#myModal #productname').append($compile(Mustache.to_html(text, neProductName.ErrMsg))($scope));
+            var neProductName = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.productName" }};
+            $('#myModal #productName').append($compile(Mustache.to_html(text, neProductName.ErrMsg))($scope));
 
             //$('#myModal #controller').append($compile(Mustache.to_html(dropDown, $scope.data.dropdownneData))($scope));
-            var dropSimple_data = {
+            /*var dropSimple_data = {
                 "modalVar" : "ne.controller",
                 "labelField" : "itemLabel",
-                "optionsValue" : $scope.data ? JSON.stringify($scope.data.dropdownneData.item): ""
+                "optionsValue" : "$scope.data ? JSON.stringify($scope.data.dropdownneData.item)"
             };
 
-            $('#myModal #controller').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));
+            $('#myModal #controller').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));*/
 
+            var neController = {"ErrMsg" :     {"errmsg" : "IP Address is required.", "modalVar":"ne.controller"}};
+            $('#myModal #controller').append($compile(Mustache.to_html(text, neController.ErrMsg))($scope));
 
-            var neIPAddress = {"ErrMsg" :     {"errmsg" : "IP Address is required.", "modalVar":"ne.ipaddress"}};
-            $('#myModal #ipaddress').append($compile(Mustache.to_html(text, neIPAddress.ErrMsg))($scope));
+            var neIPAddress = {"ErrMsg" :     {"errmsg" : "IP Address is required.", "modalVar":"ne.ipAddress"}};
+            $('#myModal #ipAddress').append($compile(Mustache.to_html(text, neIPAddress.ErrMsg))($scope));
 
             var neNERole = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.nerole"}};
             $('#myModal #nerole').append($compile(Mustache.to_html(text, neNERole.ErrMsg))($scope));
@@ -1120,10 +1130,10 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $scope.checkboxes = { 'checked': false, items: {} };
 
             $scope.neTableParams = new NgTableParams({count: 5, sorting: {name: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
-            }, { counts:[5, 10, 20, 50], dataset: $scope.data.neData});
+            }, { counts:[5, 10, 20, 50], dataset: $scope.data});
 
             $scope.$watch('checkboxes.checked', function(value) {
-                angular.forEach($scope.data.neData, function(item) {
+                angular.forEach($scope.data, function(item) {
                     if (angular.isDefined(item.id)) {
                         $scope.checkboxes.items[item.id] = value;
                     }
@@ -1259,7 +1269,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         $scope.editData = function(id) {
             console.log("To be edited : " + id);
             var dataFound = false;
-            angular.forEach($scope.data.neData, function(data) {
+            angular.forEach($scope.data, function(data) {
                 if(!dataFound) {
                     if (data.id == id) {
                         console.log("Found : " + data.id);

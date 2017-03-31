@@ -29,24 +29,24 @@
         <td title="'Name'" filter="{ name: 'text'}" sortable="'name'">
             {{linkData.name}}
         </td>
-        <td title="'Type'" filter="{ type: 'text'}" sortable="'type'">
-            {{linkData.type}}
+        <td title="'Type'" filter="{ logicalType: 'text'}" sortable="'logicalType'">
+            {{linkData.logicalType}}
         </td>
         <td title="'Layer Rate'" filter="{ layerRate: 'text'}" sortable="'layerRate'">
             {{linkData.layerRate}}
         </td>
         </td>
-        <td title="'Source Port'" filter="{ sourcePort: 'number'}" sortable="'sourcePort'">
-            {{linkData.sourcePort}}
+        <td title="'Source Port'" filter="{ aEnd: 'number'}" sortable="'aEnd'">
+            {{linkData.aEnd}}
         </td>
-        <td title="'Sink Port'" filter="{ sinkPort: 'number'}" sortable="'sinkPort'">
-            {{linkData.sinkPort}}
+        <td title="'Sink Port'" filter="{ zEnd: 'number'}" sortable="'zEnd'">
+            {{linkData.zEnd}}
         </td>
-        <td title="'Source NE'" filter="{ sourceNE: 'text'}" sortable="'sourceNE'">
-            {{linkData.sourceNE}}
+        <td title="'Source NE'" filter="{ aEndME: 'text'}" sortable="'aEndME'">
+            {{linkData.aEndME}}
         </td>
-        <td title="'Sink NE'" filter="{ sinkNE: 'text'}" sortable="'sourceNE'">
-            {{linkData.sinkNE}}
+        <td title="'Sink NE'" filter="{ zEndME: 'text'}" sortable="'zEndME'">
+            {{linkData.zEndME}}
         </td>
         <td title="'Admin State'" filter="{ adminState: 'text'}" sortable="'adminState'">
             {{linkData.adminState}}
@@ -93,7 +93,7 @@
                     </div>
                     <div class="form-group row">
                         <label class="col-xs-4 col-form-label">Type</label>
-                        <div id="type" class="col-xs-8" >
+                        <div id="logicalType" class="col-xs-8" >
                         </div>
                     </div>
                     <div class="form-group row">
@@ -103,22 +103,22 @@
                     </div>
                     <div class="form-group row">
                         <label class="col-xs-4 col-form-label">Source Port</label>
-                        <div id="sourcePort" class="col-xs-8" >
+                        <div id="aEnd" class="col-xs-8" >
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-xs-4 col-form-label">Sink Port</label>
-                        <div id="sinkPort" class="col-xs-8" >
+                        <div id="zEnd" class="col-xs-8" >
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-xs-4 col-form-label">Source NE</label>
-                        <div id="sourceNE" class="col-xs-8" >
+                        <div id="aEndME" class="col-xs-8" >
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-xs-4 col-form-label">Sink NE</label>
-                        <div id="sinkNE" class="col-xs-8" >
+                        <div id="zEndME" class="col-xs-8" >
                         </div>
                     </div>
 
