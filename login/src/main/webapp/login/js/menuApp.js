@@ -14,6 +14,15 @@
     limitations under the License.
 */
 
+$(document).ready(function() {
+    $("li a").each(function(index) {
+        $(this).click(function() {
+            $("li a").removeClass("submenu_active");
+            $("li a").eq(index).addClass("submenu_active");
+        });
+    });
+});
+
 function init_menu() {
     var windowH = $(window).height();
     var headerH = $('#header-logo').height();
