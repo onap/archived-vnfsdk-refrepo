@@ -78,27 +78,27 @@
             <tbody>
                 <tr *ngFor="let rule of rules">
                     <td><a routerLink="/ruleInfo/{{rule.ruleid}}&add">{{rule.rulename}}</a></td>
-                    <td [hidden]="rule.enabled === 1" style="text-align: center"><span value=1><img src="../../../public/thirdparty/images/round_off.png" alt=""></span></td>
-                    <td [hidden]="rule.enabled === 0" style="text-align: center"><span value=0><img src="../../../public/thirdparty/images/round_on.png" alt=""></span></td>
+                    <td [hidden]="rule.enabled === 1" style="text-align: center"><span value=1><img src="public/thirdparty/images/round_off.png" alt=""></span></td>
+                    <td [hidden]="rule.enabled === 0" style="text-align: center"><span value=0><img src="public/thirdparty/images/round_on.png" alt=""></span></td>
                     <td>{{rule.createtime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                     <td>{{rule.creator}}</td>
                     <td>{{rule.updatetime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                     <td>
                         <span (click)="updateRule(rule); $event.stopPropagation()" style="cursor: pointer;margin: 0 5px">
-                        <img src="../../../public/thirdparty/images/edit.png" alt="">
+                        <img src="public/thirdparty/images/edit.png" alt="">
                     </span>
                         <span>
                         
                     </span>
-                        <span [hidden]="rule.enabled===1" class="" (click)="on_off(rule); $event.stopPropagation()" style="cursor: pointer;margin: 0 5px"> 
-                        <img src="../../../public/thirdparty/images/on.png" alt="">
+                        <span [hidden]="rule.enabled===0" class="" (click)="on_off(rule); $event.stopPropagation()" style="cursor: pointer;margin: 0 5px"> 
+                        <img src="public/thirdparty/images/on.png" alt="">
                     </span>
-                        <span [hidden]="rule.enabled===0" class="" (click)="on_off(rule); $event.stopPropagation()" style="cursor: pointer;margin: 0 5px">
-                        <img src="../../../public/thirdparty/images/off.png" alt="">
+                        <span [hidden]="rule.enabled===1" class="" (click)="on_off(rule); $event.stopPropagation()" style="cursor: pointer;margin: 0 5px">
+                        <img src="public/thirdparty/images/off.png" alt="">
                     </span>
 
                         <span class="" id={{rule.ruleid}} (click)="delete(rule)" style="cursor: pointer;margin: 0 5px">
-                         <img src="../../../public/thirdparty/images/delete.png" alt="">
+                         <img src="public/thirdparty/images/delete.png" alt="">
                     </span>
                     </td>
                 </tr>

@@ -23,8 +23,8 @@ import { Router } from '@angular/router';
 import { ModalService } from '../correlation-modal/modal.service';
 
 @Injectable()
-export class AlarmRuleService {
-    private ruleUrl = "/api/correlation-mgt/v1/rule";
+export class AlarmRuleService {//api/holmes-rule-mgmt/v1  /api/correlation-mgt/v1/rul
+    private ruleUrl = "/api/holmes-rule-mgmt/v1/rule";
     private headers = new Headers({ 'Content-Type': 'application/json' });
     constructor(private http: Http, private modalService: ModalService, private router: Router) { }
 
@@ -73,8 +73,8 @@ export class AlarmRuleService {
             .catch(this.handleError);
     }
 
-    checkContent(ruleContent: string): Promise<any> {
-        const url = "/api/correlation-engine/v1/rule";
+    checkContent(ruleContent: string): Promise<any> {//api/holmes-engine-mgmt/v1  api/correlation-engine/v1
+        const url = "/api/holmes-engine-mgmt/v1/rule";
         let data = { content: ruleContent };
         return this.http
             .post(url, JSON.stringify(data), { headers: this.headers })

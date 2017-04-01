@@ -41,18 +41,16 @@ export class RuleInfo implements OnInit {
 
             this.alarmRuleService.checkContent(this.queryRule.content)
                 .then(res => {
-                    if (res.status == 200) {
+                    if (res._body == 'true') {
                         this.alarmRuleService.updateRule(this.queryRule)
                             .then(res => {
-                                if (res.status == 200) {
+                                let resp: string = res._body;
+                                if (resp.includes("ruleid")) {
                                     let msg = { title: "modalTitleUpdate", message: "message_update_rule_success" };
                                     this.modalService.getmodalObservable.next(msg);
                                     this.router.navigate(['alarmRule']);
-                                } else if (res.status == 499) {
-                                    let msg = { title: "modalTitleUpdate", message: "message_exception_rule_fail" };
-                                    this.modalService.getmodalObservable.next(msg);
                                 } else {
-                                    let msg = { title: "modalTitleUpdate", message: "message_other_exception_rule_fail" };
+                                    let msg = { title: "modalTitleUpdate", message: res._body };
                                     this.modalService.getmodalObservable.next(msg);
                                 }
                             }).catch(
@@ -62,14 +60,9 @@ export class RuleInfo implements OnInit {
                             }
                             );
 
-                    } else if (res.status == 499) {
-                        let msg = { "title": "modalTitleCheck", message: "message_rule_content_repeat_error" };
-                        this.modalService.getmodalObservable.next(msg);
-                        return false;
                     } else {
-                        let msg = { "title": "modalTitleCheck", message: "message_other_exception_rule_fail" };
+                        let msg = { title: "modalTitleUpdate", message: res._body };
                         this.modalService.getmodalObservable.next(msg);
-                        return false;
                     }
                 })
         }
@@ -85,17 +78,15 @@ export class RuleInfo implements OnInit {
             this.modalService.getmodalObservable.next(msg);
         } else {
             this.alarmRuleService.checkContent(this.queryRule.content).then(res => {
-                if (res.status == 200) {
+                if (res._body == 'true') {
                     this.alarmRuleService.save(this.queryRule).then(res => {
-                        if (res.status == 200) {
+                        let resp: string = res._body;
+                        if (resp.includes("ruleid")) {
                             let msg = { title: "modalTitleDefault", message: "message_add_rule_success" };
                             this.modalService.getmodalObservable.next(msg);
                             this.router.navigate(['alarmRule']);
-                        } else if (res.status == 499) {
-                            let msg = { title: "modalTitleDefault", message: "message_rule_name_repeat_error" };
-                            this.modalService.getmodalObservable.next(msg);
                         } else {
-                            let msg = { "title": "modalTitleCheck", message: "message_other_exception_rule_fail" };
+                            let msg = { "title": "modalTitleCheck", message: res._body };
                             this.modalService.getmodalObservable.next(msg);
                         }
 
@@ -103,15 +94,9 @@ export class RuleInfo implements OnInit {
                         let msg = { title: "modalTitleDefault", message: "message_rule_name_repeat_error" };
                         this.modalService.getmodalObservable.next(msg);
                     });
-                    return true;
-                } else if (res.status == 499) {
-                    let msg = { "title": "modalTitleCheck", message: "message_rule_content_repeat_error" };
-                    this.modalService.getmodalObservable.next(msg);
-                    return false;
                 } else {
-                    let msg = { "title": "modalTitleCheck", message: "message_other_exception_rule_fail" };
+                    let msg = { "title": "modalTitleCheck", message: res._body };
                     this.modalService.getmodalObservable.next(msg);
-                    return false;
                 }
             })
         }
@@ -132,15 +117,11 @@ export class RuleInfo implements OnInit {
         } else {
             this.alarmRuleService.checkContent(this.queryRule.content)
                 .then(res => {
-                    if (res.status == 200) {
+                    if (res._body == 'true') {
                         let msg = { "title": "modalTitleCheck", message: "message_checkContent_rule_success" };
                         this.modalService.getmodalObservable.next(msg);
-                    } else if (res.status == 499) {
-                        let msg = { "title": "modalTitleCheck", message: "message_rule_content_repeat_error" };
-                        this.modalService.getmodalObservable.next(msg);
-                        return false;
                     } else {
-                        let msg = { "title": "modalTitleCheck", message: "message_other_exception_rule_fail" };
+                        let msg = { "title": "modalTitleCheck", message: res._body };
                         this.modalService.getmodalObservable.next(msg);
                         return false;
                     }

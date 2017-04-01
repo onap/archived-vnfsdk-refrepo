@@ -104,11 +104,28 @@ export class AlarmRule implements OnInit {
     }
 
     on_off(rule: RuleModel) {
-        rule.enabled == 0 ? rule.enabled = 1 : rule.enabled = 0;
+
+        let ru: RuleModel = rule;
+        if (ru.enabled == 0) {
+            ru.enabled = 1;
+        } else {
+            ru.enabled = 0;
+        }
         this._alarmRuleService
-            .updateRule(rule)
+            .updateRule(ru)
             .then(res => {
-                rule = res;
+                let resp: string = res._body;
+                if (resp.includes("ruleid")) {
+                    if (rule.enabled == 0) {
+                        rule.enabled = 1;
+                    } else {
+                        rule.enabled = 0;
+                    }
+                } else {
+                    let msg = { title: "modalTitleUpdate", message: resp };
+                    this.modalService.getmodalObservable.next(msg);
+                }
+
             });
     }
 

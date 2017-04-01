@@ -33,7 +33,7 @@ export class AppComponent implements OnInit{
     }
 
     ngOnInit():void {
-        this.translate.addLangs(["en", "zh"]);
+        this.translate.addLangs(["en-US", "zh-CN"]);
         this.translate.setDefaultLang('zh');
         let language = this.getLanguage();
         this.translate.use(language);
