@@ -262,10 +262,13 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         }
         $scope.saveData = function(id) {
             if (!$scope.textboxErrName && $scope.textboxErrMe) {
+				var ports ={};
+				ports.port=$scope.port;
                 if(id) {
+					
                     //edit data
                     console.log("Editing data.." + JSON.stringify($scope.port));
-                    portDataService.editPortData($scope.port)
+                    portDataService.editPortData(ports)
                         .then(function (data) {
                             $scope.message = "Success :-)";
                             $state.reload();
@@ -276,7 +279,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                 }
                 else {
                     console.log("Adding data.." + JSON.stringify($scope.port));
-                    portDataService.addPortData($scope.port)
+                    portDataService.addPortData(ports)
                         .then(function (data) {
                             $scope.message = "Success :-)";
                             $state.reload();
@@ -721,10 +724,15 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         }
         $scope.saveData = function(id) {
             if (!$scope.textboxErrLocation && !$scope.textboxErrCountry && !$scope.textboxErrLatitude && !$scope.textboxErrLongitude) {
+				
+				var locs = {}
+					locs.loc = $scope.loc
                 if(id) {
+					
+					
                     //edit data
                     console.log("Editing data.." + JSON.stringify($scope.loc));
-                    locationDataService.editLocationData($scope.loc)
+                    locationDataService.editLocationData(locs)
                         .then(function (data) {
                             $scope.message = "Success :-)";
                             $state.reload();
@@ -735,7 +743,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                 }
                 else {
                     console.log("Adding data.." + JSON.stringify($scope.loc));
-                    locationDataService.addLocationData($scope.loc)
+                    locationDataService.addLocationData(locs)
                         .then(function (data) {
 
                             $scope.message = "Success :-)";
@@ -961,10 +969,16 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         }
         $scope.saveData = function(id) {
             if (!$scope.textboxErr) {
+				
+			var links ={}
+			links.link= $scope.link;
+				
                 if(id) {
+					
+
                     //edit data
                     console.log("Editing data.." + JSON.stringify($scope.link));
-                    linkDataService.editLinkData($scope.link)
+                    linkDataService.editLinkData(links)
                         .then(function (data) {
                             $scope.message = "Success :-)";
                             $state.reload();
@@ -974,8 +988,8 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                         });
                 }
                 else {
-                    console.log("Adding data.." + JSON.stringify($scope.link));
-                    linkDataService.addLinkData($scope.link)
+                    console.log("Adding data.." + JSON.stringify(links));
+                    linkDataService.addLinkData(links)
                         .then(function (data) {
 
                             $scope.message = "Success :-)";
@@ -1192,10 +1206,13 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         }
         $scope.saveData = function(id) {
             if (!$scope.textboxErrName && !$scope.textboxErrVersion) {
+				
+				var nes = {};
+				nes.ne = $scope.ne;
                 if(id) {
                     //edit data
-                    console.log("Editing data.." + JSON.stringify($scope.ne));
-                    neDataService.editNEData($scope.ne)
+                    console.log("Editing data.." + JSON.stringify(nes));
+                    neDataService.editNEData(nes)
                         .then(function (data) {
                             $scope.message = "Success :-)";
                             $state.reload();
@@ -1206,7 +1223,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                 }
                 else {
                     console.log("Adding data.." + JSON.stringify($scope.ne));
-                    neDataService.addNEData($scope.ne)
+                    neDataService.addNEData(nes)
                         .then(function (data) {
 
                             $scope.message = "Success :-)";
@@ -1433,10 +1450,13 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         }
         $scope.saveData = function(id) {
             if (!$scope.textboxErr && !$scope.numericErr) {
+				
+				var dcs = {}
+				dcs.dc =	$scope.datacenter;
                 if(id) {
                     //edit data
-                    console.log("Editing data.." + JSON.stringify($scope.datacenter));
-                    datacenterDataService.editDatacenterData($scope.datacenter)
+                    console.log("Editing data.." + JSON.stringify(dcs));
+                    datacenterDataService.editDatacenterData(dcs)
                         .then(function (data) {
                             $scope.message = "Success :-)";
                             $state.reload();
@@ -1447,7 +1467,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                 }
                 else {
                     console.log("Adding data.." + JSON.stringify($scope.datacenter));
-                    datacenterDataService.addDatacenterData($scope.datacenter)
+                    datacenterDataService.addDatacenterData(dcs)
                         .then(function (data) {
 
                             $scope.message = "Success :-)";
