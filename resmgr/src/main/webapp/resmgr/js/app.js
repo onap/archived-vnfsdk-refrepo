@@ -478,10 +478,17 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         }
         $scope.saveData = function(id) {
             if (!$scope.textboxErrName) {
+				
+
+					var sites ={};
+						sites.site=$scope.site;
+						sites.site.type="tenant_site";
+					
+				console.log("save data.." + JSON.stringify(sites.site));
                 if(id) {
                     //edit data
-                    console.log("Editing data.." + JSON.stringify($scope.site));
-                    siteDataService.editSiteData($scope.site)
+                    console.log("Editing data.." + JSON.stringify(sites));
+                    siteDataService.editSiteData(sites)
                         .then(function (data) {
                             $scope.message = "Success :-)";
                             $state.reload();
@@ -492,8 +499,9 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                         });
                 }
                 else {
-                    console.log("Adding data.." + JSON.stringify($scope.site));
-                    siteDataService.addSiteData($scope.site)
+                    console.log("Adding data.." + JSON.stringify(sites.site));
+
+                    siteDataService.addSiteData(sites)
                         .then(function (data) {
                             $scope.message = "Success :-)";
                             $state.reload();

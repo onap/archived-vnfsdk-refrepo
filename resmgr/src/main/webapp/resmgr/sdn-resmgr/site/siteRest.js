@@ -82,6 +82,7 @@ app.factory("siteDataService", function($http, DataService, $log){
                 console.log(response.data);
                 return response.data;
             });*/
+            console.log("In siteRest");
             return DataService.post(uri+'/openoapi/sdnobrs/v1/sites', siteData)
                 .then(function(response){
                     console.log("Successfully added.. Data returned in DataService is");
