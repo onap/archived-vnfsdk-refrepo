@@ -286,19 +286,19 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
                 .then(function (tmplatesResponse) {
                     console.log("Data Template :: ");
                     $log.info(tmplatesResponse);
-                   // var templatesInfo = translateToTemplatesInfo(tmplatesResponse);
-                  //  document.getElementById("svcTempl").innerHTML = templatesInfo;
-                    $scope.optionsValue = tmplatesResponse;
+                    var templatesInfo = translateToTemplatesInfo(tmplatesResponse);
+                    document.getElementById("svcTempl").innerHTML = templatesInfo;
+                   /* $scope.optionsValue = tmplatesResponse;
                     var dropSimple_data = {
                         "errmsg" : "Service template is required.",
                         "modalVar" : "lifecycleData.optSelect",
                         "labelField" : "templateName",
-                        "optionsValue" : JSON.stringify(tmplatesResponse),
+                        "optionsValue" : JSON.stringify(templatesInfo),
                         "errtag":"lcdropdownErr",
                         "errfunc":"validatedropdown",
                         "required":true
-                    }
-		    $('#myModal #plainDropDown').html($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));
+                    }*/
+		    //$('#myModal #plainDropDown').html($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));
                 }, function (reason) {
                     $scope.error = "Error ! " + reason;
                 });
