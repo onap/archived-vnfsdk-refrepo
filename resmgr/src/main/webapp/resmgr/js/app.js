@@ -263,7 +263,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         $scope.saveData = function(id) {
             if (!$scope.textboxErrName && $scope.textboxErrMe) {
 				var ports ={};
-				ports.port=$scope.port;
+				ports.logicalTerminationPoint=$scope.port;
                 if(id) {
 					
                     //edit data
@@ -726,7 +726,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             if (!$scope.textboxErrLocation && !$scope.textboxErrCountry && !$scope.textboxErrLatitude && !$scope.textboxErrLongitude) {
 				
 				var locs = {}
-					locs.loc = $scope.loc
+					locs.location = $scope.loc
                 if(id) {
 					
 					
@@ -971,7 +971,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             if (!$scope.textboxErr) {
 				
 			var links ={}
-			links.link= $scope.link;
+			links.topologicalLink= $scope.link;
 				
                 if(id) {
 					
@@ -1208,7 +1208,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             if (!$scope.textboxErrName && !$scope.textboxErrVersion) {
 				
 				var nes = {};
-				nes.ne = $scope.ne;
+				nes.managedElement = $scope.ne;
                 if(id) {
                     //edit data
                     console.log("Editing data.." + JSON.stringify(nes));
