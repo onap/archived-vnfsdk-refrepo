@@ -373,7 +373,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
                     $scope.lctemplateErr = true;
             }
             $scope.validatedropdown = function (value){
-                if($scope.lifecycleData.optSelect) {
+                if($scope.lifecycleData.optSelect || $("#svcTempl").val()) {
                     $scope.lcdropdownErr = false;
                 }
                 else
@@ -382,7 +382,9 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
 
         $scope.templateParam = function() {
             
-            var template = $scope.lifecycleData.optSelect;
+          //  var template = $scope.lifecycleData.optSelect;
+		    var template ={};
+			template.serviceTemplateId = $("#svcTempl").val();
             var lastSelTempCreateParam = DataService.getCreateParamJsonObj();
             if(template == undefined){
                 document.getElementById("templateParameters").innerHTML = "";
