@@ -288,8 +288,8 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
                     $log.info(tmplatesResponse);
                     var templatesInfo = translateToTemplatesInfo(tmplatesResponse);
                     document.getElementById("svcTempl").innerHTML = templatesInfo;
-                   /* $scope.optionsValue = tmplatesResponse;
-                    var dropSimple_data = {
+                    $scope.optionsValue = tmplatesResponse;
+                   /* var dropSimple_data = {
                         "errmsg" : "Service template is required.",
                         "modalVar" : "lifecycleData.optSelect",
                         "labelField" : "templateName",
@@ -448,7 +448,8 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             var serviceBaseInfo = {
                  'name' :  $scope.lifecycleData.serviceName,
                  'description' : $scope.lifecycleData.description,
-                 'templateId' :  $scope.lifecycleData.optSelect.serviceTemplateId
+                 //'templateId' :  $scope.lifecycleData.optSelect.serviceTemplateId
+				 'templateId' :  $("#svcTempl").val()
             };
             //send message
             $.when(DataService.createService(serviceBaseInfo))

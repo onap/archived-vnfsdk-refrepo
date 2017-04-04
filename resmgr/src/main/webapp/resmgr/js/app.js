@@ -261,7 +261,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $scope.numericErr = false;
         }
         $scope.saveData = function(id) {
-            if (!$scope.textboxErrName && $scope.textboxErrMe) {
+            if (!$scope.textboxErrName && !$scope.textboxErrMe) {
 				var ports ={};
 				ports.logicalTerminationPoint=$scope.port;
                 if(id) {
