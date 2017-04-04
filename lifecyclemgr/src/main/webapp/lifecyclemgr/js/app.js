@@ -288,7 +288,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
                     $log.info(tmplatesResponse);
                     var templatesInfo = translateToTemplatesInfo(tmplatesResponse);
                     document.getElementById("svcTempl").innerHTML = templatesInfo;
-                    $scope.optionsValue = tmplatesResponse;
+                  //  $scope.optionsValue = tmplatesResponse;
                    /* var dropSimple_data = {
                         "errmsg" : "Service template is required.",
                         "modalVar" : "lifecycleData.optSelect",
