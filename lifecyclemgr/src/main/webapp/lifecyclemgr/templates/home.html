@@ -43,8 +43,8 @@
             <td title="'Action'">
                 <!--<img src="../images/delete.png" ng-click="editData(lcData.id)" style="cursor: pointer"></img>-->
                 <!--<span class="pull-right glyphicon glyphicon-edit" ng-click="editData(lcData.serviceId)" style="cursor: pointer;margin: 0 5px"></span>-->
-                <span class="pull-right glyphicon glyphicon-trash" ng-click="deleteIndividualData(lcData.serviceId)" style="cursor: pointer;margin: 0 5px"></span>
-                <span class="pull-right glyphicon glyphicon-circle-arrow-right" ng-click="scaleData(lcData.serviceId)" style="cursor: pointer;margin: 0 5px"></span>
+                <span  ng-click="scaleData(lcData.serviceId)" style="cursor: pointer;margin: 0 5px"><img src="/openoui/framework/browser/thirdparty/images/edit.png" height="15" align="left"/></span>
+				<span  ng-click="deleteIndividualData(lcData.serviceId)" style="cursor: pointer;margin: 0 5px"><img src="/openoui/framework/browser/thirdparty/images/delete.png" height="15" align="middle"/></span>
             </td>
         </tr>
     </table>

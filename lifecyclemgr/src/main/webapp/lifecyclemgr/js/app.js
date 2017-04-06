@@ -238,7 +238,8 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             }, { counts:[5, 10, 15], dataset: $scope.tableData});
 
             $scope.$watch('checkboxes.checked', function(value) {
-                angular.forEach($scope.tableData, function(item) {
+				$scope.checkboxes.items = [];
+                angular.forEach($scope.tableParams.data, function(item) {
                     if (angular.isDefined(item.id)) {
                         $scope.checkboxes.items[item.id] = value;
                     }
@@ -648,7 +649,8 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             $scope.checkboxes = { 'checked': false, items: {} };
 
             $scope.$watch('checkboxes.checked', function(value) {
-                angular.forEach($scope.overlayData, function(item) {
+				$scope.checkboxes.items = [];
+                angular.forEach($scope.tableParams.data, function(item) {
                     if (angular.isDefined(item.id)) {
                         $scope.checkboxes.items[item.id] = value;
                     }
@@ -693,7 +695,8 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             $scope.checkboxes = { 'checked': false, items: {} };
 
             $scope.$watch('checkboxes.checked', function(value) {
-                angular.forEach($scope.underlayVPN.underlayData, function(item) {
+					  $scope.checkboxes.items = [];
+                angular.forEach($scope.tableParams.data, function(item) {
                     if (angular.isDefined(item.id)) {
                         $scope.checkboxes.items[item.id] = value;
                     }

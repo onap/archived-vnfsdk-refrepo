@@ -17,7 +17,7 @@
 -->
 <div class="homecontent center">
 <div class="col-md-12 col-sm-12 col-lg-12">
-    <h4>{{message}}</h4>
+    <h4>{{title}}</h4>
     <br><br>
     <div id="provinceAction" ng-init="init()">
 
@@ -43,8 +43,8 @@
                 {{provinceData.desc}}
             </td>
             <td title="'Action'">
-                <span  ng-click="editData(provinceData.id)" style="cursor: pointer;margin: 0 5px"> <img src="framework/images/edit.png" height="15" align="left"/></span>
-                <span  ng-click="deleteData(provinceData.id)" style="cursor: pointer;margin: 0 5px"><img src="framework/images/delete.png" height="15" align="middle"/></span>
+                <span  ng-click="editData(provinceData.id)" style="cursor: pointer;margin: 0 5px"> <img src="/openoui/framework/browser/thirdparty/images/edit.png" height="15" align="left"/></span>
+                <span  ng-click="deleteData(provinceData.id)" style="cursor: pointer;margin: 0 5px"><img src="/openoui/framework/browser/thirdparty/images/delete.png" height="15" align="middle"/></span>
             </td>
         </tr>
     </table>

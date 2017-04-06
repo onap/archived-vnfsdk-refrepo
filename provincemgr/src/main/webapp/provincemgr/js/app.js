@@ -6,7 +6,7 @@
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
 
-      http://www.apache.org/licenses/LICENSE-2.0
+ http://www.apache.org/licenses/LICENSE-2.0
 
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,7 +33,7 @@ var app = angular.module("ProvinceManagementApp", ["ui.router", "ngTable"])
 
 
     .controller("managementCtrl", function($scope, $log, provinceDataService, $state, $compile, NgTableParams){
-        $scope.message = "Management";
+        $scope.title = "Management";
 
         $scope.init = function() {
             provinceDataService.getAllProvinceData()
@@ -43,6 +43,7 @@ var app = angular.module("ProvinceManagementApp", ["ui.router", "ngTable"])
                     loadButtons();
                     $log.info(data.provinceData);
                 }, function(reason){
+					loadButtons();
                     $scope.message = "Error is :" + JSON.stringify(reason);
                 });
 
@@ -284,20 +285,20 @@ var app = angular.module("ProvinceManagementApp", ["ui.router", "ngTable"])
 
 var modelTemplate = "";
 function loadTemplate() {
-    $.get('framework/template.html', function (template) {
+    $.get('/openoui/resmgr/templates/template.html', function (template) {
         modelTemplate += template;
     });
-    $.get('framework/templateContainer.html', function (template) {
+    $.get('/openoui/resmgr/templates/templateContainer.html', function (template) {
         modelTemplate += template;
     });
-    $.get('framework/templateWidget.html', function (template) {
+    $.get('/openoui/resmgr/templates/templateWidget.html', function (template) {
         //console.log("Template is : "+template);
         modelTemplate += template;
     });
-    $.get('framework/templateNotification.html', function (template) {
+    $.get('/openoui/resmgr/templates/templateNotification.html', function (template) {
         modelTemplate += template;
     });
-    $.get('framework/templateFunctional.html', function (template) {
+    $.get('/openoui/resmgr/templates/templateFunctional.html', function (template) {
         modelTemplate += template;
     });
 }

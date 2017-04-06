@@ -147,6 +147,10 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             };
 
             $('#myModal #type').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));*/
+			
+			var dropdownResponse=[{"serviceTemplateId":"tenant_site","templateName":"portType1"},{"serviceTemplateId":"tenant_site2","templateName":"portType2"}];
+			var dropdownInfo = translateToDropdownInfo(dropdownResponse);
+            document.getElementById("portdropdown").innerHTML = dropdownInfo;
 
             var portType = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.logicalType"}};
             $('#myModal #logicalType').append($compile(Mustache.to_html(text, portType.ErrMsg))($scope));
@@ -164,6 +168,11 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             };
 
             $('#myModal #Edgepoint').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));*/
+			
+			var dropdownResponse=[{"serviceTemplateId":"tenant_site","templateName":"Edgepoint1"},{"serviceTemplateId":"tenant_site2","templateName":"Edgepoint2"}];
+			var dropdownInfo = translateToDropdownInfo(dropdownResponse);
+            document.getElementById("portEdropdown").innerHTML = dropdownInfo;
+			
 
             var portEdgepoint = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.isEdgePoint"}};
             $('#myModal #isEdgePoint').append($compile(Mustache.to_html(text, portEdgepoint.ErrMsg))($scope));
@@ -186,7 +195,8 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             }, { counts:[5, 10, 20, 50], dataset: $scope.data});
 
             $scope.$watch('checkboxes.checked', function(value) {
-                angular.forEach($scope.data, function(item) {
+				 $scope.checkboxes.items = [];
+                angular.forEach($scope.portTableParams.data, function(item) {
                     if (angular.isDefined(item.id)) {
                         $scope.checkboxes.items[item.id] = value;
                     }
@@ -194,6 +204,18 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             });
 
         }
+		
+		function translateToDropdownInfo(dropdowndata) {
+            var options = '<option value="select">--select--</option>';
+            var i;
+            for (i = 0; i < dropdowndata.length; i += 1) {
+                var option = '<option value="' + dropdowndata[i].serviceTemplateId + '">' + dropdowndata[i].templateName
+                    + '</option>';
+                options = options + option;
+            }
+
+            return options;
+        } 
 
         $scope.validatetextboxName = function (value){
             if($scope.port.name) {
@@ -303,7 +325,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                 "msg": "Do you really wanted to Delete?.",
                 "buttons": [
                     {
-                        "text": "OK", "action": "deleteConfirmation("+id+")"
+                        "text": "OK", "action": "deleteConfirmation('"+[id]+"')"
                     }]
             }};
             angular.forEach($scope.checkboxes.items, function(value) {
@@ -321,7 +343,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             console.log("data in port data is ::");
             $log.info($scope.data.portData);
             var deleteArr = [];
-            if (typeof id !== "undefined"){
+            if (id){
 
                 deleteArr.push(id);
             }
@@ -355,6 +377,8 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                     if (data.id == id) {
                         console.log("Found : " + data.id);
                         $scope.port = data;
+						$('#portdropdown').val(data.logicalType);
+						$('#portEdropdown').val(data.isEdgePoint);
                         $("#myModal").modal();
                         dataFound = true;
                     }
@@ -401,7 +425,8 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             }, { counts:[5, 10, 20, 50], dataset: $scope.data});
 
             $scope.$watch('checkboxes.checked', function(value) {
-                angular.forEach($scope.data, function(item) {
+				 $scope.checkboxes.items = [];
+                angular.forEach($scope.siteTableParams.data, function(item) {
                     console.log(item.id);
                     if (angular.isDefined(item.id)) {
                         $scope.checkboxes.items[item.id] = value;
@@ -437,6 +462,10 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             };
 
             $('#myModal #type').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));*/
+			
+			var dropdownResponse=[{"serviceTemplateId":"tenant_site","templateName":"tenant_site"},{"serviceTemplateId":"tenant_site2","templateName":"tenant_site2"}];
+			var dropdownInfo = translateToDropdownInfo(dropdownResponse);
+            document.getElementById("sitedropdown").innerHTML = dropdownInfo;
 
             var siteType = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"site.type"}};
             $('#myModal #type').append($compile(Mustache.to_html(text, siteType.ErrMsg))($scope));
@@ -451,6 +480,19 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $('#myModal #location').append($compile(Mustache.to_html(text, siteLocation.ErrMsg))($scope));
         }
 
+		
+		 function translateToDropdownInfo(dropdowndata) {
+            var options = '<option value="select">--select--</option>';
+            var i;
+            for (i = 0; i < dropdowndata.length; i += 1) {
+                var option = '<option value="' + dropdowndata[i].serviceTemplateId + '">' + dropdowndata[i].templateName
+                    + '</option>';
+                options = options + option;
+            }
+
+            return options;
+        } 
+		
         $scope.validatetextboxName = function (value){
             if($scope.site.name) {
                 $scope.textboxErrName = false;
@@ -529,7 +571,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                 "msg": "Do you really wanted to Delete?.",
                 "buttons": [
                     {
-                        "text": "Ok", "action": "deleteConfirmation("+id+")"
+                        "text": "Ok", "action": "deleteConfirmation('"+[id]+"')"
                     }]
             }};
 
@@ -548,7 +590,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             console.log("data in site data is :");
             $log.info($scope.data.siteData);
             var deleteArr = [];
-            if (typeof id !== "undefined"){
+            if (id){
 
                 deleteArr.push(id);
             }
@@ -583,6 +625,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                         console.log("Found : " + data.name);
                         console.log("Found : " + data);
                         $scope.site = data;
+						$('#sitedropdown').val(data.type);
                         $("#myModal").modal();
                         dataFound = true;
                     }
@@ -658,7 +701,8 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             }, { counts:[5, 10, 20, 50], dataset: $scope.data.locationData});
 
             $scope.$watch('checkboxes.checked', function(value) {
-                angular.forEach($scope.data.locationData, function(item) {
+				 $scope.checkboxes.items = [];
+                angular.forEach($scope.neTableParams.data, function(item) {
                     if (angular.isDefined(item.Id)) {
                         $scope.checkboxes.items[item.Id] = value;
                     }
@@ -768,7 +812,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                 "msg": "Do you really wanted to Delete?.",
                 "buttons": [
                     {
-                        "text": "OK", "action": "deleteConfirmation("+id+")"
+                        "text": "OK", "action": "deleteConfirmation('"+[id]+"')"
                     }]
             }};
             angular.forEach($scope.checkboxes.items, function(value) {
@@ -786,7 +830,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             console.log("data in location data is :");
             $log.info($scope.data.locationData);
             var deleteArr = [];
-            if (typeof id !== "undefined"){
+            if (id){
 
                 deleteArr.push(id);
             }
@@ -882,6 +926,10 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             };
 
             $('#myModal #type').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));*/
+			
+			var dropdownResponse=[{"serviceTemplateId":"tenant_site","templateName":"TP1"},{"serviceTemplateId":"tenant_site2","templateName":"TP2"}];
+			var dropdownInfo = translateToDropdownInfo(dropdownResponse);
+            document.getElementById("linkdropdown").innerHTML = dropdownInfo;
 
             var linkType = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"link.logicalType"}};
             $('#myModal #logicalType').append($compile(Mustache.to_html(text, linkType.ErrMsg))($scope));
@@ -913,7 +961,8 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             }, { counts:[5, 10, 20, 50], dataset: $scope.data});
 
             $scope.$watch('checkboxes.checked', function(value) {
-                angular.forEach($scope.data, function(item) {
+				 $scope.checkboxes.items = [];
+                angular.forEach($scope.linkTableParams.data, function(item) {
                     console.log(item.id);
                     if (angular.isDefined(item.id)) {
                         $scope.checkboxes.items[item.id] = value;
@@ -922,6 +971,18 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             });
 
         }
+		
+		function translateToDropdownInfo(dropdowndata) {
+            var options = '<option value="select">--select--</option>';
+            var i;
+            for (i = 0; i < dropdowndata.length; i += 1) {
+                var option = '<option value="' + dropdowndata[i].serviceTemplateId + '">' + dropdowndata[i].templateName
+                    + '</option>';
+                options = options + option;
+            }
+
+            return options;
+        } 
 
         $scope.validatetextbox = function (value){
             if($scope.link.name) {
@@ -1014,7 +1075,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                 "msg": "Do you really wanted to Delete?.",
                 "buttons": [
                     {
-                        "text": "OK", "action": "deleteConfirmation("+id+")"
+                        "text": "OK", "action": "deleteConfirmation('"+[id]+"')"
                     }]
             }};
             angular.forEach($scope.checkboxes.items, function(value) {
@@ -1032,7 +1093,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             console.log("data in link data is :");
             $log.info($scope.data.linkData);
             var deleteArr = [];
-            if (typeof id !== "undefined"){
+            if (id){
 
                 deleteArr.push(id);
             }
@@ -1066,6 +1127,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                     if (data.id == id) {
                         console.log("Found : " + data.id);
                         $scope.link = data;
+						$('#linkdropdown').val(data.logicalType);
                         $("#myModal").modal();
                         dataFound = true;
                     }
@@ -1133,6 +1195,10 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             };
 
             $('#myModal #controller').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));*/
+			
+			var dropdownResponse=[{"serviceTemplateId":"meCtrl","templateName":"mecontroller1"},{"serviceTemplateId":"meCtrl2","templateName":"mecontroller"}];
+			var dropdownInfo = translateToDropdownInfo(dropdownResponse);
+            document.getElementById("medropdown").innerHTML = dropdownInfo;
 
             var neController = {"ErrMsg" :     {"errmsg" : "IP Address is required.", "modalVar":"ne.controller"}};
             $('#myModal #controller').append($compile(Mustache.to_html(text, neController.ErrMsg))($scope));
@@ -1155,7 +1221,8 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             }, { counts:[5, 10, 20, 50], dataset: $scope.data});
 
             $scope.$watch('checkboxes.checked', function(value) {
-                angular.forEach($scope.data, function(item) {
+				 $scope.checkboxes.items = [];
+                angular.forEach($scope.neTableParams.data, function(item) {
                     if (angular.isDefined(item.id)) {
                         $scope.checkboxes.items[item.id] = value;
                     }
@@ -1163,6 +1230,18 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             });
 
         }
+		
+		function translateToDropdownInfo(dropdowndata) {
+            var options = '<option value="select">--select--</option>';
+            var i;
+            for (i = 0; i < dropdowndata.length; i += 1) {
+                var option = '<option value="' + dropdowndata[i].serviceTemplateId + '">' + dropdowndata[i].templateName
+                    + '</option>';
+                options = options + option;
+            }
+
+            return options;
+        } 
 
 
         $scope.validatetextboxName = function (value){
@@ -1248,7 +1327,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                 "msg": "Do you really wanted to Delete?.",
                 "buttons": [
                     {
-                        "text": "OK", "action": "deleteConfirmation("+id+")"
+                        "text": "OK", "action": "deleteConfirmation('"+[id]+"')"
                     }]
             }};
             angular.forEach($scope.checkboxes.items, function(value) {
@@ -1266,7 +1345,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             console.log("data in ne data is :");
             $log.info($scope.data.neData);
             var deleteArr = [];
-            if (typeof id !== "undefined") {
+            if (id) {
 
                 deleteArr.push(id);
             }
@@ -1299,6 +1378,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                     if (data.id == id) {
                         console.log("Found : " + data.id);
                         $scope.ne = data;
+						$('#medropdown').val(data.controller);
                         $("#myModal").modal();
                         dataFound = true;
                     }
@@ -1402,7 +1482,10 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             }, { counts:[5, 10, 20, 50], dataset: $scope.data.datacenterData});
 
             $scope.$watch('checkboxes.checked', function(value) {
-                angular.forEach($scope.data.datacenterData, function(item) {
+				  $scope.checkboxes.items = [];
+
+                angular.forEach($scope.neTableParams.data, function(item) {
+					
                     if (angular.isDefined(item.Id)) {
                         $scope.checkboxes.items[item.Id] = value;
                     }
@@ -1492,7 +1575,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                 "msg": "Do you really wanted to Delete?.",
                 "buttons": [
                     {
-                        "text": "OK", "action": "deleteConfirmation("+id+")"
+                        "text": "OK", "action": "deleteConfirmation('"+[id]+"')"
                     }]
             }};
             angular.forEach($scope.checkboxes.items, function(value) {
@@ -1510,7 +1593,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             console.log("data in datacenter data is :");
             $log.info($scope.data.datacenter);
             var deleteArr = [];
-            if (typeof id !== "undefined"){
+            if (id){
 
                 deleteArr.push(id);
             }
