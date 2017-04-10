@@ -1,0 +1,51 @@
+<md-dialog aria-label="Upload Service dialog" flex="80" id="uploadDialog" ng-cloak>
+    <md-toolbar class="md-hue-3 dialogHeader">
+        <div class="md-toolbar-tools">
+            <h2>{{'common.tabs.lifeCycle.title' | translate}}</h2>
+            <span flex></span>
+            <button class="btnTransparency" ng-click="vm.cancel()">
+                    <i class="fa fa-close fa-sm" aria-hidden="true"></i>
+            </button>
+        </div>
+    </md-toolbar>
+	
+<md-card flex="100" class="nomargin md-padding">
+        <md-table-container>
+            <table md-table>
+                <thead md-head md-order="vm.filter.name" md-on-reorder="vm.getTests">
+                    <tr md-row>
+                        <th md-column class="fontSize"  md-order-by="step">
+                        	<md-tooltip md-direction="top">{{'common.tabs.lifeCycle.stepTHead' | translate}}</md-tooltip>
+                            {{'common.tabs.lifeCycle.stepTHead' | translate}}
+                        </th>
+                        <th md-column class="fontSize"   md-order-by="parameter">
+                        	<md-tooltip md-direction="top">{{'common.tabs.lifeCycle.ParamTHead' | translate}}</md-tooltip>
+                            {{'common.tabs.lifeCycle.ParamTHead' | translate}}
+                        </th>
+                        <th md-column class="fontSize"    md-order-by="result">
+                        	<md-tooltip md-direction="top">{{'common.tabs.lifeCycle.ResultTHead' | translate}}</md-tooltip>
+                            {{'common.tabs.lifeCycle.ResultTHead' | translate}}
+                        </th>
+                        
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row md-select="dessert" md-select-id="name" md-auto-select ng-repeat="test in vm.lifeCycleTests | orderBy: vm.filter.name |
+                     limitTo: vm.paginationQuery.limit: (vm.paginationQuery.page - 1) * vm.paginationQuery.limit track by $index">
+                        <td md-cell>
+	                        <md-tooltip md-direction="top">{{test.step}}</md-tooltip>{{test.step}}
+                        </td>
+                        <td md-cell>
+	                        <md-tooltip md-direction="top">{{test.parameter}}</md-tooltip>{{test.parameter}}
+                        </td>
+                        <td md-cell>
+	                        <md-tooltip md-direction="top">{{test.result}}</md-tooltip>{{test.result}}
+                        </td>
+                        
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+        <md-table-pagination class="pagination-class" md-limit="vm.paginationQuery.limit" md-limit-options="vm.pagination" md-page="vm.paginationQuery.page" md-total="{{vm.lifeCycleTests.length}}" md-page-select="vm.paginationOptions.pageSelect" md-boundary-links="vm.paginationOptions.boundaryLink" md-label="{ page : 'Page', RowPerPage:'row per page', of:'of'}"></md-table-pagination>
+</md-card>
+</md-dialog>

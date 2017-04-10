@@ -9,16 +9,41 @@
 			"download" :"Download",
 			"yes" : "Yes",
 			"no" : "No",
-			"update" :"Update",
+			"update" :"Re Upload",
 			"clickHere" : "Click Here",
 			"getApp" : "get_app",
 			"fileUpload" : "file_upload",
-			"ok" : "Ok"
+			"ok" : "Ok",
+            "return" : "Return",
+            "detail" : "See Details",
+            "backToList" : "Back to List",
+            "add" : "Add file"
 		},
 		"message" : {
 			"statusTitle" : "Status : ",
-			"statusText" : "Status text : "
-		}
+			"statusText" : "Status text : ",
+			"viewDetails" : "Click here to view details"
+		},
+        "tabs" : {
+            "validation" :{
+                "title" : "Validation",
+                "stepTHead" : "Step",
+                "ParamTHead" : "Parameter",
+                "ResultTHead" : "Result"
+            },
+            "lifeCycle" : {
+                "title" : "Lifecycle Test",
+                "stepTHead" : "Step",
+                "ParamTHead" : "Parameter",
+                "ResultTHead" : "Result"
+            },
+            "functionTest": {
+                "title" : "Functional Test",
+                "testTHead" : "Test case",
+                "descTHead" : "Description",
+                "resultTHead" : "Test Result"
+            }
+        }
 	},
 	"module" : {
 		"marketplace" : {
@@ -29,9 +54,11 @@
 			},
 			"serviceUpload" : {
 				"title" : "Upload Service",
+                "updateTitle" : "Re Upload",
 				"fields" : {
 					"fileUpload" : {
-						 "label" : "Select File"
+						"label" : "Select File",
+                        "noFileSelected" : "No file selected"
 					},
 					"shortDescription" : {
 						 "placeholder" : "Short Description"
@@ -49,7 +76,13 @@
 				"messages" : {
 					"onUploading" : "Please wait, Upload is in progress",
 					"onSuccessful" : "Service upload successful"
-				}
+				},
+                "onBoarding" : {
+                    "onBoardProcessTitle" : "Onboarding Process"
+                },
+                "onBoardingSuccess" : {
+                  "successTitle" : "Onboarding is successful"
+                }
 
 			},
 			"serviceDetails" : {
@@ -61,9 +94,20 @@
 					"serviceType" : "Service Type",
 					"csarId" : "CSAR Id",
 					"fileSize" : "File Size",
-					"funcTestReport"  :"Function Test Report"
+					"funcTestReport"  :"Function Test Report",
+                    "reportTitle" : "Onboarding Report",
+                    "typeLbl" : "Type",
+                    "createLbl" : "Created At",
+                    "modLbl" : "Last Modfied at"
 
-				}
+				},
+                "tabs" : {
+                    "validationTabTitle" : "Validation",
+                    "lifecycleTabTitle" : "Lifecycle Test",
+                    "functionalTabTitle" : "Function Test"
+                }
+
+
 			},
 			"sideNav" : {
 				"title" :  "VNF  Marketplace",
@@ -75,7 +119,8 @@
 				"pointOne" : "Upload and download of VNF products and offerings",
 				"pointTwo" : "Show the interface about other component in VNF-SDK",
 				"sortBy" : {
-					"title" : "Sort By",
+					"title" : "Please select",
+					"label" : "Sort by ",
 					"options" : {
 						"name" : {
 							"key" :"Name",
@@ -97,16 +142,16 @@
 					"close" : "Close"
 				},
 				"upload" : {
-					"label" : "Upload Service"
+					"label" : "Upload"
 				},
 				"gridView" : {
 					"label" :  "Grid View",
 					"serviceType" : {
-						"label" : "Service Type",
+						"label" : "Type",
 						"value": "description"
 					},
 					"downloads" : {
-						"label" : "Number of Downloads",
+						"label" : "Downloads",
 						"value":"get_app",
 						"tooltip" : "Download history",
 						"buttonLabel" :"Downloads"
@@ -117,6 +162,9 @@
 					},
 					"moreDetails" : {
 						"label" : "More details"
+					},
+					"title" : {
+						"label" : "Title"
 					}
 				},
 				"listView" : {

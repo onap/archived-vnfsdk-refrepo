@@ -28,7 +28,7 @@
         .module('vnfmarket')
         .controller('serviceUploadCtrl', ServiceUpload);
 
-    ServiceUpload.$inject = ['serviceUploadService', '$scope', 'vnfConfig', '$mdDialog', '$mdToast', '$rootScope', '$interval'];
+    ServiceUpload.$inject = ['serviceUploadService', '$scope', 'vnfConfig', '$mdDialog', '$mdToast', '$rootScope', '$interval', 'baseUrlConfig', '$state', 'isUpload', 'csarId'];
 
     /*
      * recommend
@@ -36,8 +36,10 @@
      * and bindable members up top.
      */
 
-    function ServiceUpload(serviceUploadService, $scope, vnfConfig, $mdDialog, $mdToast, $rootScope, $interval) {
+    function ServiceUpload(serviceUploadService, $scope, vnfConfig, $mdDialog, $mdToast, $rootScope, $interval, baseUrlConfig,$state, isUpload, csarId) {
         var vm = this;
+		vm.isUpload = isUpload;
+		vm.csarId = csarId
         vm.apiInfo = 0;
         vm.status = "Idle";
         vm.promise = null;
@@ -75,13 +77,20 @@
                     vm.apiInfo = parseInt($rootScope.progressBar, 10);
                 }
             }, 500);
-
-            serviceUploadService.postServiceUpload(fd, headers)
-                .then(function(response) {
-                    vm.status = "success";
-                    vm.apiInfo = 100;
-                    vm.funcTestReportUrl = vnfConfig.common.baseUrl + response.data.functestReport;
-                });
+			
+			if(vm.isUpload){
+				serviceUploadService.postServiceUpload(fd, headers)
+					.then(function(response) {
+						vm.hide("Uploading")
+						$state.go('home.onboarding', {"csarId": response.data.csarId});
+					});
+			} else {
+				serviceUploadService.repostServiceUpload(fd, headers, vm.csarId)
+					.then(function(response) {
+						vm.hide("Uploading")
+						$state.go('home.onboarding', {"csarId": response.data.csarId});
+					});
+			}
         };
 
         $scope.$on("$destroy", function() {

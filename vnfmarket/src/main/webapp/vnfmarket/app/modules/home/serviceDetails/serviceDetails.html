@@ -15,87 +15,72 @@
 -->
 
 <md-card>
-    <main class="mdl-layout__content service-details-page">
-        <div class="mdl-grid">
-            <!-- Start Top Description -->
-            <div class="mdl-card mdl-cell mdl-cell--12-col page-header-container">
-                <div class="mdl-card__title">
-                    <h1 class="mdl-card__title-text">
-                        {{'module.marketplace.serviceDetails.title' | translate}} {{vm.service.name}}
-                    </h1>
-                    <div class="mdl-layout-spacer"></div>
-                    <!-- <a href="testFile.txt" download="testFile" class="show-install mdl-button mdl-js-button mdl-button--primary"><i class="material-icons">get_app</i>Download</a> -->
-                    <button class="show-deploy mdl-button mdl-js-button mdl-button--primary" data-toggle="modal" data-target="#upload-service" data-uplsubmitbtn="update" ng-click="vm.downloadService(vm.service.csarId)">
-              <md-tooltip md-direction="top">{{'common.actions.download' | translate}} </md-tooltip>
-              <i class="material-icons">{{'common.actions.getApp' | translate}}</i>{{'common.actions.download' | translate}}</button>
-                    <button class="show-deploy mdl-button mdl-js-button mdl-button--primary" data-toggle="modal" data-target="#upload-service" data-uplsubmitbtn="update">
-              <md-tooltip md-direction="top">{{'common.actions.update' | translate}}</md-tooltip>
-              <i class="material-icons">{{'common.actions.fileUpload' | translate}}</i>{{'common.actions.update' | translate}}</button>
-                    <button id="delete-service-button" class="show-deploy mdl-button mdl-js-button mdl-button--primary" data-toggle="modal" data-target="#delete-service-modal" ng-click="vm.serviceDelete(vm.service)">
-              <md-tooltip md-direction="top">{{'common.actions.delete' | translate}}</md-tooltip>
-              <i class="fa fa-times serviceDelete"></i>{{'common.actions.delete' | translate}}</button>
-                </div>
-                <div class="mdl-card__supporting-text service-details-page-header-text">
-                    <div class="row service-actions">
-                        <div class="col-md-6">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">{{'module.marketplace.serviceDetails.info.details' | translate}}</div>
-                                <div class="panel-body ng-binding">{{vm.service.details}}</div>
-                            </div>
-                            <div class="panel panel-default">
-                                <div class="panel-heading">{{'module.marketplace.serviceDetails.info.remarks' | translate}}</div>
-                                <div class="panel-body ng-binding">{{vm.service.remarks}}</div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading ng-binding">{{'module.marketplace.serviceDetails.info.provider' | translate}}</div>
-                                        <div class="panel-body">{{vm.service.provider}}</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading ng-binding">{{'module.marketplace.serviceDetails.info.serviceType' | translate}}</div>
-                                        <div class="panel-body">{{vm.service.type}}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading ng-binding">{{'module.marketplace.serviceDetails.info.csarId' | translate}}</div>
-                                        <div class="panel-body">{{vm.service.csarId}}</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading ng-binding">{{'module.marketplace.serviceDetails.info.fileSize' | translate}}</div>
-                                        <div class="panel-body">{{vm.service.size}}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row service-actions">
-                        <div class="col-md-6">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">{{'module.marketplace.serviceDetails.info.funcTestReport' | translate}}</div>
-                                <div class="panel-body ng-binding">
-                                    <a href="{{vm.service.funcTestReportUrl}}" target="_blank">{{'common.actions.clickHere' | translate}}</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <main class="mdl-layout__content service-details-page borderBottom">
+        <div class=" md-padding layout-row">
+            <div class="flex-50">
+                <div class="md-title fontSize md-padding gridServiceTitle">{{vm.service.name}}</div>
+                  <div class="md-padding">{{vm.service.details}}</div>
             </div>
-        </div>
-        <!-- End top Description -->
-        <div class="mdl-layout__tab-panel is-active" id="overview">
 
+                <div class="flex-50">
+                    <div class=" md-padding layout-row" id="rightFlex">
+                        <div class="flex-70" id="childLeftFlex">
+                            <span class="md-subhead gridBottomFonts ng-binding">{{'module.marketplace.serviceDetails.info.typeLbl' | translate}} :</span><br>
+                            <span class="md-subhead gridBottomFonts ng-binding">{{'module.marketplace.serviceDetails.info.createLbl' | translate}} :</span><br>
+                            <span class="md-subhead gridBottomFonts ng-binding">{{'module.marketplace.serviceDetails.info.modLbl' | translate}} :</span><br>
+                        </div>
+                        <div class="flex-30" id="childRightFlex">
+                            <span class="md-padding">{{vm.service.type}}</span><br>
+                            <span class="md-padding">{{vm.service.createTime | date:'yyyy-MM-dd h:mm a'}}</span><br>
+                            <span class="md-padding">{{vm.service.modifyTime | date:'yyyy-MM-dd h:mm a'}}</span><br>
+                        </div>
+                    </div>
+                </div>
         </div>
+
+        <div class="md-toolbar-tools  flex-md-50 flex-sm-100" id="buttonsbar">
+            <button class="btn btnPrimary downloadButton" ng-click="vm.downloadService(vm.service.csarId)">
+                <md-tooltip md-direction="top">{{'common.actions.download' | translate}} </md-tooltip>
+                <i>
+                    <img src="vnfmarket/common/images/download.png" class="btnIconSpacing">
+                </i>
+                {{'common.actions.download' | translate}}
+            </button>
+            <span class="flex"></span>
+            <button class="btn btnDefault iconMargin" ng-click="vm.reupload(false,vm.service.csarId)">
+                <md-tooltip md-direction="top">{{'common.actions.update' | translate}}</md-tooltip>
+                <i>
+                    <img src="vnfmarket/common/images/reupload.png" class="btnIconSpacing">
+                </i>
+                {{'common.actions.update' | translate}}
+            </button>
+            <button class="btn btnDefault" ng-click="vm.serviceDelete(vm.service)">
+                <md-tooltip md-direction="top">{{'common.actions.delete' | translate}}</md-tooltip>
+                <i>
+                    <img src="vnfmarket/common/images/delete.png" class="btnIconSpacing">
+                </i>
+                {{'common.actions.delete' | translate}}
+            </button>
+            <span flex></span>
+        </div>
+
+
+
 
     </main>
-    <!-- main ends -->
+    <md-content class="md-padding backgroundWhite">
+      <div class="md-padding">
+        <div class="md-title fontSize paddingBottom">{{'module.marketplace.serviceDetails.info.reportTitle' | translate}}</div>
+        <nav class="navbar nomargin" id="detailsTabs">
+            <div class="container-fluid nopadding">
+                <ul class="nav navbar-nav">
+                    <li ui-sref-active="active " class="fontSize  md-title" ng-class="vm.active == 'validation'? 'active' : ''"><a ng-click="vm.navigateValidation()">{{'module.marketplace.serviceDetails.tabs.validationTabTitle' | translate}}</a></li>
+                    <li ui-sref-active="active "  class=" fontSize  md-title" ng-class="vm.active == 'lifeCycle'? 'active' : ''"><a  ng-click="vm.navigateLifecycle()">{{'module.marketplace.serviceDetails.tabs.lifecycleTabTitle' | translate}}</a></li>
+                    <li ui-sref-active="active "  class=" fontSize  md-title" ng-class="vm.active == 'functionalTest'? 'active' : ''"><a ng-click="vm.navigationFunctionalTest()">{{'module.marketplace.serviceDetails.tabs.functionalTabTitle' | translate}}</a></li>
+                </ul>
+            </div>
+        </nav>
+        <ui-view></ui-view>
+      </div>
+    </md-content>
 </md-card>

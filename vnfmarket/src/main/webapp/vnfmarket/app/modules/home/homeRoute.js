@@ -47,5 +47,44 @@ angular.module('vnfmarket')
                 },
                 controller: 'serviceDetailsCtrl',
                 controllerAs: 'vm'
+            })
+            .state('home.serviceDetails.validation', {
+                url: '/validation',
+                templateUrl: homePath + '/serviceDetails/validation/view.html',
+                controller: 'validationCtrl',
+                controllerAs: 'vm'
+            })
+            .state('home.serviceDetails.functionTest', {
+                url: '/functionTest',
+                templateUrl: homePath + '/serviceDetails/functionalTest/view.html',
+                controller: 'functionalTestCtrl',
+                controllerAs: 'vm',
+                params: {
+                    csarId: undefined
+                }
+            })
+            .state('home.serviceDetails.lifeCycle', {
+                url: '/lifeCycle',
+                templateUrl: homePath + '/serviceDetails/lifeCycle/view.html',
+                controller: 'lifeCycleCtrl',
+                controllerAs: 'vm'
+            })
+            .state('home.onboarding', {
+                url: '/onboarding',
+                templateUrl: homePath + '/serviceUpload/onboarding/onboarding.html',
+                params: {
+                    csarId: undefined
+                },
+                controller: 'onBoardingCtrl',
+                controllerAs: 'vm'
+            })
+            .state('home.onboardingSuccess', {
+                url: '/onboardingSuccess',
+                templateUrl: homePath + '/serviceUpload/onboarding/onboardingSuccess.html',
+                params: {
+                    csarId: undefined
+                },
+                controller: 'onBoardingSuccessCtrl',
+                controllerAs: 'vm'
             });
     }]);

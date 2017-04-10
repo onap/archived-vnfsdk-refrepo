@@ -1,0 +1,21 @@
+<div id="onBoardingSuccessContent">
+    <button id="returnBtn" type="button" class="btnDefault" ng-click="vm.return()">
+        <span class="fa fa-chevron-left"></span>
+        <span>{{'common.actions.return' | translate}}</span>
+    </button>
+
+    <div class="content">
+        <div class="imageContainer">
+            <img src="vnfmarketi/common/images/success.png" class="btnIconSpacing">
+        </div>
+        <h3>{{'module.marketplace.serviceUpload.onBoardingSuccess.successTitle' | translate}}</h3>
+        <div>
+            <button type="button" class="btnDefault" ng-click="vm.showDetailPage()">
+                {{'common.actions.detail' | translate}}
+            </button>
+        </div>
+        <div>
+            <a class="backLink" ng-click="vm.return()">{{'common.actions.backToList' | translate}}</a>
+        </div>
+    </div>
+</div>

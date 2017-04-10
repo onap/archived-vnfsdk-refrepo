@@ -15,12 +15,23 @@
  */
 #searchField {
     position: relative;
-    top: 11px;
+    top: 13px;
     border-bottom-color:whitesmoke;
+    background-color:#858CA8;
+    height:33px;
+}
+.contentBackground{
+    background: white;
+}
+#homeToolbar form{
+    height: 33px;
+    /*background-color: lightgray;*/
+    margin: 0px;
 }
 
 #searchFieldContainer{
     padding-right:0;
+        top: -31px;
 }
 
 .noMargin{
@@ -31,6 +42,27 @@
 	margin-right:8px;
 }
 
+@media (min-width : 600px) {
+    #gridView .layout-xs-column{
+        margin-bottom: 10px !important;
+    }
+}
+
+
+@media (max-width : 600px) {
+    #gridView .layout-xs-column .iconMargin:not(.deletebutton){
+        margin-right:0px;
+        margin-bottom: 6px;
+    }
+
+    #gridView .layout-xs-column .downloadIcon{
+        margin-top: 6px;
+        margin-bottom: 6px;
+    }
+}
+
+
+
 .iconAlignment{
     position: relative;
     bottom: 4px;
@@ -39,11 +71,11 @@
 
 .gridViewMargin{
 	margin: 0 1.6% 1% 1.6%;
-    padding-top: 0px;
+    padding: 0px 16px 0px 16px;
 }
 
 
-.mdl-color-text--white {
+/*.mdl-color-text--white {
     color: rgb(255,255,255) !important;
 }
 .mdl-color--teal {
@@ -67,13 +99,13 @@
     text-align: center;
     font-size: 18px;
     line-height: 32px;
-}
+}*/
 
 .service-detail-tags .material-icons {
     font-size: 16px !important;
 }
 
-
+/*
 .mdl-chip {
   height: 24px;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
@@ -127,7 +159,7 @@
   .mdl-chip--deletable {
     padding-right: 4px; }
   .mdl-chip--contact {
-    padding-left: 0; }
+    padding-left: 0; }*/
 
     .no-padding {
     padding: 0 !important;
@@ -311,6 +343,10 @@ th.fontSize{
 
 #sideNav{
     background-color : #f5f5f5 !important;
+    
+}
+#sideNav.md-locked-open{
+	z-index: 0;
 }
 
 .btnDefault {
@@ -325,7 +361,7 @@ th.fontSize{
     box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
     background: linear-gradient(to bottom, #fff, #fafafa);
-    padding: 0 19px;
+    padding: 0 10px;
 }
 
 .btnDefault:hover {
@@ -359,7 +395,7 @@ th.fontSize{
     text-align: center;
     box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-    padding: 0 19px;
+    padding: 0 10px;
     color: #fff;
     background: #d43f3a;
 }
@@ -371,7 +407,7 @@ th.fontSize{
     text-align: center;
     box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-    padding: 0 19px;
+    padding: 0 10px;
 }
 .btn-danger:hover{
     border: 1px solid #d43f3a;
@@ -419,11 +455,12 @@ th.fontSize{
 }
 
 .serviceDelete{
-    font-size: 24px;
+    font-size: 22px;
     padding-right: 4px;
     position: relative;
     top: 3px;
     color: red;
+    right: 3px;
 }
 
 #description{
@@ -432,7 +469,6 @@ th.fontSize{
 .icon_error {
     color: red;
 }
-
 table tbody tr:nth-child(even)>td {
     background-color:#fafafa;
 }
@@ -444,7 +480,7 @@ table tbody tr:hover td {
     background-color: #e6fbe0 !important;
 }
 #serviceUpload{
-    box-shadow: 1px 2px 4px -1px;
+    box-shadow: 1px 2px 4px -1px #858CA8;
 }
 
 table tr {
@@ -454,9 +490,516 @@ table tr {
 table thead{
     text-align: left;
     font-size: 14px;
-    background-color: gainsboro;
+    background-color: #E1E4E5;
 }
 
 table tr {
     border-color: grey;
+}
+
+
+#uploadDialog .msg{
+    position: relative;
+    top: 9px;
+}
+
+.nopadding{
+    padding:0 !important;
+}
+.nomargin{
+    margin:0 !important;
+}
+
+#serviceName{
+    position: relative;
+    left: 14px;
+    background-color: #efefef;
+    color:rgb(148,148,148);
+    text-align:center;
+    width:100px;
+    border-radius: 3px;
+}
+
+.gridTitleHeight{
+    height:46px !important;
+    min-height:46px !important;
+}
+
+.gridToolbarHeight{
+    min-height: 54px;
+    height: 54px;
+}
+.gridBottomeHeight{
+    height:46px !important;
+    min-height:46px !important;
+}
+.gridUnderline{
+    border-bottom: 1px solid black;
+    border-bottom-style: dashed;
+}
+.gridBottomFonts{
+    color: rgb(148,148,148);
+    font-size: 12px;
+}
+.marginAuto{
+    margin:auto;
+}
+.selectLblAlignment{
+    padding-right: 10px;
+}
+.viewIconPosition{
+    position: relative;
+    top: -2px;
+}
+
+#searchIcon{
+    background-color: #858CA8;
+    height: 31px;
+    position: relative;
+    top: 1.5px;
+}
+#cancelSearch{
+    background-color: #858CA8;
+    height: 31px;
+    position: relative;
+    top: 1.5px;
+}
+.searchIconColor{
+    color:rgb(234,234,234);
+}
+
+.tabContentBorder{
+    border:1px solid #e7e7e7;
+}
+
+.nav.navbar-nav  .active a{
+    color: #3399FF !important;
+    height: calc(41px - 1px);
+}
+.nav.navbar-nav  a{
+    padding:16px 16px 4px 16px !important;
+    color: rgba(0, 0, 0, 0.87) !important;
+}
+
+.nav.navbar-nav  a:hover{
+    background:transparent;
+}
+
+.nav.navbar-nav  li:not(.active){
+    border-right: 1px solid dimgray !important;
+    cursor:pointer;
+}
+
+.nav.navbar-nav li {
+    background-color:#eee;
+    border: 2px solid lightgray;
+
+}
+.nav.navbar-nav li.active {
+    background-color:white;
+    /*box-shadow: -1px 5px 10px -1px lightslategrey;*/
+    border-top:3px solid #3399FF;
+}
+
+.borderBottom{
+    border-bottom:1px solid black;
+}
+
+.backgroundWhite{
+    background-color: transparent;
+}
+
+.paddingBottom{
+    padding-bottom: 16px;
+}
+.onboardProgress {
+    margin-bottom: 90px;
+}
+.processLabel {
+    margin-top: 40px;
+}
+
+#onBoardingContent, #onBoardingSuccessContent {
+    background-color: #fff;
+    padding: 30px;
+}
+
+.onboarddiv {
+    margin: auto;
+    text-align: center;
+    top: -59px;
+    position: relative;
+}
+
+.progressDiv {
+    width: 100%;
+    height: 4px;
+    /*border: 2px solid #3DCCA6;*/
+    background-color: #E2E2E2;
+    position: relative;
+    top: 18px;
+    margin: auto;
+}
+.roundProg {
+    border-radius: 15px;
+    width: 30px;
+    height: 30px;
+    background-color: #E2E2E2;
+    z-index: 1;
+    text-align: center;
+    margin: auto;
+    line-height: 28px;
+    position: relative;
+}
+
+.progressed {
+    background-color: #3DCCA6;
+    color: #fff;
+}
+
+.bg-grey {
+    background-color: #F6F7F7;
+}
+
+.onboardBtn {
+    width: 120px !important;
+    height: 120px !important;
+    background-color: #E0EDFA;
+    background-repeat: no-repeat;
+    background-size: initial;
+    margin: auto;
+    border: 1px solid transparent;
+    border-radius: 66px;
+}
+
+.onboardBtn.btnImage1 {
+    background-image: url("../images/Validtion.png");
+    background-position: 20px 19px;
+}
+.onboardBtn.btnImage2 {
+    background-image: url("../images/Lifecycle-Test.png");
+    background-position: 23px 20px;
+}
+.onboardBtn.btnImage3 {
+    background-image: url("../images/Function-Test.png");
+    background-position: 25px 13px;
+}
+
+.btnOuter {
+    margin: auto;
+    border-radius: 70px;
+    /*border: 1px solid transparent;*/
+    background-color: #F6F7F7;
+    background-size: initial;
+    width: 140px;
+    height: 140px;
+    padding: 10px;
+}
+
+.listItems {
+    position: relative;
+    top: -60px;
+}
+
+.onbdContent span.statusIcon {
+    font-size: 22px;
+    color: #3DCCA6;
+    margin-right: 8px;
+    display: inline-block;
+    width: 21px;
+    height: 21px;
+    margin-bottom: -6px;
+}
+.onbdContent .md-padding div {
+    margin: 14px;
+}
+
+.clock-icon {
+    background-image: url("../images/03.png");
+}
+.progress-icon {
+    background-image: url("../images/02.png");
+}
+.success-icon {
+    background-image: url("../images/01.png");
+}
+.failed-icon {
+    /*background-image: url("../images/01.png");*/
+
+    /*TODO Remove code after getting proper image*/
+
+    color: red !important;
+    padding-left: 6px;
+}
+.iconColor{
+    color:#3399FF;
+}
+
+.downiconColor{
+    color:white;
+}
+
+.delButton{
+    margin-left:10px;
+}
+
+.downloadButton{
+    background:#3399FF;
+
+
+}
+
+.reloadButton{
+    padding:0 10px 0 0;
+}
+
+
+.downloadButton:hover {
+    color:black;
+}
+
+
+.btnPrimary{
+    border-radius: 3px;
+    /* height: 24px; */
+    font-size: 12px;
+    font-family: "Microsoft Yahei",Arial,Tahoma,Verdana,SimSun;
+    line-height: 24px;
+    color: white;
+    border: 1px solid #d3d3d3;
+    text-align: center;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    background: linear-gradient(to bottom, #fff, #fafafa);
+    padding: 0 6px;
+    background: #3399FF;
+
+}
+
+.tiles{
+    border: 1px solid #e5e5e5;
+}
+
+#banner{
+    background-image: url("../images/productioncardtype.png") ;
+}
+
+.toolContainer{
+    position: absolute;
+}
+
+.contentContainer{
+    background-color: #DCDCDC;
+    position: absolute;
+    top: 49px;
+    z-index: 2;
+}
+
+.sortbar{
+    margin-top: 24px;
+    margin-left: 40px;
+    margin-right: 48px;
+    margin-bottom: 8px;
+}
+
+#rightFlex{
+    padding-top:55px;
+}
+
+#childLeftFlex{
+    text-align: right;
+}
+
+#childRightFlex{
+    text-align: right;
+    line-height: 24px;
+}
+
+#buttonsbar{
+    padding-left: 35px;
+}
+
+
+.reloadButton {
+    padding:0 10px 0 0;
+    margin-left:65px;
+}
+.verticalBar{
+    z-index:50;
+}
+
+.marketplaceSize{
+    font-size:11px;
+}
+
+.image{
+    max-height: 101px;
+    max-width: 17%;
+    position: relative;
+    top: 8px;
+    bottom: 0;
+    left: -66px;
+    right: 0;
+    margin: auto;
+}
+
+.divheight{
+    line-height:0px !important;
+}
+
+.headTitle{
+    color:#858CA8;
+}
+
+.btnPrimaryPadding
+{
+    padding: 0 19px !important;
+}
+
+.gridViewType{
+    color:#3399FF;
+}
+
+.gridViewType[disabled] > i{
+    color:white;
+}
+
+.gridViewType[disabled]{
+    background:#3399FF !important;
+}
+.gridViewType[disabled] i{
+    color:white;
+}
+#onBoardingSuccessContent {
+    /*min-height: 500px;*/
+    height: 100%;
+    width: 100%;
+}
+#onBoardingSuccessContent #returnBtn {
+    position: relative;
+    left: -30px;
+    border: none;
+    border-radius: 0 13px 13px 0;
+    width: 130px;
+    color: #9D9D9D;
+    background: #F2F2F2;
+}
+#onBoardingSuccessContent #returnBtn:hover {
+    color: #333;
+}
+#onBoardingSuccessContent #returnBtn span {
+    font-size: 15px;
+    margin-right: 10px;
+}
+
+.content {
+    text-align: center;
+    margin-top: 200px;
+}
+.content.emptyPage {
+    text-align: center;
+    margin-top: 100px;
+}
+.content div {
+    text-align: center;
+    margin: 10px;
+}
+.content .imageContainer {
+    width: 300px;
+    height: 150px;
+    /*background-color: #f8f8f8;*/
+    margin: 0 auto;
+}
+.content .imageContainer img {
+    height: 100%;
+}
+.content .backLink {
+    text-decoration: none;
+    color: #9D9D9D;
+}
+.content .backLink:hover {
+    color: #333;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 16px;
+    resize: none;
+}
+
+input {
+    width: 100%;
+}
+
+.labels{
+    padding-top:20px;
+}
+
+#uploadStyle{
+    /*padding-top: 25px;*/
+    padding-left: 25px;
+}
+
+.PageIndicator{
+    position: absolute;
+    background-color: #00b3ee;
+    top: 11%;
+    padding-left: 5px;
+    margin: -6px;
+    height: 30px;
+    width: 6px;
+    z-index: 45;
+}
+
+.UploadPageIndicator{
+    position: absolute;
+    background-color: #00b3ee;
+    top: 11%;
+    padding-left: 5px;
+    margin: -5px;
+    height: 30px;
+    width:10px;
+}
+
+.btnIconSpacing{
+    position: relative;
+    top: -2px;
+    left: -3px;
+}
+
+#listView .btnIconSpacing{
+    top: -6px !important;
+    position: relative;
+    /*top: -2px;*/
+    left: -3px;
+}
+
+.gridServiceTitle{
+    color:#337ab7 !important;
+}
+
+.actionWidth{
+    min-width: 150px;
+}
+
+.primaryColor{
+    background-color:#3399FF;
+}
+
+.nav.navbar-nav  a{
+    padding: 10.5px !important;
+    color: dimgray;
+}
+
+#detailsTabs .fontSize {
+    font-size: 15px;
+    font-weight:bold;
+}
+.navbar{
+    min-height:43px;
 }

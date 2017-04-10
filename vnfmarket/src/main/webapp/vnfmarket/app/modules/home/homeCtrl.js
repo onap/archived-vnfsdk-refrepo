@@ -72,7 +72,7 @@
             rowSelect: false,
             multiSelect: false,
             autoSelect: false,
-            autoSelect: false,
+            //autoSelect: false,
             decapitate: false,
             largeEditDialog: false,
             boundaryLink: true,
@@ -93,7 +93,11 @@
         }
 
         vm.downloadService = function(csarId) {
-            homeService.downloadServiceFile(csarId);
+			homeService.updateDownloadCount(csarId).then(function(response){
+				homeService.downloadServiceFile(csarId);
+                vm.getFeatureList();
+			});
+            
         }
 
         vm.changeView = function(viewType) {
@@ -107,19 +111,10 @@
             });
         }
 
-        vm.serviceUpload = function() {
-            $mdDialog.show({
-                    controller: 'serviceUploadCtrl',
-                    templateUrl: vnfConfig.modulePath.home + '/serviceUpload/serviceUpload.html',
-                    controllerAs: 'vm'
-                })
-                .then(function(answer) {
-                    vm.getFeatureList();
-                    // vm.status = 'You said the information was "' + answer + '".';
-                }, function() {
-                    // vm.status = 'You cancelled the dialog.';
-                });
+        vm.serviceUpload = function(isUpload, csarId) {
+			homeService.openUploadDialog(vm.getFeatureList, isUpload, csarId);
         };
+		
 
         vm.onDeleteCompletion = function() {
             vm.getFeatureList();

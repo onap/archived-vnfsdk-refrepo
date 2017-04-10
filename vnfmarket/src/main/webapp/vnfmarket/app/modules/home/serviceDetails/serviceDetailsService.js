@@ -35,7 +35,7 @@
         };
 
         function serviceDetails(csarId) {
-            var url = vnfConfig.common.baseUrl + vnfConfig.api.home.serviceDetails.url,
+            var url = vnfConfig.api.home.serviceDetails.url,
                 method = vnfConfig.api.home.serviceDetails.method;
 
             url = url.replace(":csarId", csarId)
