@@ -13,58 +13,58 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<div class="md-padding" flex layout-sm="column">
-    <md-card>
-        <md-card-content>
-            <p> </p>
-            <h4>{{'module.marketplace.main.description' | translate }}</h4>
-            <ul id="description">
-                <li>{{'module.marketplace.main.pointOne' | translate }}</li>
-                <li>{{'module.marketplace.main.pointTwo' | translate }}</li>
-            </ul>
+<div class="md-padding nomargin nopadding" flex layout-sm="column">
+    <md-card class="nomargin">
+        <md-card-content class="nopadding">
+            <img src="vnfmarket/common/images/productioncardtype.png"  style="width:100%;">
         </md-card-content>
     </md-card>
     <!-- Start About Page -->
-    <md-card>
-        <md-toolbar id="homeToolbar" class="md-hue-2">
+    <md-card class="sortbar">
+        <md-toolbar id="homeToolbar" class="md-hue-3">
             <div class="md-toolbar-tools">
-                <md-select ng-model="sortBy" placeholder="{{'module.marketplace.main.sortBy.title'| translate}}" class="md-no-underline noMargin iconMargin fontSize" id="sortByLabel">
-                    <md-option class="fontSize" value="">{{'module.marketplace.main.sortBy.title' | translate}}</md-option>
-                    <md-option class="fontSize" value="{{'module.marketplace.main.sortBy.options.name.value' | translate}}">{{'module.marketplace.main.sortBy.options.name.key' | translate}}</md-option>
-                    <md-option class="fontSize" value="{{'module.marketplace.main.sortBy.options.dateModified.value' | translate}}">{{'module.marketplace.main.sortBy.options.dateModified.key' | translate}}</md-option>
-                    <md-option class="fontSize" value="{{'module.marketplace.main.sortBy.options.downloads.value' | translate}}">{{'module.marketplace.main.sortBy.options.downloads.key' | translate}}</md-option>
-                </md-select>
-
-                <md-icon class="md-icon iconAlignment defaultColor" aria-label="{{'module.marketplace.main.search.label' | translate}}" ng-if="!vm.showSearch">
-                    <i class="fa fa-search" aria-hidden="true"></i>
-                </md-icon>
-                <form flex name="vm.filter.name">
+                <label  ng-if="vm.services.length > 0" class="md-title fontSize marginAuto selectLblAlignment">{{'module.marketplace.main.sortBy.label' | translate}}</label>
+                <select ng-model="sortBy" class="md-no-underline noMargin iconMargin md-title fontSize" id="sortByLabel" ng-if="vm.services.length > 0">
+                    <option class="md-title fontSize " value="" disabled selected>{{'module.marketplace.main.sortBy.title' | translate}}</option>
+                    <option class="md-title fontSize " value="{{'module.marketplace.main.sortBy.options.name.value' | translate}}">{{'module.marketplace.main.sortBy.options.name.key' | translate}}</option>
+                    <option class="md-title fontSize " value="{{'module.marketplace.main.sortBy.options.dateModified.value' | translate}}">{{'module.marketplace.main.sortBy.options.dateModified.key' | translate}}</option>
+                    <option class="md-title fontSize " value="{{'module.marketplace.main.sortBy.options.downloads.value' | translate}}">{{'module.marketplace.main.sortBy.options.downloads.key' | translate}}</option>
+                </select>
+                <form flex name="vm.filter.name" class="iconMargin">
                     <md-input-container md-no-float class="md-block" id="searchFieldContainer" ng-if="!vm.showSearch">
-                        <input class="fontSize" ng-model="vm.filter.search" type="text" id="searchField" placeholder="{{'module.marketplace.main.search.placeholder' | translate}}" autofocus>
+                        <input class="md-title fontSize" ng-model="vm.filter.search" type="text" id="searchField" placeholder="{{'module.marketplace.main.search.placeholder' | translate}}" autofocus>
                     </md-input-container>
                 </form>
 
-                <md-icon class="md-icon iconAlignment defaultColor" aria-label="{{'common.actions.close' | translate}}" ng-click="vm.showSearch = !vm.showSearch; vm.filter.search = '';" ng-if="!vm.showSearch">
+                <md-icon class="md-icon iconAlignment defaultColor" aria-label="{{'common.actions.close' | translate}}" ng-click="vm.showSearch = !vm.showSearch; vm.filter.search = '';" ng-if="!vm.showSearch"  id="cancelSearch">
                     <md-tooltip md-direction="top">{{'common.actions.close' | translate}}</md-tooltip>
                     <i class="fa fa-close" aria-hidden="true"></i>
                 </md-icon>
-                <md-icon class="md-icon iconMargin iconAlignment defaultColor" aria-label="{{'common.actions.search' | translate}}" ng-if="vm.showSearch" ng-click="vm.showSearch = !vm.showSearch;">
-
+                <md-icon class="md-icon iconAlignment defaultColor" aria-label="{{'module.marketplace.main.search.label' | translate}}" ng-if="!vm.showSearch" id="searchIcon">
+                    <i class="fa fa-search searchIconColor" aria-hidden="true"></i>
+                </md-icon>
+                <md-icon class="md-icon iconMargin iconAlignment defaultColor" aria-label="{{'common.actions.search' | translate}}" ng-if="vm.showSearch && vm.services.length > 0" ng-click="vm.showSearch = !vm.showSearch;">
                     <md-tooltip md-direction="top">{{'common.actions.search' | translate}}</md-tooltip>
                     <i class="fa fa-search" aria-hidden="true"></i>
                 </md-icon>
 
-                <button id="serviceUpload" type="button" class="btn btnDefault iconMargin" ng-click="vm.serviceUpload()">{{'module.marketplace.main.upload.label' | translate}}</button>
+                <button id="serviceUpload" type="button" class="btn btnPrimaryPadding btnPrimary iconMargin" ng-click="vm.serviceUpload(true)">{{'module.marketplace.main.upload.label' | translate}}</button>
 
-                <span ng-if="vm.services.length > 0" class="iconMargin">
-                    <md-icon class="md-icon iconAlignment defaultColor" aria-label="{{'module.marketplace.main.gridView.label' | translate}}" ng-if="!vm.hasGridView" ng-click="vm.changeView('grid')">
-                        <md-tooltip md-direction="top">{{'module.marketplace.main.gridView.label' | translate}}</md-tooltip>
-                        <i class="fa fa-th" aria-hidden="true"></i>
-                    </md-icon>
-                    <md-icon class="md-icon iconAlignment defaultColor" aria-label="{{'module.marketplace.main.listView.label' | translate}}" ng-if="vm.hasGridView" ng-click="vm.changeView('list')">
-                        <md-tooltip md-direction="top">{{'module.marketplace.main.listView.label' | translate}}</md-tooltip>
-                        <i class="fa fa-list" aria-hidden="true"></i>
-                    </md-icon>
+                <span ng-if="vm.services.length > 0" class="iconMargin btn-toolbar">
+                    <div class="btn-group-xs" role="group" aria-label="Basic example">
+                    <button class="btn btnDefault gridViewType" aria-label="{{'module.marketplace.main.listView.label' | translate}}" ng-click="vm.changeView('list')"  ng-disabled="!vm.hasGridView">
+                        <md-icon class="md-icon ">
+                            <md-tooltip md-direction="top">{{'module.marketplace.main.listView.label' | translate}}</md-tooltip>
+                            <i class="fa fa-list viewIconPosition" aria-hidden="true"></i>
+                        </md-icon>
+                    </button>
+                    <button class="btn btnDefault gridViewType "  aria-label="{{'module.marketplace.main.gridView.label' | translate}}"  ng-click="vm.changeView('grid')" ng-disabled="vm.hasGridView">
+                        <md-icon class="md-icon">
+                            <md-tooltip md-direction="top">{{'module.marketplace.main.gridView.label' | translate}}</md-tooltip>
+                            <i class="fa fa-th viewIconPosition" aria-hidden="true"></i>
+                        </md-icon>
+                    </button>
+                    </div>
                 </span>
                 <md-icon class="md-icon iconAlignment defaultColor" aria-label="{{'module.marketplace.main.refresh.label' | translate}}" ng-click="vm.getFeatureList()">
                     <md-tooltip md-direction="top">{{'module.marketplace.main.refresh.label' | translate}}</md-tooltip>
@@ -75,66 +75,56 @@
         </md-toolbar>
     </md-card>
     <div class="md-padding" layout-xs="column" layout="row" layout-wrap ng-if="vm.hasGridView && vm.services.length > 0" id="gridView">
-        <md-card class="gridViewMargin md-padding" flex-xs="50" flex-gt-xs="30" ng-repeat="service in vm.services | filter: vm.filter.search| orderBy:sortBy" layout-wrap>
-            <md-card-header>
+        <md-card class="gridViewMargin md-padding tiles flex-md-100 flex-gt-md-30 flex-lt-md-100" ng-repeat="service in vm.services | filter: vm.filter.search| orderBy:sortBy" layout-wrap>
+            <md-card-header class="nopadding">
                 <md-card-header-text>
-                    <span class="md-headline"><a class="pointerClick" ng-click="vm.showDetails(service)">{{service.name}}</a></span>
+                    <md-toolbar class="md-menu-toolbar gridToolbarHeight">
+                        <div class="md-toolbar-tools nopadding gridTitleHeight">
+                        <span class="md-title fontSize gridServiceTitle"><md-tooltip md-direction="top">{{'common.message.viewDetails' | translate}} </md-tooltip> <a class="pointerClick" ng-click="vm.showDetails(service)">{{service.name}}</a></span>
+                        <span flex></span>
+                        </div>
+                    </md-toolbar>
                 </md-card-header-text>
-                <span class="mdl-layout-spacer"></span>
-                <span id="service-type-name" class="mdl-chip mdl-chip--contact service-detail-tags" data-toggle="tooltip">
-
-                <md-tooltip md-direction="top">{{'module.marketplace.main.gridView.serviceType.label' | translate}}</md-tooltip>
-                  <span class="mdl-chip__contact mdl-color--teal mdl-color-text--white"><i class="material-icons service-details-icon">{{'module.marketplace.main.gridView.serviceType.value' | translate}}</i></span>
-                <span class="mdl-chip__text">{{service.type}}</span>
-                </span>
-                <span id="service-downloads-count" class="mdl-chip mdl-chip--contact service-detail-tags" data-toggle="tooltip">
-                <md-tooltip md-direction="top">{{'module.marketplace.main.gridView.downloads.label' | translate}}</md-tooltip>
-                  <span class="mdl-chip__contact mdl-color--teal mdl-color-text--white"><i class="material-icons service-details-icon">{{'module.marketplace.main.gridView.downloads.value' | translate}}</i></span>
-                <span class="mdl-chip__text">{{service.downloads ?service.downloads : 0 }}</span>
-                </span>
             </md-card-header>
             <div class="mdl-card__supporting-text service-desc">
                 {{service.shortDesc}}
             </div>
-            <md-card-actions layout="row" layout-align="start center" class="mdl-card__actions service-actions">
-                <div class="col-sm-12  no-padding">
-                    <div class="col-md-8 no-padding">
-                        <div class="pull-left">
-                            <div class="btn-group btn-group-xs" role="group">
-                                <button class="show-deploy btn btn-default btnDefault" data-toggle="modal" data-target="#service-update-history-modal" data-tooltip="tooltip">
-
-                            <md-tooltip md-direction="top">{{'module.marketplace.main.gridView.upload.tooltip' | translate}}</md-tooltip>
-                            <i class="fa fa-history" aria-hidden="true"></i>
-                            {{'module.marketplace.main.gridView.upload.buttonLabel' | translate}}
-                          </button>
-                                <button id="delete-service-button" class="show-deploy btn btn-default btnDefault" data-toggle="modal" data-target="#service-download-history-modal" data-tooltip="tooltip">
-                            <md-tooltip md-direction="top">{{'module.marketplace.main.gridView.downloads.tooltip' | translate}}</md-tooltip>
-                            <i class="fa fa-history fa-flip-horizontal"></i>
-                            {{'module.marketplace.main.gridView.downloads.buttonLabel' | translate}}
-                          </button>
-                            </div>
-                        </div>
+            <md-card-actions class="nomargin" layout-xs="column" layout="row" layout-align="start center">
+                <md-toolbar class="md-menu-toolbar">
+                    <div class="md-toolbar-tools nopadding">
+                        <button class="btn btnDefault iconMargin" ng-click="vm.serviceUpload(false, service.csarId)">
+                          <md-tooltip md-direction="top">{{'common.actions.update' | translate}}</md-tooltip>
+                            <i>
+                                <img src="vnfmarket/common/images/reupload.png" class="btnIconSpacing">
+                            </i>
+                          {{'common.actions.update' | translate}}
+                        </button>
+                        <button class="btn btnDefault iconMargin deletebutton" ng-click="vm.serviceDelete(service)">
+                          <md-tooltip md-direction="top">{{'common.actions.delete' | translate}}</md-tooltip>
+                            <i>
+                                <img src="vnfmarket/common/images/delete.png" class="btnIconSpacing">
+                            </i>
+                            {{'common.actions.delete' | translate}}
+                        </button>
+                        <span flex></span>
+                        <button class="btn btnPrimary downloadIcon" ng-click="vm.downloadService(service.csarId)" ng-disabled="service.downloadCount == -1">
+                          <md-tooltip md-direction="top">{{'common.actions.download' | translate}} </md-tooltip>
+                            <i>
+                                <img src="vnfmarket/common/images/download.png" class="btnIconSpacing">
+                            </i>
+                          {{'common.actions.download' | translate}}
+                        </button>
                     </div>
-                    <div class="col-md-4 no-padding">
-                        <div class="pull-right">
-                            <div class="btn-group btn-group-xs" role="group">
-                                <button class="show-deploy btn btn-default btnDefault actionBtnHeight">
-                                <md-tooltip md-direction="top">{{'common.actions.update' | translate}}</md-tooltip>
-                                <i class="material-icons materialIconAdjustment">{{'common.actions.fileUpload' | translate}}</i>
-                          </button>
-                                <button class="show-deploy btn btn-default btnDefault actionBtnHeight" ng-click="vm.downloadService(service.csarId)">
-                                 <md-tooltip md-direction="top">{{'common.actions.download' | translate}}</md-tooltip>
-                                 <i class="material-icons materialIconAdjustment">{{'common.actions.getApp' | translate}}</i>
-                                </button>
-                                <button id="delete-service-button" class="show-deploy btn btn-default btnDefault" ng-click="vm.serviceDelete(service)">
-                                <md-tooltip md-direction="top">{{'common.actions.delete' | translate}}</md-tooltip>
-                            <i class="fa fa-times icon-red fa-lg"></i>
-                          </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </md-toolbar>
             </md-card-actions>
+            <span class="gridUnderline"></span>
+            <md-toolbar class="md-menu-toolbar gridBottomeHeight">
+                <div class="md-toolbar-tools nopadding gridBottomeHeight">
+                <span class="md-subhead gridBottomFonts"> {{'module.marketplace.main.gridView.serviceType.label' | translate}} : {{service.type }}</span>
+                <span flex></span>
+                <span class="md-subhead gridBottomFonts"> {{'module.marketplace.main.gridView.downloads.label' | translate}} : <span class="md-title fontSize ">{{service.downloadCount != -1 ?service.downloadCount : 0 }}</span></span>
+                </div>
+            </md-toolbar>
         </md-card>
     </div>
     <md-card flex="100" ng-if="!vm.hasGridView  && vm.services.length > 0" id="listView">
@@ -159,7 +149,7 @@
                         <md-tooltip md-direction="top">{{'module.marketplace.main.listView.headers.lastModified' | translate}}</md-tooltip>{{'module.marketplace.main.listView.headers.lastModified' | translate}}</th>
                         <th md-column md-numeric class="text-center fontSize">
                         <md-tooltip md-direction="top">{{'module.marketplace.main.listView.headers.donwloads' | translate}}</md-tooltip>{{'module.marketplace.main.listView.headers.donwloads' | translate}}</th>
-                        <th md-column md-numeric class="text-center fontSize">
+                        <th md-column md-numeric class=" actionWidth text-center fontSize">
                         <md-tooltip md-direction="top">{{'module.marketplace.main.listView.headers.actions' | translate}}</md-tooltip>{{'module.marketplace.main.listView.headers.actions' | translate}}</th>
                     </tr>
                 </thead>
@@ -187,21 +177,31 @@
                         <md-tooltip md-direction="top">{{service.modifyTime | date:'yyyy-MM-dd h:mm a'}}</md-tooltip>
                         {{service.modifyTime | date:'yyyy-MM-dd h:mm a'}}</td>
                         <td md-cell class="text-center">
-                        <md-tooltip md-direction="top">{{service.downloads ?service.downloads : 0 }}</md-tooltip>
-                        {{service.downloads ?service.downloads : 0 }}</td>
+                        <md-tooltip md-direction="top" >{{service.downloadCount ?service.downloadCount : 0 }}</md-tooltip>
+                        {{service.downloadCount != -1?service.downloadCount : 0 }}</td>
                         <td md-cell>
                             <span class="pull-right">
-                                <md-icon class="md-icon" aria-label="{{'common.actions.update' | translate}}">
+                                <md-icon class="md-icon" aria-label="{{'common.actions.update' | translate}}" ng-click="vm.serviceUpload(false, service.csarId)">
                                 <md-tooltip md-direction="top">{{'common.actions.update' | translate}}</md-tooltip>
-                                    <i class="material-icons materialIconAdjustment" aria-hidden="true">{{'common.actions.fileUpload' | translate}}</i>
+                                <i>
+                                <img src="vnfmarket/common/images/reupload.png" class="btnIconSpacing">
+                            </i>
+                                    <!-- <i class="material-icons materialIconAdjustment" aria-hidden="true">{{'common.actions.fileUpload' | translate}}</i> -->
                                 </md-icon>
-                                <md-icon class="md-icon" aria-label="{{'common.actions.download' | translate}}" ng-click="vm.downloadService(service.csarId)">
+                                <md-icon class="md-icon" aria-label="{{'common.actions.download' | translate}}" ng-click="vm.downloadService(service.csarId)" ng-if="service.downloadCount != -1">
                                 <md-tooltip md-direction="top">{{'common.actions.download' | translate}}</md-tooltip>
-                                    <i class="material-icons materialIconAdjustment" aria-hidden="true">{{'common.actions.getApp' | translate}}</i>
+                                    <!-- <i class="material-icons materialIconAdjustment" aria-hidden="true">{{'common.actions.getApp' | translate}}</i> -->
+                                    <i>
+                                <img src="vnfmarket/common/images/download.png" class="btnIconSpacing primaryColor">
+                            </i>
                                 </md-icon>
                                 <md-icon class="md-icon" aria-label="{{'common.actions.delete' | translate}}"  ng-click="vm.serviceDelete(service)">
                                 <md-tooltip md-direction="top">{{'common.actions.delete' | translate}}</md-tooltip>
-                                    <i class="fa fa-times icon-red fa-sm" aria-hidden="true"></i>
+                                <i>
+                                <img src="vnfmarket/common/images/delete.png" class="btnIconSpacing">
+                            </i>
+                                    <!-- <i class="fa fa-trash-o icon-red fa-sm" aria-hidden="true"></i> -->
+
                                 </md-icon>
                                 <md-icon class="md-icon" aria-label="Delete service" >
                             </span>
@@ -212,17 +212,13 @@
         </md-table-container>
         <md-table-pagination class="pagination-class" md-limit="vm.paginationQuery.limit" md-limit-options="vm.pagination" md-page="vm.paginationQuery.page" md-total="{{vm.services.length}}" md-page-select="vm.paginationOptions.pageSelect" md-boundary-links="vm.paginationOptions.boundaryLink" md-label="{ page : 'Page', RowPerPage:'row per page', of:'of'}"></md-table-pagination>
     </md-card>
-
-    <md-card ng-if=" vm.services.length == 0">
-        <div flex layout="row">
-            <div flex="25" layout="column">
-            </div>
-            <div flex="50" layout="column" id="emptyList">
-                <h4 class="text-center">{{'module.marketplace.main.emptyList.label' | translate}} <a ng-click="vm.serviceUpload()">{{'module.marketplace.main.emptyList.anchor' | translate}}</a> {{'module.marketplace.main.emptyList.labelContinued' | translate}} </h4>
-            </div>
-            <div flex="25" layout="column">
-            </div>
+    <div ng-if="vm.services.length == 0">
+    <div class="content emptyPage">
+        <div class="imageContainer">
+            <img src="vnfmarket/common/images/empty.png" class="btnIconSpacing">
         </div>
-    </md-card>
+        <h3>{{'module.marketplace.main.emptyList.label' | translate}} <a ng-click="vm.serviceUpload(true)">{{'module.marketplace.main.emptyList.anchor' | translate}}</a> {{'module.marketplace.main.emptyList.labelContinued' | translate}}</h3>
+    </div>
+</div>
 </div>
 </div>

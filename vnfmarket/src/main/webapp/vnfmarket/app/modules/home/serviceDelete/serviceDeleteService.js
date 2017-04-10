@@ -35,7 +35,7 @@
         };
 
         function serviceDelete(csarId) {
-            var url = vnfConfig.common.baseUrl + vnfConfig.api.home.serviceDelete.url,
+            var url = vnfConfig.api.home.serviceDelete.url,
                 method = vnfConfig.api.home.serviceDelete.method;
             url = url.replace(":csarId", csarId)
             var defer = $q.defer()

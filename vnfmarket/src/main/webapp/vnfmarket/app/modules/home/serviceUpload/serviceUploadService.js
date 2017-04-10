@@ -31,13 +31,30 @@
 
     function serviceUpload($q, vnfConfig, httpService) {
         return {
-            postServiceUpload: postServiceUpload
+            postServiceUpload: postServiceUpload,
+			repostServiceUpload: repostServiceUpload
         };
 
         function postServiceUpload(data, headers) {
-            var url = vnfConfig.common.baseUrl + vnfConfig.api.home.postServiceUpload.url,
+            var url = vnfConfig.api.home.postServiceUpload.url,
                 method = vnfConfig.api.home.postServiceUpload.method,
                 apiData = data;
+
+            var defer = $q.defer()
+            httpService.apiRequestWithProgress(url, method, apiData, headers)
+                .then(function(response) {
+                    defer.resolve(response);
+                }, function(error) {
+                    defer.reject(error);
+                });
+            return defer.promise;
+        }
+		
+		function repostServiceUpload(data, headers, csarId) {
+            var url = vnfConfig.api.home.repostServiceUpload.url,
+                method = vnfConfig.api.home.repostServiceUpload.method,
+                apiData = data;
+			url = url.replace(":csarId", csarId)
 
             var defer = $q.defer()
             httpService.apiRequestWithProgress(url, method, apiData, headers)

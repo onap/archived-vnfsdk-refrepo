@@ -33,11 +33,13 @@
         return {
             getFeaturesList: getFeaturesList,
             downloadServiceFile: downloadServiceFile,
-            openDeleteDialog: openDeleteDialog
+            openDeleteDialog: openDeleteDialog,
+			updateDownloadCount:updateDownloadCount,
+			openUploadDialog:openUploadDialog
         };
 
         function getFeaturesList() {
-            var url = vnfConfig.common.baseUrl + vnfConfig.api.home.getFeaturesList.url,
+            var url = vnfConfig.api.home.getFeaturesList.url,
                 method = vnfConfig.api.home.getFeaturesList.method;
 
             var defer = $q.defer()
@@ -49,10 +51,24 @@
                 });
             return defer.promise;
         }
+		
+		function updateDownloadCount(csarId) {
+            var url = vnfConfig.api.home.updateDownloadCount.url;
+			var method = vnfConfig.api.home.updateDownloadCount.method;
+			url = url.replace(":csarId", csarId)
+            var defer = $q.defer()
+            httpService.apiRequest(url, method)
+                .then(function(response) {
+                    defer.resolve(response);
+                }, function(error) {
+                    defer.reject(error);
+                });
+            return defer.promise;
+        }
 
         function downloadServiceFile(csarId) {
-            var url = vnfConfig.common.baseUrl + vnfConfig.api.home.downloadServiceFile.url;
-            url = url.replace(":csarId", csarId)
+            var url = vnfConfig.api.home.downloadServiceFile.url;
+            url = url.replace(":csarId", csarId);
             window.location.href = url;
         }
 
@@ -69,6 +85,23 @@
                 }, function() {
                     //vm.status = 'You cancelled the dialog.';
                 });
+        }
+		
+		function openUploadDialog(callbackFunction,isUpload ,csarId) {
+            $mdDialog.show({
+				controller: 'serviceUploadCtrl',
+				templateUrl: vnfConfig.modulePath.home + '/serviceUpload/serviceUpload.html',
+				controllerAs: 'vm',
+				isUpload: isUpload,
+				csarId: csarId ? csarId : null
+			})
+			.then(function(answer) {
+				if(callbackFunction)
+					callbackFunction();
+				// vm.status = 'You said the information was "' + answer + '".';
+			}, function() {
+				// vm.status = 'You cancelled the dialog.';
+			});
         }
 
     }

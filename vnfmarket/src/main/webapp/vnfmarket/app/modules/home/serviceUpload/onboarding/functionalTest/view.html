@@ -1,0 +1,59 @@
+<md-dialog aria-label="Upload Service dialog" flex="80" id="uploadDialog" ng-cloak>
+    <md-toolbar class="md-hue-3 dialogHeader">
+        <div class="md-toolbar-tools">
+            <h2>{{'common.tabs.functionTest.title' | translate}}</h2>
+            <span flex></span>
+            <button class="btnTransparency" ng-click="vm.cancel()">
+                    <i class="fa fa-close fa-sm" aria-hidden="true"></i>
+            </button>
+        </div>
+    </md-toolbar>
+
+    <br>
+    <div>
+       <!-- <img src="../../../../../common/images/floating-layer-function.png">-->
+        <img src="vnfmarket/common/images/floating_layer_function.png" width="100%" height="40%">
+
+    </div>
+    <br>
+<md-card flex="100" class="nomargin  md-padding">
+        <md-table-container>
+            <table md-table>
+                <thead md-head md-order="vm.filter.name" md-on-reorder="vm.getValidations">
+                    <tr md-row>
+                        <th md-column class="fontSize"  md-order-by="testCase">
+                            <md-tooltip md-direction="top">{{'common.tabs.functionTest.testTHead' | translate}} </md-tooltip>
+                            {{'common.tabs.functionTest.testTHead' | translate}}
+                        </th>
+                        <th md-column class="fontSize">
+                            <md-tooltip md-direction="top">{{'common.tabs.functionTest.descTHead' | translate}} </md-tooltip>
+                            {{'common.tabs.functionTest.descTHead' | translate}}
+                        </th>
+                        <th md-column class="fontSize"   md-order-by="testResult">
+                            <md-tooltip md-direction="top">{{'common.tabs.functionTest.resultTHead' | translate}} </md-tooltip>
+                            {{'common.tabs.functionTest.resultTHead' | translate}}
+                        </th>
+                        
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row  ng-repeat="validation in vm.validations | orderBy: vm.filter.name |
+                     limitTo: vm.paginationQuery.limit: (vm.paginationQuery.page - 1) * vm.paginationQuery.limit track by $index">
+                        <td md-cell class="">
+                            <md-tooltip md-direction="top">{{validation.name}}</md-tooltip>{{validation.name}}
+                        </td>
+                        <td md-cell>
+                            <md-tooltip md-direction="top">{{validation.description}}</md-tooltip>
+                            {{validation.description}}
+                        </td>
+                        <td md-cell class="">
+                            <md-tooltip md-direction="top">{{validation.status}}</md-tooltip>{{validation.status}}
+                        </td>
+                        
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+        <md-table-pagination class="pagination-class" md-limit="vm.paginationQuery.limit" md-limit-options="vm.pagination" md-page="vm.paginationQuery.page" md-total="{{vm.validations.length}}" md-page-select="vm.paginationOptions.pageSelect" md-boundary-links="vm.paginationOptions.boundaryLink" md-label="{ page : 'Page', RowPerPage:'row per page', of:'of'}"></md-table-pagination>
+</md-card>
+</md-dialog>

@@ -27,32 +27,49 @@
     angular
         .module('vnfmarket')
         .constant("vnfConfig", {
-            "common": {
-                "baseUrl": ""
-            },
             "api": {
-            	"home": {
-            		"postServiceUpload": {
-            			"url": "/Demo/rest/PackageResource/csars",
-            			"method": "POST"
-            		},
-            		"getFeaturesList": {
-            			"url": "/Demo/rest/PackageResource/csars",
-            			"method": "GET"
-            		},
-            		"downloadServiceFile": {
-            			"url": "/Demo/rest/PackageResource/csars/:csarId/files",
-            			"method": "GET"
-            		},
-            		"serviceDelete": {
-            			"url": "/Demo/rest/PackageResource/csars/:csarId",
-            			"method": "DELETE"
-            		},
-            		"serviceDetails": {
-            			"url": "/Demo/rest/PackageResource/csars/:csarId",
-            			"method": "GET"
-            		}
-            	}
+                "home": {
+                    "postServiceUpload": {
+                        "url": "/openoapi/vnfsdk-marketplace/v1/PackageResource/csars",
+                        "method": "POST"
+                    },
+					"repostServiceUpload": {
+                        "url": "/openoapi/vnfsdk-marketplace/v1/PackageResource/csars/:csarId/reupload",
+                        "method": "POST"
+                    },
+                    "getFeaturesList": {
+                        "url": "/openoapi/vnfsdk-marketplace/v1/PackageResource/csars",
+                        "method": "GET"
+                    },
+                    "downloadServiceFile": {
+                        "url": "/openoapi/vnfsdk-marketplace/v1/PackageResource/csars/:csarId/files",
+                        "method": "GET"
+                    },
+                    "serviceDelete": {
+                        "url": "/openoapi/vnfsdk-marketplace/v1/PackageResource/csars/:csarId",
+                        "method": "DELETE"
+                    },
+                    "serviceDetails": {
+                        "url": "/openoapi/vnfsdk-marketplace/v1/PackageResource/csars/:csarId",
+                        "method": "GET"
+                    },
+					"getFunctionTestDetails" : {
+						"url" : "/openoapi/vnfsdk-marketplace/v1/PackageResource/csars/:csarId/operresult?operTypeId=functiontest",
+						"method" : "GET"
+					},
+					"updateDownloadCount" :{
+						"url" : "/openoapi/vnfsdk-marketplace/v1/PackageResource/csars/:csarId/downloaded",
+						"method" : "GET"
+					},
+					"getOnBoardingSteps": {
+                        "url": "/openoapi/vnfsdk-marketplace/v1/PackageResource/csars/onboardsteps",
+                        "method": "GET"
+                    },
+                    "getFunctionalList": {
+                        "url": "/openoapi/vnfsdk-marketplace/v1/PackageResource/csars/:csarId/onboardstatus",
+                        "method": "GET"
+                    }
+                }
             },
             "modulePath": {
                 "home": "vnfmarket/app/modules/home"

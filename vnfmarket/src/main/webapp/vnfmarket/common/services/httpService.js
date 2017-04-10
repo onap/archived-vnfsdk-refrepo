@@ -27,9 +27,9 @@
     angular.module('vnfmarket')
         .factory('httpService', httpService);
 
-    httpService.$inject = ['$http', '$q', '$rootScope', '$mdDialog'];
+    httpService.$inject = ['$http', '$q', '$rootScope', '$mdDialog', 'baseUrlConfig'];
 
-    function httpService($http, $q, $rootScope, $mdDialog) {
+    function httpService($http, $q, $rootScope, $mdDialog, baseUrlConfig) {
         return {
             apiRequest: apiRequest,
             apiRequestWithProgress: apiRequestWithProgress
@@ -39,7 +39,7 @@
             var defer = $q.defer()
             $http({
                 method: method,
-                url: url,
+                url: baseUrlConfig.common.ip + ":" + baseUrlConfig.common.port + url,
                 data: data,
                 headers: headers
             }).then(function successCallback(response) {
@@ -73,7 +73,7 @@
             var defer = $q.defer()
             $http({
                 method: method,
-                url: url,
+                url: baseUrlConfig.common.ip + ":" + baseUrlConfig.common.port + url,
                 data: data,
                 headers: headers,
                 transformRequest: angular.identity,

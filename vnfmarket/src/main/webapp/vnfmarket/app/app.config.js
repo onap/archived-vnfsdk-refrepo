@@ -52,7 +52,7 @@
 
         $mdThemingProvider.definePalette('amazingPaletteName', {
             '50': 'ff8a80',
-            '100': 'eaeaea',
+            '100': '#2E3243',
             '200': 'ef9a9a',
             '300': '#37474f',
             '400': '#37474f',
@@ -62,14 +62,14 @@
             '800': 'c62828',
             '900': 'b71c1c',
             'A100': 'ff8a80',
-            'A200': '#78909c',
-            'A400': '#90a4ae',
-            'A700': '#428bca'
+            'A200': '#E1E4E5',
+            'A400': '#858CA8',
+            'A700': '#FFFFFF'
             });
 
             $mdThemingProvider.theme('default')
             .primaryPalette('amazingPaletteName',{
-                'default' : 'A700',
+                'default' : 'A400',
                 'hue-1' : "A700",
                 'hue-2' : "100",
                 'hue-3' : "A200"
