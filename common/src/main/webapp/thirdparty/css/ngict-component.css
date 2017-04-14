@@ -708,7 +708,7 @@ border-bottom-width:1px;
 /*checkbox & radio*/
 input[type="checkbox"] {
     -webkit-appearance: none;
-    background: #fff url(../image/checkbox-radio/checkbox-init.png);
+    background: #fff url(../images/checkbox-radio/checkbox-init.png);
     height: 18px;
     vertical-align: middle;
     width: 18px;
@@ -718,7 +718,7 @@ input[type="checkbox"] {
 
 input[type="checkbox"]:checked {
     -webkit-appearance: none;
-    background: #fff url(../image/checkbox-radio/checkbox-checked.png);
+    background: #fff url(../images/checkbox-radio/checkbox-checked.png);
     height: 18px;
     vertical-align: middle;
     width: 18px;
@@ -731,7 +731,7 @@ input[type="checkbox"]:hover {
 
 input[type="checkbox"][disabled] {
     -webkit-appearance: none;
-    background: #fff url(../image/checkbox-radio/checkbox-disabled.png);
+    background: #fff url(../images/checkbox-radio/checkbox-disabled.png);
     height: 18px;
     vertical-align: middle;
     width: 18px;
@@ -741,7 +741,7 @@ input[type="checkbox"][disabled] {
 
 input[type="checkbox"][disabled]:checked {
     -webkit-appearance: none;
-    background: #fff url(../image/checkbox-radio/checkbox-checked-disabled.png);
+    background: #fff url(../images/checkbox-radio/checkbox-checked-disabled.png);
     height: 18px;
     vertical-align: middle;
     width: 18px;
@@ -749,7 +749,7 @@ input[type="checkbox"][disabled]:checked {
 
 input[type="radio"] {
     -webkit-appearance: none;
-    background: #fff url(../image/checkbox-radio/radio-init.png);
+    background: #fff url(../images/checkbox-radio/radio-init.png);
     height: 18px;
     vertical-align: middle;
     width: 18px;
@@ -759,7 +759,7 @@ input[type="radio"] {
 
 input[type="radio"]:checked {
     -webkit-appearance: none;
-    background: #fff url(../image/checkbox-radio/radio-checked.png);
+    background: #fff url(../images/checkbox-radio/radio-checked.png);
     height: 18px;
     vertical-align: middle;
     width: 18px;
@@ -772,7 +772,7 @@ input[type="radio"]:hover {
 
 input[type="radio"][disabled] {
     -webkit-appearance: none;
-    background: #fff url(../image/checkbox-radio/radio-disabled.png);
+    background: #fff url(../images/checkbox-radio/radio-disabled.png);
     height: 18px;
     vertical-align: middle;
     width: 18px;
@@ -782,7 +782,7 @@ input[type="radio"][disabled] {
 
 input[type="radio"][disabled]:checked {
     -webkit-appearance: none;
-    background: #fff url(../image/checkbox-radio/radio-checked-disabled.png);
+    background: #fff url(../images/checkbox-radio/radio-checked-disabled.png);
     height: 18px;
     vertical-align: middle;
     width: 18px;
