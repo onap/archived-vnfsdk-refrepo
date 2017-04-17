@@ -1559,9 +1559,9 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 var modelTemplate = "";
 function loadTemplate() {
     
-    $.get('/openoui/resmgr/templates/template.html', function (template) {
+/*    $.get('/openoui/resmgr/templates/template.html', function (template) {
         modelTemplate += template;
-    });
+    });*/
     $.get('/openoui/resmgr/templates/templateContainer.html', function (template) {
         modelTemplate += template;
     });
