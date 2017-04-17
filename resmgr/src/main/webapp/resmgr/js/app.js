@@ -152,8 +152,8 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 			var dropdownInfo = translateToDropdownInfo(dropdownResponse);
             document.getElementById("portdropdown").innerHTML = dropdownInfo;
 
-            var portType = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.logicalType"}};
-            $('#myModal #logicalType').append($compile(Mustache.to_html(text, portType.ErrMsg))($scope));
+           /* var portType = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.logicalType"}};
+            $('#myModal #logicalType').append($compile(Mustache.to_html(text, portType.ErrMsg))($scope));*/
 
             var portLayerRate = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.layerRate"}};
             $('#myModal #layerRate').append($compile(Mustache.to_html(text, portLayerRate.ErrMsg))($scope));
@@ -174,8 +174,8 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             document.getElementById("portEdropdown").innerHTML = dropdownInfo;
 			
 
-            var portEdgepoint = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.isEdgePoint"}};
-            $('#myModal #isEdgePoint').append($compile(Mustache.to_html(text, portEdgepoint.ErrMsg))($scope));
+           /* var portEdgepoint = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.isEdgePoint"}};
+            $('#myModal #isEdgePoint').append($compile(Mustache.to_html(text, portEdgepoint.ErrMsg))($scope));*/
 
             var portIndex = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.portIndex"}};
             $('#myModal #portIndex').append($compile(Mustache.to_html(text, portIndex.ErrMsg))($scope));
@@ -195,7 +195,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             }, { counts:[5, 10, 20, 50], dataset: $scope.data});
 
             $scope.$watch('checkboxes.checked', function(value) {
-				 $scope.checkboxes.items = [];
+                $scope.checkboxes.items = {};
                 angular.forEach($scope.portTableParams.data, function(item) {
                     if (angular.isDefined(item.id)) {
                         $scope.checkboxes.items[item.id] = value;
@@ -425,7 +425,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             }, { counts:[5, 10, 20, 50], dataset: $scope.data});
 
             $scope.$watch('checkboxes.checked', function(value) {
-				 $scope.checkboxes.items = [];
+                $scope.checkboxes.items = {};
                 angular.forEach($scope.siteTableParams.data, function(item) {
                     console.log(item.id);
                     if (angular.isDefined(item.id)) {
@@ -467,11 +467,11 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 			var dropdownInfo = translateToDropdownInfo(dropdownResponse);
             document.getElementById("sitedropdown").innerHTML = dropdownInfo;
 
-            var siteType = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"site.type"}};
+          /*  var siteType = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"site.type"}};
             $('#myModal #type').append($compile(Mustache.to_html(text, siteType.ErrMsg))($scope));
-
-            var siteTenantName = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"site.tenantID"}};
-            $('#myModal #tenantID').append($compile(Mustache.to_html(text, siteTenantName.ErrMsg))($scope));
+*/
+     /*       var siteTenantName = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"site.tenantID"}};
+            $('#myModal #tenantID').append($compile(Mustache.to_html(text, siteTenantName.ErrMsg))($scope));*/
 
             /*var siteTenantType = {"ErrMsg" :     {"errmsg" : "The tenanttype is required.", "modalVar":"site.tenanttype"}};
             $('#myModal #tenanttype').append($compile(Mustache.to_html(text, siteTenantType.ErrMsg))($scope));*/
@@ -701,7 +701,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             }, { counts:[5, 10, 20, 50], dataset: $scope.data.locationData});
 
             $scope.$watch('checkboxes.checked', function(value) {
-				 $scope.checkboxes.items = [];
+                $scope.checkboxes.items = {};
                 angular.forEach($scope.neTableParams.data, function(item) {
                     if (angular.isDefined(item.Id)) {
                         $scope.checkboxes.items[item.Id] = value;
@@ -931,9 +931,9 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 			var dropdownInfo = translateToDropdownInfo(dropdownResponse);
             document.getElementById("linkdropdown").innerHTML = dropdownInfo;
 
-            var linkType = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"link.logicalType"}};
+        /*    var linkType = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"link.logicalType"}};
             $('#myModal #logicalType').append($compile(Mustache.to_html(text, linkType.ErrMsg))($scope));
-
+*/
             var linkLayerRate = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"link.layerRate"}};
             $('#myModal #layerRate').append($compile(Mustache.to_html(text, linkLayerRate.ErrMsg))($scope));
 
@@ -961,7 +961,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             }, { counts:[5, 10, 20, 50], dataset: $scope.data});
 
             $scope.$watch('checkboxes.checked', function(value) {
-				 $scope.checkboxes.items = [];
+                $scope.checkboxes.items = {};
                 angular.forEach($scope.linkTableParams.data, function(item) {
                     console.log(item.id);
                     if (angular.isDefined(item.id)) {
@@ -1181,8 +1181,14 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var neName = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.name", "errtag":"textboxErrName", "errfunc":"validatetextboxName","required":true}};
             $('#myModal #name').append($compile(Mustache.to_html(text, neName.ErrMsg))($scope));
 
-            var neVersion = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.version","errtag":"textboxErrVersion", "errfunc":"validatetextboxVersion","required":true}};
+            var neVersion = {"ErrMsg" :     {"errmsg" : "The version is required.", "modalVar":"ne.version","errtag":"textboxErrVersion", "errfunc":"validatetextboxVersion","required":true}};
             $('#myModal #version').append($compile(Mustache.to_html(text, neVersion.ErrMsg))($scope));
+
+            var neNERole = {"ErrMsg" :     {"errmsg" : "The role is required.", "modalVar":"ne.role","errtag":"textboxErrRole", "errfunc":"validatetextboxRole","required":true}};
+            $('#myModal #nerole').append($compile(Mustache.to_html(text, neNERole.ErrMsg))($scope));
+
+            var serialNumber = {"ErrMsg" :     {"errmsg" : "The serialNumber is required.", "modalVar":"ne.serialNumber","errtag":"textboxErrSerial", "errfunc":"validatetextboxSerial","required":true}};
+            $('#myModal #serialNumber').append($compile(Mustache.to_html(text, serialNumber.ErrMsg))($scope));
 
             var neProductName = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.productName" }};
             $('#myModal #productName').append($compile(Mustache.to_html(text, neProductName.ErrMsg))($scope));
@@ -1200,14 +1206,13 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 			var dropdownInfo = translateToDropdownInfo(dropdownResponse);
             document.getElementById("medropdown").innerHTML = dropdownInfo;
 
-            var neController = {"ErrMsg" :     {"errmsg" : "IP Address is required.", "modalVar":"ne.controller"}};
-            $('#myModal #controller').append($compile(Mustache.to_html(text, neController.ErrMsg))($scope));
+            /*var neController = {"ErrMsg" :     {"errmsg" : "IP Address is required.", "modalVar":"ne.controller"}};
+            $('#myModal #controller').append($compile(Mustache.to_html(text, neController.ErrMsg))($scope));*/
 
             var neIPAddress = {"ErrMsg" :     {"errmsg" : "IP Address is required.", "modalVar":"ne.ipAddress"}};
             $('#myModal #ipAddress').append($compile(Mustache.to_html(text, neIPAddress.ErrMsg))($scope));
 
-            var neNERole = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.nerole"}};
-            $('#myModal #nerole').append($compile(Mustache.to_html(text, neNERole.ErrMsg))($scope));
+
 
             var neAdminState = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.adminState"}};
             $('#myModal #adminState').append($compile(Mustache.to_html(text, neAdminState.ErrMsg))($scope));
@@ -1215,13 +1220,25 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var neOperatingState = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.operatingState"}};
             $('#myModal #operatingState').append($compile(Mustache.to_html(text, neOperatingState.ErrMsg))($scope));
 
+
+            neDataService.getNESiteDDList()
+                .then(function (data) {
+                    $scope.siteIDList = data.sites;
+                    var dropdownInfo = translateSiteIdToDropdownInfo($scope.siteIDList);
+                    $("#siteIdDropdown").html(dropdownInfo);
+                    console.log("Data: ");
+                    $log.info(data);
+                }, function (reason) {
+                    $scope.message = "Error is :" + JSON.stringify(reason);
+                });
+
             $scope.checkboxes = { 'checked': false, items: {} };
 
             $scope.neTableParams = new NgTableParams({count: 5, sorting: {name: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
             }, { counts:[5, 10, 20, 50], dataset: $scope.data});
 
             $scope.$watch('checkboxes.checked', function(value) {
-				 $scope.checkboxes.items = [];
+                $scope.checkboxes.items = {};
                 angular.forEach($scope.neTableParams.data, function(item) {
                     if (angular.isDefined(item.id)) {
                         $scope.checkboxes.items[item.id] = value;
@@ -1241,8 +1258,19 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             }
 
             return options;
-        } 
+        }
 
+        function translateSiteIdToDropdownInfo(dropdowndata) {
+            var options = '<option value="select">--select--</option>';
+            var i;
+            for (i = 0; i < dropdowndata.length; i += 1) {
+                var option = '<option value="' + dropdowndata[i].id + '">' + dropdowndata[i].name
+                    + '</option>';
+                options = options + option;
+            }
+
+            return options;
+        }
 
         $scope.validatetextboxName = function (value){
             if($scope.ne.name) {
@@ -1258,6 +1286,22 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             }
             else
                 $scope.textboxErrVersion = true;
+        }
+
+        $scope.validatetextboxRole = function (value){
+            if($scope.ne.role) {
+                $scope.textboxErrRole = false;
+            }
+            else
+                $scope.textboxErrRole = true;
+        }
+
+        $scope.validatetextboxSerial = function (value){
+            if($scope.ne.serialNumber) {
+                $scope.textboxErrSerial = false;
+            }
+            else
+                $scope.textboxErrSerial = true;
         }
 
         $scope.closeModal = function() {
@@ -1284,7 +1328,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $("#myModal").modal({}).draggable();
         }
         $scope.saveData = function(id) {
-            if (!$scope.textboxErrName && !$scope.textboxErrVersion) {
+            if (!$scope.textboxErrName && !$scope.textboxErrVersion && !$scope.textboxErrRole && !$scope.textboxErrSerial) {
 				
 				var nes = {};
 				nes.managedElement = $scope.ne;
@@ -1441,31 +1485,43 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $('#myModal #Status').append($compile(Mustache.to_html(text, dataStatus.ErrMsg))($scope));
 
             //$('#myModal #Country').append($compile(Mustache.to_html(dropDown, $scope.data.dropdowncountryData))($scope));
-            var dropSimple_data = {
+            /*var dropSimple_data = {
                 "modalVar" : "datacenter.Country",
                 "labelField" : "itemLabel",
                 "optionsValue" : $scope.data ? JSON.stringify($scope.data.dropdowncountryData.item) : ""
             };
 
-            $('#myModal #Country').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));
+            $('#myModal #Country').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));*/
 
             //$('#myModal #Location').append($compile(Mustache.to_html(dropDown, $scope.data.dropdownlocationData))($scope));
-            var dropSimple_data = {
+            /*var dropSimple_data = {
                 "modalVar" : "datacenter.Location",
                 "labelField" : "itemLabel",
                 "optionsValue" : $scope.data ? JSON.stringify($scope.data.dropdownlocationData.item) : ""
             };
 
-            $('#myModal #Location').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));
+            $('#myModal #Location').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));*/
 
             //$('#myModal #ServiceName').append($compile(Mustache.to_html(dropDown, $scope.data.dropdownserviceData))($scope));
-            var dropSimple_data = {
+            /*var dropSimple_data = {
                 "modalVar" : "datacenter.ServiceName",
                 "labelField" : "itemLabel",
                 "optionsValue" : $scope.data ? JSON.stringify($scope.data.dropdownlocationData.item) : ""
             };
 
-            $('#myModal #ServiceName').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));
+            $('#myModal #ServiceName').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));*/
+			
+			var dropdownResponse=[{"serviceTemplateId":"Country1","templateName":"Country1"},{"serviceTemplateId":"Country2","templateName":"Country2"}];
+            var dropdownInfo = translateToDropdownInfo(dropdownResponse);
+            document.getElementById("countrydropdown").innerHTML = dropdownInfo;
+
+            var dropdownResponse=[{"serviceTemplateId":"Location1","templateName":"Location1"},{"serviceTemplateId":"Location2","templateName":"Location2"}];
+            var dropdownInfo = translateToDropdownInfo(dropdownResponse);
+            document.getElementById("locationdropdown").innerHTML = dropdownInfo;
+
+            var dropdownResponse=[{"serviceTemplateId":"ServiceName1","templateName":"ServiceName1"},{"serviceTemplateId":"ServiceName2","templateName":"ServiceName2"}];
+            var dropdownInfo = translateToDropdownInfo(dropdownResponse);
+            document.getElementById("servicenamedropdown").innerHTML = dropdownInfo;
 
             var dataCPU = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"datacenter.Cpu"}};
             $('#myModal #Cpu').append($compile(Mustache.to_html(text, dataCPU.ErrMsg))($scope));
@@ -1482,7 +1538,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             }, { counts:[5, 10, 20, 50], dataset: $scope.data.datacenterData});
 
             $scope.$watch('checkboxes.checked', function(value) {
-				  $scope.checkboxes.items = [];
+                $scope.checkboxes.items = {};
 
                 angular.forEach($scope.neTableParams.data, function(item) {
 					
@@ -1493,21 +1549,23 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             });
 
         }
+		
+		function translateToDropdownInfo(dropdowndata) {
+            var options = '<option value="select">--select--</option>';
+            var i;
+            for (i = 0; i < dropdowndata.length; i += 1) {
+                var option = '<option value="' + dropdowndata[i].serviceTemplateId + '">' + dropdowndata[i].templateName+ '</option>';
+                options = options + option;
+            }
+            return options;
+        }
 
         $scope.validatetextbox = function (value){
-            if($scope.data.Name) {
+            if($scope.datacenter.Name) {
                 $scope.textboxErr = false;
             }
             else
                 $scope.textboxErr = true;
-        }
-
-        $scope.validatenumeric = function (value){
-            if($scope.data.cpu) {
-                $scope.numericErr = false;
-            }
-            else
-                $scope.numericErr = true;
         }
 
         $scope.closeModal = function() {
@@ -1529,10 +1587,9 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             //$("#myModal").modal();
             $("#myModal").modal({}).draggable();
             $scope.textboxErr = false;
-            $scope.numericErr = false;
         }
         $scope.saveData = function(id) {
-            if (!$scope.textboxErr && !$scope.numericErr) {
+            if (!$scope.textboxErr) {
 				
 				var dcs = {}
 				dcs.dc =	$scope.datacenter;

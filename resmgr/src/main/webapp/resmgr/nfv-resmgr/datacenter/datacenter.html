@@ -85,9 +85,15 @@
                         <div id="Name" class="col-xs-8" >
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <!--<div class="form-group row">
                         <label class="col-xs-4 col-form-label">Country</label>
                         <div id="Country" class="col-xs-8" >
+                        </div>
+                    </div>-->
+					<div class="form-group row">
+                        <label class="col-xs-4 col-form-label">Country</label>
+                        <div id="Country" class="col-xs-8" >
+                            <select id="countrydropdown" class="form-control inputfield" ng-model="datacenterData.optSelect" ng-options="item.templateName for item in optionsValue"></select>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -95,14 +101,26 @@
                         <div id="Status" class="col-xs-8" >
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <!--<div class="form-group row">
                         <label class="col-xs-4 col-form-label">Location</label>
                         <div id="Location" class="col-xs-8" >
                         </div>
+                    </div>-->
+					<div class="form-group row">
+                        <label class="col-xs-4 col-form-label">Location</label>
+                        <div id="Location" class="col-xs-8" >
+                            <select id="locationdropdown" class="form-control inputfield" ng-model="datacenterData.optSelect" ng-options="item.templateName for item in optionsValue"></select>
+                        </div>
                     </div>
-                    <div class="form-group row">
+                    <!--<div class="form-group row">
                         <label class="col-xs-4 col-form-label">ServiceName</label>
                         <div id="ServiceName" class="col-xs-8" >
+                        </div>
+                    </div>-->
+					<div class="form-group row">
+                        <label class="col-xs-4 col-form-label">ServiceName</label>
+                        <div id="ServiceName" class="col-xs-8" >
+                            <select id="servicenamedropdown" class="form-control inputfield" ng-model="datacenterData.optSelect" ng-options="item.templateName for item in optionsValue"></select>
                         </div>
                     </div>
                     <div class="form-group row">

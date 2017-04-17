@@ -13,10 +13,18 @@
  * limitations under the License.
  */
 
-app.factory("neDataService", function($http, DataService, $log){
+app.factory("neDataService", function($http, DataService, $log, siteDataService){
     var uri = '';
     uri += "/openoapi/sdnobrs/v1/managed-elements";
     return {
+        getNESiteDDList : function() {
+            return siteDataService.getAllSiteData()
+                .then(function(response){
+                    $log.info("in get data service data is  :"+response);
+                    console.log(response);
+                    return response;
+                });
+        },
         getAllNEData : function() {
             /*return $http({
                 url: 'http://localhost:3000/meAPI/getAllNEData',

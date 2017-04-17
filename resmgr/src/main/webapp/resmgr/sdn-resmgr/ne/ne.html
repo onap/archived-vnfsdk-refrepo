@@ -97,6 +97,18 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label class="col-xs-4 col-form-label">NE Role</label>
+                        <div id="nerole" class="col-xs-8" >
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-xs-4 col-form-label">Serial Number</label>
+                        <div id="serialNumber" class="col-xs-8" >
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
                         <label class="col-xs-4 col-form-label">Product Name</label>
                         <div id="productName" class="col-xs-8" >
                         </div>
@@ -104,7 +116,7 @@
                     <div class="form-group row">
                         <label class="col-xs-4 col-form-label">Controller</label>
                         <div id="controller" class="col-xs-8" >
-						<select id="medropdown" class="form-control inputfield" ng-model="meData.optSelect" ng-options="item.templateName for item in optionsValue"></select>
+                            <select id="medropdown" class="form-control inputfield" ng-model="ne.optSelect"></select>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -113,8 +125,9 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-xs-4 col-form-label">NE Role</label>
-                        <div id="nerole" class="col-xs-8" >
+                        <label class="col-xs-4 col-form-label">Site ID</label>
+                        <div id="siteId" class="col-xs-8" >
+                            <select id="siteIdDropdown" class="form-control inputfield" ng-model="ne.siteId"></select>
                         </div>
                     </div>
                 </div>
