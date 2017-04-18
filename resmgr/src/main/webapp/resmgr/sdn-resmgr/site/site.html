@@ -73,20 +73,20 @@
                 <h5 class="modal-title">Create Site</h5>
             </div>
             <form  name="siteForm" method="post">
-                <div class="modal-body">
-                    <div class="form-group row">
-                        <label class="col-xs-4 col-form-label">Name</label>
+                <div class="modal-body" id="borderSpacing">
+                    <div class="form-group row" id="rowSpacing">
+                        <label class="col-xs-4 col-form-label" id="textCenter">Name</label>
                         <div id="name" class="col-xs-8">
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-xs-4 col-form-label">Type</label>
+                    <div class="form-group row" id="rowSpacing">
+                        <label class="col-xs-4 col-form-label" id="textCenter">Type</label>
                         <div id="tenantID" class="col-xs-8" >
 						 <select id="sitedropdown" class="form-control inputfield" ng-model="siteData.optSelect" ng-options="item.templateName for item in optionsValue"></select>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-xs-4 col-form-label">Location</label>
+                    <div class="form-group row" id="rowSpacing">
+                        <label class="col-xs-4 col-form-label" id="textCenter">Location</label>
                         <div id="location" class="col-xs-8" >
                         </div>
                     </div>

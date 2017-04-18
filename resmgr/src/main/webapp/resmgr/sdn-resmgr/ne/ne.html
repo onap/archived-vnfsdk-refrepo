@@ -79,53 +79,59 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h5 class="modal-title">Create Me</h5>
+                <h5 class="modal-title">Create ME</h5>
             </div>
             <form name="neForm" method="post">
-                <div class="modal-body">
+                <div class="modal-body" id="borderSpacing">
 
                     <div class="form-group row">
-                        <label class="col-xs-4 col-form-label">Name</label>
+                        <label class="col-xs-4 col-form-label" id="textCenter">Name</label>
                         <div id="name" class="col-xs-8">
                         </div>
                     </div>
 
+                    <div class="form-group row" id="rowSpacing">
+                        <label class="col-xs-4 col-form-label" id="textCenter">IP Address</label>
+                        <div id="ipAddress" class="col-xs-8" >
+                        </div>
+                    </div>
 
-                    <div class="form-group row">
-                        <label class="col-xs-4 col-form-label">Version</label>
+                    <div class="form-group row" id="rowSpacing">
+                        <label class="col-xs-4 col-form-label" id="textCenter">Version</label>
                         <div id="version" class="col-xs-8" >
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-xs-4 col-form-label">NE Role</label>
+                    <div class="form-group row" id="rowSpacing">
+                        <label class="col-xs-4 col-form-label" id="textCenter">NE Role</label>
                         <div id="nerole" class="col-xs-8" >
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label class="col-xs-4 col-form-label">Serial Number</label>
+                    <div class="form-group row" id="rowSpacing">
+                        <label class="col-xs-4 col-form-label" id="textCenter">Serial Number</label>
                         <div id="serialNumber" class="col-xs-8" >
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label class="col-xs-4 col-form-label">Product Name</label>
+                    <div class="form-group row" id="rowSpacing">
+                        <label class="col-xs-4 col-form-label" id="textCenter">Product Name</label>
                         <div id="productName" class="col-xs-8" >
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-xs-4 col-form-label">Controller</label>
+                    <div class="form-group row" id="rowSpacing">
+                        <label class="col-xs-4 col-form-label" id="textCenter">Controller</label>
                         <div id="controller" class="col-xs-8" >
                             <select id="medropdown" class="form-control inputfield" ng-model="ne.optSelect"></select>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-xs-4 col-form-label">IP Address</label>
-                        <div id="ipAddress" class="col-xs-8" >
-                        </div>
+                    <div class="form-group row" id="rowSpacing">
+                        <label class="col-xs-4 col-form-label" id="textCenter">Native ID</label>
+                        <div id="nativeId" class="col-xs-8"></div>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-xs-4 col-form-label">Site ID</label>
+
+					
+                    <div class="form-group row" id="rowSpacing">
+                        <label class="col-xs-4 col-form-label" id="textCenter">Site Name</label>
                         <div id="siteId" class="col-xs-8" >
                             <select id="siteIdDropdown" class="form-control inputfield" ng-model="ne.siteId"></select>
                         </div>
