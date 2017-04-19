@@ -34,15 +34,16 @@
     <!--<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
     <script src="/openoui/thirdparty/js/jquery-ui.js"></script>
     <script type="text/javascript" src="/openoui/thirdparty/js/bootstrap.min.js"></script>
+	<link href="/openoui/extsys/sdncontroller/css/style.css" rel="stylesheet"/>
     <script src="/openoui/extsys/sdncontroller/js/app.js"></script>
     <script src="/openoui/extsys/sdncontroller/js/rest.js"></script>
-    <script src="/openoui/framework/js/DataService.js"></script>
+    <script src="/openoui/framework/browser/js/DataService.js"></script>
     <script src="/openoui/thirdparty/js/mustache.js"></script>
 
 
 </head>
 
-<body ng-app="ControllerApp" onload="loadTemplate()">
+<body ng-app="ControllerApp" class="containerh"> <!-- onload="loadTemplate()"-->
     <ui-view></ui-view>
 </body>
 </html>

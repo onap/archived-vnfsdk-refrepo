@@ -27,6 +27,12 @@ var app = angular.module("ControllerApp", ["ui.router", "ngTable"])
      }
      });
      })*/
+	.run(function($rootScope, $location, $state, $stateParams) {
+        $rootScope.$on('$viewContentLoaded', function() {
+            //call it here
+            loadTemplate();
+        });
+    })
     .config(function($stateProvider, $urlRouterProvider, $urlMatcherFactoryProvider) {
         //$routeProvider.caseInsensitiveMatch = true;
         $urlMatcherFactoryProvider.caseInsensitive(true);
@@ -54,8 +60,8 @@ var app = angular.module("ControllerApp", ["ui.router", "ngTable"])
                     $log.info(data);
                     loadButtons();
                 }, function (reason) {
-
                     $scope.message = "Error is :" + JSON.stringify(reason);
+					loadButtons();
                 });
         }
 
@@ -63,27 +69,13 @@ var app = angular.module("ControllerApp", ["ui.router", "ngTable"])
             var def_button_tpl = $(modelTemplate).filter('#defaultButtons').html();
             var def_iconbutton_tpl = $(modelTemplate).filter('#defaultIconButtons').html();
             var dialog = $(modelTemplate).filter('#dialog').html();
-            var add_data = {"title":"Create", "type":"btn btn-default",  "gType": "plus-icon", "iconPosition":"left", "clickAction":"showAddModal()"};
+            var add_data = {"title":"Create", "type":"btn btn-default", "gType": "plus-icon", "iconPosition":"left", "clickAction":"showAddModal()"};
            // var delete_data = {"title":"Delete Selected", "type":"btn btn-default", "gType": "delete-icon", "iconPosition":"left", "clickAction":"deleteData()"};
             var addhtml = Mustache.to_html(def_iconbutton_tpl, add_data);
             //var deletehtml = Mustache.to_html(def_iconbutton_tpl, delete_data);
             $('#extsysAction').html($compile(addhtml)($scope));
             //$('#extsysAction').append($compile(deletehtml)($scope));
 
-            $scope.checkboxes = { 'checked': false, items: {} };
-
-            //var data = [{id: 1, name: "Moroni", age: 50}, {id: 2, name: "ABC", age: 30}, {id: 3, name: "Morhoni", age: 10}, {id: 4, name: "DABC", age: 31}, {id: 5, name: "Noor", age: 30}, {id: 6, name: "ABCD", age: 40}, {id: 7, name: "DABC", age: 31}, {id: 8, name: "Noor", age: 30}, {id: 9, name: "ABCD", age: 40}, {id: 10, name: "DABC", age: 31}, {id: 11, name: "Noor", age: 30}, {id: 12, name: "ABCD", age: 40}];
-            $scope.controllerTableParams = new NgTableParams({count: 5, sorting: {name: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
-            }, { counts:[5, 10, 20, 50], dataset: $scope.data.controllerData});
-
-            /*$scope.$watch('checkboxes.checked', function(value) {
-                angular.forEach($scope.data.controllerData, function(item) {
-                    console.log("#######"+item.id);
-                    if (angular.isDefined(item.id)) {
-                        $scope.checkboxes.items[item.id] = value;
-                    }
-                });
-            });*/
 
             var modelSubmit_data = {"title":"OK", "clickAction":"saveData(ext.id)"};
             var modelSubmit_html = Mustache.to_html(def_button_tpl, modelSubmit_data);
@@ -120,29 +112,33 @@ var app = angular.module("ControllerApp", ["ui.router", "ngTable"])
             /*var extProtocol = {"ErrMsg" :     {"textboxErr" : "Protocol is required.", "modalVar":"ext.protocol"}};
             $('#myModal #protocol').append($compile(Mustache.to_html(text, extProtocol.ErrMsg))($scope));*/
 
-            var dropdowndata_protocol = {
+            /*var dropdowndata_protocol = {
                 "modalVar" : "ext.Protocol",
                 "labelField" : "itemLabel",
-                "optionsValue" : JSON.stringify($scope.data.dropdownProtocolData.item)
+                "optionsValue" : JSON.stringify($scope.data ? $scope.data.dropdownProtocolData.item : "")
             };
 
-            console.log("dropdown data:"+$scope.data.dropdownProtocolData.item);
+            //console.log("dropdown data:"+$scope.data.dropdownProtocolData.item);
 
-            $('#myModal #protocol').append($compile(Mustache.to_html(dropDown, dropdowndata_protocol))($scope));
+            $('#myModal #protocol').append($compile(Mustache.to_html(dropDown, dropdowndata_protocol))($scope));*/
+
+            var dropdownResponse=[{"id":"netconf","name":"netconf"},{"id":"snmp","name":"snmp"}];
+            var dropdownInfo = translateToDropdownInfo(dropdownResponse);
+            $('#myModal #protocolDD').html(dropdownInfo);
 
             var extProductName = {"ErrMsg" :     {"textboxErr" : "ProductName is required.", "modalVar":"ext.productName"}};
             $('#myModal #ProductName').append($compile(Mustache.to_html(text, extProductName.ErrMsg))($scope));
 
-            /*var extType = {"ErrMsg" :     {"textboxErr" : "Type is required.", "modalVar":"ext.type"}};
-            $('#myModal #type').append($compile(Mustache.to_html(text, extType.ErrMsg))($scope));*/
+            var extType = {"ErrMsg" :     {"textboxErr" : "Type is required.", "modalVar":"ext.type"}};
+            $('#myModal #type').append($compile(Mustache.to_html(text, extType.ErrMsg))($scope));
 
-            var dropdowndata_type = {
+            /*var dropdowndata_type = {
                 "modalVar" : "ext.Type",
                 "labelField" : "itemLabel",
-                "optionsValue" : JSON.stringify($scope.data.dropdownTypeData.item)
+                "optionsValue" : JSON.stringify($scope.data?$scope.data.dropdownTypeData.item:"")
             };
 
-            $('#myModal #type').append($compile(Mustache.to_html(dropDown, dropdowndata_type))($scope));
+            $('#myModal #type').append($compile(Mustache.to_html(dropDown, dropdowndata_type))($scope));*/
 
 
 
@@ -156,6 +152,20 @@ var app = angular.module("ControllerApp", ["ui.router", "ngTable"])
             var extOperation = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"ext.operation", "placeholder":"Hard Disk"}};
             $('#myModal #Operation').append($compile(Mustache.to_html(text, extOperation.ErrMsg))($scope));*/
 
+            $scope.checkboxes = { 'checked': false, items: {} };
+
+            //var data = [{id: 1, name: "Moroni", age: 50}, {id: 2, name: "ABC", age: 30}, {id: 3, name: "Morhoni", age: 10}, {id: 4, name: "DABC", age: 31}, {id: 5, name: "Noor", age: 30}, {id: 6, name: "ABCD", age: 40}, {id: 7, name: "DABC", age: 31}, {id: 8, name: "Noor", age: 30}, {id: 9, name: "ABCD", age: 40}, {id: 10, name: "DABC", age: 31}, {id: 11, name: "Noor", age: 30}, {id: 12, name: "ABCD", age: 40}];
+            $scope.controllerTableParams = new NgTableParams({count: 5, sorting: {name: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
+            }, { counts:[5, 10, 20, 50], dataset: $scope.data.controllerData});
+
+            /*$scope.$watch('checkboxes.checked', function(value) {
+             angular.forEach($scope.data.controllerData, function(item) {
+             console.log("#######"+item.id);
+             if (angular.isDefined(item.id)) {
+             $scope.checkboxes.items[item.id] = value;
+             }
+             });
+             });*/
 
 
         }
@@ -199,6 +209,17 @@ var app = angular.module("ControllerApp", ["ui.router", "ngTable"])
             $state.reload();
         }
 
+        function translateToDropdownInfo(dropdowndata) {
+            var options = '<option value="select">--select--</option>';
+            var i;
+            for (i = 0; i < dropdowndata.length; i += 1) {
+                var option = '<option value="' + dropdowndata[i].id + '">' + dropdowndata[i].name
+                    + '</option>';
+                options = options + option;
+            }
+
+            return options;
+        }
 
 
         /*$scope.checkAll = function () {
@@ -335,22 +356,43 @@ function loadTemplate() {
     });
 }*/
 
-var modelTemplate = "";
+/*var modelTemplate = "";
 function loadTemplate() {
-    $.get('framework/template.html', function (template) {
+    *//*$.get('/openoui/framework/template.html', function (template) {
+        modelTemplate += template;
+    });*//*
+    $.get('/openoui/framework/templateContainer.html', function (template) {
         modelTemplate += template;
     });
-    $.get('framework/templateContainer.html', function (template) {
-        modelTemplate += template;
-    });
-    $.get('framework/templateWidget.html', function (template) {
+    $.get('/openoui/framework/templateWidget.html', function (template) {
         //console.log("Template is : "+template);
         modelTemplate += template;
     });
-    $.get('framework/templateNotification.html', function (template) {
+    $.get('/openoui/framework/templateNotification.html', function (template) {
         modelTemplate += template;
     });
-    $.get('framework/templateFunctional.html', function (template) {
+    $.get('/openoui/framework/templateFunctional.html', function (template) {
+        modelTemplate += template;
+    });
+}*/
+
+var modelTemplate = "";
+function loadTemplate() {
+
+    /*$.get('/openoui/resmgr/templates/template.html', function (template) {
+        modelTemplate += template;
+     });*/
+    $.get('/openoui/extsys/sdncontroller/templates/templateContainer.html', function (template) {
+        modelTemplate += template;
+    });
+    $.get('/openoui/extsys/sdncontroller/templates/templateWidget.html', function (template) {
+        //console.log("Template is : "+template);
+        modelTemplate += template;
+    });
+    $.get('/openoui/extsys/sdncontroller/templates/templateNotification.html', function (template) {
+        modelTemplate += template;
+    });
+    $.get('/openoui/extsys/sdncontroller/templates/templateFunctional.html', function (template) {
         modelTemplate += template;
     });
 }

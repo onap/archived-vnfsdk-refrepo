@@ -25,6 +25,16 @@ app.factory("neDataService", function($http, DataService, $log, siteDataService)
                     return response;
                 });
         },
+        getNECtrlDDList : function () {
+           // var url = "http://10.229.36.183:18008";
+            url += "/openoapi/extsys/v1/sdncontrollers";
+            return DataService.get(url)
+                .then(function(response){
+                    $log.info("in get data service data is  :"+response);
+                    console.log(response);
+                    return response;
+                });
+        },
         getAllNEData : function() {
             /*return $http({
                 url: 'http://localhost:3000/meAPI/getAllNEData',

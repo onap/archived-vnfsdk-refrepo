@@ -1205,9 +1205,21 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 
             $('#myModal #controller').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));*/
 			
-			var dropdownResponse=[{"serviceTemplateId":"meCtrl","templateName":"mecontroller1"},{"serviceTemplateId":"meCtrl2","templateName":"mecontroller"}];
+			/*var dropdownResponse=[{"serviceTemplateId":"meCtrl","templateName":"mecontroller1"},{"serviceTemplateId":"meCtrl2","templateName":"mecontroller"}];
 			var dropdownInfo = translateToDropdownInfo(dropdownResponse);
-            document.getElementById("medropdown").innerHTML = dropdownInfo;
+            document.getElementById("medropdown").innerHTML = dropdownInfo;*/
+
+
+            neDataService.getNECtrlDDList()
+                .then(function (response) {
+                    $scope.ctrlList = response.data;
+                    var dropdownInfo = translateCtrlIDToDropdownInfo($scope.ctrlList);
+                    $("#myModal #medropdown").html(dropdownInfo);
+                    console.log("Data: ");
+                    $log.info(data);
+                }, function (reason) {
+                    $scope.message = "Error is :" + JSON.stringify(reason);
+                });
 
             /*var neController = {"ErrMsg" :     {"errmsg" : "IP Address is required.", "modalVar":"ne.controller"}};
             $('#myModal #controller').append($compile(Mustache.to_html(text, neController.ErrMsg))($scope));*/
@@ -1268,6 +1280,18 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var i;
             for (i = 0; i < dropdowndata.length; i += 1) {
                 var option = '<option value="' + dropdowndata[i].id + '">' + dropdowndata[i].name
+                    + '</option>';
+                options = options + option;
+            }
+
+            return options;
+        }
+
+        function translateCtrlIDToDropdownInfo(dropdowndata) {
+            var options = '<option value="select">--select--</option>';
+            var i;
+            for (i = 0; i < dropdowndata.length; i += 1) {
+                var option = '<option value="' + dropdowndata[i].sdnControllerId + '">' + dropdowndata[i].name
                     + '</option>';
                 options = options + option;
             }
