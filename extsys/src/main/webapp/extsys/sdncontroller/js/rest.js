@@ -18,7 +18,7 @@
 
 
 app.factory("controllerDataService", function($http, DataService, $log){
-    var uri = 'http://192.168.9.13:18008';
+    var uri = '';
     return {
         getControllerData : function() {
             /*return $http({
