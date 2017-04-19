@@ -68,11 +68,11 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                 controller : "datacenterCtrl"
             })
 
-           /* .state("resource.vim", {
+            .state("resource.vim", {
                 url: "/vim",
                 templateUrl : "nfv-resmgr/vim/vim.html",
                 controller : "vimCtrl"
-            })*/
+            })
 
     })
 
@@ -316,6 +316,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 
         $scope.deleteData = function(id) {
             var confirmation=false;
+            var checkbox = false;
             var dialog_tpl = $(modelTemplate).filter('#personDialog').html();
             var error = {"err_data" : { "title": "Error",
                 "showClose": "true",
@@ -803,6 +804,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 
         $scope.deleteData = function(id) {
             var confirmation=false;
+            var checkbox = false;
             var dialog_tpl = $(modelTemplate).filter('#personDialog').html();
             var error = {"err_data" : { "title": "Error",
                 "showClose": "true",
@@ -1066,6 +1068,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 
         $scope.deleteData = function(id) {
             var confirmation=false;
+            var checkbox = false;
             var dialog_tpl = $(modelTemplate).filter('#personDialog').html();
             var error = {"err_data" : { "title": "Error",
                 "showClose": "true",
@@ -1181,13 +1184,13 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var neName = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.name", "errtag":"textboxErrName", "errfunc":"validatetextboxName","required":true}};
             $('#myModal #name').append($compile(Mustache.to_html(text, neName.ErrMsg))($scope));
 
-            var neVersion = {"ErrMsg" :     {"errmsg" : "The version is required.", "modalVar":"ne.version","errtag":"textboxErrVersion", "errfunc":"validatetextboxVersion","required":true}};
+            var neVersion = {"ErrMsg" :     {"errmsg" : "The version is required.", "modalVar":"ne.version"}};  //,"errtag":"textboxErrVersion", "errfunc":"validatetextboxVersion","required":true
             $('#myModal #version').append($compile(Mustache.to_html(text, neVersion.ErrMsg))($scope));
 
-            var neNERole = {"ErrMsg" :     {"errmsg" : "The role is required.", "modalVar":"ne.role","errtag":"textboxErrRole", "errfunc":"validatetextboxRole","required":true}};
+            var neNERole = {"ErrMsg" :     {"errmsg" : "The role is required.", "modalVar":"ne.role"}}; //,"errtag":"textboxErrRole", "errfunc":"validatetextboxRole","required":true
             $('#myModal #nerole').append($compile(Mustache.to_html(text, neNERole.ErrMsg))($scope));
 
-            var serialNumber = {"ErrMsg" :     {"errmsg" : "The serialNumber is required.", "modalVar":"ne.serialNumber","errtag":"textboxErrSerial", "errfunc":"validatetextboxSerial","required":true}};
+            var serialNumber = {"ErrMsg" :     {"errmsg" : "The serialNumber is required.", "modalVar":"ne.serialNumber"}}; //,"errtag":"textboxErrSerial", "errfunc":"validatetextboxSerial","required":true
             $('#myModal #serialNumber').append($compile(Mustache.to_html(text, serialNumber.ErrMsg))($scope));
 
             var neProductName = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.productName" }};
@@ -1209,23 +1212,23 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             /*var neController = {"ErrMsg" :     {"errmsg" : "IP Address is required.", "modalVar":"ne.controller"}};
             $('#myModal #controller').append($compile(Mustache.to_html(text, neController.ErrMsg))($scope));*/
 
-            var neIPAddress = {"ErrMsg" :     {"errmsg" : "IP Address is required.", "modalVar":"ne.ipAddress"}};
+            var neIPAddress = {"ErrMsg" :     {"errmsg" : "IP Address is required.", "modalVar":"ne.ipAddress","errtag":"textboxErrIP", "errfunc":"validatetextboxIP","required":true}};
             $('#myModal #ipAddress').append($compile(Mustache.to_html(text, neIPAddress.ErrMsg))($scope));
 
 
 
-            var neAdminState = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.adminState"}};
-            $('#myModal #adminState').append($compile(Mustache.to_html(text, neAdminState.ErrMsg))($scope));
+            var neNativeId = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.nativeId"}};
+            $('#myModal #nativeId').append($compile(Mustache.to_html(text, neNativeId.ErrMsg))($scope));
 
-            var neOperatingState = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.operatingState"}};
-            $('#myModal #operatingState').append($compile(Mustache.to_html(text, neOperatingState.ErrMsg))($scope));
+            /*var neOperatingState = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.operatingState"}};
+            $('#myModal #operatingState').append($compile(Mustache.to_html(text, neOperatingState.ErrMsg))($scope));*/
 
 
             neDataService.getNESiteDDList()
                 .then(function (data) {
                     $scope.siteIDList = data.sites;
                     var dropdownInfo = translateSiteIdToDropdownInfo($scope.siteIDList);
-                    $("#siteIdDropdown").html(dropdownInfo);
+                    $("#myModal #siteIdDropdown").html(dropdownInfo);
                     console.log("Data: ");
                     $log.info(data);
                 }, function (reason) {
@@ -1304,6 +1307,14 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                 $scope.textboxErrSerial = true;
         }
 
+        $scope.validatetextboxIP = function (value){
+            if($scope.ne.ipAddress) {
+                $scope.textboxErrIP = false;
+            }
+            else
+                $scope.textboxErrIP = true;
+        }
+
         $scope.closeModal = function() {
             console.log("Closing Modal...");
             $('#myModal').modal('hide');
@@ -1328,7 +1339,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $("#myModal").modal({}).draggable();
         }
         $scope.saveData = function(id) {
-            if (!$scope.textboxErrName && !$scope.textboxErrVersion && !$scope.textboxErrRole && !$scope.textboxErrSerial) {
+            if (!$scope.textboxErrName && !$scope.textboxErrIP) {
 				
 				var nes = {};
 				nes.managedElement = $scope.ne;
@@ -1362,6 +1373,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 
         $scope.deleteData = function(id) {
             var confirmation=false;
+            var checkbox = false;
             var dialog_tpl = $(modelTemplate).filter('#personDialog').html();
             var error = {"err_data" : { "title": "Error",
                 "showClose": "true",
@@ -1623,6 +1635,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 
         $scope.deleteData = function(id) {
             var confirmation=false;
+            var checkbox = false;
             var dialog_tpl = $(modelTemplate).filter('#personDialog').html();
             var error = {"err_data" : { "title": "Error",
                 "showClose": "true",
@@ -1693,6 +1706,15 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 
 
     })
+
+
+    .controller("vimCtrl", function($scope, $log){
+        $scope.message = "vimCtrl";
+        //loadVimData();
+    })
+
+
+
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 

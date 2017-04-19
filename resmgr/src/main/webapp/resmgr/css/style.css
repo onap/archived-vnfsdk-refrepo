@@ -16,6 +16,18 @@
 
 .containerh{
 	background-color:white !important;
-	min-height:500px;
+	min-height:800px;
 
+}
+
+#textCenter{
+    padding-top:8px;
+}
+
+#rowSpacing{
+    margin-bottom: 9px;
+}
+
+#borderSpacing{
+    margin-bottom: -15px;
 }
