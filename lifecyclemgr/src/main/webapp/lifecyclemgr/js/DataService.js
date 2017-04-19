@@ -393,7 +393,7 @@ function generateParamComponent(nodeType, identify, param, strReadOnly) {
     var name = getParamLabel(nodeType, param);
     var id = getParamId(identify,param);
     var component = '';
-    if (param.type === 'string') {
+    if (param.type != 'enum') {
         component = '<div class="mT15 form-group row-content" style="margin-left:0px;">'
                 + '<label class="col-sm-6 control-label labelstyle">'
                 + '<span>' + name + '</span>' + generateRequiredLabel(param)
@@ -411,7 +411,7 @@ function generateParamComponent(nodeType, identify, param, strReadOnly) {
         component = '<div class="form-group row-content" style="margin-left:0px;margin-bottom:5px;">'
                 + '<label class="col-sm-6 control-label labelstyle">'
                 + '<span>' + name + '</span>'
-                + '<span class="required">*</span>'
+                + generateRequiredLabel(param)
                 + '</label>'
                 + '<div class="col-sm-6">'
                 + '<select class="form-control" style ="padding-top: 0px;padding-bottom: 0px;"'
