@@ -17,13 +17,13 @@
 <html>
 <head lang="en">
 <meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="/openoui/common/thirdparty/font-awesome/css/font-awesome.min.css"/>
-	<link rel="stylesheet" type="text/css" href="/openoui/common/thirdparty/bootstrap/css/bootstrap.min.css"/>
-	<link rel="stylesheet" type="text/css" href="/openoui/common/thirdparty/animate/animate.min.css"/>
-	<link rel="stylesheet" type="text/css" href="/openoui/common/thirdparty/data-tables/dataTables.bootstrap.css"/>
-	<link rel="stylesheet" type="text/css" href="/openoui/common/css/ngict-component.css"/>
-	<link rel="stylesheet" type="text/css" href="/openoui/common/css/ZteIctIcons/style.css"/>
-	<link rel="stylesheet" type="text/css" href="css/monitorSetting.css"/>
+	<link rel="stylesheet" type="text/css" href="/openoui/thirdparty/font-awesome/css/font-awesome.min.css"/>
+	<link rel="stylesheet" type="text/css" href="/openoui/thirdparty/bootstrap/css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="/openoui/thirdparty/animate/animate.min.css"/>
+	<link rel="stylesheet" type="text/css" href="/openoui/thirdparty/data-tables/dataTables.bootstrap.css"/>
+	<link rel="stylesheet" type="text/css" href="/openoui/monitor/css/ngict-component.css"/>
+	<link rel="stylesheet" type="text/css" href="/openoui/monitor/css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="/openoui/monitor/css/monitorSetting.css"/>
 	<style>
 		.ms-controller {
 			visibility: hidden
@@ -79,21 +79,21 @@
         </table>
     </div>
  </div>
-<script type="text/javascript" src="/openoui/common/thirdparty/jquery/jquery-1.10.2.min.js"></script>
-<script type="text/javascript" src="/openoui/common/thirdparty/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/openoui/common/thirdparty/jquery.i18n/jquery.i18n.properties-1.0.9.js"></script>
-<script type="text/javascript" src="js/loadi18nApp_ngict-umc-monitor.js"></script>
-<script type="text/javascript" src="/openoui/common/js/tools.js"></script>
-<script type="text/javascript" src="/openoui/common/js/core/hk.min.js" ></script>
+<script type="text/javascript" src="/openoui/thirdparty/jquery/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="/openoui/thirdparty/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/openoui/thirdparty/jquery.i18n/jquery.i18n.properties-1.0.9.js"></script>
+<script type="text/javascript" src="/openoui/monitor/js/loadi18nApp_ngict-umc-monitor.js"></script>
+<script type="text/javascript" src="/openoui/monitor/js/tools.js"></script>
+<script type="text/javascript" src="/openoui/monitor/js/hk.min.js" ></script>
 <script type="text/javascript">
 	var lang= getLanguage();
 	loadPropertiesSideMenu(lang, 'umc-monitor-iui-i18n', 'i18n/');
 </script>
-<script type="text/javascript" src="/openoui/common/thirdparty/data-tables/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="/openoui/common/thirdparty/bootstrap-growl/bootstrap-growl.min.js"></script>
-<script type="text/javascript" src="/openoui/common/thirdparty/avalon/avalon.js"></script>
-<script type="text/javascript" src="js/monitorSettingUtil.js"></script>
-<script type="text/javascript" src="js/monitorSettingController.js"></script>
+<script type="text/javascript" src="/openoui/thirdparty/data-tables/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/openoui/thirdparty/bootstrap-growl/bootstrap-growl.min.js"></script>
+<script type="text/javascript" src="/openoui/thirdparty/avalon/avalon.js"></script>
+<script type="text/javascript" src="/openoui/monitor/js/monitorSettingUtil.js"></script>
+<script type="text/javascript" src="/openoui/monitor/js/monitorSettingController.js"></script>
 <script>
 	$(function(){
 		vm.queryMonitorList();
