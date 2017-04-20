@@ -28,8 +28,8 @@
         .module('vnfmarket')
         .constant("baseUrlConfig", {
             "common": {
-                "ip" : "http://127.0.0.1", 
-                "port" : "8080"
+                "ip" : "", //ses
+                "port" : "" //ses
             }
         })
 })();
