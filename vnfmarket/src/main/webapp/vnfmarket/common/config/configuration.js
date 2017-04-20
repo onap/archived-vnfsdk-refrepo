@@ -72,7 +72,7 @@
                 }
             },
             "modulePath": {
-                "home": "vnfmarket/app/modules/home"
+                "home": "/openoui/vnfmarket/app/modules/home"
             }
         })
 })();
