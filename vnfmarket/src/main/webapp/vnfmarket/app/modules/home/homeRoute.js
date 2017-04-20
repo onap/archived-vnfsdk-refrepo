@@ -26,7 +26,7 @@
 angular.module('vnfmarket')
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider, vnfConfig) {
 
-        var homePath = 'vnfmarket/app/modules/home';
+        var homePath = '/openoui/vnfmarket/app/modules/home';
         $stateProvider
             .state('home', {
                 url: '',

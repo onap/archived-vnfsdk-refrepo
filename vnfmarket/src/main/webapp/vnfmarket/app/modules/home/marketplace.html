@@ -16,7 +16,7 @@
 <div class="md-padding nomargin nopadding" flex layout-sm="column">
     <md-card class="nomargin">
         <md-card-content class="nopadding">
-            <img src="vnfmarket/common/images/productioncardtype.png"  style="width:100%;">
+            <img src="/openoui/vnfmarket/common/images/productioncardtype.png"  style="width:100%;">
         </md-card-content>
     </md-card>
     <!-- Start About Page -->
@@ -95,14 +95,14 @@
                         <button class="btn btnDefault iconMargin" ng-click="vm.serviceUpload(false, service.csarId)">
                           <md-tooltip md-direction="top">{{'common.actions.update' | translate}}</md-tooltip>
                             <i>
-                                <img src="vnfmarket/common/images/reupload.png" class="btnIconSpacing">
+                                <img src="/openoui/vnfmarket/common/images/reupload.png" class="btnIconSpacing">
                             </i>
                           {{'common.actions.update' | translate}}
                         </button>
                         <button class="btn btnDefault iconMargin deletebutton" ng-click="vm.serviceDelete(service)">
                           <md-tooltip md-direction="top">{{'common.actions.delete' | translate}}</md-tooltip>
                             <i>
-                                <img src="vnfmarket/common/images/delete.png" class="btnIconSpacing">
+                                <img src="/openoui/vnfmarket/common/images/delete.png" class="btnIconSpacing">
                             </i>
                             {{'common.actions.delete' | translate}}
                         </button>
@@ -110,7 +110,7 @@
                         <button class="btn btnPrimary downloadIcon" ng-click="vm.downloadService(service.csarId)" ng-disabled="service.downloadCount == -1">
                           <md-tooltip md-direction="top">{{'common.actions.download' | translate}} </md-tooltip>
                             <i>
-                                <img src="vnfmarket/common/images/download.png" class="btnIconSpacing">
+                                <img src="/openoui/vnfmarket/common/images/download.png" class="btnIconSpacing">
                             </i>
                           {{'common.actions.download' | translate}}
                         </button>
@@ -184,7 +184,7 @@
                                 <md-icon class="md-icon" aria-label="{{'common.actions.update' | translate}}" ng-click="vm.serviceUpload(false, service.csarId)">
                                 <md-tooltip md-direction="top">{{'common.actions.update' | translate}}</md-tooltip>
                                 <i>
-                                <img src="vnfmarket/common/images/reupload.png" class="btnIconSpacing">
+                                <img src="/openoui/vnfmarket/common/images/reupload.png" class="btnIconSpacing">
                             </i>
                                     <!-- <i class="material-icons materialIconAdjustment" aria-hidden="true">{{'common.actions.fileUpload' | translate}}</i> -->
                                 </md-icon>
@@ -192,13 +192,13 @@
                                 <md-tooltip md-direction="top">{{'common.actions.download' | translate}}</md-tooltip>
                                     <!-- <i class="material-icons materialIconAdjustment" aria-hidden="true">{{'common.actions.getApp' | translate}}</i> -->
                                     <i>
-                                <img src="vnfmarket/common/images/download.png" class="btnIconSpacing primaryColor">
+                                <img src="/openoui/vnfmarket/common/images/download.png" class="btnIconSpacing primaryColor">
                             </i>
                                 </md-icon>
                                 <md-icon class="md-icon" aria-label="{{'common.actions.delete' | translate}}"  ng-click="vm.serviceDelete(service)">
                                 <md-tooltip md-direction="top">{{'common.actions.delete' | translate}}</md-tooltip>
                                 <i>
-                                <img src="vnfmarket/common/images/delete.png" class="btnIconSpacing">
+                                <img src="/openoui/vnfmarket/common/images/delete.png" class="btnIconSpacing">
                             </i>
                                     <!-- <i class="fa fa-trash-o icon-red fa-sm" aria-hidden="true"></i> -->
 
@@ -215,7 +215,7 @@
     <div ng-if="vm.services.length == 0">
     <div class="content emptyPage">
         <div class="imageContainer">
-            <img src="vnfmarket/common/images/empty.png" class="btnIconSpacing">
+            <img src="/openoui/vnfmarket/common/images/empty.png" class="btnIconSpacing">
         </div>
         <h3>{{'module.marketplace.main.emptyList.label' | translate}} <a ng-click="vm.serviceUpload(true)">{{'module.marketplace.main.emptyList.anchor' | translate}}</a> {{'module.marketplace.main.emptyList.labelContinued' | translate}}</h3>
     </div>
