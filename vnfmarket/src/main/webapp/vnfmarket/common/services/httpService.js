@@ -39,7 +39,8 @@
             var defer = $q.defer()
             $http({
                 method: method,
-                url: baseUrlConfig.common.ip + ":" + baseUrlConfig.common.port + url,
+               //ses url: baseUrlConfig.common.ip + ":" + baseUrlConfig.common.port + url,
+			   url:url,
                 data: data,
                 headers: headers
             }).then(function successCallback(response) {
@@ -73,7 +74,8 @@
             var defer = $q.defer()
             $http({
                 method: method,
-                url: baseUrlConfig.common.ip + ":" + baseUrlConfig.common.port + url,
+              //ses  url: baseUrlConfig.common.ip + ":" + baseUrlConfig.common.port + url,
+			   url:url,
                 data: data,
                 headers: headers,
                 transformRequest: angular.identity,

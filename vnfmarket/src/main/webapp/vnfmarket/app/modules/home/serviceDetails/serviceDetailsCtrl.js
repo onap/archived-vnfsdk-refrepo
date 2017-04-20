@@ -46,7 +46,8 @@
         }
 
         vm.service = $stateParams.serviceDetails;
-        vm.service.funcTestReportUrl = baseUrlConfig.common.ip + ":" + baseUrlConfig.common.port + vm.service.report;
+      //ses  vm.service.funcTestReportUrl = baseUrlConfig.common.ip + ":" + baseUrlConfig.common.port + vm.service.report;
+	    vm.service.funcTestReportUrl =  vm.service.report;
 
         vm.downloadService = function(csarId) {
             homeService.updateDownloadCount(csarId).then(function(response){
