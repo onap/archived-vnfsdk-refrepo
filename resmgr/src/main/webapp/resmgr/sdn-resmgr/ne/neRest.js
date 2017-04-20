@@ -26,7 +26,7 @@ app.factory("neDataService", function($http, DataService, $log, siteDataService)
                 });
         },
         getNECtrlDDList : function () {
-           // var url = "http://10.229.36.183:18008";
+            var url = "";
             url += "/openoapi/extsys/v1/sdncontrollers";
             return DataService.get(url)
                 .then(function(response){
