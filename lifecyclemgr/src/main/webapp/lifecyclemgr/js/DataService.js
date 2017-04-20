@@ -364,7 +364,9 @@ function collectParamValue(identify, param) {
  * @returns
  */
 function getParamId(identify, param) {
-    return '' ===identify ? param.name : identify + '_' + param.name;
+    var tmpname = param.name.replace(/-/g, '_');
+    var tmpname1 = tmpname.replace(/./g, '_');
+    return '' ===identify ? tmpname1 : identify + '_' + tmpname1;
 }
 
 /**
