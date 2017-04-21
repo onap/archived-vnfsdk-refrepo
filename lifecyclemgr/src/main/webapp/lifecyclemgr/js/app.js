@@ -536,23 +536,25 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
         console.log("detailInfoCtrl --> $stateParams.id:: " + $stateParams.id);
         //$scope.currentId = $stateParams.id;
         $scope.rightPanelHeader = "VPN Manager";
-
-        var jsonData = DataService.loadServiceDetails($stateParams.id);
+        var rowData = DataService.getSavedLCData($stateParams.id);
+        var jsonData =[];
+        if(rowData.serviceType === "SDNO" || rowData.serviceType === "NFVO"){
+            jsonData[0] = {"id": $stateParams.id, "name": rowData.serviceType};
+        }
+        else{
+            jsonData = DataService.loadServiceTopoSequence($stateParams.id);
+        }
         $(".accordion").html("");
         for (var i = 0; i < jsonData.length; i++) {
             //console.log("jsonData Name: " + jsonData[i].name);
-            if (jsonData[i].name == "sdno") {
+            if (jsonData[i].name == "SDNO") {
                 //$("#sdnoLink").text(jsonData[i].name.toUpperCase());
                 //console.log("Adding Accordian to SDNO");
-                $(".accordion").append($compile(addAccordionData("sdno", jsonData[i].name.toUpperCase(), $stateParams.id))($scope));
+                $(".accordion").append($compile(addAccordionData("sdno", jsonData[i].name.toUpperCase(), jsonData[i].id))($scope));
             }
-            else if (jsonData[i].name == "gso") {
-                //console.log("Adding Accordian to GSO");
-                $(".accordion").append($compile(addAccordionData("gso", jsonData[i].name.toUpperCase(), $stateParams.id))($scope));
-            }
-            else if (jsonData[i].name == "nfvo") {
+            else if (jsonData[i].name == "NFVO") {
                 //console.log("Adding Accordian to NFVO");
-                $(".accordion").append($compile(addAccordionData("nfvo", jsonData[i].name.toUpperCase(), $stateParams.id))($scope));
+                $(".accordion").append($compile(addAccordionData("nfvo", jsonData[i].name.toUpperCase(), jsonData[i].id))($scope));
             }
             else {
 
@@ -716,7 +718,8 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
 
     .controller('inputDataCtrl', function($scope, $stateParams, $log, DataService) {
         console.log("inputDataCtrl --> $stateParams.id:: " + $stateParams.id);
-        $scope.inputData = DataService.getSavedLCData($stateParams.id);
+        var rowData = DataService.getSavedLCData($stateParams.id);
+        $scope.inputData = rowData.inputParameters;
         $log.info($scope.inputData);
         $("div.inputDataElements").html("");
         $("div.inputDataElements").append(convertInputsToUI('', 'show', $scope.inputData));
