@@ -62,7 +62,7 @@ app.factory("DataService", function($http, $log){
             if(lcData) {
                 for (var i = 0; i < lcData.length; i++) {
                     if(lcData[i].serviceId == id) {
-                        returnData = lcData[i].inputParameters;
+                        returnData = lcData[i];
                         break;
                     }
                 }
@@ -93,8 +93,23 @@ app.factory("DataService", function($http, $log){
                 return response.data;
             });
         },
-        loadServiceDetails : function(id) {
-            return JSON.parse('[{"id":"12345", "name":"sdno"}, {"id":"23456", "name":"gso"},{"id":"12345", "name":"nfvo"}]');
+        loadServiceTopoSequence : function(id) {
+            return $http({
+                url: '/openoapi/gso/v1/services/toposequence/' + id,
+                //url: 'http://localhost:5000/api/getOverlayVPNData',
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'}
+            }).then(function(response){
+                //$log.info(response);
+                var serviceToposequence = response.data;
+                var responseData = [];
+                for (var i = 0; i < serviceToposequence.service.segments.length; i++) {
+                    var segment = serviceToposequence.service.segments[i];
+                    responseData[i] = {"id":segment.serviceSegmentId, "name":segment.serviceSegmentType};
+                }
+                return responseData;
+            });
+            //return JSON.parse('[{"id":"12345", "name":"sdno"}, {"id":"23456", "name":"gso"},{"id":"12345", "name":"nfvo"}]');
         },
         loadNfvoServiceDetails : function(id) {
             return JSON.parse('{"vnfInfoId": [{ "vnfInstanceId": "123", "vnfInstanceName": "vnf instance 1", "vnfProfileId": "321" }, { "vnfInstanceId": "123", "vnfInstanceName": "vnf instance 1", "vnfProfileId": "321" }],  "vlInfo": [{ "networkResource": {"resourceName": "network resource 1"}, "linkPortResource": { "resourceName": "link port resource 1"}}, { "networkResource": {"resourceName": "network resource 1"}, "linkPortResource": { "resourceName": "link port resource 1"}}], "vnffgInfo": [{"vnfId": "vnfid-123", "virtualLinkId": "virtual link 123", "cpId": "cp id 123", "nfp": "nfp 123"}, {"vnfId": "vnfid-123", "virtualLinkId": "virtual link 123", "cpId": "cp id 123", "nfp": "nfp 123"}]}');
