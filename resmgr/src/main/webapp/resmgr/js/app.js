@@ -643,8 +643,8 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         $scope.init = function() {
             locationDataService.getLocationData()
                 .then(function (data) {
-                    $scope.data = data;
-                    console.log("Data: ");
+                    $scope.data = data.locations;
+                    console.log(JSON.stringify($scope.data));
                     $log.info(data);
                     loadButtons();
                 }, function (reason) {
@@ -665,7 +665,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $('#locationAction').html($compile(addhtml)($scope));
             $('#locationAction').append($compile(deletehtml)($scope));
 
-            var modelSubmit_data = {"title":"OK", "clickAction":"saveData(loc.Id)"};
+            var modelSubmit_data = {"title":"OK", "clickAction":"saveData(loc.id)"};
             var modelSubmit_html = Mustache.to_html(def_button_tpl, modelSubmit_data);
             $('#myModal #footerBtns').html($compile(modelSubmit_html)($scope));
 
@@ -678,34 +678,34 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var ipv4 = $(modelTemplate).filter('#ipv4').html();
             var number = $(modelTemplate).filter('#numeric').html();
 
-            var locId = {"ErrMsg" :     {"errmsg" : "Name is required.", "modalVar":"loc.Id", "errtag":"textboxErrId", "errfunc":"validatetextboxId"}};
+            var locId = {"ErrMsg" :     {"errmsg" : "Name is required.", "modalVar":"loc.id", "errtag":"textboxErrId", "errfunc":"validatetextboxId"}};
             $('#myModal #Name').append($compile(Mustache.to_html(text, locId.ErrMsg))($scope));
 
-            var locCountry = {"ErrMsg" :     {"errmsg" : "Country is required.", "modalVar":"loc.Country", "errtag":"textboxErrCountry", "errfunc":"validatetextboxCountry","required":true}};
+            var locCountry = {"ErrMsg" :     {"errmsg" : "Country is required.", "modalVar":"loc.country", "errtag":"textboxErrCountry", "errfunc":"validatetextboxCountry","required":true}};
             $('#myModal #Country').append($compile(Mustache.to_html(text, locCountry.ErrMsg))($scope));
 
-            var locLocation = {"ErrMsg" :     {"errmsg" : "Location is required.", "modalVar":"loc.Location", "errtag":"textboxErrLocation", "errfunc":"validatetextboxLocation","required":true}};
+            var locLocation = {"ErrMsg" :     {"errmsg" : "Location is required.", "modalVar":"loc.location", "errtag":"textboxErrLocation", "errfunc":"validatetextboxLocation","required":true}};
             $('#myModal #Location').append($compile(Mustache.to_html(text, locLocation.ErrMsg))($scope));
 
-            var locDescription = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"loc.Description", "errtag":"textboxErr", "errfunc":"validatetextbox"}};
+            var locDescription = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"loc.description", "errtag":"textboxErr", "errfunc":"validatetextbox"}};
             $('#myModal #Description').append($compile(Mustache.to_html(text, locDescription.ErrMsg))($scope));
 
-            var locLatitude = {"ErrMsg" :     {"errmsg" : "Latitude is required.", "modalVar":"loc.Latitude", "errtag":"textboxErrLatitude", "errfunc":"validatetextboxLatitude", "required":true}};
+            var locLatitude = {"ErrMsg" :     {"errmsg" : "Latitude is required.", "modalVar":"loc.latitude", "errtag":"textboxErrLatitude", "errfunc":"validatetextboxLatitude", "required":true}};
             $('#myModal #Latitude').append($compile(Mustache.to_html(text, locLatitude.ErrMsg))($scope));
 
-            var locLongitude = {"ErrMsg" :     {"errmsg" : "Longitude is required.", "modalVar":"loc.Longitude", "errtag":"textboxErrLongitude", "errfunc":"validatetextboxLongitude", "required":true}};
+            var locLongitude = {"ErrMsg" :     {"errmsg" : "Longitude is required.", "modalVar":"loc.longitude", "errtag":"textboxErrLongitude", "errfunc":"validatetextboxLongitude", "required":true}};
             $('#myModal #Longitude').append($compile(Mustache.to_html(text, locLongitude.ErrMsg))($scope));
 
             $scope.checkboxes = { 'checked': false, items: {} };
 
-            $scope.neTableParams = new NgTableParams({count: 5, sorting: {Id: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
-            }, { counts:[5, 10, 20, 50], dataset: $scope.data.locationData});
+            $scope.neTableParams = new NgTableParams({count: 5, sorting: {Id: 'asc'}    
+            }, { counts:[5, 10, 20, 50], dataset: $scope.data});
 
             $scope.$watch('checkboxes.checked', function(value) {
                 $scope.checkboxes.items = {};
                 angular.forEach($scope.neTableParams.data, function(item) {
-                    if (angular.isDefined(item.Id)) {
-                        $scope.checkboxes.items[item.Id] = value;
+                    if (angular.isDefined(item.id)) {
+                        $scope.checkboxes.items[item.id] = value;
                     }
                 });
             });
@@ -713,7 +713,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         }
 
         $scope.validatetextboxCountry = function (value){
-            if($scope.loc.Country) {
+            if($scope.loc.country) {
                 $scope.textboxErrCountry = false;
             }
             else
@@ -721,7 +721,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         }
 
         $scope.validatetextboxLocation = function (value){
-            if($scope.loc.Location) {
+            if($scope.loc.location) {
                 $scope.textboxErrLocation = false;
             }
             else
@@ -729,7 +729,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         }
 
         $scope.validatetextboxLatitude = function (value){
-            if($scope.loc.Latitude) {
+            if($scope.loc.latitude) {
                 $scope.textboxErrLatitude = false;
             }
             else
@@ -737,7 +737,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         }
 
         $scope.validatetextboxLongitude = function (value){
-            if($scope.loc.Longitude) {
+            if($scope.loc.longitude) {
                 $scope.textboxErrLongitude = false;
             }
             else
@@ -771,7 +771,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             if (!$scope.textboxErrLocation && !$scope.textboxErrCountry && !$scope.textboxErrLatitude && !$scope.textboxErrLongitude) {
 				
 				var locs = {}
-					locs.location = $scope.loc
+					locs = $scope.loc
                 if(id) {
 					
 					
@@ -861,10 +861,10 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         $scope.editData = function(id) {
             console.log("To be edited : " + id);
             var dataFound = false;
-            angular.forEach($scope.data.locationData, function(data) {
+            angular.forEach($scope.data, function(data) {
                 if(!dataFound) {
-                    if (data.Id == id) {
-                        console.log("Found : " + data.Id);
+                    if (data.id == id) {
+                        console.log("Found : " + data.id);
                         $scope.loc = data;
                         $("#myModal").modal();
                         dataFound = true;
@@ -1205,9 +1205,9 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 
             $('#myModal #controller').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));*/
 			
-			/*var dropdownResponse=[{"serviceTemplateId":"meCtrl","templateName":"mecontroller1"},{"serviceTemplateId":"meCtrl2","templateName":"mecontroller"}];
+			var dropdownResponse=[{"serviceTemplateId":"meCtrl","templateName":"mecontroller1"},{"serviceTemplateId":"meCtrl2","templateName":"mecontroller"}];
 			var dropdownInfo = translateToDropdownInfo(dropdownResponse);
-            document.getElementById("medropdown").innerHTML = dropdownInfo;*/
+            document.getElementById("medropdown").innerHTML = dropdownInfo;
 
 
             neDataService.getNECtrlDDList()
@@ -1476,7 +1476,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         $scope.init = function() {
             datacenterDataService.getDatacenterData()
                 .then(function (data) {
-                    $scope.data = data;
+                    $scope.data = data.datacenters;
                     console.log("Data: ");
                     $log.info(data);
                     loadButtons();
@@ -1498,7 +1498,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $('#datacenterAction').html($compile(addhtml)($scope));
             $('#datacenterAction').append($compile(deletehtml)($scope));
 
-            var modelSubmit_data = {"title":"OK", "clickAction":"saveData(datacenter.Id)"};
+            var modelSubmit_data = {"title":"OK", "clickAction":"saveData(datacenter.id)"};
             var modelSubmit_html = Mustache.to_html(def_button_tpl, modelSubmit_data);
             $('#myModal #footerBtns').html($compile(modelSubmit_html)($scope));
 
@@ -1511,10 +1511,10 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var number = $(modelTemplate).filter('#numeric').html();
             var dropDown = $(modelTemplate).filter('#simpleDropdownTmpl').html();
 
-            var dataId = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"datacenter.Id"}};
+            var dataId = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"datacenter.id"}};
             $('#myModal #Id').append($compile(Mustache.to_html(text, dataId.ErrMsg))($scope));
 
-            var dataName = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"datacenter.Name","errtag":"textboxErr", "errfunc":"validatetextbox","required":true}};
+            var dataName = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"datacenter.name","errtag":"textboxErr", "errfunc":"validatetextbox","required":true}};
             $('#myModal #Name').append($compile(Mustache.to_html(text, dataName.ErrMsg))($scope));
 
             var dataStatus = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"datacenter.Status"}};
@@ -1559,30 +1559,35 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var dropdownInfo = translateToDropdownInfo(dropdownResponse);
             document.getElementById("servicenamedropdown").innerHTML = dropdownInfo;
 
-            var dataCPU = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"datacenter.Cpu"}};
+            var dataCPU = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"datacenter.cpu"}};
             $('#myModal #Cpu').append($compile(Mustache.to_html(text, dataCPU.ErrMsg))($scope));
 
-            var dataMemory = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"datacenter.Memory"}};
+            var dataMemory = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"datacenter.memory"}};
             $('#myModal #Memory').append($compile(Mustache.to_html(text, dataMemory.ErrMsg))($scope));
 
-            var dataHarddisk = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"datacenter.HardDisk"}};
+            var dataHarddisk = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"datacenter.hardDisk"}};
             $('#myModal #HardDisk').append($compile(Mustache.to_html(text, dataHarddisk.ErrMsg))($scope));
 
             $scope.checkboxes = { 'checked': false, items: {} };
 
-            $scope.neTableParams = new NgTableParams({count: 5, sorting: {Id: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
-            }, { counts:[5, 10, 20, 50], dataset: $scope.data.datacenterData});
+            $scope.neTableParams = new NgTableParams({count: 5, sorting: {Id: 'asc'}  
+            }, { counts:[5, 10, 20, 50], dataset: $scope.data});
 
             $scope.$watch('checkboxes.checked', function(value) {
                 $scope.checkboxes.items = {};
 
                 angular.forEach($scope.neTableParams.data, function(item) {
 					
-                    if (angular.isDefined(item.Id)) {
-                        $scope.checkboxes.items[item.Id] = value;
+                    if (angular.isDefined(item.id)) {
+                        $scope.checkboxes.items[item.id] = value;
                     }
                 });
             });
+			
+			//action
+			fillCountryData();
+			fillVimNameData();
+			regChangeAction();
 
         }
 		
@@ -1597,7 +1602,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         }
 
         $scope.validatetextbox = function (value){
-            if($scope.datacenter.Name) {
+            if($scope.datacenter.name) {
                 $scope.textboxErr = false;
             }
             else
@@ -1628,7 +1633,10 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             if (!$scope.textboxErr) {
 				
 				var dcs = {}
-				dcs.dc =	$scope.datacenter;
+				dcs =	$scope.datacenter;
+				$scope.datacenter.vimName = $("#servicenamedropdown").val();
+				$scope.datacenter.location = $("#locationdropdown").val();
+				$scope.datacenter.country = $("#countrydropdown").val();
                 if(id) {
                     //edit data
                     console.log("Editing data.." + JSON.stringify(dcs));
@@ -1716,9 +1724,9 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         $scope.editData = function(id) {
             console.log("To be edited : " + id);
             var dataFound = false;
-            angular.forEach($scope.data.datacenterData, function(data) {
+            angular.forEach($scope.data, function(data) {
                 if(!dataFound) {
-                    if (data.Id == id) {
+                    if (data.id == id) {
                         console.log("Found : " + data.id);
                         $scope.datacenter = data;
                         $("#myModal").modal();

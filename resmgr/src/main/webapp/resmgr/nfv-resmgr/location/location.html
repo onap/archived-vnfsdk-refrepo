@@ -23,32 +23,30 @@
 <table ng-table="neTableParams" class="table table-bordered table-striped customtable" show-filter="true">
     <tr ng-repeat="locationData in $data">
         <td header="'ng-table/headers/checkbox.html'">
-            <input type="checkbox" ng-model="checkboxes.items[locationData.Id]" />
+            <input type="checkbox" ng-model="checkboxes.items[locationData.id]" />
         </td>
-        <td title="'Id'" filter="{ Id: 'text'}" sortable="'Id'">
-            {{locationData.Id}}
+        <td title="'Id'" filter="{ id: 'text'}" sortable="'id'">
+            {{locationData.id}}
         </td>
-        <td title="'Country'" filter="{ Country: 'text'}" sortable="'Country'">
-            {{locationData.Country}}
+        <td title="'Country'" filter="{ country: 'text'}" sortable="'country'">
+            {{locationData.country}}
         </td>
-        <td title="'Location'" filter="{ Location: 'text'}" sortable="'Location'">
-            {{locationData.Location}}
+        <td title="'Location'" filter="{ location: 'text'}" sortable="'location'">
+            {{locationData.location}}
         </td>
         </td>
-        <td title="'Description'" filter="{ Description: 'text'}" sortable="'Description'">
-            {{locationData.Description}}
+        <td title="'Description'" filter="{ description: 'text'}" sortable="'description'">
+            {{locationData.description}}
         </td>
-        <td title="'Latitude'" filter="{ Latitude: 'text'}" sortable="'Latitude'">
-            {{locationData.Latitude}}
+        <td title="'Latitude'" filter="{ latitude: 'text'}" sortable="'latitude'">
+            {{locationData.latitude}}
         </td>
-        <td title="'Longitude'" filter="{ Longitude: 'text'}" sortable="'Longitude'">
-            {{locationData.Longitude}}
+        <td title="'Longitude'" filter="{ longitude: 'text'}" sortable="'longitude'">
+            {{locationData.longitude}}
         </td>
         <td title="'Action'">
-            <!--<span class="pull-right glyphicon glyphicon-edit" ng-click="editData(locationData.Id)" style="cursor: pointer;margin: 0 5px"></span>
-            <span class="pull-right glyphicon glyphicon-trash" ng-click="deleteData(locationData.Id)" style="cursor: pointer;margin: 0 5px"></span>-->
-            <span  ng-click="editData(locationData.Id)" style="cursor: pointer;margin: 0 5px"> <img src="/openoui/framework/browser/thirdparty/images/edit.png" height="15" align="left"/></span>
-            <span  ng-click="deleteData(locationData.Id)" style="cursor: pointer;margin: 0 5px"><img src="/openoui/framework/browser/thirdparty/images/delete.png" height="15" align="middle"/></span>
+            <span  ng-click="editData(locationData.id)" style="cursor: pointer;margin: 0 5px"> <img src="/openoui/framework/browser/thirdparty/images/edit.png" height="15" align="left"/></span>
+            <span  ng-click="deleteData(locationData.id)" style="cursor: pointer;margin: 0 5px"><img src="/openoui/framework/browser/thirdparty/images/delete.png" height="15" align="middle"/></span>
         </td>
     </tr>
 </table>

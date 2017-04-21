@@ -24,39 +24,39 @@
 <table ng-table="neTableParams" class="table table-bordered table-striped" show-filter="true">
     <tr ng-repeat="datacenterData in $data">
         <td header="'ng-table/headers/checkbox.html'">
-            <input type="checkbox" ng-model="checkboxes.items[datacenterData.Id]" />
+            <input type="checkbox" ng-model="checkboxes.items[datacenterData.id]" />
         </td>
-        <td title="'Id'" filter="{ Id: 'text'}" sortable="'Id'">
-            {{datacenterData.Id}}
+        <td title="'Id'" filter="{ id: 'text'}" sortable="'id'">
+            {{datacenterData.id}}
         </td>
-        <td title="'Name'" filter="{ Name: 'number'}" sortable="'Name'">
-            {{datacenterData.Name}}
+        <td title="'Name'" filter="{ name: 'number'}" sortable="'name'">
+            {{datacenterData.name}}
         </td>
-        <td title="'Status'" filter="{ Status: 'text'}" sortable="'Status'">
-            {{datacenterData.Status}}
+        <td title="'Status'" filter="{ status: 'text'}" sortable="'status'">
+            {{datacenterData.status}}
         </td>
         </td>
-        <td title="'Country'" filter="{ Country: 'text'}" sortable="'Country'">
-            {{datacenterData.Country}}
+        <td title="'Country'" filter="{ country: 'text'}" sortable="'country'">
+            {{datacenterData.country}}
         </td>
-        <td title="'Location'" filter="{ Location: 'text'}" sortable="'Location'">
-            {{datacenterData.Location}}
+        <td title="'Location'" filter="{ location: 'text'}" sortable="'location'">
+            {{datacenterData.location}}
         </td>
-        <td title="'Service Name'" filter="{ ServiceName: 'text'}" sortable="'ServiceName'">
-            {{datacenterData.ServiceName}}
+        <td title="'Service Name'" filter="{ serviceName: 'text'}" sortable="'serviceName'">
+            {{datacenterData.vimName}}
         </td>
-        <td title="'Cpu(Cores)'" filter="{ Cpu: 'number'}" sortable="'Cpu'">
-            {{datacenterData.Cpu}}
+        <td title="'Cpu(Cores)'" filter="{ cpu: 'number'}" sortable="'cpu'">
+            {{datacenterData.cpu}}
         </td>
-        <td title="'Memory(MB)'" filter="{ Memory: 'number'}" sortable="'Memory'">
-            {{datacenterData.Memory}}
+        <td title="'Memory(MB)'" filter="{ memory: 'number'}" sortable="'memory'">
+            {{datacenterData.memory}}
         </td>
-        <td title="'HardDisk(GB)'" filter="{ HardDisk: 'number'}" sortable="'HardDisk'">
-            {{datacenterData.HardDisk}}
+        <td title="'HardDisk(GB)'" filter="{ hardDisk: 'number'}" sortable="'hardDisk'">
+            {{datacenterData.hardDisk}}
         </td>
         <td title="'Action'">
-            <span  ng-click="editData(datacenterData.Id)" style="cursor: pointer;margin: 0 5px"> <img src="/openoui/framework/browser/thirdparty/images/edit.png" height="15" align="left"/></span>
-            <span  ng-click="deleteData(datacenterData.Id)" style="cursor: pointer;margin: 0 5px"><img src="/openoui/framework/browser/thirdparty/images/delete.png" height="15" align="middle"/></span>
+            <span  ng-click="editData(datacenterData.id)" style="cursor: pointer;margin: 0 5px"> <img src="/openoui/framework/browser/thirdparty/images/edit.png" height="15" align="left"/></span>
+            <span  ng-click="deleteData(datacenterData.id)" style="cursor: pointer;margin: 0 5px"><img src="/openoui/framework/browser/thirdparty/images/delete.png" height="15" align="middle"/></span>
         </td>
     </tr>
 </table>
@@ -77,7 +77,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h5 class="modal-title labelstyle">Modal Header</h5>
             </div>
-            <form ng-submit="saveData(province.id)" name="provinceForm" method="post">
+            <form ng-submit="saveData(province.id)" name="datacenterForm" method="post">
                 <div class="modal-body" id="borderSpacing">
 
                     <div class="form-group row" id="rowSpacing">
@@ -85,38 +85,18 @@
                         <div id="Name" class="col-xs-8" >
                         </div>
                     </div>
-                    <!--<div class="form-group row">
-                        <label class="col-xs-4 col-form-label">Country</label>
-                        <div id="Country" class="col-xs-8" >
-                        </div>
-                    </div>-->
 					<div class="form-group row" id="rowSpacing">
                         <label class="col-xs-4 col-form-label" id="textCenter">Country</label>
                         <div id="Country" class="col-xs-8" >
                             <select id="countrydropdown" class="form-control inputfield" ng-model="datacenterData.optSelect" ng-options="item.templateName for item in optionsValue"></select>
                         </div>
                     </div>
-                    <div class="form-group row" id="rowSpacing">
-                        <label class="col-xs-4 col-form-label" id="textCenter">Status</label>
-                        <div id="Status" class="col-xs-8" >
-                        </div>
-                    </div>
-                    <!--<div class="form-group row">
-                        <label class="col-xs-4 col-form-label">Location</label>
-                        <div id="Location" class="col-xs-8" >
-                        </div>
-                    </div>-->
 					<div class="form-group row" id="rowSpacing">
                         <label class="col-xs-4 col-form-label" id="textCenter">Location</label>
                         <div id="Location" class="col-xs-8" >
                             <select id="locationdropdown" class="form-control inputfield" ng-model="datacenterData.optSelect" ng-options="item.templateName for item in optionsValue"></select>
                         </div>
                     </div>
-                    <!--<div class="form-group row">
-                        <label class="col-xs-4 col-form-label">ServiceName</label>
-                        <div id="ServiceName" class="col-xs-8" >
-                        </div>
-                    </div>-->
 					<div class="form-group row" id="rowSpacing">
                         <label class="col-xs-4 col-form-label" id="textCenter">ServiceName</label>
                         <div id="ServiceName" class="col-xs-8" >
@@ -125,17 +105,17 @@
                     </div>
                     <div class="form-group row" id="rowSpacing">
                         <label class="col-xs-4 col-form-label" id="textCenter">CPU(Cores)</label>
-                        <div id="Cpu" class="col-xs-8" >
+                        <div id="" class="col-xs-8" >
                         </div>
                     </div>
                     <div class="form-group row" id="rowSpacing">
                         <label class="col-xs-4 col-form-label" id="textCenter">Memory</label>
-                        <div id="Memory" class="col-xs-8" >
+                        <div id="" class="col-xs-8" >
                         </div>
                     </div>
                     <div class="form-group row" id="rowSpacing">
                         <label class="col-xs-4 col-form-label" id="textCenter">HardDisk</label>
-                        <div id="HardDisk" class="col-xs-8" >
+                        <div id="" class="col-xs-8" >
                         </div>
                     </div>
 

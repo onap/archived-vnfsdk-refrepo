@@ -45,7 +45,7 @@ app.factory("locationDataService", function($http,DataService, $log){
                 $log.info(response);
                 return response.data;
             });*/
-            return DataService.delete(uri+"/"+id)
+            return DataService.delete(uri+id)
                 .then(function(response){
                     $log.info("in delete data service data is  :"+response);
                     console.log(response);

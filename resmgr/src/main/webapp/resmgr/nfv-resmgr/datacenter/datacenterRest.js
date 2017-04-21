@@ -18,15 +18,6 @@ app.factory("datacenterDataService", function($http,DataService, $log){
     uri += "/openoapi/resmgr/v1/datacenters/";
     return {
         getDatacenterData : function() {
-            /*console.log("hi in dataservice");
-            return $http({
-                url: 'http://localhost:3000/datacenterAPI/getDatacenterData',
-                method: 'GET',
-                headers: {'Content-Type': 'application/json'}
-            }).then(function(response){
-                //$log.info(response);
-                return response.data;
-            });*/
             return DataService.get(uri)
                 .then(function(response){
                     $log.info("in get data service data is  :"+response);
@@ -35,17 +26,7 @@ app.factory("datacenterDataService", function($http,DataService, $log){
                 });
         },
         deleteDatacenterData : function(id) {
-            /*return $http({
-                url: 'http://localhost:3000/datacenterAPI/deleteDatacenterData',
-                method: 'POST',
-                data: {'idList':idList},
-                headers: {'Content-Type': 'application/json'}
-            }).then(function(response){
-                console.log("Successfully Deleted..");
-                $log.info(response);
-                return response.data;
-            });*/
-            return DataService.delete(uri+"/"+id)
+            return DataService.delete(uri+id)
                 .then(function(response){
                     $log.info("in delete data service data is  :"+response);
                     console.log(response);
@@ -70,3 +51,77 @@ app.factory("datacenterDataService", function($http,DataService, $log){
         }
     }
 });
+
+
+
+function fillCountryData() {
+
+    var requestUrl = "/openoapi/resmgr/v1/locations/country";
+    var htmlContent = "";
+    $.ajax({
+        type: "GET",
+        url: requestUrl,
+        contentType: "application/json",
+        success: function (jsonobj) {
+            var str = jsonobj.data.replace('[', '').replace(']', '').split(',')
+            $.each(str, function (n, v) {
+                htmlContent += "<option value=" + v + ">" + v + "</option>";
+                $("#countrydropdown").html(htmlContent);
+
+            });
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            bootbox.alert("Error on getting country data : " + xhr.responseText);
+        }
+    });
+}
+
+function fillVimNameData() {
+
+    var requestUrl = "/openoapi/resmgr/v1/locations/cloudservice";
+    var htmlContent = "";
+    $.ajax({
+        type: "GET",
+        url: requestUrl,
+        contentType: "application/json",
+        success: function (jsonobj) {
+            var str = jsonobj.data.replace('[', '').replace(']', '').split(',')
+            $.each(str, function (n, v) {
+                htmlContent += "<option value='" + v + "'>" + v + "</option>";
+                $("#servicenamedropdown").html(htmlContent);
+
+            });
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            bootbox.alert("Error on getting country data : " + xhr.responseText);
+        }
+    });
+}
+function regChangeAction(){
+	  $('#countrydropdown').change(function () {
+        var country = $(this).children('option:selected').val();
+        var requestUrl = "/openoapi/resmgr/v1/locations/locationbycountry?country=" + country;
+
+        var htmlContent = "<option value=''>--select--</option>";
+        $.ajax({
+            type: "GET",
+            url: requestUrl,
+            contentType: "application/json",
+            success: function (jsonobj) {
+				console.log(jsonobj.data);
+				   var str = jsonobj.data.replace('[', '').replace(']', '').split(',');
+				   console.log(str);
+                $.each(str, function (n, v) {
+                    htmlContent += "<option value='" + v + "'>" + v + "</option>";
+                    $("#locationdropdown").html(htmlContent);
+
+                });
+
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                bootbox.alert("Error on getting location data : " + xhr.responseText);
+            }
+        });
+
+    });
+}
