@@ -1549,15 +1549,15 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 			
 			var dropdownResponse=[{"serviceTemplateId":"Country1","templateName":"Country1"},{"serviceTemplateId":"Country2","templateName":"Country2"}];
             var dropdownInfo = translateToDropdownInfo(dropdownResponse);
-            document.getElementById("countrydropdown").innerHTML = dropdownInfo;
+            //document.getElementById("countrydropdown").innerHTML = dropdownInfo;
 
             var dropdownResponse=[{"serviceTemplateId":"Location1","templateName":"Location1"},{"serviceTemplateId":"Location2","templateName":"Location2"}];
             var dropdownInfo = translateToDropdownInfo(dropdownResponse);
-            document.getElementById("locationdropdown").innerHTML = dropdownInfo;
+            //document.getElementById("locationdropdown").innerHTML = dropdownInfo;
 
             var dropdownResponse=[{"serviceTemplateId":"ServiceName1","templateName":"ServiceName1"},{"serviceTemplateId":"ServiceName2","templateName":"ServiceName2"}];
             var dropdownInfo = translateToDropdownInfo(dropdownResponse);
-            document.getElementById("servicenamedropdown").innerHTML = dropdownInfo;
+            //document.getElementById("servicenamedropdown").innerHTML = dropdownInfo;
 
             var dataCPU = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"datacenter.cpu"}};
             $('#myModal #Cpu').append($compile(Mustache.to_html(text, dataCPU.ErrMsg))($scope));
