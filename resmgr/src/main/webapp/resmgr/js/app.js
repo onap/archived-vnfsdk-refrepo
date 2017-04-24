@@ -134,9 +134,18 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var portName = {"ErrMsg" :     {"errmsg" : "Name is required.", "modalVar":"port.name", "errtag":"textboxErrName", "errfunc":"validatetextboxName", "required":true}};
             $('#myModal #name').append($compile(Mustache.to_html(text, portName.ErrMsg))($scope));
 
-            var portMe = {"ErrMsg" :     {"errmsg" : "ME is required.", "modalVar":"port.meID", "errtag":"textboxErrMe", "errfunc":"validatetextboxMe", "required":true}};
-            $('#myModal #meID').append($compile(Mustache.to_html(text, portMe.ErrMsg))($scope));
-
+            portDataService.getAllNEData().then(function(response) {
+                var medata = [];
+                for(var i = 0; i < response.managedElements.length; i+=1){
+                    medata[i] = {"serviceTemplateId":response.managedElements[i].id,"templateName":response.managedElements[i].name};
+                }
+                var dropdownInfo = translateToDropdownInfo(medata);
+                $("#myModal #medropdown").html(dropdownInfo);
+                console.log("Data: ");
+                $log.info(data);
+            }, function(reason) {
+                $scope.message = "Error is :" + JSON.stringify(reason);
+            });
             //var portType = {"ErrMsg" :     {"textboxErr" : "The name is required.", "modalVar":"port.type"}};
             //$('#myModal #type').append($compile(Mustache.to_html(dropDown, $scope.data.dropdowntypeData))($scope));
 
@@ -148,7 +157,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 
             $('#myModal #type').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));*/
 			
-			var dropdownResponse=[{"serviceTemplateId":"tenant_site","templateName":"portType1"},{"serviceTemplateId":"tenant_site2","templateName":"portType2"}];
+			var dropdownResponse=[{"serviceTemplateId":"ETH","templateName":"ETH"},{"serviceTemplateId":"POS","templateName":"POS"},{"serviceTemplateId":"Trunk","templateName":"Trunk"},{"serviceTemplateId":"Loopback","templateName":"Loopback"}];
 			var dropdownInfo = translateToDropdownInfo(dropdownResponse);
             document.getElementById("portdropdown").innerHTML = dropdownInfo;
 
@@ -169,7 +178,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 
             $('#myModal #Edgepoint').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));*/
 			
-			var dropdownResponse=[{"serviceTemplateId":"tenant_site","templateName":"Edgepoint1"},{"serviceTemplateId":"tenant_site2","templateName":"Edgepoint2"}];
+			var dropdownResponse=[{"serviceTemplateId":"true","templateName":"true"},{"serviceTemplateId":"false","templateName":"false"}];
 			var dropdownInfo = translateToDropdownInfo(dropdownResponse);
             document.getElementById("portEdropdown").innerHTML = dropdownInfo;
 			
@@ -464,7 +473,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 
             $('#myModal #type').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));*/
 			
-			var dropdownResponse=[{"serviceTemplateId":"tenant_site","templateName":"tenant_site"},{"serviceTemplateId":"tenant_site2","templateName":"tenant_site2"}];
+			var dropdownResponse=[{"serviceTemplateId":"network_site","templateName":"network_site"},{"serviceTemplateId":"tenant_site","templateName":"tenant_site"}];
 			var dropdownInfo = translateToDropdownInfo(dropdownResponse);
             document.getElementById("sitedropdown").innerHTML = dropdownInfo;
 
@@ -1212,7 +1221,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 
             neDataService.getNECtrlDDList()
                 .then(function (response) {
-                    $scope.ctrlList = response.data;
+                    $scope.ctrlList = response;
                     var dropdownInfo = translateCtrlIDToDropdownInfo($scope.ctrlList);
                     $("#myModal #medropdown").html(dropdownInfo);
                     console.log("Data: ");
@@ -1224,7 +1233,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             /*var neController = {"ErrMsg" :     {"errmsg" : "IP Address is required.", "modalVar":"ne.controller"}};
             $('#myModal #controller').append($compile(Mustache.to_html(text, neController.ErrMsg))($scope));*/
 
-            var neIPAddress = {"ErrMsg" :     {"errmsg" : "IP Address is required.", "modalVar":"ne.ipAddress","errtag":"textboxErrIP", "errfunc":"validatetextboxIP","required":true}};
+            var neIPAddress = {"ErrMsg" :     {"errmsg" : "IP Address is required.", "modalVar":"ne.ipAddress"}};
             $('#myModal #ipAddress').append($compile(Mustache.to_html(text, neIPAddress.ErrMsg))($scope));
 
 

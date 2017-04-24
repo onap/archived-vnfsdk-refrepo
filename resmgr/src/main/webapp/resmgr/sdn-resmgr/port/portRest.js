@@ -90,6 +90,14 @@ app.factory("portDataService", function($http,DataService, $log){
                     console.log(response);
                     return response;
                 });
+        },
+        getAllNEData : function() {
+            return DataService.get("/openoapi/extsys/v1/sdncontrollers")
+                .then(function(response){
+                    $log.info("in get data service data is  :"+response);
+                    console.log(response);
+                    return response;
+                });
         }
     }
 });

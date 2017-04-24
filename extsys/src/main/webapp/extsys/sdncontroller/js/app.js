@@ -122,7 +122,7 @@ var app = angular.module("ControllerApp", ["ui.router", "ngTable"])
 
             $('#myModal #protocol').append($compile(Mustache.to_html(dropDown, dropdowndata_protocol))($scope));*/
 
-            var dropdownResponse=[{"id":"netconf","name":"netconf"},{"id":"snmp","name":"snmp"}];
+            var dropdownResponse=[{"id":"netconf","name":"netconf"},{"id":"snmp","name":"snmp"},{"id":"https","name":"https"},{"id":"http","name":"http"}];
             var dropdownInfo = translateToDropdownInfo(dropdownResponse);
             $('#myModal #protocolDD').html(dropdownInfo);
 
@@ -156,7 +156,7 @@ var app = angular.module("ControllerApp", ["ui.router", "ngTable"])
 
             //var data = [{id: 1, name: "Moroni", age: 50}, {id: 2, name: "ABC", age: 30}, {id: 3, name: "Morhoni", age: 10}, {id: 4, name: "DABC", age: 31}, {id: 5, name: "Noor", age: 30}, {id: 6, name: "ABCD", age: 40}, {id: 7, name: "DABC", age: 31}, {id: 8, name: "Noor", age: 30}, {id: 9, name: "ABCD", age: 40}, {id: 10, name: "DABC", age: 31}, {id: 11, name: "Noor", age: 30}, {id: 12, name: "ABCD", age: 40}];
             $scope.controllerTableParams = new NgTableParams({count: 5, sorting: {name: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
-            }, { counts:[5, 10, 20, 50], dataset: $scope.data.controllerData});
+            }, { counts:[5, 10, 20, 50], dataset: $scope.data});
 
             /*$scope.$watch('checkboxes.checked', function(value) {
              angular.forEach($scope.data.controllerData, function(item) {
