@@ -239,6 +239,9 @@ var app = angular.module("ControllerApp", ["ui.router", "ngTable"])
             $scope.textboxErrPassword = false;
         }
         $scope.saveData = function (id) {
+
+            $scope.ext.protocol = $('#protocolDD').val();
+
             if (!$scope.textboxErrName && !$scope.textboxErrURL && !$scope.textboxErrUserName && !$scope.textboxErrPassword) {
                 if (id) {
                     //edit data
