@@ -12,7 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
+.containerh{
+    background-color:white !important;
+    min-height:900px !important;
+}
+
 .lcmanager{
     padding: 0 50px;
 }
@@ -74,7 +79,7 @@
     text-align: left;
 }
 
-.detailinfo, .topo, .inputdata {
+.detailinfo, .topo, .inputdata, .vpnConnections, .vpnGateway, .siteList, .vpcList {
     border-right: 1px solid #ddd;
 }
 
@@ -194,4 +199,13 @@ select {
 	background-color:white !important;
 	min-height:500px;
 
+}
+
+.rowSelected td{
+    background-color:#e8f8fe !important;
+}
+
+#overlaytabArea{
+    margin-top: 50px;
+    text-align: center;
 }

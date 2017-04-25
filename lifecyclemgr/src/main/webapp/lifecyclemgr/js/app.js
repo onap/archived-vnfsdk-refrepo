@@ -128,8 +128,34 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             })
             .state("home.lcTabs.detailInfo.vpnManager.underlayVPN", {
                 url: "/underlayVPN",
-                templateUrl : "templates/underlayVPN.html",
+                templateUrl : "templates/underlayVPN_L3.html",
                 controller : "underlayVPNCtrl"
+            })
+
+            .state("home.lcTabs.detailInfo.vpnManager.overlayVPN.overlayTabs", {
+                url: "/overlayTabs/:overlayId",
+                templateUrl : "templates/overlayTabs.html",
+                controller : "overlayTabsCtrl"
+            })
+            .state("home.lcTabs.detailInfo.vpnManager.overlayVPN.overlayTabs.vpnConnections", {
+                url: "/vpnConnections",
+                templateUrl : "templates/vpnConnections.html",
+                controller : "vpnConnectionsCtrl"
+            })
+            .state("home.lcTabs.detailInfo.vpnManager.overlayVPN.overlayTabs.vpnGateway", {
+                url: "/vpnGateway",
+                templateUrl : "templates/vpnGateway.html",
+                controller : "vpnGatewayCtrl"
+            })
+            .state("home.lcTabs.detailInfo.vpnManager.overlayVPN.overlayTabs.siteList", {
+                url: "/siteList",
+                templateUrl : "templates/siteList.html",
+                controller : "siteListCtrl"
+            })
+            .state("home.lcTabs.detailInfo.vpnManager.overlayVPN.overlayTabs.vpcList", {
+                url: "/vpcList",
+                templateUrl : "templates/vpcList.html",
+                controller : "vpcListCtrl"
             })
         /*modalStateProvider.state("home.lcTabs1", {
             url: '/lcTabs',
@@ -149,10 +175,10 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             });
             if(!DataService.getTableDataLoaded()) {
                 DataService.loadGetServiceData()
-                    .then(function (data) {
-                        if (data) {
-                            $scope.tableData = data.data;
-                            var tableData = data.data;
+                    .then(function (response) {
+                        if (response.data) {
+                            $scope.tableData = response.data;
+                            var tableData = response.data;
                             loadTableData();
                             //$timeout(loadTableData, 0);
                         }
@@ -645,7 +671,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             var deletehtml = Mustache.to_html(def_button_tpl, delete_data);
             $('div.overlayAction').html($compile(deletehtml)($scope));*/
 
-            $scope.tableParams = new NgTableParams({count: 5, sorting: {id: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
+            $scope.tableParams = new NgTableParams({count: 3, sorting: {id: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
             }, { counts:[], dataset: $scope.overlayData});
 
             $scope.checkboxes = { 'checked': false, items: {} };
@@ -665,18 +691,25 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
                 $scope.checkboxes.items[user.id]
             });
         };
+
+        $scope.rowHighilited=function(row)
+        {
+            $scope.selectedRow = row;
+        }
+
     })
 
     /*-------------------------------------------------------------------------------UnderlayVPN---------------------------------------------------------------------*/
 
     .controller("underlayVPNCtrl", function($scope, $rootScope, $compile, DataService, NgTableParams){
         $scope.message = "Underlay VPN";
+        $scope.tpTableShowing = false;
 
         $scope.init = function() {
             //console.log("Underlay VPN... ng-init + " +  $rootScope.lcmModelTemplate);
             DataService.getUnderlayData()
-                .then(function(data){
-                    $scope.underlayVPN = data.underlayVPN;
+                .then(function(response){
+                    $scope.underlayVPN = response.data.underlayVPN;
                     console.log("Data: ");
                     loadButtons();
                 }, function(reason){
@@ -692,7 +725,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             $('div.underlayAction').html($compile(deletehtml)($scope));*/
 
             $scope.tableParams = new NgTableParams({count: 5, sorting: {id: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
-            }, { counts:[5, 10], dataset: $scope.underlayVPN.underlayData});
+            }, { counts:[5, 10], dataset: $scope.underlayVPN});
 
             $scope.checkboxes = { 'checked': false, items: {} };
 
@@ -705,8 +738,8 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
                 });
             });
 
-            $scope.tableParams_tpDetails = new NgTableParams({count: 5, sorting: {id: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
-            }, { counts:[5, 10], dataset: $scope.underlayVPN.tp_details});
+            /*$scope.tableParams_tpDetails = new NgTableParams({count: 5, sorting: {id: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
+            }, { counts:[5, 10], dataset: $scope.underlayVPN.tp_details});*/
         }
         $scope.checkAll = function() {
             console.log("Checked ..");
@@ -714,6 +747,21 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
                 $scope.checkboxes.items[data.id]
             });
         };
+
+        $scope.loadTPLinkData = function(id, row){
+            $scope.selectedRow = row;
+            $scope.tpTableShowing = true;
+            console.log("Underlay table row click");
+            var tp_detData = DataService.getTPLinkData(id);
+            $scope.tableParams_tpDetails = new NgTableParams({count: 5, sorting: {id: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
+            }, { counts:[5, 10], dataset: tp_detData});
+        }
+
+        $scope.rowHighilited=function(row)
+        {
+            $scope.selectedRow = row;
+        }
+
     })
 
     .controller('inputDataCtrl', function($scope, $stateParams, $log, DataService) {
@@ -766,6 +814,46 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
         }
 
     })
+
+    .controller('overlayTabsCtrl', function($scope, $state) {
+        $state.go('home.lcTabs.detailInfo.vpnManager.overlayVPN.overlayTabs.vpnConnections');
+    })
+
+    .controller('vpnConnectionsCtrl', function($scope, $stateParams, NgTableParams, DataService) {
+        $scope.message = "VPN Connections";
+        var rowData = DataService.getOverlayVPNConnData($stateParams.overlayId, "vpnConnections");
+        $scope.vpnConnTable = new NgTableParams({count: 5, sorting: {id: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
+        }, { counts:[5, 10], dataset: rowData});
+    })
+
+    .controller('vpnGatewayCtrl', function($scope, $stateParams, NgTableParams, DataService) {
+        $scope.message = "VPN Gateway";
+        var rowData = DataService.getOverlayVPNConnData($stateParams.overlayId, "vpnGateways");
+        $scope.vpnGateTable = new NgTableParams({count: 5, sorting: {id: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
+        }, { counts:[5, 10], dataset: rowData});
+    })
+
+    .controller('siteListCtrl', function($scope, $stateParams, NgTableParams, DataService) {
+        $scope.message = "Site List";
+        //var rowData = DataService.getSiteListData();
+        DataService.getSiteListData()
+            .then(function (response) {
+                $scope.siteListData = response.sites;
+                $scope.siteTable = new NgTableParams({count: 5, sorting: {id: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
+                }, { counts:[5, 10], dataset: $scope.siteListData});
+            }, function (reason) {
+                $scope.message = "Error is :" + JSON.stringify(reason);
+            });
+    })
+
+    .controller('vpcListCtrl', function($scope, $stateParams, NgTableParams, DataService) {
+        $scope.message = "VPN List";
+        var rowData = DataService.getOverlayVPNConnData($stateParams.overlayId, "vpcList");
+        $scope.vpcListTable = new NgTableParams({count: 5, sorting: {id: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
+        }, { counts:[5, 10], dataset: rowData});
+    })
+
+
 
 
 

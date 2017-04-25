@@ -18,10 +18,12 @@
 
 app.factory("DataService", function($http, $log){
     var lcData = null;
+    var overLayData = null;
     var createParamJsonObj = {
         templateId:'',
         parameters: {}
     };
+    var url = "";
     var tableDataLoaded = false;
     
     return {
@@ -38,9 +40,10 @@ app.factory("DataService", function($http, $log){
 
             //load main Table
             return $http({
-                url: '/openoapi/servicegateway/v1/services',
+                url: url+'/openoapi/servicegateway/v1/services',
                 //url: 'http://localhost:5000/api/getLCData',
                 method: 'GET',
+                data: null,
                 headers: {'Content-Type': 'application/json'}
 
                 /*url: '/openoapi/inventory/v1/services',
@@ -73,9 +76,37 @@ app.factory("DataService", function($http, $log){
         },
         getOverlayData : function() {
             return $http({
-                url: '/openoapi/sdnooverlayvpn/v1/site2dc-vpn',
+                url: url+'/openoapi/sdnooverlayvpn/v1/site2dc-vpn',
                 //url: 'http://localhost:5000/api/getOverlayVPNData',
                 method: 'GET',
+                data: null,
+                headers: {'Content-Type': 'application/json'}
+            }).then(function(response){
+                //$log.info(response);
+                overLayData = response.data.overlayData;
+                return response.data;
+            });
+        },
+        getOverlayVPNConnData : function(id, type){
+            var returnData = null;
+            if(overLayData) {
+                for (var i = 0; i < overLayData.length; i++) {
+                    if(overLayData[i].id == id) {
+                        returnData = overLayData[i][type];
+                        break;
+                    }
+                }
+                return returnData;
+            }
+            else
+                return null;
+        },
+        getSiteListData : function() {
+            return $http({
+                url: url+'/openoapi/sdnobrs/v1/sites',
+                //url: 'http://localhost:5000/api/getOverlayVPNData',
+                method: 'GET',
+                data: null,
                 headers: {'Content-Type': 'application/json'}
             }).then(function(response){
                 //$log.info(response);
@@ -84,20 +115,37 @@ app.factory("DataService", function($http, $log){
         },
         getUnderlayData : function() {
             return $http({
-                url: '/openoapi/sdnol3vpn/v1/l3vpns',
+                url: url+'/openoapi/sdnol3vpn/v1/l3vpns',
                 //url: 'http://localhost:5000/api/getUnderlayVPNData',
                 method: 'GET',
+                data: null,
                 headers: {'Content-Type': 'application/json'}
             }).then(function(response){
                 //$log.info(response);
+                underlayData = response.data.data.underlayVPN;
                 return response.data;
             });
         },
+	getTPLinkData : function(id){
+            var returnData = null;
+            if(underlayData) {
+                for (var i = 0; i < underlayData.length; i++) {
+                    if(underlayData[i].id == id) {
+                        returnData = underlayData[i].tp_details;
+                        break;
+                    }
+                }
+                return returnData;
+            }
+            else
+                return null;
+        },
         loadServiceTopoSequence : function(id) {
             return $http({
-                url: '/openoapi/gso/v1/services/toposequence/' + id,
+                url: url+'/openoapi/gso/v1/services/toposequence/' + id,
                 //url: 'http://localhost:5000/api/getOverlayVPNData',
                 method: 'GET',
+                data: null,
                 headers: {'Content-Type': 'application/json'}
             }).then(function(response){
                 //$log.info(response);
@@ -118,9 +166,10 @@ app.factory("DataService", function($http, $log){
         generateTemplatesComponent : function() {
             //dropdown data
             return $http({
-                url: '/openoapi/catalog/v1/servicetemplates',
+                url: url+'/openoapi/catalog/v1/servicetemplates',
                 //url: 'http://localhost:5000/api/getTemplateData',
                 method: 'GET',
+                data: null,
                 headers: {'Content-Type': 'application/json'}
             }).then(function(response){
                 //$log.info(response);

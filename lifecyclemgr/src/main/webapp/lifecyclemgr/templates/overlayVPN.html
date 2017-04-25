@@ -18,45 +18,43 @@
 
 <div class="headerTitle">{{message}}</div>
 <br>
-
+<div class="col-md-12 col-sm-12 col-lg-12">
 <div class="overlayAction" ng-init="init()">
     <!--<button ng-click="showAddModal()" class="btnDefault pull-left">Add</button>-->
     <!--<button ng-click="deleteData()" class="btnDefault pull-left prvdel">Delete Selected</button>-->
 </div>
 <br>
 <div class="panel panel-default">
-<table ng-table="tableParams" class="table table table-striped table-hover table-bordered lctable" show-filter="true">
-    <tr ng-repeat="overlayData in $data">
+<table id="overlayTable" ng-table="tableParams" class="table table table-striped table-hover table-bordered lctable"  show-filter="true">
+    <tr ng-repeat="overlayData in $data" ui-sref=".overlayTabs({overlayId: overlayData.id})" ui-sref-active="selected-row">
         <!--<td header="'ng-table/headers/checkbox.html'">
             <input type="checkbox" ng-model="checkboxes.items[overlayData.id]" />
         </td>-->
+        <td title="'Id'" filter="{ id: 'text'}" sortable="'id'">
+            {{overlayData.id}}
+        </td>
         <td title="'Name'" filter="{ name: 'text'}" sortable="'name'">
             {{overlayData.name}}
         </td>
         <td title="'Description'" filter="{ desc: 'text'}" sortable="'desc'">
-            {{overlayData.desc}}
+            {{overlayData.description}}
         </td>
-        <td title="'Thin CPE'" filter="{ thinCPE: 'text'}" sortable="'thinCPE'">
-            {{overlayData.thinCPE}}
+        <td title="'Action State'" filter="{ actionState: 'text'}" sortable="'actionState'">
+            {{overlayData.actionState}}
         </td>
-        <td title="'Port : Vlan ID'" filter="{ portVlan: 'number'}" sortable="'portVlan'">
-            {{overlayData.portVlan}}
+        <td title="'Port : VPN Descriptor'" filter="{ vpnDescriptor: 'number'}" sortable="'vpnDescriptor'">
+            {{overlayData.vpnDescriptor}}
         </td>
-        <td title="'DC Name'" filter="{ dcName: 'text'}" sortable="'dcName'">
-            {{overlayData.dcName}}
-        </td>
-        <td title="'VPC'" filter="{ vpc: 'text'}" sortable="'vpc'">
-            {{overlayData.vpc}}
-        </td>
-        <td title="'VPC CIDR'" filter="{ vpcCIDR: 'text'}" sortable="'vpcCIDR'">
-            {{overlayData.vpcCIDR}}
-        </td>
-        <td title="'Action'">
-            <!--<span class="pull-right glyphicon glyphicon-edit" ng-click="editData(overlayData.id)" style="cursor: pointer;margin: 0 5px"></span>-->
+
+        <!--<td title="'Action'">
+            &lt;!&ndash;<span class="pull-right glyphicon glyphicon-edit" ng-click="editData(overlayData.id)" style="cursor: pointer;margin: 0 5px"></span>&ndash;&gt;
            <span  ng-click="deleteIndividualData(overlayData.id)" style="cursor: pointer;margin: 0 5px"><img src="/openoui/framework/browser/thirdparty/images/delete.png" height="15" align="middle"/></span>
-        </td>
+        </td>-->
+        
     </tr>
 </table>
+</div>
+<ui-view></ui-view>
 </div>
 
 <script type="text/ng-template" id="ng-table/headers/checkbox.html">
