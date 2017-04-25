@@ -97,7 +97,7 @@
 <!--text-->
 <script id="textfield" type="text/html">
     <div class="css-form">
-       <input id ="textbox" name="textbox" class="form-control inputfield" placeholder="{{placeholder}}" ng-model="{{modalVar}}" type="text"  ng-blur="{{errfunc}}({{modalVar}})" {{#required}}required{{/required}}> {{#required}}<span class="staricon">*</span>{{/required}}
+       <input id ="textbox" autocomplete="off" name="textbox" class="form-control inputfield" placeholder="{{placeholder}}" ng-model="{{modalVar}}" type="text"  ng-blur="{{errfunc}}({{modalVar}})" {{#required}}required{{/required}}> {{#required}}<span class="staricon">*</span>{{/required}}
         <span class="errMsg" ng-show="{{errtag}}">{{errmsg}}</span>
     </div>
 </script>
@@ -105,7 +105,7 @@
 <!--email-->
 <script id="email" type="text/html">
     <div class="css-form">
-        <input class="form-control inputfield"  placeholder="{{placeholder}}" ng-model="{{modalVar}}" type="email"  ng-blur="{{errfunc}}({{modalVar}})" {{#required}}required{{/required}}>{{#required}}<span class="staricon">*</span>{{/required}}
+        <input class="form-control inputfield" autocomplete="off" placeholder="{{placeholder}}" ng-model="{{modalVar}}" type="email"  ng-blur="{{errfunc}}({{modalVar}})" {{#required}}required{{/required}}>{{#required}}<span class="staricon">*</span>{{/required}}
         <span class="errMsg" ng-show="{{errtag}}">{{errmsg}}</span>
     </div>
 </script>
@@ -113,7 +113,7 @@
 <!--url-->
 <script  id="url" type="text/html">
     <div class="css-form">
-        <input class="form-control inputfield" placeholder="{{placeholder}}" ng-model="{{modalVar}}" type="url"  ng-blur="{{errfunc}}({{modalVar}})" {{#required}}required{{/required}}>{{#required}}<span class="staricon">*</span>{{/required}}
+        <input class="form-control inputfield" autocomplete="off" placeholder="{{placeholder}}" ng-model="{{modalVar}}" type="url"  ng-blur="{{errfunc}}({{modalVar}})" {{#required}}required{{/required}}>{{#required}}<span class="staricon">*</span>{{/required}}
         <span class="errMsg" ng-show="{{errtag}}">{{errmsg}}</span>
     </div>
 </script>
@@ -123,7 +123,7 @@
     <div class="css-form">
 
 
-        <input class="form-control inputfield" placeholder="{{placeholder}}" ng-model="{{modalVar}}" type="password" pattern=".{3,}" maxlength="{{#maxLength}}{{maxLength}}{{/maxLength}}{{^maxLength}}9{{/maxLength}}" ng-blur="{{errfunc}}({{modalVar}})" {{#required}}required{{/required}}>{{#required}}<span class="staricon">*</span>{{/required}}
+        <input class="form-control inputfield" autocomplete="off" placeholder="{{placeholder}}" ng-model="{{modalVar}}" type="password" pattern=".{3,}" maxlength="{{#maxLength}}{{maxLength}}{{/maxLength}}{{^maxLength}}9{{/maxLength}}" ng-blur="{{errfunc}}({{modalVar}})" {{#required}}required{{/required}}>{{#required}}<span class="staricon">*</span>{{/required}}
         <span class="errMsg" ng-show="{{errtag}}">{{errmsg}}</span>
     </div>
 </script>
@@ -131,7 +131,7 @@
 <!--numeric-->
 <script id="numeric" type="text/html">
     <div class="css-form">
-        <input  class="form-control inputfield" placeholder="{{placeholder}}" ng-model="{{modalVar}}" type="number"  ng-blur="{{errfunc}}({{modalVar}})" {{#required}}required{{/required}}/>{{#required}}<span class="staricon">*</span>{{/required}}
+        <input  class="form-control inputfield" autocomplete="off" placeholder="{{placeholder}}" ng-model="{{modalVar}}" type="number"  ng-blur="{{errfunc}}({{modalVar}})" {{#required}}required{{/required}}/>{{#required}}<span class="staricon">*</span>{{/required}}
         <span class="errMsg" ng-show="{{errtag}}">{{errmsg}}</span>
     </div>
 </script>
@@ -139,7 +139,7 @@
 <!--dot-->
 <script  id="dot" type="text/html">
     <div class="css-form">
-        <input class="form-control inputfield"  placeholder="{{placeholder}}" ng-model="{{modalVar}}" type="datetime-local"  ng-blur="{{errfunc}}({{modalVar}})" {{#required}}required{{/required}}>{{#required}}<span class="staricon">*</span>{{/required}}
+        <input class="form-control inputfield" autocomplete="off" placeholder="{{placeholder}}" ng-model="{{modalVar}}" type="datetime-local"  ng-blur="{{errfunc}}({{modalVar}})" {{#required}}required{{/required}}>{{#required}}<span class="staricon">*</span>{{/required}}
         <span class="errMsg" ng-show="{{errtag}}">{{errmsg}}</span>
     </div>
 </script>
@@ -180,7 +180,7 @@
 <!--ipv4-->
 <script   id="ipv4" type="text/html">
     <div class="css-form">
-        <input class="form-control inputfield" type="ipv4" placeholder="{{placeholder}}" ng-model="{{modalVar}}" pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$"  ng-blur="{{errfunc}}({{modalVar}})" {{#required}}required{{/required}}>{{#required}}<span class="staricon">*</span>{{/required}}
+        <input class="form-control inputfield" autocomplete="off" type="ipv4" placeholder="{{placeholder}}" ng-model="{{modalVar}}" pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$"  ng-blur="{{errfunc}}({{modalVar}})" {{#required}}required{{/required}}>{{#required}}<span class="staricon">*</span>{{/required}}
         <span class="errMsg" ng-show="{{errtag}}">{{errmsg}}</span>
     </div>
 </script>
@@ -196,7 +196,7 @@
 <!--textarea-->
 <script id="textarea" type="text/html">
     <div class="css-form">
-        <textarea class="form-control inputfield"  rows="4" cols="50" placeholder="{{placeholder}}" ng-model="{{modalVar}}"  ng-blur="{{errfunc}}({{modalVar}})" {{#required}}required{{/required}}></textarea>{{#required}}<span class="staricon">*</span>{{/required}}
+        <textarea class="form-control inputfield" autocomplete="off" rows="4" cols="50" placeholder="{{placeholder}}" ng-model="{{modalVar}}"  ng-blur="{{errfunc}}({{modalVar}})" {{#required}}required{{/required}}></textarea>{{#required}}<span class="staricon">*</span>{{/required}}
         <span class="errMsg" ng-show="{{errtag}}">{{errmsg}}</span>
     </div>
 </script>

@@ -61,7 +61,7 @@
 
 <!--Table-->
 <script id="table" type="text/html">
-    {{#filter}}<input type="text" id="myInput" onkeyup="{{action}}" placeholder="Search for {{searchField}}">{{/filter}}
+    {{#filter}}<input type="text" autocomplete="off" id="myInput" onkeyup="{{action}}" placeholder="Search for {{searchField}}">{{/filter}}
     <table id="myTable{{#filter}}_search{{/filter}}" class="table {{#striped}}table-striped{{/striped}} {{#border}}table-bordered{{/border}} {{#hover}}table-hover{{/hover}} {{#condensed}}table-condensed{{/condensed}}">
         <thead>
         <tr>

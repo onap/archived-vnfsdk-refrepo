@@ -198,6 +198,9 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var portOperatingState = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.operState"}};
             $('#myModal #operState').append($compile(Mustache.to_html(text, portOperatingState.ErrMsg))($scope));
 
+            var neNativeId = {"ErrMsg" :     {"errmsg" : "The nativeid required.", "modalVar":"port.nativeId"}};
+            $('#myModal #nativeId').append($compile(Mustache.to_html(text, neNativeId.ErrMsg))($scope));
+
             $scope.checkboxes = { 'checked': false, items: {} };
 
             $scope.portTableParams = new NgTableParams({count: 5, sorting: {name: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
@@ -292,6 +295,9 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $scope.numericErr = false;
         }
         $scope.saveData = function(id) {
+            $scope.port.edgePoint = $('#portEdropdown').val();
+            $scope.port.type = $('#portdropdown').val();
+            $scope.port.me = $('#medropdown').val();
             if (!$scope.textboxErrName && !$scope.textboxErrMe) {
 				var ports ={};
 				ports.logicalTerminationPoint=$scope.port;
@@ -532,6 +538,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $scope.textboxErrName = false;
         }
         $scope.saveData = function(id) {
+            $scope.site.type = $('#sitedropdown').val();
             if (!$scope.textboxErrName) {
 				
 
@@ -1040,6 +1047,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $scope.numericErr = false;
         }
         $scope.saveData = function(id) {
+            $scope.link.type = $('#linkdropdown').val();
             if (!$scope.textboxErr) {
 				
 			var links ={}
@@ -1214,9 +1222,9 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 
             $('#myModal #controller').append($compile(Mustache.to_html(dropDown, dropSimple_data))($scope));*/
 			
-			var dropdownResponse=[{"serviceTemplateId":"meCtrl","templateName":"mecontroller1"},{"serviceTemplateId":"meCtrl2","templateName":"mecontroller"}];
+			/*var dropdownResponse=[{"serviceTemplateId":"meCtrl","templateName":"mecontroller1"},{"serviceTemplateId":"meCtrl2","templateName":"mecontroller"}];
 			var dropdownInfo = translateToDropdownInfo(dropdownResponse);
-            document.getElementById("medropdown").innerHTML = dropdownInfo;
+            document.getElementById("medropdown").innerHTML = dropdownInfo;*/
 
 
             neDataService.getNECtrlDDList()
@@ -1372,6 +1380,9 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $("#myModal").modal({}).draggable();
         }
         $scope.saveData = function(id) {
+            $scope.ne.controller = $('#medropdown').val();
+            $scope.ne.siteId = $('#siteIdDropdown').val();
+
             if (!$scope.textboxErrName && !$scope.textboxErrIP) {
 				
 				var nes = {};
