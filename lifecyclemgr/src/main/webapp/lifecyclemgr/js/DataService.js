@@ -855,7 +855,7 @@ function scaleServiceInstance(nsInstanceId, scaleType, aspectId, numberOfSteps, 
             }
         ]
     };
-    var nfvoUri = '/openoapi/nslcm/1.0/ns/' + nsInstanceId + '/scale';
+    var nfvoUri = '/openoapi/nslcm/v1/ns/' + nsInstanceId + '/scale';
     $.when(
         $.ajax({
             type: "POST",

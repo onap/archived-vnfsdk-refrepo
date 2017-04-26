@@ -198,7 +198,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var portOperatingState = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"port.operState"}};
             $('#myModal #operState').append($compile(Mustache.to_html(text, portOperatingState.ErrMsg))($scope));
 
-            var neNativeId = {"ErrMsg" :     {"errmsg" : "The nativeid required.", "modalVar":"port.nativeId"}};
+            var neNativeId = {"ErrMsg" :     {"errmsg" : "The nativeid required.", "modalVar":"port.nativeID"}};
             $('#myModal #nativeId').append($compile(Mustache.to_html(text, neNativeId.ErrMsg))($scope));
 
             $scope.checkboxes = { 'checked': false, items: {} };
@@ -1204,7 +1204,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             var neVersion = {"ErrMsg" :     {"errmsg" : "The version is required.", "modalVar":"ne.version"}};  //,"errtag":"textboxErrVersion", "errfunc":"validatetextboxVersion","required":true
             $('#myModal #version').append($compile(Mustache.to_html(text, neVersion.ErrMsg))($scope));
 
-            var neNERole = {"ErrMsg" :     {"errmsg" : "The role is required.", "modalVar":"ne.role"}}; //,"errtag":"textboxErrRole", "errfunc":"validatetextboxRole","required":true
+            var neNERole = {"ErrMsg" :     {"errmsg" : "The role is required.", "modalVar":"ne.neRole"}}; //,"errtag":"textboxErrRole", "errfunc":"validatetextboxRole","required":true
             $('#myModal #nerole').append($compile(Mustache.to_html(text, neNERole.ErrMsg))($scope));
 
             var serialNumber = {"ErrMsg" :     {"errmsg" : "The serialNumber is required.", "modalVar":"ne.serialNumber"}}; //,"errtag":"textboxErrSerial", "errfunc":"validatetextboxSerial","required":true
@@ -1246,7 +1246,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 
 
 
-            var neNativeId = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.nativeId"}};
+            var neNativeId = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.nativeID"}};
             $('#myModal #nativeId').append($compile(Mustache.to_html(text, neNativeId.ErrMsg))($scope));
 
             /*var neOperatingState = {"ErrMsg" :     {"errmsg" : "The name is required.", "modalVar":"ne.operatingState"}};
@@ -1333,7 +1333,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         }
 
         $scope.validatetextboxRole = function (value){
-            if($scope.ne.role) {
+            if($scope.ne.neRole) {
                 $scope.textboxErrRole = false;
             }
             else
@@ -1381,7 +1381,7 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
         }
         $scope.saveData = function(id) {
             $scope.ne.controller = $('#medropdown').val();
-            $scope.ne.siteId = $('#siteIdDropdown').val();
+            $scope.ne.siteID = $('#siteIdDropdown').val();
 
             if (!$scope.textboxErrName && !$scope.textboxErrIP) {
 				

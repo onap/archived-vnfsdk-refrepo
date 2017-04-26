@@ -88,7 +88,7 @@ var app = angular.module("ControllerApp", ["ui.router", "ngTable"])
             var text = $(modelTemplate).filter('#textfield').html();
             var dropDown = $(modelTemplate).filter('#simpleDropdownTmpl').html();
 
-            var extName = {"ErrMsg" :     {"errmsg" : "Name is required.", "modalVar":"ext.Name", "errtag":"textboxErrName", "errfunc":"validatetextboxName", "required":true}};
+            var extName = {"ErrMsg" :     {"errmsg" : "Name is required.", "modalVar":"ext.name", "errtag":"textboxErrName", "errfunc":"validatetextboxName", "required":true}};
             $('#myModal #name').append($compile(Mustache.to_html(text, extName.ErrMsg))($scope));
 
             var extURL = {"ErrMsg" :     {"errmsg" : "URL is required.", "modalVar":"ext.url", "errtag":"textboxErrURL", "errfunc":"validatetextboxURL", "required":true}};
@@ -97,16 +97,16 @@ var app = angular.module("ControllerApp", ["ui.router", "ngTable"])
             var extUserName = {"ErrMsg" :     {"errmsg" : "UserName is required.", "modalVar":"ext.userName", "errtag":"textboxErrUserName", "errfunc":"validatetextboxUserName", "required":true}};
             $('#myModal #username').append($compile(Mustache.to_html(text, extUserName.ErrMsg))($scope));
 
-            var extPassword = {"ErrMsg" :     {"errmsg" : "Password is required.", "modalVar":"ext.Password", "errtag":"textboxErrPassword", "errfunc":"validatetextboxPassword", "required":true}};
+            var extPassword = {"ErrMsg" :     {"errmsg" : "Password is required.", "modalVar":"ext.password", "errtag":"textboxErrPassword", "errfunc":"validatetextboxPassword", "required":true}};
             $('#myModal #password').append($compile(Mustache.to_html(text, extPassword.ErrMsg))($scope));
 
-            var extVersion = {"ErrMsg" :     {"errmsg" : "Version is required.", "modalVar":"ext.Version"}};
+            var extVersion = {"ErrMsg" :     {"errmsg" : "Version is required.", "modalVar":"ext.version"}};
             $('#myModal #version').append($compile(Mustache.to_html(text, extVersion.ErrMsg))($scope));
 
-            var extVendor = {"ErrMsg" :     {"errmsg" : "Vendor is required.", "modalVar":"ext.Vendor"}};
+            var extVendor = {"ErrMsg" :     {"errmsg" : "Vendor is required.", "modalVar":"ext.vendor"}};
             $('#myModal #vendor').append($compile(Mustache.to_html(text, extVendor.ErrMsg))($scope));
 
-            var extDescription = {"ErrMsg" :     {"textboxErr" : "Description is required.", "modalVar":"ext.Description"}};
+            var extDescription = {"ErrMsg" :     {"textboxErr" : "Description is required.", "modalVar":"ext.description"}};
             $('#myModal #description').append($compile(Mustache.to_html(text, extDescription.ErrMsg))($scope));
 
             /*var extProtocol = {"ErrMsg" :     {"textboxErr" : "Protocol is required.", "modalVar":"ext.protocol"}};
@@ -171,7 +171,7 @@ var app = angular.module("ControllerApp", ["ui.router", "ngTable"])
         }
 
         $scope.validatetextboxName = function (value){
-            if($scope.ext.Name) {
+            if($scope.ext.name) {
                 $scope.textboxErrName = false;
             }
             else
@@ -195,7 +195,7 @@ var app = angular.module("ControllerApp", ["ui.router", "ngTable"])
         }
 
         $scope.validatetextboxPassword = function (value){
-            if($scope.ext.Password) {
+            if($scope.ext.password) {
                 $scope.textboxErrPassword = false;
             }
             else
