@@ -659,8 +659,9 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
 
     /*-------------------------------------------------------------------------------OverlayVPN---------------------------------------------------------------------*/
 
-    .controller("overlayVPNCtrl", function($scope, $rootScope, $compile, DataService, NgTableParams){
+    .controller("overlayVPNCtrl", function($scope, $rootScope, $stateParams, $compile, DataService, NgTableParams){
         $scope.message = "Overlay VPN";
+        console.log("Service Id: "+ $stateParams.id);
 
         $scope.init = function() {
             //console.log("Overlay VPN... ng-init + " +  $rootScope.lcmModelTemplate);
@@ -712,8 +713,9 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
 
     /*-------------------------------------------------------------------------------UnderlayVPN---------------------------------------------------------------------*/
 
-    .controller("underlayVPNCtrl", function($scope, $rootScope, $compile, DataService, NgTableParams){
+    .controller("underlayVPNCtrl", function($scope, $rootScope, $stateParams, $compile, DataService, NgTableParams){
         $scope.message = "Underlay VPN";
+        console.log("Service Id: "+ $stateParams.id);
         $scope.tpTableShowing = false;
 
         $scope.init = function() {
