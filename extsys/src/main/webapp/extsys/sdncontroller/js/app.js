@@ -287,7 +287,7 @@ var app = angular.module("ControllerApp", ["ui.router", "ngTable"])
                 "msg": "Do you really wanted to Delete?.",
                 "buttons": [
                     {
-                        "text": "Ok", "action": "deleteConfirmation("+id+")"
+                        "text": "Ok", "action": "deleteConfirmation('"+[id]+"')"
                     }]
             }};
             angular.forEach($scope.checkboxes.items, function(value) {
