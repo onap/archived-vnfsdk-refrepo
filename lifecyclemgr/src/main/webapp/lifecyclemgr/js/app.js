@@ -721,7 +721,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
 
         $scope.init = function() {
             //console.log("Underlay VPN... ng-init + " +  $rootScope.lcmModelTemplate);
-            DataService.getUnderlayData()
+            DataService.getUnderlayData($stateParams.id)
                 .then(function(response){
                     $scope.underlayVPN = [];
                     $scope.underlayVPN[0] = response;
