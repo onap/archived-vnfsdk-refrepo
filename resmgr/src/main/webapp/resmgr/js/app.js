@@ -295,9 +295,9 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $scope.numericErr = false;
         }
         $scope.saveData = function(id) {
-            $scope.port.edgePoint = $('#portEdropdown').val();
-            $scope.port.type = $('#portdropdown').val();
-            $scope.port.me = $('#medropdown').val();
+            $scope.port.isEdgePoint = $('#portEdropdown').val();
+            $scope.port.logicalType = $('#portdropdown').val();
+            $scope.port.meID = $('#medropdown').val();
             if (!$scope.textboxErrName && !$scope.textboxErrMe) {
 				var ports ={};
 				ports.logicalTerminationPoint=$scope.port;

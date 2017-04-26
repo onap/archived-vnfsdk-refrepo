@@ -95,13 +95,13 @@
                 <div class="form-group row" id="rowSpacing">
                     <label class="col-xs-4 col-form-label" id="textCenter">ME</label>
                     <div id="meID" class="col-xs-8" >
-                     <select id="medropdown" class="form-control inputfield" ng-model="port.me"></select>
+                     <select id="medropdown" class="form-control inputfield" ng-model="port.meID"></select>
                     </div>
                 </div>
                 <div class="form-group row" id="rowSpacing">
                     <label class="col-xs-4 col-form-label" id="textCenter">Type</label>
                     <div id="logicalType" class="col-xs-8" >
-					 <select id="portdropdown" class="form-control inputfield" ng-model="port.type" ng-options="item.templateName for item in optionsValue"></select>
+					 <select id="portdropdown" class="form-control inputfield" ng-model="port.logicalType" ng-options="item.templateName for item in optionsValue"></select>
                     </div>
                 </div>
                 <div class="form-group row" id="rowSpacing">
@@ -112,7 +112,7 @@
                 <div class="form-group row" id="rowSpacing">
                     <label class="col-xs-4 col-form-label" id="textCenter">Edge Point</label>
                     <div id="isEdgePoint" class="col-xs-8" >
-					<select id="portEdropdown" class="form-control inputfield" ng-model="port.edgePoint" ng-options="item.templateName for item in optionsValue"></select>
+					<select id="portEdropdown" class="form-control inputfield" ng-model="port.isEdgePoint" ng-options="item.templateName for item in optionsValue"></select>
                     </div>
                 </div>
                 <div class="form-group row" id="rowSpacing">
