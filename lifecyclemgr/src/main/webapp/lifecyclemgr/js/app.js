@@ -561,10 +561,16 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
     .controller('detailInfoCtrl', function($scope, $stateParams, $compile, DataService) {
         console.log("detailInfoCtrl --> $stateParams.id:: " + $stateParams.id);
         //$scope.currentId = $stateParams.id;
-        $scope.rightPanelHeader = "VPN Manager";
+
         var rowData = DataService.getSavedLCData($stateParams.id);
         var jsonData =[];
-        if(rowData.serviceType === "SDNO" || rowData.serviceType === "NFVO"){
+        if(rowData.serviceType === "SDNO"){
+            $scope.rightPanelHeader = "SDNO VPN Manager";
+            jsonData[0] = {"id": $stateParams.id, "name": rowData.serviceType};
+        }
+        else if(rowData.serviceType === "NFVO"){
+            //TODO - NFVO Pages should be loaded here
+            $scope.rightPanelHeader = "NFVO VPN Manager";
             jsonData[0] = {"id": $stateParams.id, "name": rowData.serviceType};
         }
         else{
@@ -592,7 +598,12 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             var content = '';
             content += '<div class="panel panel-default"><div class="panel-heading">';
             content += '<h6 class="panel-title">';
-            content += '<a style="text-decoration:none;" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne_'+type+'" ui-sref=".vpnManager" ui-sref-active="link_active_DetailInfo" href="#/home/lcTabs/'+id+'/detailInfo/vpnManager">';
+            if(type == "sdno") {
+                content += '<a style="text-decoration:none;" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne_' + type + '" ui-sref=".vpnManager" ui-sref-active="link_active_DetailInfo" href="#/home/lcTabs/' + id + '/detailInfo/vpnManager">';
+            }
+            else if(type == "nfvo") {
+                content += '<a style="text-decoration:none;" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne_' + type + '" ui-sref=".nfvoDetail" ui-sref-active="link_active_DetailInfo" href="#/home/lcTabs/' + id + '/detailInfo/nfvoDetailInfo">';
+            }
             content += '<span id="sdnoLink">'+text+'</span></a>';
             content += '</h6></div>';
             if(type == "sdno") {
