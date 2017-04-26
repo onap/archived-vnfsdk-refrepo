@@ -92,7 +92,7 @@ app.factory("portDataService", function($http,DataService, $log){
                 });
         },
         getAllNEData : function() {
-            return DataService.get("/openoapi/extsys/v1/sdncontrollers")
+            return DataService.get("/openoapi/sdnobrs/v1/managed-elements")
                 .then(function(response){
                     $log.info("in get data service data is  :"+response);
                     console.log(response);
