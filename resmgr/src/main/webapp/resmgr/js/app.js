@@ -68,11 +68,13 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
                 controller : "datacenterCtrl"
             })
 
-            .state("resource.vim", {
+            /*
+			.state("resource.vim", {
                 url: "/vim",
                 templateUrl : "nfv-resmgr/vim/vim.html",
                 controller : "vimCtrl"
             })
+			*/
 
     })
 
