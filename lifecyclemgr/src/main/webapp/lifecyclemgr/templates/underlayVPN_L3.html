@@ -33,8 +33,8 @@
         <td title="'Name'" filter="{ name: 'text'}" sortable="'name'">
             {{underlayData.name}}
         </td>
-        <td title="'State'" filter="{ thinCPE: 'text'}" sortable="'thinCPE'">
-            {{underlayData.thinCPE}}
+        <td title="'Status'" filter="{ operStatus: 'text'}" sortable="'operStatus'">
+            {{underlayData.operStatus}}
         </td>
         <td title="'Description'" filter="{ desc: 'text'}" sortable="'desc'">
             {{underlayData.desc}}
@@ -57,20 +57,14 @@
     <div class="panel panel-default">
     <table ng-table="tableParams_tpDetails" class="table table table-striped table-hover table-bordered lctable" show-filter="true">
         <tr ng-repeat="tpDetailsData in $data" ng-class="{rowSelected:$index==selectedRow}" ng-click="rowHighilited($index)">
-            <td title="'TP Name'" filter="{ tp_name: 'text'}" sortable="'tp_name'">
-                {{tpDetailsData.tp_name}}
+            <td title="'Name'" filter="{ name: 'text'}" sortable="'name'">
+                {{tpDetailsData.name}}
             </td>
-            <td title="'PE Name'" filter="{ pe_name: 'text'}" sortable="'pe_name'">
-                {{tpDetailsData.pe_name}}
+            <td title="'Status'" filter="{ operStatus: 'text'}" sortable="'operStatus'">
+                {{tpDetailsData.operStatus}}
             </td>
-            <td title="'VLAN ID'" filter="{ vlanId: 'text'}" sortable="'vlanId'">
-                {{tpDetailsData.vlanId}}
-            </td>
-            <td title="'Site CIDR'" filter="{ site_cidr: 'text'}" sortable="'site_cidr'">
-                {{tpDetailsData.site_cidr}}
-            </td>
-            <td title="'IP'" filter="{ ip: 'text'}" sortable="'ip'">
-                {{tpDetailsData.ip}}
+            <td title="'Type'" filter="{ type: 'text'}" sortable="'type'">
+                {{tpDetailsData.type}}
             </td>
         </tr>
     </table>

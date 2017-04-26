@@ -74,32 +74,26 @@ app.factory("DataService", function($http, $log){
             else
                 return null;
         },
-        getOverlayData : function() {
+        getOverlayData : function(id) {
             return $http({
-                url: url+'/openoapi/sdnooverlayvpn/v1/site2dc-vpn',
+                url: url+'/openoapi/sdnooverlay/v1/vpns/' + id,
                 //url: 'http://localhost:5000/api/getOverlayVPNData',
                 method: 'GET',
                 data: null,
                 headers: {'Content-Type': 'application/json'}
             }).then(function(response){
                 //$log.info(response);
-                overLayData = response.data.overlayData;
+                overLayData = response.data;
                 return response.data;
             });
         },
         getOverlayVPNConnData : function(id, type){
             var returnData = null;
             if(overLayData) {
-                for (var i = 0; i < overLayData.length; i++) {
-                    if(overLayData[i].id == id) {
-                        returnData = overLayData[i][type];
-                        break;
-                    }
-                }
-                return returnData;
+                return overLayData[type];
             }
             else
-                return null;
+                return [];
         },
         getSiteListData : function() {
             return $http({
@@ -109,36 +103,78 @@ app.factory("DataService", function($http, $log){
                 data: null,
                 headers: {'Content-Type': 'application/json'}
             }).then(function(response){
-                //$log.info(response);
-                return response.data;
+                if(overLayData) {
+                    var sites = [];
+                    var index = 0;
+                    for(var i = 0 ; i < response.data.length; i++){
+                        var isContains = false;
+                        for(var j = 0; j < overLayData.siteList.length; j++){
+                            if(response.data[i].id == overLayData.siteList[j]){
+                                isContains = true;
+                            }
+                        }
+                        if(isContains){
+                            sites[index] = response.data[i];
+                            index ++;
+                        }
+                    }
+                    return sites;
+                }
+                else {
+                    return [];
+                }
             });
         },
-        getUnderlayData : function() {
+        getVpcListData : function() {
             return $http({
-                url: url+'/openoapi/sdnol3vpn/v1/l3vpns',
+                url: url+'/openoapi/sdnovpc/v1/vpcs',
+                //url: 'http://localhost:5000/api/getOverlayVPNData',
+                method: 'GET',
+                data: null,
+                headers: {'Content-Type': 'application/json'}
+            }).then(function(response){
+                if(overLayData) {
+                    var vpcs = [];
+                    var index = 0;
+                    for(var i = 0 ; i < response.data.length; i++){
+                        var isContains = false;
+                        for(var j = 0; j < overLayData.vpcList.length; j++){
+                            if(response.data[i].id == overLayData.vpcList[j]){
+                                isContains = true;
+                            }
+                        }
+                        if(isContains){
+                            vpcs[index] = response.data[i];
+                            index ++;
+                        }
+                    }
+                    return vpcs;
+                }
+                else {
+                    return [];
+                }
+            });
+        },
+        getUnderlayData : function(id) {
+            return $http({
+                url: url+'/openoapi/sdnol3vpn/v1/l3vpns/' + id,
                 //url: 'http://localhost:5000/api/getUnderlayVPNData',
                 method: 'GET',
                 data: null,
                 headers: {'Content-Type': 'application/json'}
             }).then(function(response){
                 //$log.info(response);
-                underlayData = response.data.data.underlayVPN;
+                underlayData = response.data;
                 return response.data;
             });
         },
-	getTPLinkData : function(id){
+	getTPLinkData : function(){
             var returnData = null;
-            if(underlayData) {
-                for (var i = 0; i < underlayData.length; i++) {
-                    if(underlayData[i].id == id) {
-                        returnData = underlayData[i].tp_details;
-                        break;
-                    }
-                }
-                return returnData;
+            if(underlayData) {                
+                return underlayData.accessPointList;
             }
             else
-                return null;
+                return [];
         },
         loadServiceTopoSequence : function(id) {
             return $http({

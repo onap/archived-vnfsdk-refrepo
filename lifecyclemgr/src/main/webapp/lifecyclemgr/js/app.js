@@ -665,9 +665,10 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
 
         $scope.init = function() {
             //console.log("Overlay VPN... ng-init + " +  $rootScope.lcmModelTemplate);
-            DataService.getOverlayData()
+            DataService.getOverlayData($stateParams.id)
                 .then(function(data){
-                    $scope.overlayData = data.overlayData;
+                    $scope.overlayData = [];
+                    $scope.overlayData[0] = data;
                     console.log("Data: ");
                     loadButtons();
                 }, function(reason){
@@ -722,7 +723,8 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             //console.log("Underlay VPN... ng-init + " +  $rootScope.lcmModelTemplate);
             DataService.getUnderlayData()
                 .then(function(response){
-                    $scope.underlayVPN = response.data.underlayVPN;
+                    $scope.underlayVPN = [];
+                    $scope.underlayVPN[0] = response;
                     console.log("Data: ");
                     loadButtons();
                 }, function(reason){
@@ -765,7 +767,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             $scope.selectedRow = row;
             $scope.tpTableShowing = true;
             console.log("Underlay table row click");
-            var tp_detData = DataService.getTPLinkData(id);
+            var tp_detData = DataService.getTPLinkData();
             $scope.tableParams_tpDetails = new NgTableParams({count: 5, sorting: {id: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
             }, { counts:[5, 10], dataset: tp_detData});
         }
@@ -861,7 +863,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
 
     .controller('vpcListCtrl', function($scope, $stateParams, NgTableParams, DataService) {
         $scope.message = "VPN List";
-        var rowData = DataService.getOverlayVPNConnData($stateParams.overlayId, "vpcList");
+        var rowData = DataService.getVpcListData();
         $scope.vpcListTable = new NgTableParams({count: 5, sorting: {id: 'asc'}    //{page: 1,count: 10,filter: {name: 'M'},sorting: {name: 'desc'}
         }, { counts:[5, 10], dataset: rowData});
     })

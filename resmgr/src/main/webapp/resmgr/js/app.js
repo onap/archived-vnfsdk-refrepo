@@ -1380,8 +1380,10 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
             $("#myModal").modal({}).draggable();
         }
         $scope.saveData = function(id) {
-            $scope.ne.controller = $('#medropdown').val();
-            $scope.ne.siteID = $('#siteIdDropdown').val();
+            $scope.ne.controllerID = [];
+            $scope.ne.controllerID[0] = $('#medropdown').val();
+            $scope.ne.siteID = [];
+            $scope.ne.siteID[0] = $('#siteIdDropdown').val();
 
             if (!$scope.textboxErrName && !$scope.textboxErrIP) {
 				
