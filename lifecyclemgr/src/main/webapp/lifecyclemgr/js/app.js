@@ -679,7 +679,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
 
         $scope.init = function() {
             //console.log("Overlay VPN... ng-init + " +  $rootScope.lcmModelTemplate);
-            DataService.getOverlayData($stateParams.id)
+            DataService.getOverlayData($stateParams.segmentId)
                 .then(function(data){
                     $scope.overlayData = [];
                     $scope.overlayData[0] = data;
@@ -736,7 +736,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
 
         $scope.init = function() {
             //console.log("Underlay VPN... ng-init + " +  $rootScope.lcmModelTemplate);
-            DataService.getUnderlayData($stateParams.id)
+            DataService.getUnderlayData($stateParams.segmentId)
                 .then(function(response){
                     $scope.underlayVPN = [];
                     $scope.underlayVPN[0] = response;
@@ -820,7 +820,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             var vnffgData = fetchDataForVnffg(jsonData);
             $('#vnffgInfoTable').html(Mustache.to_html(table_tpl, vnffgData));
         };
-        DataService.loadNfvoServiceDetails($stateParams.id, processFun);
+        DataService.loadNfvoServiceDetails($stateParams.segmentId, processFun);
 
         function fetchDataForVnf(jsonData) {
             var header = ["Vnf instance Name"];
