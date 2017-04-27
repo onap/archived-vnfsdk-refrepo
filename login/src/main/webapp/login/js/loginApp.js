@@ -62,6 +62,7 @@ loginApp.controller("loginCtrl", function($scope, $http) {
             }
         }).error(function(data, status) {
             $scope.error = "Incorrect username/password !";
+            top.window.document.location.href = "/openoui/login/html/menu.html";
         });
     };
 });
