@@ -111,13 +111,13 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
                 controller : "inputDataCtrl"
             })
             .state("home.lcTabs.detailInfo.nfvoDetail", {
-                url : "/nfvoDetailInfo",
+                url : "/nfvoDetailInfo/:segmentId",
                 templateUrl: "templates/nfvoDetail.html",
                 controller: "nfvoDetailCtrl"
             })
 
             .state("home.lcTabs.detailInfo.vpnManager", {
-                url : "/vpnManager",
+                url : "/vpnManager/:segmentId",
                 templateUrl : "templates/vpnManager.html",
                 controller : "vpnManagerCtrl"
             })
@@ -558,7 +558,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
 
     })
 
-    .controller('detailInfoCtrl', function($scope, $stateParams, $compile, DataService) {
+    .controller('detailInfoCtrl', function($scope, $stateParams, $compile, DataService, $log) {
         console.log("detailInfoCtrl --> $stateParams.id:: " + $stateParams.id);
         //$scope.currentId = $stateParams.id;
 
@@ -567,31 +567,44 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
         if(rowData.serviceType === "SDNO"){
             $scope.rightPanelHeader = "SDNO VPN Manager";
             jsonData[0] = {"id": $stateParams.id, "name": rowData.serviceType};
+            inializeAccordion(jsonData);
         }
         else if(rowData.serviceType === "NFVO"){
             //TODO - NFVO Pages should be loaded here
             $scope.rightPanelHeader = "NFVO VPN Manager";
             jsonData[0] = {"id": $stateParams.id, "name": rowData.serviceType};
+            inializeAccordion(jsonData);
         }
         else{
-            jsonData = DataService.loadServiceTopoSequence($stateParams.id);
+            DataService.loadServiceTopoSequence($stateParams.id)
+                .then(function (response) {
+                    console.log("Data Param Template :: ");
+                    $log.info(response);
+                    inializeAccordion(response);
+                }, function (reason) {
+                    $scope.error = "Error ! " + reason;
+                });
         }
-        $(".accordion").html("");
-        for (var i = 0; i < jsonData.length; i++) {
-            //console.log("jsonData Name: " + jsonData[i].name);
-            if (jsonData[i].name == "SDNO") {
-                //$("#sdnoLink").text(jsonData[i].name.toUpperCase());
-                //console.log("Adding Accordian to SDNO");
-                $(".accordion").append($compile(addAccordionData("sdno", jsonData[i].name.toUpperCase(), jsonData[i].id))($scope));
-            }
-            else if (jsonData[i].name == "NFVO") {
-                //console.log("Adding Accordian to NFVO");
-                $(".accordion").append($compile(addAccordionData("nfvo", jsonData[i].name.toUpperCase(), jsonData[i].id))($scope));
-            }
-            else {
 
+        function inializeAccordion(jsonData) {
+            $(".accordion").html("");
+            for (var i = 0; i < jsonData.length; i++) {
+                //console.log("jsonData Name: " + jsonData[i].name);
+                if (jsonData[i].name == "SDNO") {
+                    //$("#sdnoLink").text(jsonData[i].name.toUpperCase());
+                    //console.log("Adding Accordian to SDNO");
+                    $(".accordion").append($compile(addAccordionData("sdno", jsonData[i].name.toUpperCase(), jsonData[i].id))($scope));
+                }
+                else if (jsonData[i].name == "NFVO") {
+                    //console.log("Adding Accordian to NFVO");
+                    $(".accordion").append($compile(addAccordionData("nfvo", jsonData[i].name.toUpperCase(), jsonData[i].id))($scope));
+                }
+                else {
+
+                }
             }
         }
+
 
         function addAccordionData(type, text, id) {
             console.log("id:"+id);
@@ -599,10 +612,10 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
             content += '<div class="panel panel-default"><div class="panel-heading">';
             content += '<h6 class="panel-title">';
             if(type == "sdno") {
-                content += '<a style="text-decoration:none;" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne_' + type + '" ui-sref=".vpnManager" ui-sref-active="link_active_DetailInfo" href="#/home/lcTabs/' + id + '/detailInfo/vpnManager">';
+                content += '<a style="text-decoration:none;" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne_' + type + '" ui-sref=".vpnManager({segmentId: \'' + id + '\'})" ui-sref-active="link_active_DetailInfo" href="#/home/lcTabs/' + id + '/detailInfo/vpnManager">';
             }
             else if(type == "nfvo") {
-                content += '<a style="text-decoration:none;" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne_' + type + '" ui-sref=".nfvoDetail" ui-sref-active="link_active_DetailInfo" href="#/home/lcTabs/' + id + '/detailInfo/nfvoDetailInfo">';
+                content += '<a style="text-decoration:none;" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne_' + type + '" ui-sref=".nfvoDetail({segmentId: \'' + id + '\'})" ui-sref-active="link_active_DetailInfo" href="#/home/lcTabs/' + id + '/detailInfo/nfvoDetailInfo">';
             }
             content += '<span id="sdnoLink">'+text+'</span></a>';
             content += '</h6></div>';
@@ -662,6 +675,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
     .controller("overlayVPNCtrl", function($scope, $rootScope, $stateParams, $compile, DataService, NgTableParams){
         $scope.message = "Overlay VPN";
         console.log("Service Id: "+ $stateParams.id);
+        console.log("Segment Id: "+ $stateParams.segmentId);
 
         $scope.init = function() {
             //console.log("Overlay VPN... ng-init + " +  $rootScope.lcmModelTemplate);
@@ -717,6 +731,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
     .controller("underlayVPNCtrl", function($scope, $rootScope, $stateParams, $compile, DataService, NgTableParams){
         $scope.message = "Underlay VPN";
         console.log("Service Id: "+ $stateParams.id);
+        console.log("Segment Id: "+ $stateParams.segmentId);
         $scope.tpTableShowing = false;
 
         $scope.init = function() {
@@ -791,6 +806,7 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
 
     .controller('nfvoDetailCtrl', function($scope, $stateParams, $compile, DataService) {
         console.log("nfvoDetailCtrl --> $stateParams.id:: " + $stateParams.id);
+        console.log("nfvoDetailCtrl --> $stateParams.segmentId:: " + $stateParams.segmentId);
         //$scope.currentId = $stateParams.id;
 
         var table_tpl = $(lcmModelTemplate).filter('#table').html();
