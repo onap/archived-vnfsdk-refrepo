@@ -62,3 +62,31 @@ function iFrameHeight() {
         ifm.height = subWeb.body.scrollHeight;
     }
 };
+
+function clickDashboard() {
+    var dashboard_div = document.getElementById("dashboard_div");
+    var mainFrame_div = document.getElementById("mainFrame_div");
+    dashboard_div.style.display='none';
+    mainFrame_div.style.display='block';
+}
+
+function dashboardInit() {
+    var dashboard_div = document.getElementById("dashboard_div");
+    var mainFrame_div = document.getElementById("mainFrame_div");
+    mainFrame_div.style.display='none';
+    dashboard_div.style.visidisplaybility='block';
+}
+
+function logoutSubmit() {
+    $.ajax({
+        url: "/openoapi/auth/v1/tokens" + "?=" + new Date().getTime(),
+        type: "DELETE",
+        contentType: "application/json",
+        dataType: "text",
+        success: function() {
+            top.window.location = "/openoui/login/index.html";
+        },
+        error: function() {
+        }
+    })
+}
