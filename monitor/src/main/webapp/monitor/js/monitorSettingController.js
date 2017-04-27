@@ -45,7 +45,7 @@ var vm = avalon
                }     
             },
             dataTableLanguage: {
-                "sProcessing": "<img src='/openoui/common/thirdparty/data-tables/images/loading-spinner-grey.gif'/><span>&nbsp;&nbsp;Loadding...</span>",   
+                "sProcessing": "<img src='/openoui/thirdparty/data-tables/images/loading-spinner-grey.gif'/><span>&nbsp;&nbsp;Loadding...</span>",   
                 "sLengthMenu": $.i18n.prop("openo-umc-monitor-iui-table-sLengthMenu"),
                 "sZeroRecords": $.i18n.prop("openo-umc-monitor-iui-table-sZeroRecords"),
                 "sInfo": "<span class='seperator'></span>" + $.i18n.prop("openo-umc-monitor-iui-table-sInfo"),

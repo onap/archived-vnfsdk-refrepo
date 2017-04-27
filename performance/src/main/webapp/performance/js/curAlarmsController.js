@@ -112,7 +112,7 @@ var vm = avalon.define({
 	},
 
 	$language: {
-		"sProcessing": "<img src='../common/thirdparty/data-tables/images/loading-spinner-grey.gif'/><span>&nbsp;&nbsp;处理中...</span>",
+		"sProcessing": "<img src='/openoui/thirdparty/data-tables/images/loading-spinner-grey.gif'/><span>&nbsp;&nbsp;处理中...</span>",
 		"sLengthMenu": $.i18n.prop("ngict-fm-iui-table-sLengthMenu"),
 		"sZeroRecords": $.i18n.prop("ngict-fm-iui-table-sZeroRecords"),
 		"sInfo": "<span class='seperator'></span>" + $.i18n.prop("ngict-fm-iui-table-sInfo"),
