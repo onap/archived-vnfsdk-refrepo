@@ -793,16 +793,18 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
         console.log("nfvoDetailCtrl --> $stateParams.id:: " + $stateParams.id);
         //$scope.currentId = $stateParams.id;
 
-        var jsonData = DataService.loadNfvoServiceDetails($stateParams.id);
         var table_tpl = $(lcmModelTemplate).filter('#table').html();
-        var vnfData = fetchDataForVnf(jsonData);
-        $('#vnfInfoTable').html(Mustache.to_html(table_tpl, vnfData));
+        var processFun = function (jsonData) {
+            var vnfData = fetchDataForVnf(jsonData);
+            $('#vnfInfoTable').html(Mustache.to_html(table_tpl, vnfData));
 
-        var vlData = fetchDataForVl(jsonData);
-        $('#vlInfoTable').html(Mustache.to_html(table_tpl, vlData));
+            var vlData = fetchDataForVl(jsonData);
+            $('#vlInfoTable').html(Mustache.to_html(table_tpl, vlData));
 
-        var vnffgData = fetchDataForVnffg(jsonData);
-        $('#vnffgInfoTable').html(Mustache.to_html(table_tpl, vnffgData));
+            var vnffgData = fetchDataForVnffg(jsonData);
+            $('#vnffgInfoTable').html(Mustache.to_html(table_tpl, vnffgData));
+        };
+        DataService.loadNfvoServiceDetails($stateParams.id, processFun);
 
         function fetchDataForVnf(jsonData) {
             var header = ["Vnf instance Name"];
