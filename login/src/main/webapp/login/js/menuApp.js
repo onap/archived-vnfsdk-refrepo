@@ -63,18 +63,18 @@ function iFrameHeight() {
     }
 };
 
-function clickDashboard() {
+function displayIframe() {
     var dashboard_div = document.getElementById("dashboard_div");
     var mainFrame_div = document.getElementById("mainFrame_div");
-    dashboard_div.style.display='none';
-    mainFrame_div.style.display='block';
+    dashboard_div.style.display = "none";
+    mainFrame_div.style.display = "";
 }
 
-function dashboardInit() {
+function displayDashboard() {
     var dashboard_div = document.getElementById("dashboard_div");
     var mainFrame_div = document.getElementById("mainFrame_div");
-    mainFrame_div.style.display='none';
-    dashboard_div.style.visidisplaybility='block';
+    mainFrame_div.style.display = "none";
+    dashboard_div.style.display = "";
 }
 
 function logoutSubmit() {

@@ -41,7 +41,7 @@
 
         <script type="text/javascript" src="/openoui/login/js/menuApp.js"></script>
     </head>
-    <body onload="init_menu(); dashboardInit()">
+    <body onload="init_menu(); displayDashboard()">
         <div id="page-wrapper" class="fixed-sidebar" style="overflow-y:hidden; overflow-x:hidden;">
             <div id="page-sidebar">
                 <div id="header-logo">
@@ -54,7 +54,7 @@
                                 <i class="fa fa-cloud"></i>Service<i class="fa fa-chevron-down"></i>
                             </div>
                             <ul class="submenu">
-                                <li><a href="/openoui/lifecyclemgr/index.html" target="mainFrame">Service Management</a></li>
+                                <li><a href="/openoui/lifecyclemgr/index.html" target="mainFrame" onclick="displayIframe()">Service Management</a></li>
                             </ul>
                         </li>
                         <li>
@@ -62,7 +62,7 @@
                                 <i class="fa fa-search-minus"></i>Resource<i class="fa fa-chevron-down"></i>
                             </div>
                             <ul class="submenu">
-                                <li><a href="/openoui/resmgr/index.html" target="mainFrame">Resource Management</a></li>
+                                <li><a href="/openoui/resmgr/index.html" target="mainFrame" onclick="displayIframe()">Resource Management</a></li>
                             </ul>
                         </li>
                        <!-- <li>
@@ -70,7 +70,7 @@
                                 <i class="fa fa-map-marker"></i>Province<i class="fa fa-chevron-down"></i>
                             </div>
                             <ul class="submenu">
-                                <li><a href="/openoui/provincemgr/index.html" target="mainFrame">Province Management</a></li>
+                                <li><a href="/openoui/provincemgr/index.html" target="mainFrame" onclick="displayIframe()">Province Management</a></li>
                             </ul>
                         </li> -->
                         <li>
@@ -78,9 +78,9 @@
                                 <i class="fa fa-edit"></i>Orchestrator<i class="fa fa-chevron-down"></i>
                             </div>
                             <ul class="submenu">
-                                <li><a href="/modeldesigner/servicetemplates.html" target="mainFrame">Model Design</a></li>
-                                <li><a href="/openoui/catalog/csarPackage.html" target="mainFrame">Package</a></li>
-                                <li><a href="/openoui/catalog/template.html" target="mainFrame">Service Template</a></li>
+                                <li><a href="/modeldesigner/servicetemplates.html" target="mainFrame" onclick="displayIframe()">Model Design</a></li>
+                                <li><a href="/openoui/catalog/csarPackage.html" target="mainFrame" onclick="displayIframe()">Package</a></li>
+                                <li><a href="/openoui/catalog/template.html" target="mainFrame" onclick="displayIframe()">Service Template</a></li>
                             </ul>
                         </li>
                         <li>
@@ -88,9 +88,9 @@
                                 <i class="fa fa-cogs"></i>Manage View<i class="fa fa-chevron-down"></i>
                             </div>
                             <ul class="submenu">
-                                <li><a href="/openoui/extsys/vim/vimView.html" target="mainFrame">VIM Manage</a></li>
-                                <li><a href="/openoui/extsys/vnfm/vnfmView.html" target="mainFrame">VNFM</a></li>
-                                <li><a href="/openoui/extsys/sdncontroller/index.html" target="mainFrame">SDN Controller</a></li>
+                                <li><a href="/openoui/extsys/vim/vimView.html" target="mainFrame" onclick="displayIframe()">VIM Manage</a></li>
+                                <li><a href="/openoui/extsys/vnfm/vnfmView.html" target="mainFrame" onclick="displayIframe()">VNFM</a></li>
+                                <li><a href="/openoui/extsys/sdncontroller/index.html" target="mainFrame" onclick="displayIframe()">SDN Controller</a></li>
                             </ul>
                         </li>
                         <li>
@@ -98,8 +98,8 @@
                                 <i class="fa fa-line-chart"></i>Performance<i class="fa fa-chevron-down"></i>
                             </div>
                             <ul class="submenu">
-                                <li><a href="/openoui/performance/performance_view.html" target="mainFrame">Performance Query</a></li>
-                                <li><a href="/openoui/performance/alarm_view.html" target="mainFrame">Alarm Query</a></li>
+                                <li><a href="/openoui/performance/performance_view.html" target="mainFrame" onclick="displayIframe()">Performance Query</a></li>
+                                <li><a href="/openoui/performance/alarm_view.html" target="mainFrame" onclick="displayIframe()">Alarm Query</a></li>
                             </ul>
                         </li>
                         <li>
@@ -107,7 +107,7 @@
                                 <i class="fa fa-eye"></i>Monitor<i class="fa fa-chevron-down"></i>
                             </div>
                             <ul class="submenu">
-                                <li><a href="/openoui/monitor/monitorSettingList.html" target="mainFrame">Parameter Setting</a></li>
+                                <li><a href="/openoui/monitor/monitorSettingList.html" target="mainFrame" onclick="displayIframe()">Parameter Setting</a></li>
                             </ul>
                         </li>
                         <li>
@@ -115,7 +115,7 @@
                                 <i class="fa fa-puzzle-piece"></i>VNF Market<i class="fa fa-chevron-down"></i>
                             </div>
                             <ul class="submenu">
-                                <li><a href="/openoui/vnfmarket/index.html" target="mainFrame">VNF Market Place</a></li>
+                                <li><a href="/openoui/vnfmarket/index.html" target="mainFrame" onclick="displayIframe()">VNF Market Place</a></li>
                             </ul>
                         </li>
                         <li>
@@ -123,7 +123,7 @@
                                 <i class="fa fa-database"></i>Holmes<i class="fa fa-chevron-down"></i>
                             </div>
                             <ul class="submenu">
-                                <li><a href="/openoui/holmes/index.html" target="mainFrame">Alarm Analysis</a></li>
+                                <li><a href="/openoui/holmes/index.html" target="mainFrame" onclick="displayIframe()">Alarm Analysis</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -159,7 +159,7 @@
                 <div id="rightContainer" style="width:100%; height:95%; margin-left=240px; overflow-y:auto; overflow-x:hidden;">
                     <div id="dashboard_div">
                         <div class="col-md-4">
-                            <a href="/openoui/lifecyclemgr/index.html" target="mainFrame" class="tile-button btn clearfix bg-white mrg30B" title="" onclick="clickDashboard()">
+                            <a href="/openoui/lifecyclemgr/index.html" target="mainFrame" class="tile-button btn clearfix bg-white mrg30B" title="" onclick="displayIframe()">
                                 <div class="tile-header pad10A font-size-13 popover-title">
                                     Service
                                 </div>
@@ -179,7 +179,7 @@
                             </a>
                         </div>
                         <div class="col-md-4">
-                            <a href="/openoui/resmgr/index.html" target="mainFrame" class="tile-button btn clearfix bg-white mrg30B" title="" onclick="clickDashboard()">
+                            <a href="/openoui/resmgr/index.html" target="mainFrame" class="tile-button btn clearfix bg-white mrg30B" title="" onclick="displayIframe()">
                                 <div class="tile-header pad10A font-size-13 popover-title">
                                     Resource
                                 </div>
@@ -199,7 +199,7 @@
                             </a>
                         </div>
                         <div class="col-md-4">
-                            <a href="/openoui/catalog/csarPackage.html" target="mainFrame" class="tile-button btn clearfix bg-white mrg30B" title="" onclick="clickDashboard()">
+                            <a href="/openoui/catalog/csarPackage.html" target="mainFrame" class="tile-button btn clearfix bg-white mrg30B" title="" onclick="displayIframe()">
                                 <div class="tile-header pad10A font-size-13 popover-title">
                                     Orchestrator
                                 </div>
@@ -219,7 +219,7 @@
                             </a>
                         </div>
                         <div class="col-md-4">
-                            <a href="/openoui/extsys/vim/vimView.html" target="mainFrame" class="tile-button btn clearfix bg-white mrg30B" title="" onclick="clickDashboard()">
+                            <a href="/openoui/extsys/vim/vimView.html" target="mainFrame" class="tile-button btn clearfix bg-white mrg30B" title="" onclick="displayIframe()">
                                 <div class="tile-header pad10A font-size-13 popover-title">
                                     Manage View
                                 </div>
@@ -239,7 +239,7 @@
                             </a>
                         </div>
                         <div class="col-md-4">
-                            <a href="/openoui/performance/performance_view.html" target="mainFrame" class="tile-button btn clearfix bg-white mrg30B" title="" onclick="clickDashboard()">
+                            <a href="/openoui/performance/performance_view.html" target="mainFrame" class="tile-button btn clearfix bg-white mrg30B" title="" onclick="displayIframe()">
                                 <div class="tile-header pad10A font-size-13 popover-title">
                                     Performance
                                 </div>
@@ -259,7 +259,7 @@
                             </a>
                         </div>
                         <div class="col-md-4">
-                            <a href="/openoui/monitor/monitorSettingList.html" target="mainFrame" class="tile-button btn clearfix bg-white mrg30B" title="" onclick="clickDashboard()">
+                            <a href="/openoui/monitor/monitorSettingList.html" target="mainFrame" class="tile-button btn clearfix bg-white mrg30B" title="" onclick="displayIframe()">
                                 <div class="tile-header pad10A font-size-13 popover-title">
                                     Monitor
                                 </div>
