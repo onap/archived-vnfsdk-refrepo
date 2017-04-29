@@ -831,9 +831,12 @@ var app = angular.module("lcApp", ["ui.router", "ngTable"])/*, 'ui.bootstrap', '
         }
 
         function fetchDataForVl(jsonData) {
-            var header = ["Network Resource Name","Link Port Resource Name"];
+            var header = ["Virtual Link Instance Name","Related CP List"];
             var rowData = jsonData.vlInfo.map(function (vl) {
-                return {"values": [vl.networkResource.resourceName, vl.linkPortResource.resourceName]}
+                return {"values": [vl.vlInstanceName, vl.relatedCpInstanceId.map(
+                    function (cp) {
+                        return cp.cpInstanceName;
+                    }).join(', ')]}
             });
             return {"itemHeader": header,"rowitem": rowData,"striped": false,"border": true,"hover": true,"condensed": false,"filter": false,"action": "","searchField": ""}
         }
