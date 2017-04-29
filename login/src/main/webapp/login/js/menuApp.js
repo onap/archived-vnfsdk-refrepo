@@ -65,15 +65,15 @@ function iFrameHeight() {
 
 function displayIframe() {
     var dashboard_div = document.getElementById("dashboard_div");
-    var mainFrame_div = document.getElementById("mainFrame_div");
+    var mainFrame = document.getElementById("mainFrame");
     dashboard_div.style.display = "none";
-    mainFrame_div.style.display = "";
+    mainFrame.style.display = "";
 }
 
 function displayDashboard() {
     var dashboard_div = document.getElementById("dashboard_div");
-    var mainFrame_div = document.getElementById("mainFrame_div");
-    mainFrame_div.style.display = "none";
+    var mainFrame = document.getElementById("mainFrame");
+    mainFrame.style.display = "none";
     dashboard_div.style.display = "";
 }
 
