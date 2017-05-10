@@ -493,7 +493,9 @@ var app = angular.module("ResourceMgrApp", ["ui.router", "ngTable"])
 
             /*var siteTenantType = {"ErrMsg" :     {"errmsg" : "The tenanttype is required.", "modalVar":"site.tenanttype"}};
             $('#myModal #tenanttype').append($compile(Mustache.to_html(text, siteTenantType.ErrMsg))($scope));*/
-
+            var siteTanant = {"ErrMsg" :     {"errmsg" : "Tenant is required.", "modalVar":"site.tenantID", "placeholder":"Tenant"}};
+            $('#myModal #Tenant').append($compile(Mustache.to_html(text, siteTanant.ErrMsg))($scope));
+            
             var siteLocation = {"ErrMsg" :     {"errmsg" : "Location is required.", "modalVar":"site.location", "placeholder":"Location"}};
             $('#myModal #location').append($compile(Mustache.to_html(text, siteLocation.ErrMsg))($scope));
         }
