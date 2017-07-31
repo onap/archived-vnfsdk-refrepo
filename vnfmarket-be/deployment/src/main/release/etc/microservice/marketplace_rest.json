@@ -1,0 +1,14 @@
+{
+  "serviceName": "vnfsdk-marketplace",
+  "version": "v1",
+  "url": "/openoapi/vnfsdk-marketplace/v1",
+  "protocol": "REST",
+  "visualRange": "0",
+  "nodes": [
+    {
+      "ip": "10.229.47.199",
+      "port": "8702",
+      "ttl": 0
+    }
+  ]
+}

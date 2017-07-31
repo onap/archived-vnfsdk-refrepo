@@ -1,0 +1,54 @@
+{  
+   "operTypeList":[  
+      {  
+         "operTypeName":"Validation",
+         "operTypeId":"validation",
+         "oper":[  
+            {  
+               "operId":"upload_id_1",
+               "operName":"Validation Step 1 Execute"
+            },
+            {  
+               "operId":"upload_id_2",
+               "operName":"Validation Step 2 Execute"
+            },
+			{  
+               "operId":"upload_id_3",
+               "operName":"Validation Step 3 Execute"
+            },
+            {  
+               "operId":"upload_id_4",
+               "operName":"Validation Step 4 Execute"
+            }
+         ]
+      },
+      {  
+         "operTypeName":"LifeCycle",
+         "operTypeId":"lifecycletest",
+         "oper":[  
+            {  
+               "operId":"lifecycleTestexec",
+               "operName":"LifeCycle Test Execute"
+            }
+         ]
+      },
+      {  
+         "operTypeName":"Function Test",
+         "operTypeId":"functiontest",
+         "oper":[  
+            {  
+               "operId":"packageExists",
+               "operName":"Check Package exists"
+            },
+            {  
+               "operId":"download",
+               "operName":"Download Package from Repository"
+            },
+            {  
+               "operId":"functestexec",
+               "operName":"Execute Function Testing"
+            }
+         ]
+      }
+   ]
+}
