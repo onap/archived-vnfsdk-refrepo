@@ -18,30 +18,19 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-      <groupId>org.openo.oparent</groupId>
+      <groupId>org.onap.oparent</groupId>
       <artifactId>oparent</artifactId>
-      <version>1.1.0-SNAPSHOT</version>
+      <version>1.0.0-SNAPSHOT</version>
       <relativePath>../oparent</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.openo.client.gui</groupId>
-    <artifactId>client-gui</artifactId>
+    <groupId>org.onap.vnfmarket</groupId>
+    <artifactId>vnfmarket</artifactId>
     <packaging>pom</packaging>
-    <name>client-gui</name>
+    <name>vnfmarket</name>
 
-    <modules>
-        <module>auth</module>
-        <module>catalog</module>
-        <module>common</module>
-        <module>extsys</module>
-        <module>integration</module>
-        <module>lifecyclemgr</module>
-        <module>login</module>
-        <module>monitor</module>
-        <module>performance</module>
-        <module>resmgr</module>
-        <module>alarm-analysis</module>
-        <module>vnfmarket</module>
+    <modules>       
+        <module>vnfmarket-be</module>     
     </modules>
 </project>
