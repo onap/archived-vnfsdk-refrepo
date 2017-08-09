@@ -58,7 +58,7 @@
 
                                 deployFolder = "${project.build.directory}/deployoutput"
                                 deployUnzip = "${project.build.directory}/deployunzip"
-                                outfileName = "VnfSdkMarketplace-.${project.version}.zip"
+                                outfileName = "VnfSdkMarketplace-${project.version}.zip"
 
                                 ant.delete(dir: "${deployFolder}")
                                 ant.mkdir(dir: "${deployFolder}")
@@ -67,7 +67,7 @@
                                 ant.mkdir(dir: "${deployUnzip}")
 
                                 ant.mkdir(dir: "${deployUnzip}/webapps/ROOT")
-                                ant.mkdir(dir: "${deployUnzip}/webapps/openoui#marketplace#v1")
+                                ant.mkdir(dir: "${deployUnzip}/webapps/openoui")
 
                                 ant.copy(todir: "${deployUnzip}") {
                                 fileset(dir: "${basedir}/src/main/release"){
@@ -77,6 +77,10 @@
 
                                 ant.copy(todir: "${deployUnzip}/webapps/ROOT") {
                                 fileset(dir: "${project.build.directory}/../../vnf-sdk-marketplace/target/ROOT")
+                                }
+								
+								ant.copy(todir: "${deployUnzip}/webapps/openoui") {
+                                fileset(dir: "${project.build.directory}/../../../vnfmarket/src/main/webapp")
                                 }
 
                                 ant.zip(destfile: "${deployFolder}/${outfileName}") {
