@@ -25,7 +25,7 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.onap.vnfmarket</groupId>
+    <groupId>org.onap.vnfsdk.refrepo</groupId>
     <artifactId>vnfmarket</artifactId>
     <packaging>pom</packaging>
     <name>vnfmarket</name>
