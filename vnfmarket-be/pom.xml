@@ -22,7 +22,7 @@
       <relativePath>../oparent</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.openo.vnf-sdk.marketplace</groupId>
+    <groupId>org.onap.vnfsdk.refrepo</groupId>
     <artifactId>vnf-sdk-marketplace-core-parent</artifactId>
     <packaging>pom</packaging>
     <name>vnf-sdk-marketplace-core-parent</name>
