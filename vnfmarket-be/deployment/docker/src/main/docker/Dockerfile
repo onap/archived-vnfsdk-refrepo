@@ -40,9 +40,6 @@ ADD ./STAGE  /service
 
 # https://nexus.onap.org/service/local/artifact/maven/redirect?r=snapshots&g=org.onap.vnfsdk.refrepo.marketplace&a=vnf-sdk-marketplace-deployment&e=zip&c=&v=LATEST
 # RUN wget -q -O vnf-sdk-marketplace-1.0.0-SNAPSHOT.zip "https://nexus.onap.org/service/local/repositories/snapshots/content/org/onap/vnfsdk/refrepo/vnf-sdk-marketplace-deployment/1.0.0-SNAPSHOT/vnf-sdk-marketplace-deployment-1.0.0-20170515.020618-24.zip" && unzip -q -o -B vnf-sdk-marketplace-1.0.0-SNAPSHOT.zip && rm -f vnf-sdk-marketplace-1.0.0-SNAPSHOT.zip
-# Set permissions
-RUN find . -type d -exec chmod o-w {} \;
-RUN find . -name "*.sh" -exec chmod +x {} \;
 EXPOSE 8702
 # RUN echo ONAP vnf-sdk-marketplace 1.0.0-SNAPSHOT "https://nexus.onap.org/service/local/repositories/snapshots/content/org/openo/vnfsdk/refrepo/vnf-sdk-marketplace-deployment/1.0.0-SNAPSHOT/vnf-sdk-marketplace-deployment-1.0.0-20170515.020618-24.zip" > ONAP_VERSION
 
@@ -56,6 +53,11 @@ COPY instance-init.sh .
 COPY instance-run.sh .
 COPY instance-workaround.sh .
 COPY docker-entrypoint.sh .
+
+# Set permissions
+RUN find . -type d -exec chmod o-w {} \;
+RUN find . -name "*.sh" -exec chmod +x {} \;
+
 ENTRYPOINT /service/docker-entrypoint.sh
 
 COPY LICENSE ./ONAP_LICENSE
