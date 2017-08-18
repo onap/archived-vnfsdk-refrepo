@@ -258,14 +258,14 @@ public class PackageWrapper {
                 
                 //Upload the Package to CATALOUGE and get CSARID
                 //---------------------------------------------
-                String catalougeCsarId = LifecycleTestExceutor.uploadPackageToCatalouge(oOnboradingRequest);
-                if((null == catalougeCsarId) || catalougeCsarId.isEmpty())
-                {
-                    LOG.error("Failed to Upload Package to catalougeCsarId " + ToolUtil.objectToString(basicInfo));
-                    return Response.status(Status.INTERNAL_SERVER_ERROR).build();
-                }
-                oOnboradingRequest.setCsarIdCatalouge(catalougeCsarId);
-                LOG.info("catalougeCsarId :" + catalougeCsarId);
+                //String catalougeCsarId = LifecycleTestExceutor.uploadPackageToCatalouge(oOnboradingRequest);
+                //if((null == catalougeCsarId) || catalougeCsarId.isEmpty())
+                //{
+                //    LOG.error("Failed to Upload Package to catalougeCsarId " + ToolUtil.objectToString(basicInfo));
+                    //return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+                // }
+                //oOnboradingRequest.setCsarIdCatalouge(catalougeCsarId);
+                //LOG.info("catalougeCsarId :" + catalougeCsarId);
 
                 
                 //Update Default download count to -1
