@@ -22,7 +22,7 @@
 
     <parent>
         <groupId>org.onap.vnfsdk.refrepo</groupId>
-        <artifactId>vnfmarket</artifactId>
+        <artifactId>vnf-sdk-marketplace-core-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
