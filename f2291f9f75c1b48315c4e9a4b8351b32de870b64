@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a437d4f_60db3c1c",
+        "filename": "integration/src/main/java/org/onap/portal/bean/MsbRegisterBean.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 749
+      },
+      "writtenOn": "2017-08-30T13:53:40Z",
+      "side": 1,
+      "message": "Is this package name not required to change?",
+      "revId": "f2291f9f75c1b48315c4e9a4b8351b32de870b64",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
