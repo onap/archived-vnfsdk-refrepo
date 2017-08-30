@@ -19,9 +19,9 @@ package org.openo.vnfsdk.marketplace.db.exception;
 public class ErrorCodeException extends Exception {
 
   private static final long serialVersionUID = 3220072444842529499L;
-  private int categoryCode = 0;
-  private int errorCode = 1;
-  private String[] arguments = null;
+  private final int categoryCode;
+  private final int errorCode;
+  private final String[] arguments;
 
   private static String defaultText = null;
 
@@ -50,6 +50,7 @@ public class ErrorCodeException extends Exception {
     super(debugMessage);
     this.errorCode = code;
     this.arguments = arguments;
+    this.categoryCode = 0;
   }
 
 
@@ -67,6 +68,7 @@ public class ErrorCodeException extends Exception {
     super(source);
     this.errorCode = code;
     this.arguments = arguments;
+    this.categoryCode = 0;
   }
 
 
@@ -85,6 +87,7 @@ public class ErrorCodeException extends Exception {
     super(debugMessage, source);
     this.errorCode = code;
     this.arguments = arguments;
+    this.categoryCode = 0;
   }
 
 
