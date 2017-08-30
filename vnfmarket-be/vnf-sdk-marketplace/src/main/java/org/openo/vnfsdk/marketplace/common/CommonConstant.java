@@ -58,6 +58,10 @@ public class CommonConstant {
   
   public static final  String CATALOUGE_UPLOAD_URL = "/openoapi/catalog/v1/csars";
   
+  private CommonConstant (){
+	  // Cannot create instance of the class
+  }
+  
   public static class functionTest 
   {    
       public static final String FUNCTEST_URL = "/openoapi/vnfsdk/v1/functest/";
