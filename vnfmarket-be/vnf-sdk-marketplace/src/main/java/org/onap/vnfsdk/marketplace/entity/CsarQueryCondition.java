@@ -15,13 +15,7 @@
  */
 package org.onap.vnfsdk.marketplace.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class CsarQueryCondition {
 
   private String csarId;

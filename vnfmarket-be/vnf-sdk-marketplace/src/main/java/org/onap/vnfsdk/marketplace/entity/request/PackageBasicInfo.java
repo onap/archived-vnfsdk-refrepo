@@ -17,14 +17,7 @@ package org.onap.vnfsdk.marketplace.entity.request;
 
 import org.onap.vnfsdk.marketplace.entity.EnumType;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class PackageBasicInfo {
 
     public String getProvider() {

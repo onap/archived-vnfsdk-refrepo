@@ -17,14 +17,9 @@ package org.onap.vnfsdk.marketplace.entity.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PackageResponse {
   private static final int STATUS_SUCCESS = 1;
