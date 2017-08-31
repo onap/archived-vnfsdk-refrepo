@@ -995,14 +995,7 @@ public class PackageResourceTest {
         assertEquals(res,true);
     }
 
-    @Test
-    public void testGetSession() {
-        try {
-            assertNull( ConnectionUtil.getSession() );
-        } catch( Exception e ) {
-            e.printStackTrace();
-        }
-    }
+  
 
     @Test
     public void testToJson() {

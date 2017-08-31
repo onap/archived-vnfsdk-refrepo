@@ -15,16 +15,16 @@
   limitations under the License.
 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.openo.vnfsdk.marketplace.db.mapper.IMarketplaceMapper">
+<mapper namespace="org.onap.vnfsdk.marketplace.db.mapper.IMarketplaceMapper">
 
-    <select id="getAllPackageData" resultType="org.openo.vnfsdk.marketplace.db.entity.PackageData">
+    <select id="getAllPackageData" resultType="org.onap.vnfsdk.marketplace.db.entity.PackageData">
         SELECT 
         *
         FROM
         CSAR_PACKAGE_TABLE
     </select>
 	
-	<select id="getPackageData" resultType="org.openo.vnfsdk.marketplace.db.entity.PackageData">
+	<select id="getPackageData" resultType="org.onap.vnfsdk.marketplace.db.entity.PackageData">
 	SELECT 
 	*
 	FROM
@@ -33,7 +33,7 @@
 	CSARID=#{csarId}
     </select>
 	
-	<insert id="savePackageData" parameterType="org.openo.vnfsdk.marketplace.db.entity.PackageData">
+	<insert id="savePackageData" parameterType="org.onap.vnfsdk.marketplace.db.entity.PackageData">
         INSERT INTO
         CSAR_PACKAGE_TABLE
         (CSARID, DOWNLOADURI, REPORT, SIZE, FORMAT, CREATETIME, DELETIONPENDING, MODIFYTIME, SHORTDESC, NAME, VERSION, PROVIDER, TYPE, DETAILS, REMARKS,DOWNLOADCOUNT)
@@ -48,7 +48,7 @@
         CSARID=#{csarId}
     </delete>
 	
-	<delete id="updatePackageData" parameterType="org.openo.vnfsdk.marketplace.db.entity.PackageData">
+	<delete id="updatePackageData" parameterType="org.onap.vnfsdk.marketplace.db.entity.PackageData">
         UPDATE CSAR_PACKAGE_TABLE SET  DOWNLOADCOUNT=#{downloadCount}
         WHERE
         CSARID=#{csarId}
