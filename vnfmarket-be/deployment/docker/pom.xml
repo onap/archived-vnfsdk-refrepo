@@ -31,7 +31,7 @@
     <packaging>pom</packaging>
 
   <properties>
-        <docker.image.name>onap/vnfmarket</docker.image.name>
+        <docker.image.name>onap/refrepo</docker.image.name>
         <maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
         <docker.push.registry></docker.push.registry>
         <skip.docker.build>true</skip.docker.build>
