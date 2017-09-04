@@ -201,9 +201,14 @@ public class PackageWrapper {
             return Response.status(Status.EXPECTATION_FAILED).build();
         }
 
-        LOG.info("the fileDetail = " + ToolUtil.objectToString(fileDetail));
+        String fileName = "temp_"+ packageId + ".csar";
+        if (null != fileDetail)
+        {
+            LOG.info("the fileDetail = " + ToolUtil.objectToString(fileDetail));
 
-        String fileName = ToolUtil.processFileName(fileDetail.getFileName());
+            fileName = ToolUtil.processFileName(fileDetail.getFileName());
+        }
+        
         String localDirName = ToolUtil.getTempDir(CommonConstant.CATALOG_CSAR_DIR_NAME, fileName);
 
         String contentRange = null;
