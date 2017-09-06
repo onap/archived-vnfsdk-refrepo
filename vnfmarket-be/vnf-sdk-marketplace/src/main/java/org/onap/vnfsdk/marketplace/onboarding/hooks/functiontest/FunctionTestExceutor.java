@@ -34,8 +34,7 @@ import org.onap.vnfsdk.marketplace.onboarding.entity.OnBoradingRequest;
 import org.onap.vnfsdk.marketplace.rest.RestConstant;
 import org.onap.vnfsdk.marketplace.rest.RestResponse;
 import org.onap.vnfsdk.marketplace.rest.RestfulClient;
-import org.onap.vnfsdk.marketplace.rest.RestfulUtil;
-import org.openo.baseservice.roa.util.restclient.RestfulResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -167,7 +166,7 @@ public class FunctionTestExceutor
         paramsMap.put(CommonConstant.HttpContext.URL, CommonConstant.functionTest.FUNCTEST_RESULT_URL + key);  
         paramsMap.put(CommonConstant.HttpContext.METHOD_TYPE, CommonConstant.MethodType.GET);          
         
-        RestfulResponse response = RestfulUtil.sendRestRequest(paramsMap, null, null);
+        /*RestfulResponse response = RestfulUtil.sendRestRequest(paramsMap, null, null);
         if(!checkValidRestResponse(response))
         {
             logger.error("Respone for getTestResultsByFuncTestKeyMsb is not valid !!!");
@@ -181,8 +180,8 @@ public class FunctionTestExceutor
         else
         {
             logger.info("NULL Function Test Results via MSB for Key:" + key);  
-        }   
-        return response.getResponseContent();
+        }   */
+        return null;
     }  
         
     /**
@@ -200,14 +199,14 @@ public class FunctionTestExceutor
         return true;
     }
 
-    private static boolean checkValidRestResponse(RestfulResponse rsp) 
+    /*private static boolean checkValidRestResponse(RestfulResponse rsp) 
     {
         if ((rsp == null) || (RestConstant.RESPONSE_CODE_200 != rsp.getStatus() && RestConstant.RESPONSE_CODE_201 != rsp.getStatus()))
         {
             return false;
         }
         return true;
-    }
+    }*/
     
     @SuppressWarnings("deprecation")
     private static HttpEntity buildRequest(InputStream inputStream)

@@ -28,13 +28,7 @@
 		<maven.test.failure.ignore>false</maven.test.failure.ignore>
 	</properties>
 
-	<repositories>
-		<repository>
-			<id>open-o</id>
-			<name>OPEN-O repository</name>
-			<url>https://nexus.open-o.org/content/repositories/public/</url>
-		</repository>
-	</repositories>
+
 
 	<dependencies>
 		<dependency>
@@ -57,11 +51,7 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.16</version>
 		</dependency>
-		<dependency>
-			<groupId>org.openo.common-services.common-utilities</groupId>
-			<artifactId>commonlib-cbb</artifactId>
-			<version>2.0.0</version>
-		</dependency>
+	
 		<dependency>
 			<groupId>io.dropwizard</groupId>
 			<artifactId>dropwizard-core</artifactId>
@@ -108,12 +98,7 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpmime</artifactId>
 			<version>4.5.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.openo.common-services.common-utilities</groupId>
-			<artifactId>commonlib-restclient</artifactId>
-			<version>2.0.0</version>
-		</dependency>
+		</dependency>		
 		<!-- consumer -->
 		<dependency>
 			<groupId>com.eclipsesource.jaxrs</groupId>
@@ -179,6 +164,32 @@
 			<version>1.8.2</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-jaxrs</artifactId>
+            <version>1.9.2</version>
+        </dependency>
+		<dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+             <version>1.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+            <version>2.4</version>
+            <classifier>jdk15</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+         <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
 		<!-- UT end -->
 	</dependencies>
 	<profiles>
