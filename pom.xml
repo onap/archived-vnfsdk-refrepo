@@ -29,7 +29,7 @@
     <artifactId>vnfmarket</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>vnfmarket</name>
+    <name>vnfsdk-refrepo</name>
 
     <modules>       
         <module>vnfmarket-be</module>     
