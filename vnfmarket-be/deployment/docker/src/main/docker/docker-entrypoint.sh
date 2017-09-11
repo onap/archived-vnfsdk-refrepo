@@ -23,6 +23,10 @@
 if [ -z "$SERVICE_IP" ]; then
     export SERVICE_IP=`hostname -i`
 fi
+if [ -z "$POSTGRES_IP" ]; then
+    export POSTGRES_IP=127.0.0.1
+fi
+
 echo
 echo Environment Variables:
 echo "SERVICE_IP=$SERVICE_IP"
@@ -37,6 +41,7 @@ echo
 chown -R mysql /var/lib/mysql
 chgrp -R mysql /var/lib/mysql
 su mysql -c /usr/bin/mysqld_safe &
+
 
 # Perform one-time config
 if [ ! -e init.log ]; then
