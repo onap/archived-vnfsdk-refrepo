@@ -24,15 +24,15 @@
         <groupId>org.onap.vnfsdk.refrepo</groupId>
         <artifactId>vnf-sdk-marketplace-core-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
-        <relativePath>../../pom.xml</relativePath>
+        <relativePath>../../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>refrepo-docker-postgres</artifactId>
-    <name>refrepo/deployment/docker/postgres</name>
+    <artifactId>vnfmarket-docker-refrepo</artifactId>
+    <name>vnfmarket/deployment/docker/refrepo</name>
     <packaging>pom</packaging>
 
   <properties>
-        <docker.image.name>onap/refrepo/postgres</docker.image.name>
+        <docker.image.name>onap/refrepo</docker.image.name>
         <maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
         <docker.push.registry></docker.push.registry>
         <skip.docker.build>true</skip.docker.build>
@@ -50,7 +50,16 @@
                     <verbose>true</verbose>
                     <imageName>${docker.image.name}</imageName>
                     <serverId>docker-hub</serverId>
-                    <dockerDirectory>${basedir}/</dockerDirectory>                    
+                    <dockerDirectory>${basedir}/src/main/docker</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath>/STAGE</targetPath>
+                            <directory>${basedir}/../../zip/target/deployunzip</directory>
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                        </resource>
+                    </resources>
                 </configuration>
                 <executions>
                     <execution>

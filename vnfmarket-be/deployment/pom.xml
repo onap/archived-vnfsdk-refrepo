@@ -34,8 +34,7 @@
 
     <modules>
         <module>zip</module>
-        <module>docker</module>
-        <module>docker-postgres</module>
+        <module>docker</module>        
     </modules>
 
 </project>
