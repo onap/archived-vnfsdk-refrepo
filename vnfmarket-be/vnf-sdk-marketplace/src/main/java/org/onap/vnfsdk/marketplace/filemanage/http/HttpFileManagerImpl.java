@@ -41,7 +41,7 @@ public class HttpFileManagerImpl implements FileManager {
       ToolUtil.copyDirectory(srcPath, targetDir, true);
     } catch (IOException e1) {
       flag = false;
-      LOGGER.error("copy file failed.errorMsg:" + e1.getMessage());
+      LOGGER.error("copy file failed.errorMsg:" + e1.getMessage(),e1);
     }
     LOGGER.info("upload file success!");
     return flag;

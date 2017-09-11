@@ -145,12 +145,15 @@ public class LifecycleTestExceutor
         {
             dataMap = (Map<String, String>)mapper.readValue(strJsonData, Map.class);
         } catch(JsonParseException e) {
-            logger.error("JsonParseException:Failed to upload package to catalouge:");
+            logger.error("JsonParseException:Failed to upload package to catalouge:",e);
         } catch(JsonMappingException e) {
-            logger.error("JsonMappingException:Failed to upload package to catalouge:");
+            logger.error("JsonMappingException:Failed to upload package to catalouge:",e);
         } catch(IOException e) {
-            logger.error("IOException:Failed to upload package to catalouge:");
+            logger.error("IOException:Failed to upload package to catalouge:",e);
         }
+        if(dataMap.get("csarId")!=null){
         return dataMap.get("csarId");
+        }
+        return null;
     }
 }

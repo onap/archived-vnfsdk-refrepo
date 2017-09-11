@@ -26,8 +26,6 @@ import java.io.OutputStream;
 import org.onap.vnfsdk.marketplace.common.HttpServerPathConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-
 public class ToolUtil {
   private static final Logger LOGGER = LoggerFactory.getLogger(ToolUtil.class);
 

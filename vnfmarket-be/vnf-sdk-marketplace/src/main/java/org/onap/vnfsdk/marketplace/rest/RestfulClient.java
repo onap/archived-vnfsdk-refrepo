@@ -75,15 +75,13 @@ public class RestfulClient {
                 result.setResult(EntityUtils.toString(entity));
             }
         } catch (Exception e1) {
-            logger.error("send get rest request error:", e1.getMessage());
+            logger.error("send get rest request error:", e1.getMessage(),e1);
         } finally {
-            if (httpclient != null) {
                 try {
                     httpclient.close();
                 } catch (IOException e2) {
-                    logger.error("close httpclient error:", e2.getMessage());
+                    logger.error("close httpclient error:", e2.getMessage(),e2);
                 }
-            }
         }
         return result;
     }
@@ -150,7 +148,7 @@ public class RestfulClient {
         } 
         catch (Exception ex) 
         {
-            logger.error("Send Post request error:", ex.getMessage());
+            logger.error("Send Post request error:", ex.getMessage(),ex);
         } 
         finally 
         {
@@ -160,7 +158,7 @@ public class RestfulClient {
                 }
             } 
             catch(IOException e){
-                logger.error("IOException :Send Post request error:", e.getMessage());
+                logger.error("IOException :Send Post request error:", e.getMessage(),e);
             }
         }
         return result;

@@ -156,7 +156,7 @@ public final class FileUtil {
                 inputStream.close();
             }
         } catch (Exception e1) {
-            logger.info("close InputStream error!");
+            logger.info("close InputStream error!",e1);
         }
     }
 
@@ -171,7 +171,7 @@ public final class FileUtil {
                 outputStream.close();
             }
         } catch (Exception e1) {
-            logger.info("close OutputStream error!");
+            logger.info("close OutputStream error!",e1);
         }
     }
     
@@ -181,7 +181,7 @@ public final class FileUtil {
                 ifs.close();
             }
         } catch (Exception e1) {
-            logger.info("close OutputStream error!");
+            logger.info("close OutputStream error!",e1);
         }
     }
 
@@ -197,7 +197,7 @@ public final class FileUtil {
                 zipFile = null;
             }
         } catch (IOException e1) {
-            logger.info("close ZipFile error!");
+            logger.info("close ZipFile error!",e1);
         }
     }
 
@@ -231,15 +231,15 @@ public final class FileUtil {
         } 
         catch (JsonGenerationException e) 
         {
-            logger.info("JsonGenerationException Exception: writeJsonDatatoFile-->"+fileAbsPath);
+            logger.info("JsonGenerationException Exception: writeJsonDatatoFile-->"+fileAbsPath,e);
         } 
         catch (JsonMappingException e) 
         {
-            logger.info("JsonMappingException Exception: writeJsonDatatoFile-->"+fileAbsPath);
+            logger.info("JsonMappingException Exception: writeJsonDatatoFile-->"+fileAbsPath,e);
         } 
         catch (IOException e) 
         {
-            logger.info("IOException Exception: writeJsonDatatoFile-->"+fileAbsPath);
+            logger.info("IOException Exception: writeJsonDatatoFile-->"+fileAbsPath,e);
         } 
         return bResult;
     }
@@ -263,15 +263,15 @@ public final class FileUtil {
         } 
         catch (JsonParseException e1) 
         {
-            logger.info("JsonParseException Exception: writeJsonDatatoFile-->"+fileAbsPath);
+            logger.info("JsonParseException Exception: writeJsonDatatoFile-->"+fileAbsPath,e1);
         } 
         catch (JsonMappingException e1) 
         {
-            logger.info("JsonMappingException Exception: writeJsonDatatoFile-->"+fileAbsPath);
+            logger.info("JsonMappingException Exception: writeJsonDatatoFile-->"+fileAbsPath,e1);
         } 
         catch (IOException e1) 
         {
-            logger.info("IOException Exception: writeJsonDatatoFile-->"+fileAbsPath);
+            logger.info("IOException Exception: writeJsonDatatoFile-->"+fileAbsPath,e1);
         }
         return obj;
     }
