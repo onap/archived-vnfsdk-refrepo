@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a437d4f_6e277db7",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/common/FileUtil.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 749
+      },
+      "writtenOn": "2017-09-12T04:38:13Z",
+      "side": 1,
+      "message": "Why exception is removed?",
+      "revId": "5c05f7dcbc6c7dbc9d1a04c36cb60fc2eb33dc25",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a437d4f_4e2a797f",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/filemanage/http/HttpFileManagerImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 749
+      },
+      "writtenOn": "2017-09-12T04:38:13Z",
+      "side": 1,
+      "message": "Why exception is added here?",
+      "revId": "5c05f7dcbc6c7dbc9d1a04c36cb60fc2eb33dc25",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a437d4f_2e21759f",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/onboarding/hooks/validatelifecycle/LifecycleTestExceutor.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 749
+      },
+      "writtenOn": "2017-09-12T04:38:13Z",
+      "side": 1,
+      "message": "What is the difference between changed one and earlier code ?",
+      "revId": "5c05f7dcbc6c7dbc9d1a04c36cb60fc2eb33dc25",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a437d4f_0e2471ad",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/rest/RestfulClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 749
+      },
+      "writtenOn": "2017-09-12T04:38:13Z",
+      "side": 1,
+      "message": "Why we need to add this extra exception param??",
+      "revId": "5c05f7dcbc6c7dbc9d1a04c36cb60fc2eb33dc25",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
