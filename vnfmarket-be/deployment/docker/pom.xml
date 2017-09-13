@@ -22,19 +22,149 @@
 
     <parent>
         <groupId>org.onap.vnfsdk.refrepo</groupId>
-        <artifactId>vnfmarket-deployment</artifactId>
+        <artifactId>vnf-sdk-marketplace-core-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>vnfmarket-deployment-docker</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <artifactId>vnfmarket-docker-refrepo</artifactId>
     <name>vnfmarket/deployment/docker</name>
     <packaging>pom</packaging>
 
-    <modules>        
-        <module>docker-refrepo</module>
-        <module>docker-postgres</module>
-    </modules>
+  <properties>    
+        <maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
+        <docker.push.registry></docker.push.registry>
+        <skip.docker.build>true</skip.docker.build>
+        <skip.docker.tag>true</skip.docker.tag>
+        <skip.docker.push>true</skip.docker.push>
+        <docker.skip>true</docker.skip>
+  </properties>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.4.11</version>
+                <configuration>
+                    <verbose>true</verbose>
+                    <imageName>onap/refrepo</imageName>
+                    <serverId>docker-hub</serverId>
+                    <dockerDirectory>${basedir}/docker-refrepo/src/main/docker</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath>/STAGE</targetPath>
+                            <directory>${basedir}/../zip/target/deployunzip</directory>
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                        </resource>
+                    </resources>
+                </configuration>
+               
+                <executions>                   
+                    <execution>
+                        <id>build-image</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                        <configuration>
+                            <skipDockerBuild>${skip.docker.build}</skipDockerBuild>
+                        </configuration>
+                    </execution>  
+<execution>
+                        <id>tag-image-timestamped-version</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>tag</goal>
+                        </goals>
+                        <configuration>
+                            <image>onap/refrepo</image>
+                            <newName>${docker.push.registry}/onap/refrepo:${project.version}-${maven.build.timestamp}</newName>
+                            <pushImage>${skip.docker.push}</pushImage>
+                            <skipDockerTag>${skip.docker.tag}</skipDockerTag>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>tag-image-latest-version</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>tag</goal>
+                        </goals>
+                        <configuration>
+                            <image>onap/refrepo</image>
+                            <newName>${docker.push.registry}/onap/refrepo:latest</newName>
+                            <pushImage>${skip.docker.push}</pushImage>
+                            <skipDockerTag>${skip.docker.tag}</skipDockerTag>
+                        </configuration>
+                    </execution>
+                                  
+                </executions>
+            </plugin>
+             <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.16.7</version>               
+                 <configuration>
+                     <verbose>true</verbose>
+                     <apiVersion>1.23</apiVersion>
+                     <skipDocker>${docker.skip}</skipDocker>
+                     <images>
+                         <image>
+                           <name>onap/refrepo/postgres</name>
+                           <alias>postgres</alias>
+                           <build>
+                                 <cleanup>try</cleanup>
+                                 <dockerFileDir>${basedir}/docker-postgres</dockerFileDir>
+                                 <dockerFile>${basedir}/docker-postgres/Dockerfile</dockerFile>
+
+                            </build>
+                           </image>
+                      </images>
+                   </configuration>
+                      <executions>
+                           <execution>
+                                <id>clean-images</id>
+                                <phase>pre-clean</phase>
+                                <goals>
+                                      <goal>remove</goal>
+                                </goals>
+                                <configuration>
+                                     <removeAll>true</removeAll>
+                                      <image>onap/refrepo/postgres</image>                                      
+                                 </configuration>
+                              </execution>
+
+                              <execution>
+                                  <id>generate-images</id>
+                                  <phase>generate-sources</phase>
+                                  <goals>
+                                      <goal>build</goal>
+                                  </goals>                                  
+                              </execution>
+                              <execution>
+                                  <id>push-images</id>
+                                  <phase>deploy</phase>
+                                  <goals>
+                                        <goal>build</goal>
+                                        <goal>push</goal>
+                                  </goals>
+                                  <configuration>
+                                     <image>onap/refrepo/postgres</image>
+                                  </configuration>
+                               </execution>                               
+                </executions>
+            </plugin>
+            <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-deploy-plugin</artifactId>
+                  <version>2.8</version>
+                  <configuration>
+                       <skip>true</skip>
+                  </configuration>
+           </plugin>
+
+        </plugins>
+    </build>
 </project>
