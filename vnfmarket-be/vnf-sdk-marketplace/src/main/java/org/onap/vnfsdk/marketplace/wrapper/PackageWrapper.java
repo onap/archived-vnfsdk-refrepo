@@ -145,7 +145,7 @@ public class PackageWrapper {
             result = PackageWrapperUtil.packageDataList2PackageMetaList(dbresult);
             return Response.ok(ToolUtil.objectToString(result)).build();
         } catch (MarketplaceResourceException e1) {
-            LOG.error("query package by csarId from db error ! " + e1.getMessage());
+            LOG.error("query package by csarId from db error ! ", e1);
             return RestUtil.getRestException(e1.getMessage());
         }
     }
@@ -594,7 +594,7 @@ public class PackageWrapper {
             } 
             catch (InterruptedException e) 
             {
-                LOG.info("handleDelayExex response : " + e.getMessage());
+                LOG.info("handleDelayExex response : ", e);
             }
         }
     }
