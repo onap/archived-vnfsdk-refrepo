@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.onap.vnfsdk.marketplace.common.CommonConstant;
 import org.onap.vnfsdk.marketplace.common.FileUtil;
@@ -43,6 +44,9 @@ import com.google.gson.internal.LinkedTreeMap;
 public class PackageWrapperUtil {
   private static final Logger LOG = LoggerFactory.getLogger(PackageWrapperUtil.class);
 
+  private PackageWrapperUtil() {
+  }
+
   public static long getPacakgeSize(String fileLocation) {
     File file = new File(fileLocation);
     return file.length();
@@ -51,8 +55,8 @@ public class PackageWrapperUtil {
   /**
    * change package metadata to fix database.
    * @param meta package metadata
- * @param details 
-   * @return package data in database 
+ * @param details
+   * @return package data in database
    */
   public static PackageData getPackageData(PackageMeta meta) {
     PackageData packageData = new PackageData();
@@ -68,9 +72,9 @@ public class PackageWrapperUtil {
     packageData.setSize(fileSize);
     packageData.setType(meta.getType());
     packageData.setVersion(meta.getVersion());
-   	packageData.setDetails(meta.getDetails());
-   	packageData.setShortDesc(meta.getShortDesc());
-   	packageData.setRemarks(meta.getRemarks());
+    packageData.setDetails(meta.getDetails());
+    packageData.setShortDesc(meta.getShortDesc());
+    packageData.setRemarks(meta.getRemarks());
     return packageData;
   }
 
@@ -80,7 +84,7 @@ public class PackageWrapperUtil {
    * @param csarName package name
    * @return boolean
    */
-  public static boolean isUploadEnd(String contentRange, String csarName) {
+  public static boolean isUploadEnd(String contentRange) {
     String range = contentRange;
     range = range.replace("bytes", "").trim();
     range = range.substring(0, range.indexOf("/"));
@@ -88,11 +92,6 @@ public class PackageWrapperUtil {
         contentRange.substring(contentRange.indexOf("/") + 1, contentRange.length()).trim();
     int fileSize = Integer.parseInt(size);
     String[] ranges = range.split("-");
-    int startPosition = Integer.parseInt(ranges[0]);
-    if (startPosition == 0) {
-      // delPackageBySync(csarName);
-    }
-    // index start from 0
     int endPosition = Integer.parseInt(ranges[1]) + 1;
     if (endPosition >= fileSize) {
       return true;
@@ -107,14 +106,14 @@ public class PackageWrapperUtil {
    */
   public static PackageData getPackageInfoById(String csarId) {
     PackageData result = new PackageData();
-    ArrayList<PackageData> packageDataList = new ArrayList<PackageData>();
+    ArrayList<PackageData> packageDataList = new ArrayList<>();
     try {
       packageDataList = PackageManager.getInstance().queryPackageByCsarId(csarId);
-      if (packageDataList != null && packageDataList.size() > 0) {
+      if (packageDataList != null && ! packageDataList.isEmpty()) {
         result = PackageManager.getInstance().queryPackageByCsarId(csarId).get(0);
       }
     } catch (MarketplaceResourceException e1) {
-      LOG.error("query package by csarId from db error ! ", e1);
+      LOG.error("query package by csarId from db error ! " + e1.getMessage());
     }
     return result;
   }
@@ -126,18 +125,21 @@ public class PackageWrapperUtil {
    * @param basic basic infomation of package. include version, type and provider
    * @return package metadata
    */
-  public static PackageMeta getPackageMeta(String packageId,String fileName, String fileLocation,
+  public static PackageMeta getPackageMeta(String packageId, String fileName, String fileLocation,
     PackageBasicInfo basic, String details) {
     PackageMeta packageMeta = new PackageMeta();
     long size = getPacakgeSize(fileLocation);
     packageMeta.setFormat(basic.getFormat());
-    
+    String usedPackageId = null;
     if(null == packageId)
     {
-        packageId = ToolUtil.generateId();
+        usedPackageId = ToolUtil.generateId();
+    } else {
+    	usedPackageId = packageId;
     }
-    packageMeta.setCsarId(packageId);
-    
+
+    packageMeta.setCsarId(usedPackageId);
+
     packageMeta.setName(fileName.replace(CommonConstant.CSAR_SUFFIX, ""));
     packageMeta.setType(basic.getType().toString());
     packageMeta.setVersion(basic.getVersion());
@@ -151,10 +153,10 @@ public class PackageWrapperUtil {
     packageMeta.setModifyTime(currentTime);
     if(null != details)
     {
-    	LinkedTreeMap<String,String> csarDetails = ToolUtil.fromJson(details, LinkedTreeMap.class);
-    	packageMeta.setDetails(csarDetails.get("details"));
-    	packageMeta.setShortDesc(csarDetails.get("shortDesc"));
-    	packageMeta.setRemarks(csarDetails.get("remarks"));
+    LinkedTreeMap<String,String> csarDetails = ToolUtil.fromJson(details, LinkedTreeMap.class);
+    packageMeta.setDetails(csarDetails.get("details"));
+    packageMeta.setShortDesc(csarDetails.get("shortDesc"));
+    packageMeta.setRemarks(csarDetails.get("remarks"));
     }
     return packageMeta;
   }
@@ -171,7 +173,7 @@ public class PackageWrapperUtil {
       packageList = PackageManager.getInstance().queryPackageByCsarId(csarId);
       downloadUri = packageList.get(0).getDownloadUri();
     } catch (MarketplaceResourceException e1) {
-      LOG.error("Query CSAR package by ID failed ! csarId = " + csarId, e1);
+      LOG.error("Query CSAR package by ID failed ! csarId = " + csarId);
     }
     return downloadUri;
   }
@@ -193,11 +195,11 @@ public class PackageWrapperUtil {
    * @param dbResult data from database
    * @return package metadata list
    */
-  public static ArrayList<PackageMeta> packageDataList2PackageMetaList(
-      ArrayList<PackageData> dbResult) {
-    ArrayList<PackageMeta> metas = new ArrayList<PackageMeta>();
-    PackageMeta meta = new PackageMeta();
-    if (dbResult.size() > 0) {
+  public static List<PackageMeta> packageDataList2PackageMetaList(
+      List<PackageData> dbResult) {
+    ArrayList<PackageMeta> metas = new ArrayList<>();
+    PackageMeta meta = null;
+    if (! dbResult.isEmpty()) {
       for (int i = 0; i < dbResult.size(); i++) {
         PackageData data = dbResult.get(i);
         meta = packageData2PackageMeta(data);
@@ -237,19 +239,16 @@ public class PackageWrapperUtil {
    * @return url
    */
   public static String getUrl(String uri) {
-    String url = null;
-//    if ((MsbAddrConfig.getMsbAddress().endsWith("/")) && uri.startsWith("/")) {
-//      url = MsbAddrConfig.getMsbAddress() + uri.substring(1);
-//    }
-//    url = MsbAddrConfig.getMsbAddress() + uri;
-    if ((getDownloadUriHead().endsWith("/")) && uri.startsWith("/")) {
-      url = getDownloadUriHead() + uri.substring(1);
+    String url = getDownloadUriHead();
+    if (url.endsWith("/") && uri.startsWith("/")) {
+      url += uri.substring(1);
+    } else {
+      url += uri;
     }
-    url = getDownloadUriHead() + uri;
     String urlresult = url.replace("\\", "/");
     return urlresult;
   }
-  
+
   public static String getDownloadUriHead() {
     return MsbAddrConfig.getMsbAddress() + "/files/catalog-http";
   }
@@ -289,7 +288,7 @@ public class PackageWrapperUtil {
         }
       }
     } catch (IOException e1) {
-      LOG.error("judge package type error ! ", e1);
+      LOG.error("judge package type error ! " + e1.getMessage());
     }
     if (isXmlCsar) {
       basicInfo.setFormat(CommonConstant.PACKAGE_XML_FORMAT);
@@ -302,52 +301,43 @@ public class PackageWrapperUtil {
   private static PackageBasicInfo readCsarMeta(String unzipFile) {
     PackageBasicInfo basicInfo = new PackageBasicInfo();
     File file = new File(unzipFile);
-    BufferedReader reader = null;
-    try {
-      reader = new BufferedReader(new FileReader(file));
+    try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
       String tempString = null;
       while ((tempString = reader.readLine()) != null) {
-        if (!tempString.equals("")) {
-          int count1 = tempString.indexOf(":");
-          String meta = tempString.substring(0, count1).trim();
-          if (meta.equalsIgnoreCase(CommonConstant.CSAR_TYPE_META)) {
-            int count = tempString.indexOf(":") + 1;
-            basicInfo.setType(EnumType.valueOf(tempString.substring(count).trim()));
-          }
-          if (meta.equalsIgnoreCase(CommonConstant.CSAR_PROVIDER_META)) {
-            int count = tempString.indexOf(":") + 1;
-            basicInfo.setProvider(tempString.substring(count).trim());
-          }
-          if (meta.equalsIgnoreCase(CommonConstant.CSAR_VERSION_META)) {
-            int count = tempString.indexOf(":") + 1;
-            basicInfo.setVersion(tempString.substring(count).trim());
-          }
+        if (tempString.equals("")) {
+          continue;
+        }
+        int count1 = tempString.indexOf(":");
+        String meta = tempString.substring(0, count1).trim();
+        if (CommonConstant.CSAR_TYPE_META.equalsIgnoreCase(meta)) {
+          int count = tempString.indexOf(":") + 1;
+          basicInfo.setType(EnumType.valueOf(tempString.substring(count).trim()));
+        }
+        if (CommonConstant.CSAR_PROVIDER_META.equalsIgnoreCase(meta)) {
+          int count = tempString.indexOf(":") + 1;
+          basicInfo.setProvider(tempString.substring(count).trim());
+        }
+        if (CommonConstant.CSAR_VERSION_META.equalsIgnoreCase(meta)) {
+          int count = tempString.indexOf(":") + 1;
+          basicInfo.setVersion(tempString.substring(count).trim());
         }
       }
       reader.close();
     } catch (IOException e2) {
       e2.printStackTrace();
-    } finally {
-      if (reader != null) {
-        try {
-          reader.close();
-        } catch (IOException e1) {
-          LOG.error("close reader failed ! ", e1);
-        }
-      }
     }
     return basicInfo;
   }
-  
+
   /**
    * get package format enum.
    * @param format package format
    * @return package format enum
    */
   public static EnumPackageFormat getPackageFormat(String format) {
-    if (format.equals("xml")) {
+    if ("xml".equals(format)) {
       return EnumPackageFormat.TOSCA_XML;
-    } else if (format.equals("yml") || format.equals("yaml")) {
+    } else if ("yml".equals(format) || "yaml".equals(format)) {
       return EnumPackageFormat.TOSCA_YAML;
     } else {
       return null;
