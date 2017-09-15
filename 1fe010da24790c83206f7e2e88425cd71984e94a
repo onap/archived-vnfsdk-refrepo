@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a437d4f_ccd542ba",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/wrapper/.PackageWrapperUtil.java.swp",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 749
+      },
+      "writtenOn": "2017-09-15T05:40:23Z",
+      "side": 1,
+      "message": "Please remove this file",
+      "revId": "1fe010da24790c83206f7e2e88425cd71984e94a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a437d4f_6c82d695",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/wrapper/PackageWrapperUtil.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 749
+      },
+      "writtenOn": "2017-09-15T05:40:23Z",
+      "side": 1,
+      "message": "uri.endsWith(\"/\") is not required ??",
+      "revId": "1fe010da24790c83206f7e2e88425cd71984e94a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
