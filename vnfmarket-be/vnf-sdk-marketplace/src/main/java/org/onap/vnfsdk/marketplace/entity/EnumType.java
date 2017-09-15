@@ -16,5 +16,5 @@
 package org.onap.vnfsdk.marketplace.entity;
 
 public enum EnumType {
-  GSAR, SSAR, NSAR, NFAR
+  CSAR, GSAR, SSAR, NSAR, NFAR
 }

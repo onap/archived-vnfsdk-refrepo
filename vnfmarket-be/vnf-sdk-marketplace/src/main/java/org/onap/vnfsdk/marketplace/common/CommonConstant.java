@@ -39,6 +39,16 @@ public class CommonConstant {
   public static final String DEFINITIONS = "Definitions";
 
   public static final String CSAR_META = "csar.meta";
+  
+  public static final String MANIFEST = ".mf";
+  
+  public static final String MF_VERSION_META = "vnf_package_version";
+
+  public static final String MF_PRODUCT_NAME = "vnf_product_name";
+
+  public static final String MF_PROVIDER_META = "vnf_provider_id";
+
+  public static final String MF_RELEASE_DATETIME = "vnf_release_date_time";
 
   public static final String CSAR_SUFFIX = ".csar";
 
