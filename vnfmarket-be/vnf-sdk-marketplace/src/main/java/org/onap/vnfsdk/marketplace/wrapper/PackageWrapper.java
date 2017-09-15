@@ -136,7 +136,7 @@ public class PackageWrapper {
     public Response queryPackageListByCond(String name, String provider, String version,
             String deletionPending, String type) {
         ArrayList<PackageData> dbresult = new ArrayList<PackageData>();
-        ArrayList<PackageMeta> result = new ArrayList<PackageMeta>();
+        List<PackageMeta> result = new ArrayList<PackageMeta>();
         LOG.info("query package info.name:" + name + " provider:" + provider + " version" + version
                 + " deletionPending" + deletionPending + " type:" + type);
         try {
@@ -236,7 +236,7 @@ public class PackageWrapper {
         }
 
         UploadPackageResponse result = new UploadPackageResponse();      
-        Boolean isEnd = PackageWrapperUtil.isUploadEnd(contentRange, fileName);
+        Boolean isEnd = PackageWrapperUtil.isUploadEnd(contentRange);
         if (isEnd) 
         {
             PackageMeta packageMeta = PackageWrapperUtil.getPackageMeta(packageId,fileName, fileLocation, basicInfo, details);
