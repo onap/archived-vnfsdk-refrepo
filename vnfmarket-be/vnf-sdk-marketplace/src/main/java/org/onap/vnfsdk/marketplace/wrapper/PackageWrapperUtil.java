@@ -113,7 +113,7 @@ public class PackageWrapperUtil {
         result = PackageManager.getInstance().queryPackageByCsarId(csarId).get(0);
       }
     } catch (MarketplaceResourceException e1) {
-      LOG.error("query package by csarId from db error ! " + e1.getMessage());
+      LOG.error("query package by csarId from db error ! " + e1.getMessage(), e1);
     }
     return result;
   }
@@ -130,12 +130,10 @@ public class PackageWrapperUtil {
     PackageMeta packageMeta = new PackageMeta();
     long size = getPacakgeSize(fileLocation);
     packageMeta.setFormat(basic.getFormat());
-    String usedPackageId = null;
+    String usedPackageId = packageId;
     if(null == packageId)
     {
         usedPackageId = ToolUtil.generateId();
-    } else {
-    	usedPackageId = packageId;
     }
 
     packageMeta.setCsarId(usedPackageId);
@@ -167,13 +165,13 @@ public class PackageWrapperUtil {
    * @return download uri
    */
   public static String getPackagePath(String csarId) {
-    ArrayList<PackageData> packageList = new ArrayList<PackageData>();
+    ArrayList<PackageData> packageList = new ArrayList<>();
     String downloadUri = null;
     try {
       packageList = PackageManager.getInstance().queryPackageByCsarId(csarId);
       downloadUri = packageList.get(0).getDownloadUri();
     } catch (MarketplaceResourceException e1) {
-      LOG.error("Query CSAR package by ID failed ! csarId = " + csarId);
+      LOG.error("Query CSAR package by ID failed ! csarId = " + csarId, e1);
     }
     return downloadUri;
   }
