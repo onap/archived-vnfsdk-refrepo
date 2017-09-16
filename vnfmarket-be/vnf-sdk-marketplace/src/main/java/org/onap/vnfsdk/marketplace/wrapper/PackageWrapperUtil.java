@@ -113,7 +113,7 @@ public class PackageWrapperUtil {
         result = PackageManager.getInstance().queryPackageByCsarId(csarId).get(0);
       }
     } catch (MarketplaceResourceException e1) {
-      LOG.error("query package by csarId from db error ! " + e1.getMessage());
+      LOG.error(e1);
     }
     return result;
   }
@@ -130,14 +130,11 @@ public class PackageWrapperUtil {
     PackageMeta packageMeta = new PackageMeta();
     long size = getPacakgeSize(fileLocation);
     packageMeta.setFormat(basic.getFormat());
-    String usedPackageId = null;
+    String usedPackageId = packageId;
     if(null == packageId)
     {
         usedPackageId = ToolUtil.generateId();
-    } else {
-    	usedPackageId = packageId;
     }
-
     packageMeta.setCsarId(usedPackageId);
 
     packageMeta.setName(fileName.replace(CommonConstant.CSAR_SUFFIX, ""));
@@ -167,13 +164,13 @@ public class PackageWrapperUtil {
    * @return download uri
    */
   public static String getPackagePath(String csarId) {
-    ArrayList<PackageData> packageList = new ArrayList<PackageData>();
+    ArrayList<PackageData> packageList = new ArrayList<>();
     String downloadUri = null;
     try {
       packageList = PackageManager.getInstance().queryPackageByCsarId(csarId);
       downloadUri = packageList.get(0).getDownloadUri();
     } catch (MarketplaceResourceException e1) {
-      LOG.error("Query CSAR package by ID failed ! csarId = " + csarId);
+      LOG.error(e1);
     }
     return downloadUri;
   }
@@ -334,6 +331,7 @@ public class PackageWrapperUtil {
 	 * @return basic infor about package
 	 */	
 	private static PackageBasicInfo readManifest(String unzipFile) {
+<<<<<<< HEAD
 
 		// Fix the package type to CSAR, temporary
 		PackageBasicInfo basicInfo = new PackageBasicInfo();
@@ -371,6 +369,45 @@ public class PackageWrapperUtil {
 			LOG.error("Exception while parsing manifest file" + e);			
 		}
 
+=======
+
+		// Fix the package type to CSAR, temporary
+		PackageBasicInfo basicInfo = new PackageBasicInfo();
+		basicInfo.setType(EnumType.CSAR);
+
+		File file = new File(unzipFile);
+		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+
+			String tempString = null;
+			while ((tempString = reader.readLine()) != null) {
+				
+				// If line is empty, ignore
+				if (tempString.equals("")) {
+					continue;
+				}
+
+				int count1 = tempString.indexOf(":");
+				String meta = tempString.substring(0, count1).trim();
+				
+				// Check for the package provider name
+				if (meta.equalsIgnoreCase(CommonConstant.MF_PROVIDER_META)) {
+					int count = tempString.indexOf(":") + 1;
+					basicInfo.setProvider(tempString.substring(count).trim());
+				}
+				
+				// Check for package version
+				if (meta.equalsIgnoreCase(CommonConstant.MF_VERSION_META)) {
+					int count = tempString.indexOf(":") + 1;
+					basicInfo.setVersion(tempString.substring(count).trim());
+				}
+			}
+
+			reader.close();
+		} catch (IOException e) {
+			LOG.error("Exception while parsing manifest file" + e);			
+		}
+
+>>>>>>> c95d41a... fix patch 2
 		return basicInfo;
 	}
   /**
