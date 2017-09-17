@@ -75,7 +75,7 @@ public class PackageWrapper {
         return packageWrapper;
     }
 
-    public Response updateValidateStatus(InputStream inputStream, HttpHeaders head) throws Exception
+    public Response updateValidateStatus(InputStream inputStream) throws IOException
     {
         String reqParam = IOUtils.toString(inputStream);
         LOG.info("updateValidateStatus request param:"+reqParam);
@@ -83,39 +83,39 @@ public class PackageWrapper {
             LOG.error("The updateValidateStatus request params can't be null");
             return Response.status(Status.EXPECTATION_FAILED).build();
         }
-        
+
         ValidateLifecycleTestResponse lyfValidateResp = JsonUtil.fromJson(reqParam, ValidateLifecycleTestResponse.class);
         if(!checkOperationSucess(lyfValidateResp))
         {
             return Response.status(Status.EXPECTATION_FAILED).build();
         }
-        
+
         String funcTestResponse = FunctionTestExceutor.executeFunctionTest(reqParam);
         if(null == funcTestResponse)
         {
             return Response.status(Status.EXPECTATION_FAILED).build();
         }
-        
-        JSONObject funcTestRspObject = JSONObject.fromObject(funcTestResponse);   
+
+        JSONObject funcTestRspObject = JSONObject.fromObject(funcTestResponse);
         if(!funcTestRspObject.get("status").equals(CommonConstant.SUCCESS_STR))
         {
             return Response.status(Status.EXPECTATION_FAILED).build();
         }
-                
-        JSONObject result = new JSONObject(); 
+
+        JSONObject result = new JSONObject();
         result.put("msg","SUCCESS");
         return Response.ok(ToolUtil.objectToString(result), MediaType.APPLICATION_JSON).build();
     }
-    
-    private boolean checkOperationSucess(ValidateLifecycleTestResponse lyfValidateResp) 
+
+    private boolean checkOperationSucess(ValidateLifecycleTestResponse lyfValidateResp)
     {
         boolean bOperStatus = false;
-        if(null == lyfValidateResp) 
+        if(null == lyfValidateResp)
         {
             LOG.error("ValidateLifecycleTestResponse  is NUll !!!");
             return bOperStatus;
         }
-        if(lyfValidateResp.getLifecycle_status().equalsIgnoreCase(CommonConstant.SUCCESS_STR) 
+        if(lyfValidateResp.getLifecycle_status().equalsIgnoreCase(CommonConstant.SUCCESS_STR)
                 && lyfValidateResp.getValidate_status().equalsIgnoreCase(CommonConstant.SUCCESS_STR))
         {
             LOG.error("Lifecycle/Validation Response failed :" + lyfValidateResp.getLifecycle_status() + File.separator + lyfValidateResp.getValidate_status());
@@ -135,8 +135,8 @@ public class PackageWrapper {
      */
     public Response queryPackageListByCond(String name, String provider, String version,
             String deletionPending, String type) {
-        ArrayList<PackageData> dbresult = new ArrayList<PackageData>();
-        List<PackageMeta> result = new ArrayList<PackageMeta>();
+        ArrayList<PackageData> dbresult = new ArrayList<>();
+        List<PackageMeta> result = new ArrayList<>();
         LOG.info("query package info.name:" + name + " provider:" + provider + " version" + version
                 + " deletionPending" + deletionPending + " type:" + type);
         try {
@@ -156,10 +156,8 @@ public class PackageWrapper {
      * @return Response
      */
     public Response queryPackageById(String csarId) {
-        PackageData dbResult = new PackageData();
-        PackageMeta result = new PackageMeta();
-        dbResult = PackageWrapperUtil.getPackageInfoById(csarId);
-        result = PackageWrapperUtil.packageData2PackageMeta(dbResult);
+        PackageData dbResult = PackageWrapperUtil.getPackageInfoById(csarId);
+        PackageMeta result = PackageWrapperUtil.packageData2PackageMeta(dbResult);
         return Response.ok(ToolUtil.objectToString(result)).build();
     }
 
@@ -172,10 +170,10 @@ public class PackageWrapper {
      * @throws Exception e
      */
     public Response uploadPackage(InputStream uploadedInputStream,
-            FormDataContentDisposition fileDetail, String details, HttpHeaders head) throws Exception 
+            FormDataContentDisposition fileDetail, String details, HttpHeaders head) throws IOException, MarketplaceResourceException
     {
         LOG.info("Upload/Reupload request Received !!!!");
-        
+
         String packageId = MarketplaceDbUtil.generateId();
         return handlePackageUpload(packageId,uploadedInputStream, fileDetail, details, head);
     }
@@ -192,8 +190,8 @@ public class PackageWrapper {
      * @throws MarketplaceResourceException
      */
     private Response handlePackageUpload(String packageId,InputStream uploadedInputStream, FormDataContentDisposition fileDetail,
-            String details, HttpHeaders head) throws IOException, MarketplaceResourceException 
-    {     
+            String details, HttpHeaders head) throws IOException, MarketplaceResourceException
+    {
         boolean bResult = handleDataValidate(packageId,uploadedInputStream,fileDetail);
         if(!bResult)
         {
@@ -208,11 +206,11 @@ public class PackageWrapper {
 
             fileName = ToolUtil.processFileName(fileDetail.getFileName());
         }
-        
+
         String localDirName = ToolUtil.getTempDir(CommonConstant.CATALOG_CSAR_DIR_NAME, fileName);
 
         String contentRange = null;
-        if (head != null) 
+        if (head != null)
         {
             contentRange = head.getHeaderString(CommonConstant.HTTP_HEADER_CONTENT_RANGE);
         }
@@ -228,52 +226,37 @@ public class PackageWrapper {
 
         uploadedInputStream.close();
 
-        PackageBasicInfo basicInfo = PackageWrapperUtil.getPacageBasicInfo(fileLocation);          
-        if (null == basicInfo.getType() || null == basicInfo.getProvider() || null == basicInfo.getVersion()) 
+        PackageBasicInfo basicInfo = PackageWrapperUtil.getPacageBasicInfo(fileLocation);
+        if (null == basicInfo.getType() || null == basicInfo.getProvider() || null == basicInfo.getVersion())
         {
             LOG.error("Package basicInfo is incorrect ! basicIonfo = " + ToolUtil.objectToString(basicInfo));
             return Response.serverError().build();
         }
 
-        UploadPackageResponse result = new UploadPackageResponse();      
+        UploadPackageResponse result = new UploadPackageResponse();
         Boolean isEnd = PackageWrapperUtil.isUploadEnd(contentRange);
-        if (isEnd) 
+        if (isEnd)
         {
             PackageMeta packageMeta = PackageWrapperUtil.getPackageMeta(packageId,fileName, fileLocation, basicInfo, details);
-            
+
             String path =  basicInfo.getType().toString() + File.separator + basicInfo.getProvider() + File.separator +  packageMeta.getCsarId() + File.separator + fileName.replace(".csar", "") + File.separator + basicInfo.getVersion();
             String dowloadUri = File.separator + path + File.separator;
             packageMeta.setDownloadUri(dowloadUri);
-            
+
             LOG.info("dest path is : " + path);
             LOG.info("packageMeta = " + ToolUtil.objectToString(packageMeta));
 
             PackageData packageData = PackageWrapperUtil.getPackageData(packageMeta);
-            
+
             String destPath = File.separator + path + File.separator + File.separator;
             boolean uploadResult = FileManagerFactory.createFileManager().upload(localDirName, destPath);
-            if (uploadResult) 
+            if (uploadResult)
             {
-                //Create OnBoarding Request 
-                //--------------------------
                 OnBoradingRequest oOnboradingRequest = new OnBoradingRequest();
                 oOnboradingRequest.setCsarId(packageId);
                 oOnboradingRequest.setPackageName(fileName);
                 oOnboradingRequest.setPackagePath(localDirName);
-                
-                //Upload the Package to CATALOUGE and get CSARID
-                //---------------------------------------------
-                //String catalougeCsarId = LifecycleTestExceutor.uploadPackageToCatalouge(oOnboradingRequest);
-                //if((null == catalougeCsarId) || catalougeCsarId.isEmpty())
-                //{
-                //    LOG.error("Failed to Upload Package to catalougeCsarId " + ToolUtil.objectToString(basicInfo));
-                    //return Response.status(Status.INTERNAL_SERVER_ERROR).build();
-                // }
-                //oOnboradingRequest.setCsarIdCatalouge(catalougeCsarId);
-                //LOG.info("catalougeCsarId :" + catalougeCsarId);
 
-                
-                //Update Default download count to -1
                 packageData.setCsarId(packageId);
                 packageData.setDownloadCount(-1);
                 PackageData packateDbData = PackageManager.getInstance().addPackage(packageData);
@@ -283,8 +266,6 @@ public class PackageWrapper {
 
                 result.setCsarId(packateDbData.getCsarId());
 
-                //Assign  OnBoarding Request to OnBoarding Handler
-                //------------------------------------------------
                 addOnBoardingRequest(oOnboradingRequest);
 
                 LOG.info("OnboradingRequest Data : "  + ToolUtil.objectToString(oOnboradingRequest));
@@ -297,12 +278,12 @@ public class PackageWrapper {
      * Execute OnBarding request
      * @param oOnboradingRequest
      */
-    private void addOnBoardingRequest(final OnBoradingRequest oOnboradingRequest) 
+    private void addOnBoardingRequest(final OnBoradingRequest oOnboradingRequest)
     {
         ExecutorService es = Executors.newFixedThreadPool(CommonConstant.ONBOARDING_THREAD_COUNT);
         es.submit(new Callable<Integer>()
         {
-            public Integer call() throws Exception 
+            public Integer call() throws Exception
             {
                 new OnBoardingHandler().handleOnBoardingReq(oOnboradingRequest);
                 return CommonConstant.SUCESS;
@@ -334,13 +315,13 @@ public class PackageWrapper {
         if (packagePath == null) {
             LOG.error("package path is null! ");
         }
-        
+
         //Delete Package
         FileManagerFactory.createFileManager().delete(packagePath);
         //Delete Results Data
         FileManagerFactory.createFileManager().delete(File.separator + csarId);
 
-        
+
         //delete package data from database
         try {
             PackageManager.getInstance().deletePackage(csarId);
@@ -356,29 +337,29 @@ public class PackageWrapper {
      */
     public Response downloadCsarPackagesById(String csarId) {
         PackageData packageData = PackageWrapperUtil.getPackageInfoById(csarId);
-        
+
         String packageName = packageData.getName();
         String path = org.onap.vnfsdk.marketplace.filemanage.http.ToolUtil.getHttpServerAbsolutePath() +File.separatorChar+packageData.getType()+File.separatorChar+
-                packageData.getProvider()+File.separatorChar+ packageData.getCsarId() +File.separator +packageName+File.separatorChar+packageData.getVersion() 
+                packageData.getProvider()+File.separatorChar+ packageData.getCsarId() +File.separator +packageName+File.separatorChar+packageData.getVersion()
                 +File.separator + packageName + ".csar";
-        
+
         LOG.info("downloadCsarPackagesById path is :  " + path);
-        
+
         File csarFile = new File(path);
         if (!csarFile.exists()) {
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
 
         LOG.info("downloadCsarPackagesById ABS path is :  " + csarFile.getAbsolutePath());
-        
-        try 
+
+        try
         {
             InputStream fis = new BufferedInputStream(new FileInputStream(csarFile.getAbsolutePath()));
             return Response.ok(fis)
                     .header("Content-Disposition", "attachment; filename=\"" + csarFile.getName() + "\"")
                     .build();
-        } 
-        catch (Exception e1) 
+        }
+        catch (Exception e1)
         {
             LOG.error("download vnf package fail.", e1);
             return RestUtil.getRestException(e1.getMessage());
@@ -401,8 +382,8 @@ public class PackageWrapper {
      * @return
      */
     public Response updateDwonloadCount(String csarId) {
-        return handleDownladCountUpdate(csarId) ?  
-                Response.ok().build() : 
+        return handleDownladCountUpdate(csarId) ?
+                Response.ok().build() :
                     Response.status(Status.EXPECTATION_FAILED).build();
     }
 
@@ -413,12 +394,12 @@ public class PackageWrapper {
      */
     private boolean handleDownladCountUpdate(String csarId) {
         boolean bupdateSucess = false;
-        try 
+        try
         {
             PackageManager.getInstance().updateDwonloadCount(csarId);
             bupdateSucess = true;
-        } 
-        catch (Exception exp) 
+        }
+        catch (Exception exp)
         {
             LOG.error("Updating Donwload count failed for Package with ID !!! : " + exp.getMessage(), exp);
         }
@@ -426,7 +407,7 @@ public class PackageWrapper {
     }
 
     /**
-     * Interface to Re upload Package 
+     * Interface to Re upload Package
      * @param csarId
      * @param uploadedInputStream
      * @param fileDetail
@@ -436,14 +417,14 @@ public class PackageWrapper {
      * @throws Exception
      */
     public Response reUploadPackage(String csarId,
-            InputStream uploadedInputStream, 
+            InputStream uploadedInputStream,
             FormDataContentDisposition fileDetail,
-            String details, 
+            String details,
             HttpHeaders head) throws Exception
     {
         LOG.info("Reupload request Received !!!!");
-        
-        //STEP 1: Validate Input Data  
+
+        //STEP 1: Validate Input Data
         //----------------------------
         boolean bResult = handleDataValidate(csarId,uploadedInputStream,fileDetail);
         if(!bResult)
@@ -481,9 +462,9 @@ public class PackageWrapper {
         if (null == packageData) {
             return Response.status(Response.Status.PRECONDITION_FAILED).build();
         }
-        
+
         handleDelayExec(operId);
-        
+
         OnBoardingResult oOnBoardingResult = FunctionTestHook.getOnBoardingResult(packageData);
         if (null == oOnBoardingResult) {
             return Response.status(Response.Status.PRECONDITION_FAILED).build();
@@ -495,7 +476,7 @@ public class PackageWrapper {
         return Response.ok(strResult, "application/json").build();
     }
 
-    
+
     private void filterOnBoardingResultByOperId(OnBoardingResult oOnBoardingResult, String operId)
     {
         if (0 == operId.compareToIgnoreCase("all")) {
@@ -527,37 +508,37 @@ public class PackageWrapper {
      * @param operTypeId
      * @return
      */
-    public Response getOperResultByOperTypeId(String csarId, String operTypeId) 
+    public Response getOperResultByOperTypeId(String csarId, String operTypeId)
     {
-        LOG.error("getOnBoardingResult request : csarId:"+ csarId + " operTypeId:"+operTypeId);    
+        LOG.error("getOnBoardingResult request : csarId:"+ csarId + " operTypeId:"+operTypeId);
         if(null == csarId || null == operTypeId || csarId.isEmpty()  || operTypeId.isEmpty())
         {
-            return Response.status(Status.BAD_REQUEST).build(); 
+            return Response.status(Status.BAD_REQUEST).build();
         }
 
         PackageData packageData = PackageWrapperUtil.getPackageInfoById(csarId);
         if(null == packageData)
         {
-            LOG.error("Failed to find package for PackageID:"+ csarId); 
-            return Response.status(Status.PRECONDITION_FAILED).build(); 
-        } 
+            LOG.error("Failed to find package for PackageID:"+ csarId);
+            return Response.status(Status.PRECONDITION_FAILED).build();
+        }
 
         //Get result key to fetch Function Test Results
         //---------------------------------------------
         String strResult = FunctionTestHook.getFuncTestResults(packageData);
         if(null == strResult)
         {
-            LOG.error("NULL reponse for getOperResultByOperTypeId response :"+ strResult); 
-            return Response.status(Status.INTERNAL_SERVER_ERROR).build(); 
-        }   
-        LOG.info("getOperResultByOperTypeId response :"+ strResult);    
+            LOG.error("NULL reponse for getOperResultByOperTypeId response :"+ strResult);
+            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+        }
+        LOG.info("getOperResultByOperTypeId response :"+ strResult);
         return Response.ok(strResult, MediaType.APPLICATION_JSON).build();
     }
 
-    private boolean handleDataValidate(String packageId,InputStream uploadedInputStream, FormDataContentDisposition fileDetail) 
+    private boolean handleDataValidate(String packageId,InputStream uploadedInputStream, FormDataContentDisposition fileDetail)
     {
         boolean bvalidateOk = false;
-        if ((null != uploadedInputStream) && (fileDetail != null) && !ToolUtil.isEmptyString(packageId)) 
+        if ((null != uploadedInputStream) && (fileDetail != null) && !ToolUtil.isEmptyString(packageId))
         {
             bvalidateOk = true;
         }
@@ -572,7 +553,7 @@ public class PackageWrapper {
     {
         LOG.info("Get OnBoarding Steps request Received !!!");
 
-        String filePath = org.onap.vnfsdk.marketplace.filemanage.http.ToolUtil.getAppDeployPath() + File.separator +"generalconfig/OnBoardingSteps.json";            
+        String filePath = org.onap.vnfsdk.marketplace.filemanage.http.ToolUtil.getAppDeployPath() + File.separator +"generalconfig/OnBoardingSteps.json";
         LOG.info("Onboarding Steps Json file Path  :" + filePath);
 
         OnBoardingSteps oOnBoardingSteps = (OnBoardingSteps)FileUtil.readJsonDatafFromFile(filePath, OnBoardingSteps.class);
@@ -583,19 +564,20 @@ public class PackageWrapper {
         LOG.info("getOnBoardingSteps response :" + strResult);
         return Response.ok(strResult, MediaType.APPLICATION_JSON).build();
     }
-    
-    private void handleDelayExec(String operId) 
+
+    private void handleDelayExec(String operId)
     {
-        if (0 == operId.compareToIgnoreCase(CommonConstant.functionTest.FUNCTEST_EXEC)) 
+        if (0 == operId.compareToIgnoreCase(CommonConstant.functionTest.FUNCTEST_EXEC))
         {
-            try 
+            try
             {
                 Thread.sleep(8000);
-            } 
-            catch (InterruptedException e) 
+            }
+            catch (InterruptedException e)
             {
                 LOG.info("handleDelayExex response : ", e);
             }
         }
     }
 }
+
