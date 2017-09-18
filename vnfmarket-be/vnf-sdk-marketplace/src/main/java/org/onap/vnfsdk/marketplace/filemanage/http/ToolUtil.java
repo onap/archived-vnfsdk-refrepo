@@ -155,18 +155,16 @@ public class ToolUtil {
    * @return boolean
    */
   public static boolean createDir(String destDirName) {
-    File dir = new File(destDirName);
+    String useDestDirName = destDirName;
+    if (!useDestDirName.endsWith(File.separator)) {
+      useDestDirName += File.separator;
+    }
+    File dir = new File(useDestDirName);
     if (dir.exists()) {
       dir.delete();
     }
-    if (!destDirName.endsWith(File.separator)) {
-      destDirName = destDirName + File.separator;
-    }
-    if (dir.mkdirs()) {
-      return true;
-    } else {
-      return false;
-    }
+
+    return dir.mkdirs();
   }
 
   public static String getHttpServerAbsolutePath() {
