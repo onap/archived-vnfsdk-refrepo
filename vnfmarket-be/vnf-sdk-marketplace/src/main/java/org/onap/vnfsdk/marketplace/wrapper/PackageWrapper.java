@@ -227,48 +227,47 @@ public class PackageWrapper {
         uploadedInputStream.close();
 
         PackageBasicInfo basicInfo = PackageWrapperUtil.getPacageBasicInfo(fileLocation);
-        if (null == basicInfo.getType() || null == basicInfo.getProvider() || null == basicInfo.getVersion())
-        {
-            LOG.error("Package basicInfo is incorrect ! basicIonfo = " + ToolUtil.objectToString(basicInfo));
-            return Response.serverError().build();
-        }
-
         UploadPackageResponse result = new UploadPackageResponse();
         Boolean isEnd = PackageWrapperUtil.isUploadEnd(contentRange);
         if (isEnd)
         {
             PackageMeta packageMeta = PackageWrapperUtil.getPackageMeta(packageId,fileName, fileLocation, basicInfo, details);
+            try {
+                String path =  basicInfo.getType().toString() + File.separator + basicInfo.getProvider() + File.separator +  packageMeta.getCsarId() + File.separator + fileName.replace(".csar", "") + File.separator + basicInfo.getVersion();
 
-            String path =  basicInfo.getType().toString() + File.separator + basicInfo.getProvider() + File.separator +  packageMeta.getCsarId() + File.separator + fileName.replace(".csar", "") + File.separator + basicInfo.getVersion();
-            String dowloadUri = File.separator + path + File.separator;
-            packageMeta.setDownloadUri(dowloadUri);
+                String dowloadUri = File.separator + path + File.separator;
+                packageMeta.setDownloadUri(dowloadUri);
 
-            LOG.info("dest path is : " + path);
-            LOG.info("packageMeta = " + ToolUtil.objectToString(packageMeta));
+                LOG.info("dest path is : " + path);
+                LOG.info("packageMeta = " + ToolUtil.objectToString(packageMeta));
 
-            PackageData packageData = PackageWrapperUtil.getPackageData(packageMeta);
+                PackageData packageData = PackageWrapperUtil.getPackageData(packageMeta);
 
-            String destPath = File.separator + path + File.separator + File.separator;
-            boolean uploadResult = FileManagerFactory.createFileManager().upload(localDirName, destPath);
-            if (uploadResult)
-            {
-                OnBoradingRequest oOnboradingRequest = new OnBoradingRequest();
-                oOnboradingRequest.setCsarId(packageId);
-                oOnboradingRequest.setPackageName(fileName);
-                oOnboradingRequest.setPackagePath(localDirName);
+                String destPath = File.separator + path + File.separator + File.separator;
+                boolean uploadResult = FileManagerFactory.createFileManager().upload(localDirName, destPath);
+                if (uploadResult)
+                {
+                    OnBoradingRequest oOnboradingRequest = new OnBoradingRequest();
+                    oOnboradingRequest.setCsarId(packageId);
+                    oOnboradingRequest.setPackageName(fileName);
+                    oOnboradingRequest.setPackagePath(localDirName);
 
-                packageData.setCsarId(packageId);
-                packageData.setDownloadCount(-1);
-                PackageData packateDbData = PackageManager.getInstance().addPackage(packageData);
+                    packageData.setCsarId(packageId);
+                    packageData.setDownloadCount(-1);
+                    PackageData packateDbData = PackageManager.getInstance().addPackage(packageData);
 
-                LOG.info("Store package data to database succed ! packateDbData = "  + ToolUtil.objectToString(packateDbData));
-                LOG.info("upload package file end, fileName:" + fileName);
+                    LOG.info("Store package data to database succed ! packateDbData = "  + ToolUtil.objectToString(packateDbData));
+                    LOG.info("upload package file end, fileName:" + fileName);
 
-                result.setCsarId(packateDbData.getCsarId());
+                    result.setCsarId(packateDbData.getCsarId());
 
-                addOnBoardingRequest(oOnboradingRequest);
+                    addOnBoardingRequest(oOnboradingRequest);
 
-                LOG.info("OnboradingRequest Data : "  + ToolUtil.objectToString(oOnboradingRequest));
+                    LOG.info("OnboradingRequest Data : "  + ToolUtil.objectToString(oOnboradingRequest));
+                }
+            } catch (NullPointerException e) {
+                LOG.error("Package basicInfo is incorrect ! basicIonfo = " + ToolUtil.objectToString(basicInfo));
+                return Response.serverError().build();
             }
         }
         return Response.ok(ToolUtil.objectToString(result), MediaType.APPLICATION_JSON).build();
@@ -281,14 +280,11 @@ public class PackageWrapper {
     private void addOnBoardingRequest(final OnBoradingRequest oOnboradingRequest)
     {
         ExecutorService es = Executors.newFixedThreadPool(CommonConstant.ONBOARDING_THREAD_COUNT);
-        es.submit(new Callable<Integer>()
-        {
-            public Integer call() throws Exception
-            {
-                new OnBoardingHandler().handleOnBoardingReq(oOnboradingRequest);
-                return CommonConstant.SUCESS;
-            }
-        });
+        Callable<Integer> callableObj = () -> {
+            new OnBoardingHandler().handleOnBoardingReq(oOnboradingRequest);
+            return CommonConstant.SUCESS;
+        };
+        es.submit(callableObj);
     }
 
     /**
@@ -420,7 +416,7 @@ public class PackageWrapper {
             InputStream uploadedInputStream,
             FormDataContentDisposition fileDetail,
             String details,
-            HttpHeaders head) throws Exception
+            HttpHeaders head) throws IOException, MarketplaceResourceException
     {
         LOG.info("Reupload request Received !!!!");
 
