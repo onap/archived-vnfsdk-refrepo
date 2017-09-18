@@ -73,7 +73,7 @@ public class PackageResource {
             @ApiParam(value = "http header") @Context HttpHeaders head
     ) throws Exception {
         InputStream input = request.getInputStream();
-        return PackageWrapper.getInstance().updateValidateStatus(input, head);
+        return PackageWrapper.getInstance().updateValidateStatus(input);
 
     }
 
