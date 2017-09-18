@@ -31,7 +31,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import net.sf.json.JSONObject;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
@@ -54,11 +53,12 @@ import org.onap.vnfsdk.marketplace.onboarding.entity.OnBoardingSteps;
 import org.onap.vnfsdk.marketplace.onboarding.entity.OnBoradingRequest;
 import org.onap.vnfsdk.marketplace.onboarding.hooks.functiontest.FunctionTestExceutor;
 import org.onap.vnfsdk.marketplace.onboarding.hooks.functiontest.FunctionTestHook;
-import org.onap.vnfsdk.marketplace.onboarding.hooks.validatelifecycle.LifecycleTestExceutor;
 import org.onap.vnfsdk.marketplace.onboarding.hooks.validatelifecycle.ValidateLifecycleTestResponse;
 import org.onap.vnfsdk.marketplace.onboarding.onboardmanager.OnBoardingHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.sf.json.JSONObject;
 
 public class PackageWrapper {
     private static PackageWrapper packageWrapper;
@@ -227,48 +227,47 @@ public class PackageWrapper {
         uploadedInputStream.close();
 
         PackageBasicInfo basicInfo = PackageWrapperUtil.getPacageBasicInfo(fileLocation);
-        if (null == basicInfo.getType() || null == basicInfo.getProvider() || null == basicInfo.getVersion())
-        {
-            LOG.error("Package basicInfo is incorrect ! basicIonfo = " + ToolUtil.objectToString(basicInfo));
-            return Response.serverError().build();
-        }
-
         UploadPackageResponse result = new UploadPackageResponse();
         Boolean isEnd = PackageWrapperUtil.isUploadEnd(contentRange);
         if (isEnd)
         {
             PackageMeta packageMeta = PackageWrapperUtil.getPackageMeta(packageId,fileName, fileLocation, basicInfo, details);
+            try {
+                String path =  basicInfo.getType().toString() + File.separator + basicInfo.getProvider() + File.separator +  packageMeta.getCsarId() + File.separator + fileName.replace(".csar", "") + File.separator + basicInfo.getVersion();
 
-            String path =  basicInfo.getType().toString() + File.separator + basicInfo.getProvider() + File.separator +  packageMeta.getCsarId() + File.separator + fileName.replace(".csar", "") + File.separator + basicInfo.getVersion();
-            String dowloadUri = File.separator + path + File.separator;
-            packageMeta.setDownloadUri(dowloadUri);
+                String dowloadUri = File.separator + path + File.separator;
+                packageMeta.setDownloadUri(dowloadUri);
 
-            LOG.info("dest path is : " + path);
-            LOG.info("packageMeta = " + ToolUtil.objectToString(packageMeta));
+                LOG.info("dest path is : " + path);
+                LOG.info("packageMeta = " + ToolUtil.objectToString(packageMeta));
 
-            PackageData packageData = PackageWrapperUtil.getPackageData(packageMeta);
+                PackageData packageData = PackageWrapperUtil.getPackageData(packageMeta);
 
-            String destPath = File.separator + path + File.separator + File.separator;
-            boolean uploadResult = FileManagerFactory.createFileManager().upload(localDirName, destPath);
-            if (uploadResult)
-            {
-                OnBoradingRequest oOnboradingRequest = new OnBoradingRequest();
-                oOnboradingRequest.setCsarId(packageId);
-                oOnboradingRequest.setPackageName(fileName);
-                oOnboradingRequest.setPackagePath(localDirName);
+                String destPath = File.separator + path + File.separator + File.separator;
+                boolean uploadResult = FileManagerFactory.createFileManager().upload(localDirName, destPath);
+                if (uploadResult)
+                {
+                    OnBoradingRequest oOnboradingRequest = new OnBoradingRequest();
+                    oOnboradingRequest.setCsarId(packageId);
+                    oOnboradingRequest.setPackageName(fileName);
+                    oOnboradingRequest.setPackagePath(localDirName);
 
-                packageData.setCsarId(packageId);
-                packageData.setDownloadCount(-1);
-                PackageData packateDbData = PackageManager.getInstance().addPackage(packageData);
+                    packageData.setCsarId(packageId);
+                    packageData.setDownloadCount(-1);
+                    PackageData packateDbData = PackageManager.getInstance().addPackage(packageData);
 
-                LOG.info("Store package data to database succed ! packateDbData = "  + ToolUtil.objectToString(packateDbData));
-                LOG.info("upload package file end, fileName:" + fileName);
+                    LOG.info("Store package data to database succed ! packateDbData = "  + ToolUtil.objectToString(packateDbData));
+                    LOG.info("upload package file end, fileName:" + fileName);
 
-                result.setCsarId(packateDbData.getCsarId());
+                    result.setCsarId(packateDbData.getCsarId());
 
-                addOnBoardingRequest(oOnboradingRequest);
+                    addOnBoardingRequest(oOnboradingRequest);
 
-                LOG.info("OnboradingRequest Data : "  + ToolUtil.objectToString(oOnboradingRequest));
+                    LOG.info("OnboradingRequest Data : "  + ToolUtil.objectToString(oOnboradingRequest));
+                }
+            } catch (NullPointerException e) {
+                LOG.error("Package basicInfo is incorrect ! basicIonfo = " + ToolUtil.objectToString(basicInfo), e);
+                return Response.serverError().build();
             }
         }
         return Response.ok(ToolUtil.objectToString(result), MediaType.APPLICATION_JSON).build();
@@ -281,14 +280,11 @@ public class PackageWrapper {
     private void addOnBoardingRequest(final OnBoradingRequest oOnboradingRequest)
     {
         ExecutorService es = Executors.newFixedThreadPool(CommonConstant.ONBOARDING_THREAD_COUNT);
-        es.submit(new Callable<Integer>()
-        {
-            public Integer call() throws Exception
-            {
-                new OnBoardingHandler().handleOnBoardingReq(oOnboradingRequest);
-                return CommonConstant.SUCESS;
-            }
-        });
+        Callable<Integer> callableInteger = () -> {
+            new OnBoardingHandler().handleOnBoardingReq(oOnboradingRequest);
+            return CommonConstant.SUCESS;
+        };
+        es.submit(callableInteger);
     }
 
     /**
@@ -420,7 +416,7 @@ public class PackageWrapper {
             InputStream uploadedInputStream,
             FormDataContentDisposition fileDetail,
             String details,
-            HttpHeaders head) throws Exception
+            HttpHeaders head) throws IOException, MarketplaceResourceException
     {
         LOG.info("Reupload request Received !!!!");
 
@@ -452,28 +448,27 @@ public class PackageWrapper {
     public Response getOnBoardingResult(String csarId, String operTypeId, String operId)
     {
         LOG.info("getOnBoardingResult request : csarId:" + csarId + " operTypeId:" + operTypeId + " operId:" + operId);
-        if ((null == csarId) || (null == operTypeId) || (null == operId)) {
+        try {
+            PackageData packageData = PackageWrapperUtil.getPackageInfoById(csarId);
+            if (null == packageData) {
+                return Response.status(Response.Status.PRECONDITION_FAILED).build();
+            }
+
+            handleDelayExec(operId);
+
+            OnBoardingResult oOnBoardingResult = FunctionTestHook.getOnBoardingResult(packageData);
+            if (null == oOnBoardingResult) {
+                return Response.status(Response.Status.PRECONDITION_FAILED).build();
+            }
+            filterOnBoardingResultByOperId(oOnBoardingResult, operId);
+
+            String strResult = ToolUtil.objectToString(oOnBoardingResult);
+            LOG.info("getOnBoardingResult response : " + strResult);
+            return Response.ok(strResult, "application/json").build();
+        } catch (NullPointerException e) {
+            LOG.error("Null param in getOnBoardingResult", e);
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        if ((csarId.isEmpty()) || (operTypeId.isEmpty()) || (operId.isEmpty())) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-        PackageData packageData = PackageWrapperUtil.getPackageInfoById(csarId);
-        if (null == packageData) {
-            return Response.status(Response.Status.PRECONDITION_FAILED).build();
-        }
-
-        handleDelayExec(operId);
-
-        OnBoardingResult oOnBoardingResult = FunctionTestHook.getOnBoardingResult(packageData);
-        if (null == oOnBoardingResult) {
-            return Response.status(Response.Status.PRECONDITION_FAILED).build();
-        }
-        filterOnBoardingResultByOperId(oOnBoardingResult, operId);
-
-        String strResult = ToolUtil.objectToString(oOnBoardingResult);
-        LOG.info("getOnBoardingResult response : " + strResult);
-        return Response.ok(strResult, "application/json").build();
     }
 
 
@@ -484,7 +479,7 @@ public class PackageWrapper {
         }
         if (0 == operId.compareToIgnoreCase("download"))
         {
-            List<OnBoardingOperResult> operResultListTemp = new ArrayList<OnBoardingOperResult>();
+            List<OnBoardingOperResult> operResultListTemp = new ArrayList<>();
             OnBoardingOperResult operResultListTmp = new OnBoardingOperResult();
             operResultListTmp.setOperId("download");
             operResultListTmp.setStatus(0);
@@ -492,7 +487,7 @@ public class PackageWrapper {
             oOnBoardingResult.setOperResult(operResultListTemp);
             return;
         }
-        List<OnBoardingOperResult> operResultListOut = new ArrayList<OnBoardingOperResult>();
+        List<OnBoardingOperResult> operResultListOut = new ArrayList<>();
         List<OnBoardingOperResult> operResultList = oOnBoardingResult.getOperResult();
         for (OnBoardingOperResult operResult : operResultList) {
             if (0 == operResult.getOperId().compareToIgnoreCase(operId)) {
@@ -576,6 +571,7 @@ public class PackageWrapper {
             catch (InterruptedException e)
             {
                 LOG.info("handleDelayExex response : ", e);
+                Thread.currentThread().interrupt();
             }
         }
     }
