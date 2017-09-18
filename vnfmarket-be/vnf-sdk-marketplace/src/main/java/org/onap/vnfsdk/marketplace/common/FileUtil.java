@@ -15,16 +15,6 @@
  */
 package org.onap.vnfsdk.marketplace.common;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.io.Resources;
-
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,8 +24,18 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 public final class FileUtil {
@@ -101,31 +101,30 @@ public final class FileUtil {
      * @return unzip file name
      * @throws IOException e1
      */
-    public static ArrayList<String> unzip(String zipFileName, String extPlace) throws IOException {
-        ZipFile zipFile = null;
-        ArrayList<String> unzipFileNams = new ArrayList<String>();
+    public static List<String> unzip(String zipFileName, String extPlace) throws IOException {
+        List<String> unzipFileNams = new ArrayList<>();
 
-        try {
-            zipFile = new ZipFile(zipFileName);
+        try (
+            ZipFile zipFile = new ZipFile(zipFileName);
+        ) {
             Enumeration<?> fileEn = zipFile.entries();
             byte[] buffer = new byte[BUFFER_SIZE];
 
             while (fileEn.hasMoreElements()) {
-                InputStream input = null;
-                BufferedOutputStream bos = null;
-                try {
-                    ZipEntry entry = (ZipEntry) fileEn.nextElement();
-                    if (entry.isDirectory()) {
-                        continue;
-                    }
+                ZipEntry entry = (ZipEntry) fileEn.nextElement();
+                if (entry.isDirectory()) {
+                    continue;
+                }
 
-                    input = zipFile.getInputStream(entry);
-                    File file = new File(extPlace, entry.getName());
-                    if (!file.getParentFile().exists()) {
-                        createDirectory(file.getParentFile().getAbsolutePath());
-                    }
+                File file = new File(extPlace, entry.getName());
+                if (!file.getParentFile().exists()) {
+                    createDirectory(file.getParentFile().getAbsolutePath());
+                }
 
-                    bos = new BufferedOutputStream(new FileOutputStream(file));
+                try (
+                    InputStream input = zipFile.getInputStream(entry);
+                    BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+                ) {
                     while (true) {
                         int length = input.read(buffer);
                         if (length == -1) {
@@ -134,20 +133,15 @@ public final class FileUtil {
                         bos.write(buffer, 0, length);
                     }
                     unzipFileNams.add(file.getAbsolutePath());
-                } finally {
-                    closeOutputStream(bos);
-                    closeInputStream(input);
                 }
             }
-        } finally {
-            closeZipFile(zipFile);
         }
         return unzipFileNams;
     }
 
     /**
      * close InputStream.
-     * 
+     *
      * @param inputStream the inputstream to close
      */
     public static void closeInputStream(InputStream inputStream) {
@@ -162,7 +156,7 @@ public final class FileUtil {
 
     /**
      * close OutputStream.
-     * 
+     *
      * @param outputStream the output stream to close
      */
     public static void closeOutputStream(OutputStream outputStream) {
@@ -174,7 +168,7 @@ public final class FileUtil {
             logger.info("error while closing OutputStream!", e1);
         }
     }
-    
+
     public static void closeFileStream(FileInputStream ifs) {
         try {
             if (ifs != null) {
@@ -187,7 +181,7 @@ public final class FileUtil {
 
     /**
      * close zipFile.
-     * 
+     *
      * @param zipFile the zipFile to close
      */
     public static void closeZipFile(ZipFile zipFile) {
@@ -213,34 +207,34 @@ public final class FileUtil {
         return deleteFile(file);
     }
 
-    public static boolean writeJsonDatatoFile(String fileAbsPath, Object obj) 
-    {   
+    public static boolean writeJsonDatatoFile(String fileAbsPath, Object obj)
+    {
         logger.info("Write JsonData to file :"+fileAbsPath);
-        
+
         boolean bResult = false;
         if(checkFileExists(fileAbsPath))
         {
             deleteFile(fileAbsPath);
         }
-        
-        ObjectMapper mapper = new ObjectMapper();       
-        try 
+
+        ObjectMapper mapper = new ObjectMapper();
+        try
         {
             mapper.writeValue(new File(fileAbsPath), obj);
             bResult = true;
-        } 
-        catch (JsonGenerationException e) 
+        }
+        catch (JsonGenerationException e)
         {
             logger.info("JsonGenerationException Exception: writeJsonDatatoFile-->"+fileAbsPath, e);
-        } 
-        catch (JsonMappingException e) 
+        }
+        catch (JsonMappingException e)
         {
             logger.info("JsonMappingException Exception: writeJsonDatatoFile-->"+fileAbsPath, e);
-        } 
-        catch (IOException e) 
+        }
+        catch (IOException e)
         {
             logger.info("IOException Exception: writeJsonDatatoFile-->"+fileAbsPath, e);
-        } 
+        }
         return bResult;
     }
 
@@ -251,44 +245,44 @@ public final class FileUtil {
             logger.info("read JsonData from file , file not found :"+fileAbsPath);
             return null;
         }
-        
+
         logger.info("read JsonData from file :"+fileAbsPath);
-        
-        T obj = null;        
+
+        T obj = null;
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        try 
+        try
         {
             obj = mapper.readValue(new File(fileAbsPath), clazz);
-        } 
-        catch (JsonParseException e1) 
+        }
+        catch (JsonParseException e1)
         {
             logger.info("JsonParseException Exception: writeJsonDatatoFile-->"+fileAbsPath, e1);
-        } 
-        catch (JsonMappingException e1) 
+        }
+        catch (JsonMappingException e1)
         {
             logger.info("JsonMappingException Exception: writeJsonDatatoFile-->"+fileAbsPath, e1);
-        } 
-        catch (IOException e1) 
+        }
+        catch (IOException e1)
         {
             logger.info("IOException Exception: writeJsonDatatoFile-->"+fileAbsPath, e1);
         }
         return obj;
     }
-    
-    public static boolean  deleteDirectory(String path) 
+
+    public static boolean  deleteDirectory(String path)
     {
         File file = new File(path);
         return deleteDirectory(file);
     }
-    
-    public static boolean  deleteDirectory(File file) 
+
+    public static boolean  deleteDirectory(File file)
     {
         if (!file.exists())
         {
-            return true;          
-        }        
-        if (file.isDirectory()) 
+            return true;
+        }
+        if (file.isDirectory())
         {
             for (File f : file.listFiles())
             {
@@ -298,3 +292,4 @@ public final class FileUtil {
         return file.delete();
     }
 }
+

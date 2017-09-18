@@ -271,7 +271,7 @@ public class PackageWrapperUtil {
     boolean isXmlCsar = false;
     try {
       String tempfolder = unzipDir;
-      ArrayList<String> unzipFiles = FileUtil.unzip(fileLocation, tempfolder);
+      List<String> unzipFiles = FileUtil.unzip(fileLocation, tempfolder);
       if (unzipFiles.isEmpty()) {
         isXmlCsar = true;
       }
