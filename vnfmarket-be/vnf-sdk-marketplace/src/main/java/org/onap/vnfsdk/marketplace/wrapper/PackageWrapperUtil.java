@@ -196,11 +196,10 @@ public class PackageWrapperUtil {
   public static List<PackageMeta> packageDataList2PackageMetaList(
       List<PackageData> dbResult) {
     ArrayList<PackageMeta> metas = new ArrayList<>();
-    PackageMeta meta = null;
     if (! dbResult.isEmpty()) {
       for (int i = 0; i < dbResult.size(); i++) {
         PackageData data = dbResult.get(i);
-        meta = packageData2PackageMeta(data);
+        PackageMeta meta = packageData2PackageMeta(data);
         metas.add(meta);
       }
     }
@@ -243,8 +242,7 @@ public class PackageWrapperUtil {
     } else {
       url += uri;
     }
-    String urlresult = url.replace("\\", "/");
-    return urlresult;
+    return url.replace("\\", "/");
   }
 
   public static String getDownloadUriHead() {
@@ -278,15 +276,15 @@ public class PackageWrapperUtil {
         isXmlCsar = true;
       }
       for (String unzipFile : unzipFiles) {
-				if (unzipFile.endsWith(CommonConstant.MANIFEST)) {
-					basicInfo = readManifest(unzipFile);
+        if (unzipFile.endsWith(CommonConstant.MANIFEST)) {
+          basicInfo = readManifest(unzipFile);
         }
         if (ToolUtil.isYamlFile(new File(unzipFile))) {
           isXmlCsar = false;
         }
       }
     } catch (IOException e1) {
-      LOG.error("judge package type error ! " + e1.getMessage());
+      LOG.error("judge package type error ! " + e1.getMessage(), e1);
     }
     if (isXmlCsar) {
       basicInfo.setFormat(CommonConstant.PACKAGE_XML_FORMAT);
@@ -296,81 +294,51 @@ public class PackageWrapperUtil {
     return basicInfo;
   }
 
-  private static PackageBasicInfo readCsarMeta(String unzipFile) {
+  /**
+   * Reads the manifest file in the package and fills the basic infor about package
+   * @param unzipFile
+   * @return basic infor about package
+   */
+  private static PackageBasicInfo readManifest(String unzipFile) {
+
+    // Fix the package type to CSAR, temporary
     PackageBasicInfo basicInfo = new PackageBasicInfo();
+    basicInfo.setType(EnumType.CSAR);
+
     File file = new File(unzipFile);
     try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+
       String tempString = null;
       while ((tempString = reader.readLine()) != null) {
-        if (tempString.equals("")) {
+
+        // If line is empty, ignore
+        if ("".equals(tempString)) {
           continue;
         }
+
         int count1 = tempString.indexOf(":");
         String meta = tempString.substring(0, count1).trim();
-        if (CommonConstant.CSAR_TYPE_META.equalsIgnoreCase(meta)) {
-          int count = tempString.indexOf(":") + 1;
-          basicInfo.setType(EnumType.valueOf(tempString.substring(count).trim()));
-        }
-        if (CommonConstant.CSAR_PROVIDER_META.equalsIgnoreCase(meta)) {
+
+        // Check for the package provider name
+        if (meta.equalsIgnoreCase(CommonConstant.MF_PROVIDER_META)) {
           int count = tempString.indexOf(":") + 1;
           basicInfo.setProvider(tempString.substring(count).trim());
         }
-        if (CommonConstant.CSAR_VERSION_META.equalsIgnoreCase(meta)) {
+
+        // Check for package version
+        if (meta.equalsIgnoreCase(CommonConstant.MF_VERSION_META)) {
           int count = tempString.indexOf(":") + 1;
           basicInfo.setVersion(tempString.substring(count).trim());
         }
       }
+
       reader.close();
-    } catch (IOException e2) {
-      e2.printStackTrace();
+    } catch (IOException e) {
+      LOG.error("Exception while parsing manifest file" + e, e);
     }
+
     return basicInfo;
   }
-	/**
-	 * Reads the manifest file in the package and fills the basic infor about package
-	 * @param unzipFile
-	 * @return basic infor about package
-	 */	
-	private static PackageBasicInfo readManifest(String unzipFile) {
-
-		// Fix the package type to CSAR, temporary
-		PackageBasicInfo basicInfo = new PackageBasicInfo();
-		basicInfo.setType(EnumType.CSAR);
-
-		File file = new File(unzipFile);
-		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-
-			String tempString = null;
-			while ((tempString = reader.readLine()) != null) {
-				
-				// If line is empty, ignore
-				if (tempString.equals("")) {
-					continue;
-				}
-
-				int count1 = tempString.indexOf(":");
-				String meta = tempString.substring(0, count1).trim();
-				
-				// Check for the package provider name
-				if (meta.equalsIgnoreCase(CommonConstant.MF_PROVIDER_META)) {
-					int count = tempString.indexOf(":") + 1;
-					basicInfo.setProvider(tempString.substring(count).trim());
-				}
-				
-				// Check for package version
-				if (meta.equalsIgnoreCase(CommonConstant.MF_VERSION_META)) {
-					int count = tempString.indexOf(":") + 1;
-					basicInfo.setVersion(tempString.substring(count).trim());
-				}
-			}
-
-			reader.close();
-		} catch (IOException e) {
-			LOG.error("Exception while parsing manifest file" + e);			
-		}
-
-		return basicInfo;
-	}
   /**
    * get package format enum.
    * @param format package format
