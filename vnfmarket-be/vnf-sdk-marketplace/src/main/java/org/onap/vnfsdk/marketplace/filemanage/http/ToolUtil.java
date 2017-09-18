@@ -17,7 +17,6 @@ package org.onap.vnfsdk.marketplace.filemanage.http;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,6 +30,8 @@ import org.slf4j.LoggerFactory;
 public class ToolUtil {
   private static final Logger LOGGER = LoggerFactory.getLogger(ToolUtil.class);
 
+  private ToolUtil() {
+  }
   /**
    * copy from directory.
    * @param srcDirName source directory name
@@ -42,49 +43,36 @@ public class ToolUtil {
   public static boolean copyDirectory(String srcDirName, String destDirName, boolean overlay)
       throws IOException {
     File srcDir = new File(srcDirName);
-    if (!srcDir.exists()) {
-      return false;
-    } else if (!srcDir.isDirectory()) {
+    if (!srcDir.exists() || !srcDir.isDirectory()) {
       return false;
     }
 
-    if (!destDirName.endsWith(File.separator)) {
-      destDirName = destDirName + File.separator;
+    String useDestDirName = destDirName;
+    if (!useDestDirName.endsWith(File.separator)) {
+      useDestDirName += File.separator;
     }
-    File destDir = new File(destDirName);
-    if (destDir.exists()) {
-      if (overlay) {
+    File destDir = new File(useDestDirName);
+    if (destDir.exists() && overlay) {
         new File(destDirName).delete();
-      } else {
+    } else if ((destDir.exists() && !overlay) || (!destDir.exists() && !destDir.mkdirs())) {
         return false;
-      }
-    } else {
-      if (!destDir.mkdirs()) {
-        return false;
-      }
     }
     boolean flag = true;
     File[] files = srcDir.listFiles();
     for (int i = 0; i < files.length; i++) {
       if (files[i].isFile()) {
         flag = copyFile(files[i].getAbsolutePath(), destDirName + files[i].getName(), true);
-        if (!flag) {
-          break;
-        }
       } else if (files[i].isDirectory()) {
         flag = copyDirectory(files[i].getAbsolutePath(), destDirName + files[i].getName(), overlay);
-        if (!flag) {
-          break;
-        }
+      }
+      if (!flag) {
+        String message = "Copy catagory " + srcDirName + " to " + destDirName + " failed!";
+        LOGGER.error(message);
+        return false;
       }
     }
-    if (!flag) {
-      String message = "Copy catagory " + srcDirName + " to " + destDirName + " failed!";
-      LOGGER.error(message);
-      return false;
-    } else {
-      return true;
-    }
+
+    return true;
   }
 
   /**
@@ -97,56 +85,36 @@ public class ToolUtil {
   public static boolean copyFile(String srcFileName, String destFileName, boolean overlay) {
     File srcFile = new File(srcFileName);
 
-    if (!srcFile.exists()) {
+    if (!srcFile.exists() || !srcFile.isFile()) {
       String message = "Source file : " + srcFileName + " not exist !";
       LOGGER.error(message);
-      return false;
-    } else if (!srcFile.isFile()) {
       return false;
     }
 
     File destFile = new File(destFileName);
-    if (destFile.exists()) {
-      if (overlay) {
+    if (destFile.exists() && overlay) {
         new File(destFileName).delete();
-      }
-    } else {
-      if (!destFile.getParentFile().exists()) {
-        if (!destFile.getParentFile().mkdirs()) {
-          return false;
-        }
-      }
+    } else if (!destFile.exists() && !destFile.getParentFile().exists() && !destFile.getParentFile().mkdirs()) {
+        return false;
     }
 
     int byteread = 0;
-    InputStream in = null;
-    OutputStream out = null;
 
-    try {
-      in = new FileInputStream(srcFile);
-      out = new FileOutputStream(destFile);
+    try (
+          InputStream in = new FileInputStream(srcFile);
+          OutputStream out = new FileOutputStream(destFile);
+      ) {
       byte[] buffer = new byte[1024];
 
       while ((byteread = in.read(buffer)) != -1) {
         out.write(buffer, 0, byteread);
       }
       return true;
-    } catch (FileNotFoundException e1) {
+    } catch (IOException e) {
+      LOGGER.error("IOException in copyFile", e);
       return false;
-    } catch (IOException e1) {
-      return false;
-    } finally {
-      try {
-        if (out != null) {
-          out.close();
-        }
-        if (in != null) {
-          in.close();
-        }
-      } catch (IOException e1) {
-        e1.printStackTrace();
-      }
     }
+
   }
 
   /**
@@ -190,9 +158,10 @@ public class ToolUtil {
     }
     return dir.delete();
   }
-  
+
   public static String getAppDeployPath()
   {
       return Thread.currentThread().getContextClassLoader().getResource("/").getPath();
   }
 }
+
