@@ -19,6 +19,9 @@ public class MsbAddrConfig {
 
   protected static String msbAddress;
 
+  private MsbAddrConfig() {
+  }
+
   public static String getMsbAddress() {
     return msbAddress;
   }
@@ -28,3 +31,4 @@ public class MsbAddrConfig {
   }
 
 }
+

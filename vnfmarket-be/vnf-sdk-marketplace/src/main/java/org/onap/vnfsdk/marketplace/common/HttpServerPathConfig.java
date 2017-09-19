@@ -17,15 +17,15 @@ package org.onap.vnfsdk.marketplace.common;
 
 public class HttpServerPathConfig {
   protected static String httpServerPath;
-  
+
+  private HttpServerPathConfig() {
+  }
+
   static
   {
-//  CatalogAppConfiguration configuration = new CatalogAppConfiguration();
-//  Config.setConfigration(configuration);
-//  Config.getConfigration().setMsbServerAddr("http://127.0.0.1:80");
-  MsbAddrConfig.setMsbAddress("http://127.0.0.1:8080");
-  HttpServerAddrConfig.setHttpServerAddress("http://127.0.0.1:8080");
-  HttpServerPathConfig.setHttpServerPath("../tomcat/webapps/ROOT/");
+    MsbAddrConfig.setMsbAddress(CommonConstant.DEFAULT_MSB_ADDRESS);
+    HttpServerAddrConfig.setHttpServerAddress(CommonConstant.DEFAULT_MSB_ADDRESS);
+    HttpServerPathConfig.setHttpServerPath("../tomcat/webapps/ROOT/");
   }
 
   public static String getHttpServerPath() {
@@ -36,3 +36,4 @@ public class HttpServerPathConfig {
     HttpServerPathConfig.httpServerPath = httpServerPath;
   }
 }
+
