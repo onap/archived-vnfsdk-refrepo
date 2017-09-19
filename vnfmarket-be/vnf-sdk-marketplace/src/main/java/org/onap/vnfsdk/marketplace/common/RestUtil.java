@@ -19,16 +19,17 @@ import javax.ws.rs.core.Response;
 
 
 public class RestUtil {
-
+  private RestUtil() {
+  }
   /**
    * get rest exception.
    * @param errorMsg error message
    * @return Response
    */
   public static Response getRestException(String errorMsg) {
-    String code = "001";
     return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-    		 .entity(new CommonErrorResponse(errorMsg)).build();
+             .entity(new CommonErrorResponse(errorMsg)).build();
   }
 
 }
+
