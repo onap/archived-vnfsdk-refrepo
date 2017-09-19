@@ -23,18 +23,6 @@ public class ErrorCodeException extends Exception {
   private final int errorCode;
   private final String[] arguments;
 
-  private static String defaultText = null;
-
-
-  public static void setDefaultText(String text) {
-    defaultText = text;
-  }
-
-
-  public static String getDefaultText() {
-    return defaultText;
-  }
-
 
   public ErrorCodeException(int code, String debugMessage) {
     this(code, debugMessage, null);
@@ -145,3 +133,4 @@ public class ErrorCodeException extends Exception {
   }
 
 }
+
