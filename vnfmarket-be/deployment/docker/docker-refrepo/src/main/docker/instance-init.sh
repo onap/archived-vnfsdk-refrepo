@@ -15,11 +15,6 @@
 # limitations under the License.
 #
 
-# Initialize DB schema
-mysql -uroot -prootpass < init/marketplace_tables_mysql.sql
-
-# Set mysql password
-sed -i 's|Changeme_123|rootpass|' webapps/ROOT/WEB-INF/classes/mybatis/configuration/configuration.xml
 
 #Set postgres instance IP
 sed -i 's|127.0.0.1|'"$POSTGRES_IP"'|' webapps/ROOT/WEB-INF/classes/mybatis/configuration/configuration.xml
