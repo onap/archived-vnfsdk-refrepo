@@ -82,20 +82,20 @@ public class PackageMeta {
         this.size = size;
     }
 
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
     public String getProvider() {
         return provider;
     }
 
     public void setProvider(String provider) {
         this.provider = provider;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
     }
 
     public String getType() {
@@ -139,6 +139,13 @@ public class PackageMeta {
     }
 
 
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
 
     public String getShortDesc() {
         return shortDesc;
@@ -146,14 +153,6 @@ public class PackageMeta {
 
     public void setShortDesc(String shortDesc) {
         this.shortDesc = shortDesc;
-    }
-
-    public String getDetails() {
-        return details;
-    }
-
-    public void setDetails(String details) {
-        this.details = details;
     }
 
     public String getRemarks() {
@@ -182,3 +181,4 @@ public class PackageMeta {
     }
 
 }
+
