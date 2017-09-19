@@ -16,5 +16,7 @@
 package org.onap.vnfsdk.marketplace.db.entity;
 
 public class BaseData {
-
+    public BaseData() {
+        //Do nothing
+    }
 }
