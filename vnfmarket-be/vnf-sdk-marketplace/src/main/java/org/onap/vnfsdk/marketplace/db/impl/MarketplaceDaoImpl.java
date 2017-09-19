@@ -32,9 +32,9 @@ import org.slf4j.LoggerFactory;
 /**
  * This class is the implementation for the DAO Layer for Driver Manager.
  * <br/>
- * 
+ *
  * @author
- * @version  
+ * @version
  */
 public class MarketplaceDaoImpl implements IMarketplaceDao {
 
@@ -43,12 +43,12 @@ public class MarketplaceDaoImpl implements IMarketplaceDao {
     private SqlSessionFactory sqlSessionFactory = null;
 
     /**
-     * 
+     *
      * Constructor<br/>
      * <p>
      * </p>
-     * 
-     * @since   
+     *
+     * @since
      */
     public MarketplaceDaoImpl() {
         sqlSessionFactory = ConnectionUtil.getSession();
@@ -57,21 +57,20 @@ public class MarketplaceDaoImpl implements IMarketplaceDao {
     /**
      * get all package data.
      * <br/>
-     * 
+     *
      * @return
-     * @since    
+     * @since
      */
+    @Override
     public List<PackageData> getAllPackageData() {
         SqlSession session = sqlSessionFactory.openSession();
-        List<PackageData> csars = null; 
+        List<PackageData> csars = null;
         try {
             IMarketplaceMapper mapper = session.getMapper(IMarketplaceMapper.class);
             csars = mapper.getAllPackageData();
             session.commit();
         } catch(PersistenceException e) {
             LOGGER.error("Exception caught {}", e);
-//            throw new DriverManagerException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-//                    ErrorCode.INVALID_DB);
         } finally {
             session.close();
         }
@@ -81,59 +80,57 @@ public class MarketplaceDaoImpl implements IMarketplaceDao {
     /**
      * saving the package data object to the DB using the mybatis.
      * <br/>
-     * 
+     *
      * @param dirverInstance
-     * @since    
+     * @since
      */
-	public void savePackageData(PackageData lPackageData) {
-		SqlSession session = sqlSessionFactory.openSession();
+    @Override
+    public void savePackageData(PackageData lPackageData) {
+        SqlSession session = sqlSessionFactory.openSession();
         try {
             IMarketplaceMapper mapper = session.getMapper(IMarketplaceMapper.class);
             mapper.savePackageData(lPackageData);
             session.commit();
         } catch(PersistenceException e) {
             LOGGER.error("Exception caught {}", e);
-//            throw new DriverManagerException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-//                    ErrorCode.INVALID_DB);
         } finally {
             session.close();
         }
-		
-	}
 
-	public List<PackageData> getPackageData(String csarId) {
+    }
+
+    @Override
+    public List<PackageData> getPackageData(String csarId) {
         SqlSession session = sqlSessionFactory.openSession();
-        List<PackageData> csars = null; 
+        List<PackageData> csars = null;
         try {
             IMarketplaceMapper mapper = session.getMapper(IMarketplaceMapper.class);
             csars = mapper.getPackageData(csarId);
             session.commit();
         } catch(PersistenceException e) {
             LOGGER.error("Exception caught {}", e);
-//            throw new DriverManagerException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-//                    ErrorCode.INVALID_DB);
         } finally {
             session.close();
         }
         return csars;
-	}
+    }
 
-	public void deletePackageData(String csarId) {
-	 SqlSession session = sqlSessionFactory.openSession();
+    @Override
+    public void deletePackageData(String csarId) {
+     SqlSession session = sqlSessionFactory.openSession();
         try {
             IMarketplaceMapper mapper = session.getMapper(IMarketplaceMapper.class);
             mapper.deletePackageData(csarId);
             session.commit();
         } catch(PersistenceException e) {
-            LOGGER.error("Exception caught {}", e);
-//	            throw new DriverManagerException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-//	                    ErrorCode.INVALID_DB);
+            LOGGER.error("Exception caught {}", e);;
         } finally {
             session.close();
         }
-		
-	}
 
+    }
+
+    @Override
     public void updatePackageData(PackageData oPackageData) {
         SqlSession session = sqlSessionFactory.openSession();
         try {
@@ -145,6 +142,7 @@ public class MarketplaceDaoImpl implements IMarketplaceDao {
         } finally {
             session.close();
         }
-        
-    }    
+
+    }
 }
+
