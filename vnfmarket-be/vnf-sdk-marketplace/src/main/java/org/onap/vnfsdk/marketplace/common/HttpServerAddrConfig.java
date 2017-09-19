@@ -17,8 +17,10 @@ package org.onap.vnfsdk.marketplace.common;
 
 
 public class HttpServerAddrConfig {
-
   protected static String httpServerAddress;
+
+  private HttpServerAddrConfig () {
+  }
 
   public static String getHttpServerAddress() {
     return httpServerAddress;
@@ -29,3 +31,4 @@ public class HttpServerAddrConfig {
   }
 
 }
+
