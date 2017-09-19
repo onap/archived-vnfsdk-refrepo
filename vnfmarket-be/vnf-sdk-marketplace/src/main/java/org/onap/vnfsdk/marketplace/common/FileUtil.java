@@ -194,7 +194,6 @@ public final class FileUtil {
         try {
             if (zipFile != null) {
                 zipFile.close();
-                zipFile = null;
             }
         } catch (IOException e1) {
             logger.info("close ZipFile error!", e1);
