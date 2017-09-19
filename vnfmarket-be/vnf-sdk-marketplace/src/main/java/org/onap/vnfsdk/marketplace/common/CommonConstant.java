@@ -16,6 +16,9 @@
 package org.onap.vnfsdk.marketplace.common;
 
 public class CommonConstant {
+  // Address
+  public static final String DEFAULT_MSB_ADDRESS = "http://127.0.0.1:8080";
+
   // Package Status
   public static final String PACKAGE_STATUS_DELETING = "deleting";
 
@@ -39,9 +42,9 @@ public class CommonConstant {
   public static final String DEFINITIONS = "Definitions";
 
   public static final String CSAR_META = "csar.meta";
-  
+
   public static final String MANIFEST = ".mf";
-  
+
   public static final String MF_VERSION_META = "vnf_package_version";
 
   public static final String MF_PRODUCT_NAME = "vnf_product_name";
@@ -53,46 +56,46 @@ public class CommonConstant {
   public static final String CSAR_SUFFIX = ".csar";
 
   public static final String HTTP_HEADER_CONTENT_RANGE = "Content-Range";
-  
+
   public static final  String CATALOG_CSAR_DIR_NAME = "/csar";
-  
+
   public static final  String REPORT_CSAR_DIR_NAME = "/reports";
-  
+
   public static final String COMETD_CHANNEL_PACKAGE_DELETE = "/package/delete";
-  
+
   public static final String SUCCESS_STR = "SUCCESS";
-  
+
   public static final int ONBOARDING_THREAD_COUNT = 1;
   public static final int SUCESS = 0;
   public static final int FAILED = -1;
-  
+
   public static final  String CATALOUGE_UPLOAD_URL = "/openoapi/catalog/v1/csars";
-  
+
   private CommonConstant (){
-	  // Cannot create instance of the class
+      // Cannot create instance of the class
   }
-  
-  public static class functionTest 
-  {    
+
+  public static class functionTest
+  {
       public static final String FUNCTEST_URL = "/openoapi/vnfsdk/v1/functest/";
       public static final String FUNCTEST_RESULT_URL = "/openoapi/vnfsdk/v1/functest/download/";
       public static final String FUNCTEST_OPERTYPE_ID = "functiontest";
       public static final String FUNCTEST_PACKAGE_EXISTS = "packageExists";
       public static final String FUNCTEST_EXEC = "functestexec";
-      
+
       private functionTest() {
       }
   }
-    
-  public static class LifeCycleTest 
-  {    
+
+  public static class LifeCycleTest
+  {
       public static final String LIFECYCLE_TEST_URL = "/openoapi/nslcm/v1/vnfpackage";
       public static final String LIFECYCLE_TEST_OPERTYPE_ID = "lifecycletest";
       public static final String LIFECYCLE_TEST_EXEC = "lifecycleTestexec";
       private LifeCycleTest() {
       }
   }
-    
+
   public static class HttpContext {
 
       public static final String CONTENT_TYPE = "Content-Type";
@@ -106,7 +109,7 @@ public class CommonConstant {
       private HttpContext() {
       }
   }
-  
+
   public static class MethodType {
 
       public static final String POST = "post";
@@ -120,12 +123,12 @@ public class CommonConstant {
       private MethodType() {
       }
   }
-  
+
   public static class MsbRegisterCode {
 
       public static final int MSDB_REGISTER_RETRIES = 12;
       public static final int MSDB_REGISTER_RETRY_SLEEP = 10000;
-      
+
       public static final int MSDB_REGISTER_FILE_NOT_EXISTS = 2;
       public static final int MSDB_REGISTER_SUCESS = 0;
       public static final int MSDB_REGISTER_FAILED = -1;
@@ -133,3 +136,4 @@ public class CommonConstant {
       }
   }
 }
+
