@@ -37,10 +37,6 @@ echo
 # Configure service based on docker environment variables
 ./instance-config.sh
 
-# Start mysql
-chown -R mysql /var/lib/mysql
-chgrp -R mysql /var/lib/mysql
-su mysql -c /usr/bin/mysqld_safe &
 
 
 # Perform one-time config
@@ -48,8 +44,7 @@ if [ ! -e init.log ]; then
     # Perform workarounds due to defects in release binary
     ./instance-workaround.sh
 
-    # Init mysql; set root password
-    ./init-mysql.sh
+  
 
     # microservice-specific one-time initialization
     ./instance-init.sh
