@@ -15,27 +15,26 @@
  */
 package org.onap.vnfsdk.marketplace.common;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 
 
 
 /**
  * common utility class.
- * 
+ *
  */
 public class ToolUtil {
   private static final Logger LOG = LoggerFactory.getLogger(ToolUtil.class);
@@ -45,6 +44,9 @@ public class ToolUtil {
   public static final String CATALOGUE_IMAGE_DIR_NAME = "image";
 
   public static final int FILE_PERCENT = 1024 * 1024; // 1M
+
+  private ToolUtil() {
+  }
 
   public static boolean isEmptyString(String val) {
     return val == null || "".equals(val);
@@ -60,7 +62,7 @@ public class ToolUtil {
 
   /**
    * trimed string.
-   * 
+   *
    * @param val string array to trim
    * @return String[]
    */
@@ -82,7 +84,7 @@ public class ToolUtil {
 
   /**
    * store chunk file to local temp directory.
-   * 
+   *
    * @param dirName directory name
    * @param fileName file name
    * @param uploadedInputStream upload input stream
@@ -97,32 +99,29 @@ public class ToolUtil {
       tmpDir.mkdirs();
     }
     File file = new File(tmpDir + File.separator + fileName);
-    OutputStream os = null;
-    try {
+
+    try (
+      OutputStream os = new FileOutputStream(file, true);
+    )
+    {
       int read = 0;
       byte[] bytes = new byte[1024];
-      os = new FileOutputStream(file, true);
       while ((read = uploadedInputStream.read(bytes)) != -1) {
         os.write(bytes, 0, read);
       }
       os.flush();
       return file.getAbsolutePath();
-    } finally {
-      if (os != null) {
-        os.close();
-      }
     }
   }
 
   /**
    * get temp dirctory when upload package.
-   * 
+   *
    * @param dirName temp directory name
    * @param fileName package name
    * @return String
    */
   public static String getTempDir(String dirName, String fileName) {
-    // File tmpDir = new File(File.separator + dirName);
     return Thread.currentThread().getContextClassLoader().getResource("/").getPath() + dirName + File.separator
         + fileName.replace(".csar", "");
   }
@@ -134,13 +133,13 @@ public class ToolUtil {
 
   /**
    * delete file.
-   * 
+   *
    * @param dirName the directory of file
    * @param fileName file name
    * @return boolean
    */
   public static boolean deleteFile(String dirName, String fileName) {
-    File tmpDir = new File(getCataloguePath() + File.separator + dirName);
+    File tmpDir = new File(File.separator + dirName);
     if (!tmpDir.exists()) {
       return true;
     }
@@ -151,22 +150,17 @@ public class ToolUtil {
     return true;
   }
 
-  public static String getCataloguePath() {
-//    return Config.getConfigration().getCataloguePath();
-	  return "";
-  }
-
   public static String getCatalogueCsarPath() {
-    return getCataloguePath() + File.separator + CATALOGUE_CSAR_DIR_NAME;
+    return File.separator + CATALOGUE_CSAR_DIR_NAME;
   }
 
   public static String getCatalogueImagePath() {
-    return getCataloguePath() + File.separator + CATALOGUE_IMAGE_DIR_NAME;
+    return File.separator + CATALOGUE_IMAGE_DIR_NAME;
   }
 
   /**
    * get file size.
-   * 
+   *
    * @param file file which to get the size
    * @param fileUnit file unit
    * @return String file size
@@ -187,7 +181,7 @@ public class ToolUtil {
 
   /**
    * get file size by content.
-   * 
+   *
    * @param contentRange content range
    * @return String
    */
@@ -199,7 +193,7 @@ public class ToolUtil {
 
   /**
    * fix package format.
-   * 
+   *
    * @param csarId package ID
    * @return String
    */
@@ -214,7 +208,7 @@ public class ToolUtil {
 
   /**
    * delete the file and file directory.
-   * 
+   *
    * @param dir file
    * @return boolean
    */
@@ -231,17 +225,9 @@ public class ToolUtil {
     return dir.delete();
   }
 
-  // public static boolean unZipCsar(String fileLocation) throws IOException {
-  // String tempfolder=System.getProperty("java.io.tmpdir");
-  // ArrayList<String> unzipFiles = FileUtil.unzip(fileLocation, tempfolder);
-  // if(unzipFiles.isEmpty()){
-  // return true;
-  // }
-  // }
-
   /**
    * judge the file's format is yaml or not.
-   * 
+   *
    * @param file file to judge
    * @return boolean
    */
@@ -254,7 +240,7 @@ public class ToolUtil {
 
   /**
    * remove the csar suffix.
-   * 
+   *
    * @param csarName package name
    * @return String
    */
@@ -264,7 +250,7 @@ public class ToolUtil {
 
   /**
    * add the csar fuffix.
-   * 
+   *
    * @param csarName package name
    * @return String
    */
@@ -277,7 +263,7 @@ public class ToolUtil {
 
   /**
    * process file name.
-   * 
+   *
    * @param fileName file's name
    * @return String
    */
@@ -292,7 +278,7 @@ public class ToolUtil {
 
   /**
    * exchange object to string.
-   * 
+   *
    * @param obj object
    * @return String
    */
@@ -311,7 +297,7 @@ public class ToolUtil {
 
   /**
    * get the size format according file size.
-   * 
+   *
    * @param fileSize file size
    * @return size format
    */
@@ -353,7 +339,7 @@ public class ToolUtil {
     Gson gson = new Gson();
     return gson.toJson(template);
   }
-  
+
   /**
    * @param value
    * @return
@@ -365,5 +351,6 @@ public class ToolUtil {
 
     return value.toString();
   }
-  
+
 }
+

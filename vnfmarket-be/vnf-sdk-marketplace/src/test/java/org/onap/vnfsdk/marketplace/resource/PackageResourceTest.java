@@ -41,7 +41,6 @@ import org.junit.Test;
 import org.onap.vnfsdk.marketplace.common.FileUtil;
 import org.onap.vnfsdk.marketplace.common.JsonUtil;
 import org.onap.vnfsdk.marketplace.common.ToolUtil;
-import org.onap.vnfsdk.marketplace.db.connection.ConnectionUtil;
 import org.onap.vnfsdk.marketplace.db.entity.PackageData;
 import org.onap.vnfsdk.marketplace.db.impl.MarketplaceDaoImpl;
 import org.onap.vnfsdk.marketplace.db.resource.PackageManager;
@@ -62,14 +61,13 @@ import org.onap.vnfsdk.marketplace.onboarding.entity.OnBoradingRequest;
 import org.onap.vnfsdk.marketplace.onboarding.entity.ResultKey;
 import org.onap.vnfsdk.marketplace.onboarding.hooks.functiontest.FunctionTestExceutor;
 import org.onap.vnfsdk.marketplace.onboarding.hooks.functiontest.FunctionTestHook;
-import org.onap.vnfsdk.marketplace.resource.PackageResource;
 import org.onap.vnfsdk.marketplace.rest.RestResponse;
 import org.onap.vnfsdk.marketplace.rest.RestfulClient;
 import org.onap.vnfsdk.marketplace.wrapper.PackageWrapper;
 import org.onap.vnfsdk.marketplace.wrapper.PackageWrapperUtil;
 
-import mockit.MockUp;
 import mockit.Mock;
+import mockit.MockUp;
 
 public class PackageResourceTest {
 
@@ -112,7 +110,7 @@ public class PackageResourceTest {
         catch(Exception e) {
             e.printStackTrace();
         }
-        
+
         filePath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "testfolder";
         file = new File(filePath);
         if(!file.exists()) {
@@ -121,7 +119,7 @@ public class PackageResourceTest {
 
         StringBuilder sb = new StringBuilder();
         sb.append("test data");
-        
+
         filePath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "temp.zip";
         file = new File(filePath);
         try {
@@ -143,15 +141,15 @@ public class PackageResourceTest {
     public void testQueryPackageListByCond() throws Exception{
         new MockUp<MarketplaceDaoImpl>() {
             @Mock
-            public List<PackageData> getAllPackageData() {              
-                return new ArrayList<PackageData>();            
+            public List<PackageData> getAllPackageData() {
+                return new ArrayList<PackageData>();
             }
         };
         try {
             response = PackageWrapper.getInstance().queryPackageListByCond( null, null, null, null, null);
         } catch( Exception e ) {
             e.printStackTrace();
-        }      
+        }
 
         assertNotNull( response );
         assertEquals( 200, response.getStatus());
@@ -167,11 +165,11 @@ public class PackageResourceTest {
                 return null;
             }
 
-        }; 
+        };
         new MockUp<MarketplaceDaoImpl>() {
             @Mock
-            public List<PackageData> getPackageData( String csarId ) {  
-                packageDataList = new ArrayList<PackageData>();   
+            public List<PackageData> getPackageData( String csarId ) {
+                packageDataList = new ArrayList<PackageData>();
                 packageData = new PackageData();
                 packageData.setCsarId( csarId );
                 packageData.setDownloadUri( "src\\test\\resources\\clearwater_ns.csar" );
@@ -180,9 +178,9 @@ public class PackageResourceTest {
                 packageData.setVersion( "v1.0" );
                 packageData.setProvider( "Huawei" );
                 packageDataList.add( packageData );
-                return packageDataList;             
+                return packageDataList;
             }
-        }; 
+        };
 
         try {
             response = PackageWrapper.getInstance().queryPackageById( csarID );
@@ -190,53 +188,53 @@ public class PackageResourceTest {
             e.printStackTrace();
         }
         assertNotNull( response );
-        assertEquals( 200, response.getStatus());           
-    }   
+        assertEquals( 200, response.getStatus());
+    }
 
     @Test
     public void testDelPackageFaiure() {
         new MockUp<MarketplaceDaoImpl>() {
             @Mock
-            public List<PackageData> getAllPackageData() { 
-                return new ArrayList<PackageData>(); 
+            public List<PackageData> getAllPackageData() {
+                return new ArrayList<PackageData>();
             }
         };
 
         new MockUp<MarketplaceDaoImpl>() {
             @Mock
-            public void deletePackageData( String csarId ) {            
-                return;             
+            public void deletePackageData( String csarId ) {
+                return;
             }
         };
 
         new MockUp<MarketplaceDaoImpl>() {
             @Mock
-            public List<PackageData> getPackageData( String csarId ) {              
-                return new ArrayList<PackageData>();            
+            public List<PackageData> getPackageData( String csarId ) {
+                return new ArrayList<PackageData>();
             }
-        };       
+        };
 
         try {
             response = PackageWrapper.getInstance().delPackage( "" );
         } catch ( Exception e5 ) {
             e5.printStackTrace();
-        }       
+        }
         assertEquals( 500, response.getStatus());
 
         try {
             response = PackageWrapper.getInstance().delPackage( null );
         } catch ( Exception e5 ) {
             e5.printStackTrace();
-        } 
-        assertEquals( 500, response.getStatus());        
+        }
+        assertEquals( 500, response.getStatus());
     }
 
     @Test
     public void testDelPackageSuccess() {
         new MockUp<MarketplaceDaoImpl>() {
             @Mock
-            public List<PackageData> getAllPackageData() { 
-                packageDataList = new ArrayList<PackageData>();   
+            public List<PackageData> getAllPackageData() {
+                packageDataList = new ArrayList<PackageData>();
                 packageData = new PackageData();
                 packageData.setCsarId( csarID );
                 packageData.setDownloadUri( "src\\test\\resources\\clearwater_ns.csar" );
@@ -245,28 +243,28 @@ public class PackageResourceTest {
                 packageData.setVersion( "v1.0" );
                 packageData.setProvider( "Huawei" );
                 packageDataList.add( packageData );
-                return packageDataList;             
+                return packageDataList;
             }
         };
 
         new MockUp<PackageManager>() {
             @Mock
-            public void deletePackage( String csarId ) {            
-                return;             
+            public void deletePackage( String csarId ) {
+                return;
             }
         };
 
         new MockUp<HttpFileManagerImpl>() {
             @Mock
-            public boolean delete( String srcPath ) {           
-                return true;            
+            public boolean delete( String srcPath ) {
+                return true;
             }
         };
 
         new MockUp<MarketplaceDaoImpl>() {
             @Mock
-            public List<PackageData> getPackageData( String csarId ) {              
-                packageDataList = new ArrayList<PackageData>();   
+            public List<PackageData> getPackageData( String csarId ) {
+                packageDataList = new ArrayList<PackageData>();
                 packageData = new PackageData();
                 packageData.setCsarId( csarID );
                 packageData.setDownloadUri( "src\\test\\resources\\" );
@@ -275,26 +273,26 @@ public class PackageResourceTest {
                 packageData.setVersion( "v1.0" );
                 packageData.setProvider( "Huawei" );
                 packageDataList.add( packageData );
-                return packageDataList;             
+                return packageDataList;
             }
-        };        
+        };
 
         try {
             response = PackageWrapper.getInstance().delPackage( "csarid" );
         } catch ( Exception e ) {
             e.printStackTrace();
-        }   
+        }
 
         assertNotNull( response );
-        assertEquals( 200, response.getStatus());             
+        assertEquals( 200, response.getStatus());
     }
 
     @Test
-    public void testGetCsarFileUri() {      
+    public void testGetCsarFileUri() {
         new MockUp<MarketplaceDaoImpl>() {
             @Mock
-            public List<PackageData> getPackageData( String csarId ) {  
-                packageDataList = new ArrayList<PackageData>();   
+            public List<PackageData> getPackageData( String csarId ) {
+                packageDataList = new ArrayList<PackageData>();
                 packageData = new PackageData();
                 packageData.setCsarId( csarId );
                 packageData.setDownloadUri( "src\\test\\resources\\" );
@@ -303,25 +301,25 @@ public class PackageResourceTest {
                 packageData.setVersion( "v1.0" );
                 packageData.setProvider( "Huawei" );
                 packageDataList.add( packageData );
-                return packageDataList;             
+                return packageDataList;
             }
-        }; 
+        };
 
-        new MockUp<PackageWrapper>() {      
+        new MockUp<PackageWrapper>() {
             @Mock
             Response downloadCsarPackagesById(String csarId) throws FileNotFoundException
-            {                
+            {
                 String fileName="src" + File.separator + "test" + File.separator + "resources" + File.separator + "Test.txt";
                 InputStream fis = new BufferedInputStream(new FileInputStream(fileName));
                 return Response.ok(fis).header("Content-Disposition", "attachment; filename=\"" + fileName + "\"").build();
-            }   
-        }; 
+            }
+        };
         response = PackageWrapper.getInstance().getCsarFileUri("csarId");
-        assertEquals( 200, response.getStatus() );      
+        assertEquals( 200, response.getStatus() );
 
-    } 
+    }
 
-    @Test    
+    @Test
     public void testupdateDwonloadCountSuccess() throws Exception
     {
         final List<PackageData> pkgList = new ArrayList<PackageData>();
@@ -330,14 +328,14 @@ public class PackageResourceTest {
         pkgList.add(pkgDataObj);
         new  MockUp<MarketplaceDaoImpl>() {
             @Mock
-            public List<PackageData> getPackageData(String csarId) {                
+            public List<PackageData> getPackageData(String csarId) {
                 return pkgList;
                 //return new ArrayList<PackageData>();
             }
         };
         new  MockUp<MarketplaceDaoImpl>() {
             @Mock
-            public void updatePackageData(PackageData oPackageData){                
+            public void updatePackageData(PackageData oPackageData){
                 return ;
 
             }
@@ -355,7 +353,7 @@ public class PackageResourceTest {
     public void testReUploadPackage() {
         new MockUp<MarketplaceDaoImpl>() {
             @Mock
-            public List<PackageData> getPackageData( String csarId ) {   
+            public List<PackageData> getPackageData( String csarId ) {
                 List<PackageData> packageDataList = new ArrayList<PackageData>();
                 PackageData packageData = new PackageData();
                 packageData = new PackageData();
@@ -366,16 +364,16 @@ public class PackageResourceTest {
                 packageData.setVersion( "v1.0" );
                 packageData.setProvider( "Huawei" );
                 packageDataList.add( packageData );
-                return packageDataList;                         
-            }           
-        }; 
+                return packageDataList;
+            }
+        };
 
         new MockUp<HttpFileManagerImpl>() {
             @Mock
             public boolean delete(String srcPath) {
                 return true;
             }
-        };        
+        };
 
         new MockUp<MarketplaceDaoImpl>() {
             @Mock
@@ -453,7 +451,7 @@ public class PackageResourceTest {
         assertEquals( 417, response.getStatus() );
 
         try {
-            fileDetail = FormDataContentDisposition.name( "fileName" ).fileName( "clearwater_ns.csar" ).build(); 
+            fileDetail = FormDataContentDisposition.name( "fileName" ).fileName( "clearwater_ns.csar" ).build();
             String fileName = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "clearwater_ns.csar";
             inputStream = new FileInputStream(fileName);
             response = PackageWrapper.getInstance().reUploadPackage( "csarID", inputStream, fileDetail, null, null );
@@ -461,7 +459,7 @@ public class PackageResourceTest {
         } catch( Exception e ) {
             e.printStackTrace();
         }
-    }   
+    }
 
     @Test
     public void testgetOperResultByOperTypeIdFailure() throws Exception
@@ -477,15 +475,15 @@ public class PackageResourceTest {
         };
         new MockUp<FunctionTestExceutor>(){
             @Mock
-            String getTestResultsByFuncTestKey(String key) 
-            {           
+            String getTestResultsByFuncTestKey(String key)
+            {
                 return null;
             }
-        };  
+        };
 
         new MockUp<MarketplaceDaoImpl>() {
             @Mock
-            public List<PackageData> getPackageData( String csarId ) {   
+            public List<PackageData> getPackageData( String csarId ) {
                 List<PackageData> packageDataList = new ArrayList<PackageData>();
                 PackageData packageData = new PackageData();
                 packageData = new PackageData();
@@ -496,8 +494,8 @@ public class PackageResourceTest {
                 packageData.setVersion( "v1.0" );
                 packageData.setProvider( "Airtel" );
                 packageDataList.add( packageData );
-                return packageDataList;                         
-            }           
+                return packageDataList;
+            }
         };
 
 
@@ -505,7 +503,7 @@ public class PackageResourceTest {
             response = PackageWrapper.getInstance().getOperResultByOperTypeId( csarID,operTypeId );
         } catch ( Exception e5 ) {
             e5.printStackTrace();
-        }       
+        }
         assertEquals(500,response.getStatus());
 
         try {
@@ -517,10 +515,10 @@ public class PackageResourceTest {
     }
 
     @Test
-    public void testgetOperResultByOperTypeIdSuccess() {        
+    public void testgetOperResultByOperTypeIdSuccess() {
         new MockUp<MarketplaceDaoImpl>() {
             @Mock
-            public List<PackageData> getPackageData( String csarId ) {   
+            public List<PackageData> getPackageData( String csarId ) {
                 List<PackageData> packageDataList = new ArrayList<PackageData>();
                 PackageData packageData = new PackageData();
                 packageData = new PackageData();
@@ -531,9 +529,9 @@ public class PackageResourceTest {
                 packageData.setVersion( "v1.0" );
                 packageData.setProvider( "Airtel" );
                 packageDataList.add( packageData );
-                return packageDataList;                         
-            }           
-        }; 
+                return packageDataList;
+            }
+        };
 
         new MockUp<ToolUtil>() {
             @Mock
@@ -542,15 +540,15 @@ public class PackageResourceTest {
                 return filena;
             }
         };
-        new MockUp<PackageWrapper>() {     
+        new MockUp<PackageWrapper>() {
             @Mock
             Response downloadCsarPackagesById(String csarId) throws FileNotFoundException
             {
                 String fileName = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "Test.txt";
                 InputStream fis = new BufferedInputStream(new FileInputStream(fileName));
                 return Response.ok(fis).header("Content-Disposition", "attachment; filename=\"" + fileName + "\"").build();
-            }   
-        }; 
+            }
+        };
 
         new  MockUp<FunctionTestHook>() {
             @Mock
@@ -562,17 +560,17 @@ public class PackageResourceTest {
         };
         new MockUp<FunctionTestExceutor>(){
             @Mock
-            String getTestResultsByFuncTestKey(String key) { 
-                return "key";       
+            String getTestResultsByFuncTestKey(String key) {
+                return "key";
             }
         };
 
         try {
-            response = PackageWrapper.getInstance().getOperResultByOperTypeId( csarID, operTypeId );                        
+            response = PackageWrapper.getInstance().getOperResultByOperTypeId( csarID, operTypeId );
         } catch( Exception e ) {
             e.printStackTrace();
-        }       
-    }   
+        }
+    }
 
     //@Ignore
     @Test
@@ -586,7 +584,7 @@ public class PackageResourceTest {
 
         new MockUp<MarketplaceDaoImpl>() {
             @Mock
-            public List<PackageData> getPackageData( String csarId ) {   
+            public List<PackageData> getPackageData( String csarId ) {
                 List<PackageData> packageDataList = new ArrayList<PackageData>();
                 PackageData packageData = new PackageData();
                 packageData = new PackageData();
@@ -597,16 +595,16 @@ public class PackageResourceTest {
                 packageData.setVersion( "v1.0" );
                 packageData.setProvider( "Airtel" );
                 packageDataList.add( packageData );
-                return packageDataList;                         
-            }           
-        }; 
+                return packageDataList;
+            }
+        };
 
         new MockUp<HttpFileManagerImpl>() {
             @Mock
             public boolean delete(String srcPath) {
                 return true;
             }
-        };        
+        };
 
         new MockUp<MarketplaceDaoImpl>() {
             @Mock
@@ -710,14 +708,14 @@ public class PackageResourceTest {
 
 
     @Test
-    public void testGetOnBoardingStepsSuccess() {       
+    public void testGetOnBoardingStepsSuccess() {
         new MockUp<org.onap.vnfsdk.marketplace.filemanage.http.ToolUtil>() {
             @Mock
             String getAppDeployPath() {
                 String path = "src" + File.separator + "main" + File.separator + "resources";
                 return path;
             }
-        };     
+        };
 
         try {
             response = PackageWrapper.getInstance().getOnBoardingSteps();
@@ -729,24 +727,24 @@ public class PackageResourceTest {
     }
 
     @Test
-    public void testGetOnBoardingStepsFailure() {       
+    public void testGetOnBoardingStepsFailure() {
         new MockUp<org.onap.vnfsdk.marketplace.filemanage.http.ToolUtil>() {
             @Mock
             String getAppDeployPath() {
-                String path = "src" + File.separator + "main" + File.separator + "resources"+ File.separator + "generalconfig";               
+                String path = "src" + File.separator + "main" + File.separator + "resources"+ File.separator + "generalconfig";
                 return path;
             }
-        };     
+        };
 
         try {
             response = PackageWrapper.getInstance().getOnBoardingSteps();
         } catch( Exception e ) {
             e.printStackTrace();
-        }           
+        }
         assertEquals( 500, response.getStatus() );
     }
 
-    @Test     
+    @Test
     public void testRestGetClient() {
         FunctionTestExceutor.getTestResultsByFuncTestKey("GET");
 
@@ -779,7 +777,7 @@ public class PackageResourceTest {
 
         new  MockUp<FunctionTestHook>() {
             @Mock
-            String getResultStorePath(){                   
+            String getResultStorePath(){
                 return "src/test/resources";
 
             }
@@ -945,13 +943,6 @@ public class PackageResourceTest {
     }
 
     @Test
-    public void testgetCataloguePath()
-    {
-        String res = ToolUtil.getCataloguePath();
-        assertEquals(res,"");
-    }
-
-    @Test
     public void testgetCatalogueCsarPath()
     {
         String res = ToolUtil.getCatalogueCsarPath();
@@ -974,7 +965,7 @@ public class PackageResourceTest {
 
     @Test
     public void teststoreChunkFileInLocal()
-    { 
+    {
         try {
             inputStream = new FileInputStream("src//test//resources//Test.txt");
             String res = ToolUtil.storeChunkFileInLocal("src//test//resources","TestOut.txt",inputStream);
@@ -995,7 +986,7 @@ public class PackageResourceTest {
         assertEquals(res,true);
     }
 
-  
+
 
     @Test
     public void testToJson() {
@@ -1151,9 +1142,9 @@ public class PackageResourceTest {
         String res = pkgMetaObj.getCreateTime();
         assertEquals(res,"05042017");
         res = pkgMetaObj.getCsarId();
-        assertEquals(res,"csarid"); 
+        assertEquals(res,"csarid");
         res = pkgMetaObj.getDetails();
-        assertEquals(res,"details");        
+        assertEquals(res,"details");
         res = pkgMetaObj.getDownloadCount()+"";
         assertEquals(res,"10");
         res = pkgMetaObj.getDownloadUri();
@@ -1176,7 +1167,7 @@ public class PackageResourceTest {
         assertEquals(res,"1000");
         res = pkgMetaObj.getType();
         assertEquals(res,"type");
-        res = pkgMetaObj.getVersion();          
+        res = pkgMetaObj.getVersion();
         assertEquals(res,"1");
     }
 
@@ -1200,3 +1191,4 @@ public class PackageResourceTest {
 
     }
 }
+
