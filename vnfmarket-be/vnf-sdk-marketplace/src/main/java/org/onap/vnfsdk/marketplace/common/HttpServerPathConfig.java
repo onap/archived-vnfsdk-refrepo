@@ -14,8 +14,14 @@
  * limitations under the License.
  */
 package org.onap.vnfsdk.marketplace.common;
+import java.net.InetAddress;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HttpServerPathConfig {
+  public static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
+
   protected static String httpServerPath;
 
   private HttpServerPathConfig() {
@@ -23,9 +29,15 @@ public class HttpServerPathConfig {
 
   static
   {
-    MsbAddrConfig.setMsbAddress(CommonConstant.DEFAULT_MSB_ADDRESS);
-    HttpServerAddrConfig.setHttpServerAddress(CommonConstant.DEFAULT_MSB_ADDRESS);
-    HttpServerPathConfig.setHttpServerPath("../tomcat/webapps/ROOT/");
+    try {
+      InetAddress address = InetAddress.getByName("localhost");
+      String msbAddress = "http://" + address.getHostAddress() + ":8080";
+      MsbAddrConfig.setMsbAddress(msbAddress);
+      HttpServerAddrConfig.setHttpServerAddress(msbAddress);
+      HttpServerPathConfig.setHttpServerPath("../tomcat/webapps/ROOT/");
+    } catch (Exception e) {
+      logger.info("error while config htttp server", e);
+    }
   }
 
   public static String getHttpServerPath() {

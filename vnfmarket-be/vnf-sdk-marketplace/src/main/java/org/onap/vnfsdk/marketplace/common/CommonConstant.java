@@ -16,8 +16,6 @@
 package org.onap.vnfsdk.marketplace.common;
 
 public class CommonConstant {
-  // Address
-  public static final String DEFAULT_MSB_ADDRESS = "http://127.0.0.1:8080";
 
   // Package Status
   public static final String PACKAGE_STATUS_DELETING = "deleting";
@@ -87,15 +85,6 @@ public class CommonConstant {
       }
   }
 
-  public static class LifeCycleTest
-  {
-      public static final String LIFECYCLE_TEST_URL = "/openoapi/nslcm/v1/vnfpackage";
-      public static final String LIFECYCLE_TEST_OPERTYPE_ID = "lifecycletest";
-      public static final String LIFECYCLE_TEST_EXEC = "lifecycleTestexec";
-      private LifeCycleTest() {
-      }
-  }
-
   public static class HttpContext {
 
       public static final String CONTENT_TYPE = "Content-Type";
@@ -107,6 +96,15 @@ public class CommonConstant {
       public static final String METHOD_TYPE = "methodType";
 
       private HttpContext() {
+      }
+  }
+
+  public static class LifeCycleTest
+  {
+      public static final String LIFECYCLE_TEST_URL = "/openoapi/nslcm/v1/vnfpackage";
+      public static final String LIFECYCLE_TEST_OPERTYPE_ID = "lifecycletest";
+      public static final String LIFECYCLE_TEST_EXEC = "lifecycleTestexec";
+      private LifeCycleTest() {
       }
   }
 
