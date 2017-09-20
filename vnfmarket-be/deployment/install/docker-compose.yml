@@ -1,7 +1,7 @@
 postgres:
     container_name: "postgres"
     restart: "always"
-    image: "nexus3.onap.org:10001/onap/refrepo/postgres:latest"
+    image: "${NEXUS_REPO}/onap/refrepo/postgres:${POSTGRES_TAG}"
     mem_limit: "1g"
     memswap_limit: "1g"
     ports:
@@ -11,7 +11,7 @@ postgres:
 refrepo:
     container_name: "refrepo"
     restart: "always"
-    image: "nexus3.onap.org:10001/onap/refrepo:1.0-STAGING-latest"
+    image: "${NEXUS_REPO}/onap/refrepo:${REFREPO_TAG}"
     ports:
         - "8702:8702"
     environment:
