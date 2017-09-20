@@ -1,0 +1,20 @@
+postgres:
+    container_name: "postgres"
+    restart: "always"
+    image: "nexus3.onap.org:10001/onap/refrepo/postgres:latest"
+    mem_limit: "1g"
+    memswap_limit: "1g"
+    ports:
+        - "5432:5432"
+   
+
+refrepo:
+    container_name: "refrepo"
+    restart: "always"
+    image: "nexus3.onap.org:10001/onap/refrepo:1.0-STAGING-latest"
+    ports:
+        - "8702:8702"
+    environment:
+      POSTGRES_IP: postgres
+    links:
+        - postgres
