@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a437d4f_a358b732",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/resource/PackageResource.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 749
+      },
+      "writtenOn": "2017-09-20T10:44:03Z",
+      "side": 0,
+      "message": "Package manager changed to PackageResource file? Why this change?",
+      "revId": "cdbc3248d61eec82b59fb81144d381cd4f855256",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
