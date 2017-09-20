@@ -16,12 +16,14 @@
 package org.onap.vnfsdk.marketplace.db.util;
 
 
-import com.google.gson.Gson;
-
 import java.util.UUID;
+
+import com.google.gson.Gson;
 
 
 public class MarketplaceDbUtil {
+  private MarketplaceDbUtil() {
+  }
 
   public static String generateId() {
     return UUID.randomUUID().toString();
@@ -46,3 +48,4 @@ public class MarketplaceDbUtil {
   }
 
 }
+
