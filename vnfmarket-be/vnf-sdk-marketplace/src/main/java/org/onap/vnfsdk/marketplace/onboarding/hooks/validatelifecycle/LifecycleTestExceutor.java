@@ -37,38 +37,38 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class LifecycleTestExceutor 
+public class LifecycleTestExceutor
 {
-    private static final Logger logger = LoggerFactory.getLogger(LifecycleTestExceutor.class);    
+    private static final Logger logger = LoggerFactory.getLogger(LifecycleTestExceutor.class);
     public static final String CATALOUGE_UPLOAD_URL_IN = "{0}:{1}/openoapi/catalog/v1/csars";
 
     private LifecycleTestExceutor()
     {}
 
     /**
-     * Interface to Send Request to Start Function test 
+     * Interface to Send Request to Start Function test
      * @param onBoradFuncTestReq
      * @return
      */
     @SuppressWarnings("unchecked")
     public static String uploadPackageToCatalouge(OnBoradingRequest onBoradFuncTestReq)
-    {            
+    {
         String packagePath = onBoradFuncTestReq.getPackagePath() + File.separator + onBoradFuncTestReq.getPackageName();
         logger.info("Package file path uploadPackageToCatalouge:" + packagePath);
 
-        String catalougeCsarId = null;       
+        String catalougeCsarId = null;
         MsbDetails oMsbDetails =  MsbDetailsHolder.getMsbDetails();
         if(null == oMsbDetails)
         {
             logger.error("Failed to get MSB details during uploadPackageToCatalouge !!!");
             return catalougeCsarId;
         }
-        
+
         File fileData = new File (packagePath);
-        
-        MultipartEntityBuilder builder = MultipartEntityBuilder.create();            
+
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
         builder.addBinaryBody("file", fileData, ContentType.MULTIPART_FORM_DATA, onBoradFuncTestReq.getPackageName());
-            
+
         //IP and Port needs to be configured !!!
         RestResponse rsp = RestfulClient.post(oMsbDetails.getDefaultServer().getHost(),Integer.parseInt(oMsbDetails.getDefaultServer().getPort()),CommonConstant.CATALOUGE_UPLOAD_URL,builder.build());
         if(!checkValidResponse(rsp))
@@ -79,16 +79,16 @@ public class LifecycleTestExceutor
 
         logger.info("Response for uploadPackageToCatalouge :" +  rsp.getResult());
         catalougeCsarId = getCsarIdValue(rsp.getResult());
-        
+
         logger.info("CSARID for uploadPackageToCatalouge :" + catalougeCsarId);
-        return catalougeCsarId;               
+        return catalougeCsarId;
     }
 
 
 
 
     public static String execlifecycleTest(OnBoradingRequest onBoradFuncTestReq, LifeCycleTestReq oLifeCycleTestReq)
-    {            
+    {
         String packagePath = onBoradFuncTestReq.getPackagePath() + File.separator + onBoradFuncTestReq.getPackageName();
         logger.info("Package file path Function test:" + packagePath);
 
@@ -108,12 +108,12 @@ public class LifecycleTestExceutor
                 oMsbDetails.getDefaultServer().getPort(),
                 CommonConstant.LifeCycleTest.LIFECYCLE_TEST_URL, rawDataJson);
 
-        if(!checkValidResponse(oResponse)) { 
+        if(!checkValidResponse(oResponse)) {
             logger.error("execlifecycleTest response is faliure :"+ oResponse.getStatusCode());
             return null;
         }
         logger.info("Response execlifecycleTest :"+ oResponse.getResult());
-        return oResponse.getResult();               
+        return oResponse.getResult();
     }
 
     /**
@@ -121,29 +121,29 @@ public class LifecycleTestExceutor
      * @param rsp
      * @return
      */
-    private static boolean checkValidResponse(RestResponse rsp) 
+    private static boolean checkValidResponse(RestResponse rsp)
     {
-        if (rsp.getStatusCode() == null || rsp.getResult() == null 
+        if (rsp.getStatusCode() == null || rsp.getResult() == null
                 || (RestConstant.RESPONSE_CODE_200 != rsp.getStatusCode() && RestConstant.RESPONSE_CODE_201 != rsp.getStatusCode()))
         {
             return false;
         }
         return true;
-    }    
-    
+    }
+
     /**
-     * 
+     *
      * @param strJsonData
      * @return
      */
-    private static String getCsarIdValue(String strJsonData) 
+    private static String getCsarIdValue(String strJsonData)
     {
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         Map<String, String> dataMap = null;
-        try 
+        try
         {
-            dataMap = (Map<String, String>)mapper.readValue(strJsonData, Map.class);
+            dataMap = mapper.readValue(strJsonData, Map.class);
         } catch(JsonParseException e) {
             logger.error("JsonParseException:Failed to upload package to catalouge:", e);
         } catch(JsonMappingException e) {
@@ -151,9 +151,14 @@ public class LifecycleTestExceutor
         } catch(IOException e) {
             logger.error("IOException:Failed to upload package to catalouge:", e);
         }
-        if(dataMap.get("csarId") != null){
-        return dataMap.get("csarId");
+        try
+        {
+            return dataMap.get("csarId");
+        } catch (NullPointerException e)
+        {
+            logger.error("NullPointerException:Failed to get dataMap", e);
+            return "";
         }
-        return "";
     }
 }
+
