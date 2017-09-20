@@ -13,218 +13,141 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.onap.vnfsdk.marketplace.resource;
+package org.onap.vnfsdk.marketplace.db.resource;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import org.eclipse.jetty.http.HttpStatus;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
-import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.onap.vnfsdk.marketplace.db.common.Parameters;
+import org.onap.vnfsdk.marketplace.db.entity.PackageData;
 import org.onap.vnfsdk.marketplace.db.exception.MarketplaceResourceException;
-import org.onap.vnfsdk.marketplace.entity.response.CsarFileUriResponse;
-import org.onap.vnfsdk.marketplace.entity.response.PackageMeta;
-import org.onap.vnfsdk.marketplace.entity.response.UploadPackageResponse;
-import org.onap.vnfsdk.marketplace.onboarding.entity.OnBoardingResult;
-import org.onap.vnfsdk.marketplace.wrapper.PackageWrapper;
+import org.onap.vnfsdk.marketplace.db.util.MarketplaceDbUtil;
+import org.onap.vnfsdk.marketplace.db.wrapper.PackageHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+public class PackageManager {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PackageManager.class);
+    private static PackageManager manager;
+    PackageHandler handler = new PackageHandler();
 
-/**
- * csar package service.
- *
- * @author 10189609
- *
- */
-@Path("/PackageResource")
-@Api(tags = {"Package Resource"})
-public class PackageResource {
-
-    @Path("/updatestatus")
-    @POST
-    @ApiOperation(value = "update validate and lifecycle test status", response = UploadPackageResponse.class)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @ApiResponses(value = {
-            @ApiResponse(code = HttpStatus.NOT_FOUND_404, message = "microservice not found",
-                    response = String.class),
-            @ApiResponse(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE_415,
-                    message = "Unprocessable MicroServiceInfo Entity ", response = String.class),
-            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "update  error",
-                    response = String.class)})
-    public Response updateValidateStatus(
-            @ApiParam(value = "http request body") @Context HttpServletRequest request,
-            @ApiParam(value = "http header") @Context HttpHeaders head
-    ) throws IOException {
-        InputStream input = request.getInputStream();
-        return PackageWrapper.getInstance().updateValidateStatus(input);
-
+    /**
+     * get PackageManager instance.
+     * @return PackageManager instance
+     */
+    public static synchronized PackageManager getInstance() {
+        if (manager == null) {
+            manager = new PackageManager();
+        }
+        return manager;
     }
 
+    private PackageManager() {}
 
-    @Path("/csars")
-    @GET
-    @ApiOperation(value = "get csar package list by condition", response = PackageMeta.class,
-    responseContainer = "List")
-    @Produces(MediaType.APPLICATION_JSON)
-    @ApiResponses(value = {
-            @ApiResponse(code = HttpStatus.NOT_FOUND_404, message = "microservice not found",
-                    response = String.class),
-            @ApiResponse(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE_415,
-            message = "Unprocessable MicroServiceInfo Entity ", response = String.class),
-            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "resource grant error",
-            response = String.class)})
-    public Response queryPackageListByCond(
-            @ApiParam(value = "csar name") @QueryParam("name") String name, @ApiParam(
-                    value = "csar provider") @QueryParam("provider") String provider, @ApiParam(
-                            value = "csar version") @QueryParam("version") String version, @ApiParam(
-                                    value = "delay to delete") @QueryParam("deletionPending") String deletionPending,
-            @ApiParam(value = "csar type") @QueryParam("type") String type) {
-        return PackageWrapper.getInstance().queryPackageListByCond(name, provider, version,
-                deletionPending, type);
+    /**
+     * add package.
+     * @param packageData package data
+     * @return PackageData
+     * @throws MarketplaceResourceException e
+     */
+    public PackageData addPackage(PackageData packageData) throws MarketplaceResourceException {
+        LOGGER.info("start add package info  to db.info:" + MarketplaceDbUtil.objectToString(packageData));
+        PackageData data = handler.create(packageData);
+        LOGGER.info(" package info  to db end.info:" + MarketplaceDbUtil.objectToString(data));
+        return data;
     }
 
-    @Path("/csars/{csarId}")
-    @GET
-    @ApiOperation(value = "get csar package list", response = PackageMeta.class,
-    responseContainer = "List")
-    @Produces(MediaType.APPLICATION_JSON)
-    @ApiResponses(value = {
-            @ApiResponse(code = HttpStatus.NOT_FOUND_404, message = "microservice not found",
-                    response = String.class),
-            @ApiResponse(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE_415,
-            message = "Unprocessable MicroServiceInfo Entity ", response = String.class),
-            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "resource grant error",
-            response = String.class)})
-    public Response queryPackageById(
-            @ApiParam(value = "csar id") @PathParam("csarId") String csarId) {
-        return PackageWrapper.getInstance().queryPackageById(csarId);
-    }
-    @Path("/csars")
-    @POST
-    @ApiOperation(value = "upload csar package", response = UploadPackageResponse.class)
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.APPLICATION_JSON)
-    @ApiResponses(value = {
-            @ApiResponse(code = HttpStatus.NOT_FOUND_404, message = "microservice not found",
-                    response = String.class),
-            @ApiResponse(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE_415,
-            message = "Unprocessable MicroServiceInfo Entity ", response = String.class),
-            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "resource grant error",
-            response = String.class)})
-    public Response uploadPackage(
-            @ApiParam(value = "file inputstream",
-            required = true) @FormDataParam("file") InputStream uploadedInputStream,@FormDataParam("params") String details,
-            @ApiParam(value = "file detail",
-            required = false) @FormDataParam("file") FormDataContentDisposition fileDetail,
-            @ApiParam(value = "http header") @Context HttpHeaders head) throws IOException, MarketplaceResourceException {
-        return PackageWrapper.getInstance().uploadPackage(uploadedInputStream, fileDetail, details, head);
+    /**
+     * query package by package id.
+     * @param csarId package id
+     * @return package data list
+     * @throws MarketplaceResourceException e
+     */
+    public List<PackageData> queryPackageByCsarId(String csarId)
+            throws MarketplaceResourceException {
+        LOGGER.info("start query package info by csarid." + csarId);
+        List<PackageData> data = handler.queryByID(csarId);
+        LOGGER.info("query package info end.size:" + data.size() + "detail:"
+                + MarketplaceDbUtil.objectToString(data));
+        return data;
     }
 
-    @Path("/csars/{csarId}")
-    @DELETE
-    @ApiOperation(value = "delete a package")
-    @ApiResponses(value = {
-            @ApiResponse(code = HttpStatus.NOT_FOUND_404, message = "microservice not found",
-                    response = String.class),
-            @ApiResponse(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE_415,
-            message = "Unprocessable MicroServiceInfo Entity ", response = String.class),
-            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "resource grant error",
-            response = String.class)})
-    public Response delPackage(@ApiParam(value = "csar Id") @PathParam("csarId") String csarId) {
-        return PackageWrapper.getInstance().delPackage(csarId);
+    /**
+     * query package by condition.
+     * @param name package name
+     * @param provider package provider
+     * @param version package version
+     * @param deletionPending deletionPending
+     * @param type package type
+     * @return package data list
+     * @throws MarketplaceResourceException e
+     */
+    public List<PackageData> queryPackage(String name, String provider, String version,
+            String deletionPending, String type) throws MarketplaceResourceException {
+        LOGGER.info("start query package info.name:" + name + " provider:" + provider + " version:"
+                + version + " type:" + type);
+        Map<String, String> queryParam = new HashMap<>();
+        if (MarketplaceDbUtil.isNotEmpty(name)) {
+            queryParam.put(Parameters.name.name(), name);
+        }
+        if (MarketplaceDbUtil.isNotEmpty(version)) {
+            queryParam.put(Parameters.version.name(), version);
+        }
+        if (MarketplaceDbUtil.isNotEmpty(deletionPending)) {
+            queryParam.put(Parameters.deletionPending.name(), deletionPending);
+        }
+        if (MarketplaceDbUtil.isNotEmpty(type)) {
+            queryParam.put(Parameters.type.name(), type);
+        }
+        if (MarketplaceDbUtil.isNotEmpty(provider)) {
+            queryParam.put(Parameters.provider.name(), provider);
+        }
+        List<PackageData> data = handler.query(queryParam);
+        LOGGER.info("query package info end.size:" + data.size() + "detail:"
+                + MarketplaceDbUtil.objectToString(data));
+        return data;
     }
 
-    @Path("/csars/{csarId}/files")
-    @GET
-    @ApiOperation(value = "get csar file uri by csarId", response = CsarFileUriResponse.class)
-    @Produces(MediaType.APPLICATION_JSON)
-    @ApiResponses(value = {
-            @ApiResponse(code = HttpStatus.NOT_FOUND_404, message = "microservice not found",
-                    response = String.class),
-            @ApiResponse(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE_415,
-            message = "Unprocessable MicroServiceInfo Entity ", response = String.class),
-            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "resource grant error",
-            response = String.class)})
-    public Response getCsarFileUri(
-            @ApiParam(value = "csar Id", required = true) @PathParam("csarId") String csarId) {
-        return PackageWrapper.getInstance().getCsarFileUri(csarId);
+    /**
+     * delete package according package id.
+     * @param packageId package id
+     * @throws MarketplaceResourceException e
+     */
+    public void deletePackage(String packageId) throws MarketplaceResourceException {
+        LOGGER.info("start delete package info by id." + packageId);
+        handler.delete(packageId);
+        LOGGER.info(" delete package info end id." + packageId);
     }
 
-    @Path("/csars/{csarId}/downloaded")
-    @GET
-    @ApiOperation(value = "update download count for a package",response = Response.class)
-    public Response updateDwonloadCount(@ApiParam(value = "csar Id") @PathParam("csarId") String csarId) {
-        return PackageWrapper.getInstance().updateDwonloadCount(csarId);
-    }
-
-    @Path("/csars/{csarId}/reupload")
-    @POST
-    @ApiOperation(value = "re-upload csar package", response = UploadPackageResponse.class)
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.APPLICATION_JSON)
-    @ApiResponses(value = {
-            @ApiResponse(code = HttpStatus.NOT_FOUND_404, message = "microservice not found",
-                    response = String.class),
-            @ApiResponse(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE_415,
-            message = "Unprocessable MicroServiceInfo Entity ", response = String.class),
-            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "resource grant error",
-            response = String.class)})
-    public Response reUploadPackage(
-            @ApiParam(value = "csar Id") @PathParam("csarId") String csarId,
-            @ApiParam(value = "file inputstream",
-            required = true) @FormDataParam("file") InputStream uploadedInputStream,@FormDataParam("params") String details,
-            @ApiParam(value = "file detail",
-            required = false) @FormDataParam("file") FormDataContentDisposition fileDetail,
-            @ApiParam(value = "http header") @Context HttpHeaders head) throws IOException, MarketplaceResourceException {
-        return PackageWrapper.getInstance().reUploadPackage(csarId,uploadedInputStream, fileDetail, details, head);
-    }
-
-    @Path("/csars/{csarId}/onboardstatus")
-    @GET
-    @ApiOperation(value="Get VNF OnBoarding Result", response=OnBoardingResult.class)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getOnBoardingResult(@ApiParam("csar Id") @PathParam("csarId") String csarId,
-            @ApiParam("operation type") @QueryParam("operTypeId") String operTypeId,
-            @ApiParam("operation id") @QueryParam("operId") String operId)
+    /**
+     * update download count of package according package id.
+     * @param packageId package id
+     * @throws MarketplaceResourceException e
+     */
+    public void updateDwonloadCount(String packageId) throws MarketplaceResourceException
     {
-        return PackageWrapper.getInstance().getOnBoardingResult(csarId, operTypeId, operId);
-    }
+        LOGGER.info("Request received for Updating down load count for ID:" + packageId);
 
-    @Path("/csars/{csarId}/operresult")
-    @GET
-    @ApiOperation(value = "Get VNF OnBoarded Opeartion Result", response = Response.class)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getOperStatus(@ApiParam(value = "csar Id") @PathParam("csarId") String csarId,
-            @ApiParam(value = "operation type") @QueryParam("operTypeId") String operTypeId) {
-        return PackageWrapper.getInstance().getOperResultByOperTypeId(csarId,operTypeId);
-    }
+        //STEP 1: Get the Existing download  count from DB
+        //-------------------------------------------------
+        ArrayList<PackageData> data = handler.queryByID(packageId);
+        if(data.isEmpty())
+        {
+            LOGGER.info("Package Info not foun for ID:" + packageId);
+            return;
+        }
 
-    @Path("/csars/onboardsteps")
-    @GET
-    @ApiOperation(value="Get VNF OnBoarded Steps", response=Response.class)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getOnBoardingSteps()
-    {
-        return PackageWrapper.getInstance().getOnBoardingSteps();
+        //STEP 2: Increment download Count in DB
+        //--------------------------------------
+        PackageData oPackageData = data.get(0);
+        int idownloadcount = oPackageData.getDownloadCount();
+        oPackageData.setDownloadCount(++idownloadcount);
+
+        handler.update(oPackageData);
+
+        LOGGER.info("Download count updated to :" + idownloadcount);
     }
 }
 

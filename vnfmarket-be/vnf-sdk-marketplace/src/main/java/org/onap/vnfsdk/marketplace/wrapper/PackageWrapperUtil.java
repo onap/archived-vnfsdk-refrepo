@@ -106,7 +106,7 @@ public class PackageWrapperUtil {
    */
   public static PackageData getPackageInfoById(String csarId) {
     PackageData result = new PackageData();
-    ArrayList<PackageData> packageDataList = new ArrayList<>();
+    List<PackageData> packageDataList = new ArrayList<>();
     try {
       packageDataList = PackageManager.getInstance().queryPackageByCsarId(csarId);
       if (packageDataList != null && ! packageDataList.isEmpty()) {
@@ -165,7 +165,7 @@ public class PackageWrapperUtil {
    * @return download uri
    */
   public static String getPackagePath(String csarId) {
-    ArrayList<PackageData> packageList = new ArrayList<>();
+    List<PackageData> packageList = new ArrayList<>();
     String downloadUri = null;
     try {
       packageList = PackageManager.getInstance().queryPackageByCsarId(csarId);
@@ -354,3 +354,4 @@ public class PackageWrapperUtil {
     }
   }
 }
+
