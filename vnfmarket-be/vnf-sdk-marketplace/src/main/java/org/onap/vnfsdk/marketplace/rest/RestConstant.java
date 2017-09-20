@@ -21,8 +21,6 @@ public class RestConstant {
 
     public static final String UNAME_KEY = "UNAME_KEY";
 
-    public static final String PWD_KEY = "PWD_KEY";
-
     public static final String NETCONF = "NETCONF";
 
     public static final String ASYNC = "ASYNC";
@@ -44,9 +42,9 @@ public class RestConstant {
     public static final int DEFAULT_STRING_LENGTH_64 = 64;
 
     public static final int DEFAULT_STRING_LENGTH_128 = 128;
-    
+
     public static final int RESPONSE_CODE_200 = 200;
-    
+
     public static final int RESPONSE_CODE_201 = 201;
 
     public static class HttpContext {
@@ -81,3 +79,4 @@ public class RestConstant {
     private RestConstant() {
     }
 }
+
