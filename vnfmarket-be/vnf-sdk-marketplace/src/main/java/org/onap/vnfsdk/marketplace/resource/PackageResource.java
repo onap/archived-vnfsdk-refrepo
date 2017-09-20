@@ -15,6 +15,7 @@
  */
 package org.onap.vnfsdk.marketplace.resource;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +35,7 @@ import javax.ws.rs.core.Response;
 import org.eclipse.jetty.http.HttpStatus;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.onap.vnfsdk.marketplace.db.exception.MarketplaceResourceException;
 import org.onap.vnfsdk.marketplace.entity.response.CsarFileUriResponse;
 import org.onap.vnfsdk.marketplace.entity.response.PackageMeta;
 import org.onap.vnfsdk.marketplace.entity.response.UploadPackageResponse;
@@ -48,9 +50,9 @@ import io.swagger.annotations.ApiResponses;
 
 /**
  * csar package service.
- * 
+ *
  * @author 10189609
- * 
+ *
  */
 @Path("/PackageResource")
 @Api(tags = {"Package Resource"})
@@ -71,7 +73,7 @@ public class PackageResource {
     public Response updateValidateStatus(
             @ApiParam(value = "http request body") @Context HttpServletRequest request,
             @ApiParam(value = "http header") @Context HttpHeaders head
-    ) throws Exception {
+    ) throws IOException {
         InputStream input = request.getInputStream();
         return PackageWrapper.getInstance().updateValidateStatus(input);
 
@@ -133,7 +135,7 @@ public class PackageResource {
             required = true) @FormDataParam("file") InputStream uploadedInputStream,@FormDataParam("params") String details,
             @ApiParam(value = "file detail",
             required = false) @FormDataParam("file") FormDataContentDisposition fileDetail,
-            @ApiParam(value = "http header") @Context HttpHeaders head) throws Exception {
+            @ApiParam(value = "http header") @Context HttpHeaders head) throws IOException, MarketplaceResourceException {
         return PackageWrapper.getInstance().uploadPackage(uploadedInputStream, fileDetail, details, head);
     }
 
@@ -192,16 +194,16 @@ public class PackageResource {
             required = true) @FormDataParam("file") InputStream uploadedInputStream,@FormDataParam("params") String details,
             @ApiParam(value = "file detail",
             required = false) @FormDataParam("file") FormDataContentDisposition fileDetail,
-            @ApiParam(value = "http header") @Context HttpHeaders head) throws Exception {
+            @ApiParam(value = "http header") @Context HttpHeaders head) throws IOException, MarketplaceResourceException {
         return PackageWrapper.getInstance().reUploadPackage(csarId,uploadedInputStream, fileDetail, details, head);
-    } 
+    }
 
     @Path("/csars/{csarId}/onboardstatus")
     @GET
     @ApiOperation(value="Get VNF OnBoarding Result", response=OnBoardingResult.class)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getOnBoardingResult(@ApiParam("csar Id") @PathParam("csarId") String csarId, 
-            @ApiParam("operation type") @QueryParam("operTypeId") String operTypeId, 
+    public Response getOnBoardingResult(@ApiParam("csar Id") @PathParam("csarId") String csarId,
+            @ApiParam("operation type") @QueryParam("operTypeId") String operTypeId,
             @ApiParam("operation id") @QueryParam("operId") String operId)
     {
         return PackageWrapper.getInstance().getOnBoardingResult(csarId, operTypeId, operId);
@@ -225,3 +227,4 @@ public class PackageResource {
         return PackageWrapper.getInstance().getOnBoardingSteps();
     }
 }
+
