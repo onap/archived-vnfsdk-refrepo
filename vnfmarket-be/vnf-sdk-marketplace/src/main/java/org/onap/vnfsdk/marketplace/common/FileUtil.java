@@ -125,11 +125,8 @@ public final class FileUtil {
                     InputStream input = zipFile.getInputStream(entry);
                     BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
                 ) {
-                    while (true) {
-                        int length = input.read(buffer);
-                        if (length == -1) {
-                            break;
-                        }
+                    int length = 0;
+                    while ((length = input.read(buffer)) != -1) {
                         bos.write(buffer, 0, length);
                     }
                     unzipFileNams.add(file.getAbsolutePath());
