@@ -15,26 +15,18 @@
  */
 package org.onap.vnfsdk.marketplace.rest;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -60,15 +52,15 @@ public class RestfulClient {
      */
     public static RestResponse executeHttp(HttpMethod method, String ip, int port, String url,
             HttpEntity body) {
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-        HttpResponse httpResponse = null;
         RestResponse result = new RestResponse();
-        try {
+        try (
+            CloseableHttpClient httpclient = HttpClients.createDefault();
+        ){
             // specify the host, protocol, and port
             HttpHost target = new HttpHost(ip, port, HTTP);
             // specify the get request
             HttpRequest request = getRequest(method, url, body);
-            httpResponse = httpclient.execute(target, request);
+            HttpResponse httpResponse = httpclient.execute(target, request);
             HttpEntity entity = httpResponse.getEntity();
             if (entity != null) {
                 result.setStatusCode(httpResponse.getStatusLine().getStatusCode());
@@ -76,12 +68,6 @@ public class RestfulClient {
             }
         } catch (Exception e1) {
             logger.error("send get rest request error:", e1);
-        } finally {
-                try {
-                    httpclient.close();
-                } catch (IOException e2) {
-                    logger.error("close httpclient error:", e2);
-                }
         }
         return result;
     }
@@ -121,42 +107,42 @@ public class RestfulClient {
         return executeHttp(HttpMethod.POST, ip, port, url, requestBody);
     }
 
-    public static RestResponse sendPostRequest(String ip, String  port, String url, String strJson) 
+    public static RestResponse sendPostRequest(String ip, String  port, String url, String strJson)
     {
         RestResponse result = new RestResponse();
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         HttpResponse httpResponse = null;
-        try 
-        {            
+        try
+        {
             String urlPost =  "http://" + ip + ":" + port + url;
             logger.info("URL formed for Post, URL :" + urlPost);
             logger.info("URL formed for Post, JSON :" + strJson);
-            
+
             HttpPost request = new HttpPost(urlPost);
-            
+
             StringEntity params = new StringEntity(strJson);
             request.addHeader("content-type", "application/json");
             request.setEntity(params);
 
             httpResponse = httpClient.execute(request);
             HttpEntity entity = httpResponse.getEntity();
-            if (entity != null) 
+            if (entity != null)
             {
                 result.setStatusCode(httpResponse.getStatusLine().getStatusCode());
                 result.setResult(EntityUtils.toString(entity));
             }
-        } 
-        catch (Exception ex) 
+        }
+        catch (Exception ex)
         {
             logger.error("Send Post request error:", ex);
-        } 
-        finally 
+        }
+        finally
         {
             try {
                 if(null != httpClient) {
-                    httpClient.close();   
+                    httpClient.close();
                 }
-            } 
+            }
             catch(IOException e){
                 logger.error("IOException :Send Post request error:", e);
             }
@@ -164,3 +150,4 @@ public class RestfulClient {
         return result;
     }
 }
+
