@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a437d4f_ad9ae660",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/onboarding/hooks/validatelifecycle/LifecycleTestExceutor.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 749
+      },
+      "writtenOn": "2017-09-20T07:15:55Z",
+      "side": 1,
+      "message": "I think instead of catching the exception, it should be handled. if (null !\u003d dataMap) { return dataMap.get(\"csarId\");}",
+      "revId": "46e56e01607942f28362c36d54484ab5ac5ffd3f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
