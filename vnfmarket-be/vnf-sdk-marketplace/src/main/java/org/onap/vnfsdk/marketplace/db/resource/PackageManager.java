@@ -17,6 +17,7 @@ package org.onap.vnfsdk.marketplace.db.resource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.onap.vnfsdk.marketplace.db.common.Parameters;
@@ -64,10 +65,10 @@ public class PackageManager {
      * @return package data list
      * @throws MarketplaceResourceException e
      */
-    public ArrayList<PackageData> queryPackageByCsarId(String csarId)
+    public List<PackageData> queryPackageByCsarId(String csarId)
             throws MarketplaceResourceException {
         LOGGER.info("start query package info by csarid." + csarId);
-        ArrayList<PackageData> data = handler.queryByID(csarId);
+        List<PackageData> data = handler.queryByID(csarId);
         LOGGER.info("query package info end.size:" + data.size() + "detail:"
                 + MarketplaceDbUtil.objectToString(data));
         return data;
@@ -83,11 +84,11 @@ public class PackageManager {
      * @return package data list
      * @throws MarketplaceResourceException e
      */
-    public ArrayList<PackageData> queryPackage(String name, String provider, String version,
+    public List<PackageData> queryPackage(String name, String provider, String version,
             String deletionPending, String type) throws MarketplaceResourceException {
         LOGGER.info("start query package info.name:" + name + " provider:" + provider + " version:"
                 + version + " type:" + type);
-        Map<String, String> queryParam = new HashMap<String, String>();
+        Map<String, String> queryParam = new HashMap<>();
         if (MarketplaceDbUtil.isNotEmpty(name)) {
             queryParam.put(Parameters.name.name(), name);
         }
@@ -103,7 +104,7 @@ public class PackageManager {
         if (MarketplaceDbUtil.isNotEmpty(provider)) {
             queryParam.put(Parameters.provider.name(), provider);
         }
-        ArrayList<PackageData> data = handler.query(queryParam);
+        List<PackageData> data = handler.query(queryParam);
         LOGGER.info("query package info end.size:" + data.size() + "detail:"
                 + MarketplaceDbUtil.objectToString(data));
         return data;
@@ -149,3 +150,4 @@ public class PackageManager {
         LOGGER.info("Download count updated to :" + idownloadcount);
     }
 }
+

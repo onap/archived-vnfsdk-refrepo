@@ -135,7 +135,7 @@ public class PackageWrapper {
      */
     public Response queryPackageListByCond(String name, String provider, String version,
             String deletionPending, String type) {
-        ArrayList<PackageData> dbresult = new ArrayList<>();
+        List<PackageData> dbresult = new ArrayList<>();
         List<PackageMeta> result = new ArrayList<>();
         LOG.info("query package info.name:" + name + " provider:" + provider + " version" + version
                 + " deletionPending" + deletionPending + " type:" + type);
