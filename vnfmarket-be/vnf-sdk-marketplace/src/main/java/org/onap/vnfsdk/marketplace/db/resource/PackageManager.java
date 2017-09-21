@@ -132,7 +132,7 @@ public class PackageManager {
 
         //STEP 1: Get the Existing download  count from DB
         //-------------------------------------------------
-        ArrayList<PackageData> data = handler.queryByID(packageId);
+        List<PackageData> data = handler.queryByID(packageId);
         if(data.isEmpty())
         {
             LOGGER.info("Package Info not foun for ID:" + packageId);

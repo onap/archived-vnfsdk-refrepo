@@ -16,7 +16,7 @@
 package org.onap.vnfsdk.marketplace.db.wrapper;
 
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.List;
 
 import org.onap.vnfsdk.marketplace.db.common.MarketplaceResourceType;
 import org.onap.vnfsdk.marketplace.db.entity.PackageData;
@@ -74,10 +74,10 @@ public class PackageHandler extends BaseHandler<PackageData> {
      * @return PackageData list
      * @throws MarketplaceResourceException e
      */
-    public ArrayList<PackageData> queryByID(String csarID)
+    public List<PackageData> queryByID(String csarID)
             throws MarketplaceResourceException {
         logger.info("packageHandler:start query package info.");
-        ArrayList<PackageData> data = new ArrayList<PackageData>();
+        List<PackageData> data = new ArrayList<>();
         logger.info("packageHandler:start query data .info:" + csarID);
         IMarketplaceDao dao = new MarketplaceDaoImpl();
         Object result = dao.getPackageData(csarID);
@@ -92,7 +92,7 @@ public class PackageHandler extends BaseHandler<PackageData> {
 
     @Override
     public void check(PackageData packageData) throws MarketplaceResourceException {
-
+        throw new UnsupportedOperationException();
     }
 }
 
