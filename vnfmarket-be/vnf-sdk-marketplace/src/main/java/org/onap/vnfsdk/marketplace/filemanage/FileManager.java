@@ -17,7 +17,7 @@ package org.onap.vnfsdk.marketplace.filemanage;
 
 
 public interface FileManager {
-  
+
   /**
    * package upload api.
    * @param srcPath source path
@@ -29,7 +29,5 @@ public interface FileManager {
   boolean download(String srcPath, String dstPath);
 
   boolean delete(String srcPath);
-
-  //ArrayList<FileLink> queryWorkFlow(String path);
 
 }
