@@ -22,16 +22,16 @@ import javax.servlet.ServletContextListener;
 public class AppServletContextListener implements ServletContextListener
 {
 
-    public void contextInitialized(ServletContextEvent eventData) 
+    @Override
+    public void contextInitialized(ServletContextEvent eventData)
     {
         MsbRegister.handleMsbRegistration();
     }
 
-    public void contextDestroyed(ServletContextEvent eventData) 
+    @Override
+    public void contextDestroyed(ServletContextEvent eventData)
     {
         MsbRegister.handleMsbUnRegistration();
     }
 }
-
-
 
