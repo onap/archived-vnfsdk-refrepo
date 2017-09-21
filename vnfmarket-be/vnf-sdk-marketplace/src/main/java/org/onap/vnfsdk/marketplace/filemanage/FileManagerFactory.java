@@ -20,6 +20,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class FileManagerFactory {
+
+  private FileManagerFactory() {
+  }
+
   private static final Logger logger = LoggerFactory.getLogger(FileManagerFactory.class);
 
   private static FileManager getHttpFileManager() {
@@ -51,3 +55,4 @@ public class FileManagerFactory {
     }
   }
 }
+
