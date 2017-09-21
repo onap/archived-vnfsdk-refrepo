@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import org.onap.vnfsdk.marketplace.db.common.MarketplaceResourceType;
-import org.onap.vnfsdk.marketplace.db.common.Parameters;
 import org.onap.vnfsdk.marketplace.db.entity.PackageData;
 import org.onap.vnfsdk.marketplace.db.exception.MarketplaceResourceException;
 import org.onap.vnfsdk.marketplace.db.impl.MarketplaceDaoImpl;
@@ -65,28 +64,8 @@ public class PackageHandler extends BaseHandler<PackageData> {
         logger.info("packageHandler:start delete package info.");
         PackageData packageData = new PackageData();
         packageData.setCsarId(id);
-        delete(packageData, MarketplaceResourceType.PACKAGE.name());
+        delete(packageData);
         logger.info("packageHandler: delete package info end.");
-    }
-
-    /**
-     * query package data by map.
-     * @param queryParam map data
-     * @return PackageData list
-     * @throws MarketplaceResourceException e
-     */
-    public ArrayList<PackageData> query(Map<String, String> queryParam)
-            throws MarketplaceResourceException {
-        logger.info("packageHandler:start query package info.");
-        ArrayList<PackageData> data = new ArrayList<PackageData>();
-        Object result = query(queryParam, MarketplaceResourceType.PACKAGE.name());
-        if (result != null) {
-            data = (ArrayList<PackageData>) result;
-        } else {
-            logger.info("packageHandler: query package info is null.");
-        }
-        logger.info("packageHandler: query package info end.");
-        return data;
     }
 
     /**
@@ -111,13 +90,9 @@ public class PackageHandler extends BaseHandler<PackageData> {
         return data;
     }
 
-    public void update(PackageData oPackageData) throws MarketplaceResourceException{
-        update(oPackageData, MarketplaceResourceType.PACKAGE.name());
-        logger.info("packageHandler: update package info end.");
-    }
-
     @Override
     public void check(PackageData packageData) throws MarketplaceResourceException {
 
     }
 }
+
