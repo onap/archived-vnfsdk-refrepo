@@ -1,20 +1,27 @@
-postgres:
-    container_name: "postgres"
-    restart: "always"
-    image: "${NEXUS_REPO}/onap/refrepo/postgres:${POSTGRES_TAG}"
-    mem_limit: "1g"
-    memswap_limit: "1g"
-    ports:
-        - "5432:5432"
-   
+version: '2'
+networks:
+    default:
+        driver: bridge
+        driver_opts:
+            com.docker.network.driver.mtu: ${MTU}
 
-refrepo:
-    container_name: "refrepo"
-    restart: "always"
-    image: "${NEXUS_REPO}/onap/refrepo:${REFREPO_TAG}"
-    ports:
-        - "8702:8702"
-    environment:
-      POSTGRES_IP: postgres
-    links:
-        - postgres
+services:
+    postgres:
+        container_name: "postgres"
+        restart: "always"
+        image: "${NEXUS_REPO}/onap/refrepo/postgres:${POSTGRES_TAG}"
+        mem_limit: "1g"
+        memswap_limit: "1g"
+        ports:
+         - "5432:5432"   
+
+    refrepo:
+        container_name: "refrepo"
+        restart: "always"
+        image: "${NEXUS_REPO}/onap/refrepo:${REFREPO_TAG}"
+        ports:
+            - "8702:8702"
+        environment:
+            POSTGRES_IP: postgres
+        links:
+            - postgres
