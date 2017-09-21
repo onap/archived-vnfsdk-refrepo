@@ -16,7 +16,14 @@
 package org.onap.vnfsdk.marketplace.db.entity;
 
 public class BaseData {
-    public BaseData() {
-        //Do nothing
+    private String baseMember;
+
+    public String getBaseMember() {
+        return baseMember;
+    }
+
+    public void setBaseMember(String baseMember) {
+        this.baseMember = baseMember;
     }
 }
+
