@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import org.onap.vnfsdk.marketplace.db.common.MarketplaceResourceType;
-import org.onap.vnfsdk.marketplace.db.common.Parameters;
 import org.onap.vnfsdk.marketplace.db.entity.PackageData;
 import org.onap.vnfsdk.marketplace.db.exception.MarketplaceResourceException;
 import org.onap.vnfsdk.marketplace.db.impl.MarketplaceDaoImpl;
@@ -65,7 +64,7 @@ public class PackageHandler extends BaseHandler<PackageData> {
         logger.info("packageHandler:start delete package info.");
         PackageData packageData = new PackageData();
         packageData.setCsarId(id);
-        delete(packageData, MarketplaceResourceType.PACKAGE.name());
+        delete(packageData);
         logger.info("packageHandler: delete package info end.");
     }
 
@@ -75,11 +74,12 @@ public class PackageHandler extends BaseHandler<PackageData> {
      * @return PackageData list
      * @throws MarketplaceResourceException e
      */
+    @Override
     public ArrayList<PackageData> query(Map<String, String> queryParam)
             throws MarketplaceResourceException {
         logger.info("packageHandler:start query package info.");
         ArrayList<PackageData> data = new ArrayList<PackageData>();
-        Object result = query(queryParam, MarketplaceResourceType.PACKAGE.name());
+        Object result = query(queryParam);
         if (result != null) {
             data = (ArrayList<PackageData>) result;
         } else {
@@ -111,8 +111,9 @@ public class PackageHandler extends BaseHandler<PackageData> {
         return data;
     }
 
+    @Override
     public void update(PackageData oPackageData) throws MarketplaceResourceException{
-        update(oPackageData, MarketplaceResourceType.PACKAGE.name());
+        update(oPackageData);
         logger.info("packageHandler: update package info end.");
     }
 
@@ -121,3 +122,4 @@ public class PackageHandler extends BaseHandler<PackageData> {
 
     }
 }
+
