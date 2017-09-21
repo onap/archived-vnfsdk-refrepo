@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 public class HttpFileManagerImpl implements FileManager {
   private static final Logger LOGGER = LoggerFactory.getLogger(HttpFileManagerImpl.class);
 
+  @Override
   public boolean upload(String srcPath, String dstPath) {
     boolean flag = true;
     LOGGER.info("start upload file.srcPath:" + srcPath + " dstPath" + dstPath);
@@ -34,8 +35,7 @@ public class HttpFileManagerImpl implements FileManager {
       LOGGER.error("src file not exist!");
       return false;
     }
-    // File dstFile = new File(ToolUtil.getHttpServerPath() + dstPath);
-    // LOGGER.info("dstFile AbsolutePath:" + dstFile.getAbsolutePath());
+
     String targetDir = ToolUtil.getHttpServerAbsolutePath() + dstPath;
     try {
       ToolUtil.copyDirectory(srcPath, targetDir, true);
@@ -47,18 +47,19 @@ public class HttpFileManagerImpl implements FileManager {
     return flag;
   }
 
+  @Override
   public boolean download(String srcPath, String dstPath) {
     // TODO Auto-generated method stub
     return false;
   }
 
+  @Override
   public boolean delete(String srcPath) {
-    boolean flag = true;
     LOGGER.info("start delete file from http server.srcPath:" + srcPath);
-    flag = ToolUtil.deleteDir(new File(ToolUtil.getHttpServerAbsolutePath() + srcPath));
+    boolean flag = ToolUtil.deleteDir(new File(ToolUtil.getHttpServerAbsolutePath() + srcPath));
     LOGGER.info("delete file from http server end.flag:" + flag);
     return flag;
   }
 
-
 }
+
