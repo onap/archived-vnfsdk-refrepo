@@ -32,6 +32,36 @@ public class ToolUtil {
 
   private ToolUtil() {
   }
+
+  /**
+   * copy in directory.
+   * @param srcDirName source directory name
+   * @param destDirName destination directory name
+   * @param files file list in directory
+   * @param overlay overwrite or not
+   * @return boolean
+   * @throws IOException e
+   */
+  public static boolean copyInDirectory(String srcDirName, String destDirName, File[] files, boolean overlay)
+      throws IOException
+  {
+    for (int i = 0; i < files.length; i++) {
+        boolean flag = false;
+        if (files[i].isFile()) {
+          flag = copyFile(files[i].getAbsolutePath(), destDirName + files[i].getName(), true);
+        }
+        if (files[i].isDirectory()) {
+          flag = copyDirectory(files[i].getAbsolutePath(), destDirName + files[i].getName(), overlay);
+        }
+        if (!flag) {
+          String message = "Copy catagory " + srcDirName + " to " + destDirName + " failed!";
+          LOGGER.error(message);
+          return false;
+        }
+      }
+      return true;
+  }
+
   /**
    * copy from directory.
    * @param srcDirName source directory name
@@ -57,22 +87,36 @@ public class ToolUtil {
     } else if ((destDir.exists() && !overlay) || (!destDir.exists() && !destDir.mkdirs())) {
         return false;
     }
-    boolean flag = true;
-    File[] files = srcDir.listFiles();
-    for (int i = 0; i < files.length; i++) {
-      if (files[i].isFile()) {
-        flag = copyFile(files[i].getAbsolutePath(), destDirName + files[i].getName(), true);
-      } else if (files[i].isDirectory()) {
-        flag = copyDirectory(files[i].getAbsolutePath(), destDirName + files[i].getName(), overlay);
-      }
-      if (!flag) {
-        String message = "Copy catagory " + srcDirName + " to " + destDirName + " failed!";
-        LOGGER.error(message);
-        return false;
-      }
-    }
 
-    return true;
+    File[] files = srcDir.listFiles();
+
+    return copyInDirectory(srcDirName, destDirName, files, overlay);
+  }
+
+  /**
+   * copy byte.
+   * @param srcFileName source file name
+   * @param destFileName target file name
+   * @return boolean
+   */
+  public static boolean copyByte(File srcFile,  File destFile)
+  {
+    try (
+          InputStream in = new FileInputStream(srcFile);
+          OutputStream out = new FileOutputStream(destFile);
+      ) {
+
+      byte[] buffer = new byte[1024];
+      int byteread = 0;
+
+      while ((byteread = in.read(buffer)) != -1) {
+        out.write(buffer, 0, byteread);
+      }
+      return true;
+    } catch (IOException e) {
+      LOGGER.error("IOException in copyFile", e);
+      return false;
+    }
   }
 
   /**
@@ -98,23 +142,7 @@ public class ToolUtil {
         return false;
     }
 
-    int byteread = 0;
-
-    try (
-          InputStream in = new FileInputStream(srcFile);
-          OutputStream out = new FileOutputStream(destFile);
-      ) {
-      byte[] buffer = new byte[1024];
-
-      while ((byteread = in.read(buffer)) != -1) {
-        out.write(buffer, 0, byteread);
-      }
-      return true;
-    } catch (IOException e) {
-      LOGGER.error("IOException in copyFile", e);
-      return false;
-    }
-
+    return copyByte(srcFile,  destFile);
   }
 
   /**
