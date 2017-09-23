@@ -170,12 +170,16 @@ public class PackageWrapper {
      * @throws Exception e
      */
     public Response uploadPackage(InputStream uploadedInputStream,
-            FormDataContentDisposition fileDetail, String details, HttpHeaders head) throws IOException, MarketplaceResourceException
+            FormDataContentDisposition fileDetail, String details, HttpHeaders head) throws MarketplaceResourceException
     {
         LOG.info("Upload/Reupload request Received !!!!");
-
-        String packageId = MarketplaceDbUtil.generateId();
-        return handlePackageUpload(packageId,uploadedInputStream, fileDetail, details, head);
+        try {
+            String packageId = MarketplaceDbUtil.generateId();
+            return handlePackageUpload(packageId,uploadedInputStream, fileDetail, details, head);
+        } catch (IOException e) {
+            LOG.error("can't get package id", e);
+        }
+        return Response.status(Status.INTERNAL_SERVER_ERROR).build();
     }
 
     /**
@@ -416,12 +420,12 @@ public class PackageWrapper {
             InputStream uploadedInputStream,
             FormDataContentDisposition fileDetail,
             String details,
-            HttpHeaders head) throws IOException, MarketplaceResourceException
+            HttpHeaders head) throws MarketplaceResourceException
     {
         LOG.info("Reupload request Received !!!!");
 
-        //STEP 1: Validate Input Data
-        //----------------------------
+            //STEP 1: Validate Input Data
+            //----------------------------
         boolean bResult = handleDataValidate(csarId,uploadedInputStream,fileDetail);
         if(!bResult)
         {
@@ -429,13 +433,18 @@ public class PackageWrapper {
             return Response.status(Status.EXPECTATION_FAILED).build();
         }
 
-        //STEP 2: Delete All Package Data based on package id
-        //----------------------------------------------------
-        deletePackageDataById(csarId);
+        try {
+            //STEP 2: Delete All Package Data based on package id
+            //----------------------------------------------------
+            deletePackageDataById(csarId);
 
-        //STEP 3: upload package with same package id
-        //-------------------------------------------
-        return handlePackageUpload(csarId,uploadedInputStream, fileDetail, details, head);
+            //STEP 3: upload package with same package id
+            //-------------------------------------------
+            return handlePackageUpload(csarId,uploadedInputStream, fileDetail, details, head);
+        } catch (IOException e) {
+            LOG.error("delete package failed", e);
+        }
+        return Response.status(Status.INTERNAL_SERVER_ERROR).build();
     }
 
     /**
