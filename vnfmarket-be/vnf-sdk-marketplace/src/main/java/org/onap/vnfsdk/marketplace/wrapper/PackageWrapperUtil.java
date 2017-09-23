@@ -308,28 +308,27 @@ public class PackageWrapperUtil {
     File file = new File(unzipFile);
     try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 
-      String tempString = null;
-      while ((tempString = reader.readLine()) != null) {
+      for(String tempString = null; (tempString = reader.readLine()) != null;)
+      {
+          // If line is empty, ignore
+          if ("".equals(tempString)) {
+            continue;
+          }
 
-        // If line is empty, ignore
-        if ("".equals(tempString)) {
-          continue;
-        }
+          int count1 = tempString.indexOf(":");
+          String meta = tempString.substring(0, count1).trim();
 
-        int count1 = tempString.indexOf(":");
-        String meta = tempString.substring(0, count1).trim();
+          // Check for the package provider name
+          if (meta.equalsIgnoreCase(CommonConstant.MF_PROVIDER_META)) {
+            int count = tempString.indexOf(":") + 1;
+            basicInfo.setProvider(tempString.substring(count).trim());
+          }
 
-        // Check for the package provider name
-        if (meta.equalsIgnoreCase(CommonConstant.MF_PROVIDER_META)) {
-          int count = tempString.indexOf(":") + 1;
-          basicInfo.setProvider(tempString.substring(count).trim());
-        }
-
-        // Check for package version
-        if (meta.equalsIgnoreCase(CommonConstant.MF_VERSION_META)) {
-          int count = tempString.indexOf(":") + 1;
-          basicInfo.setVersion(tempString.substring(count).trim());
-        }
+          // Check for package version
+          if (meta.equalsIgnoreCase(CommonConstant.MF_VERSION_META)) {
+            int count = tempString.indexOf(":") + 1;
+            basicInfo.setVersion(tempString.substring(count).trim());
+          }
       }
 
       reader.close();
