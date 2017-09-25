@@ -58,6 +58,8 @@ import org.onap.vnfsdk.marketplace.onboarding.onboardmanager.OnBoardingHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.onap.validation.csar.CsarValidator;
+
 import net.sf.json.JSONObject;
 
 public class PackageWrapper {
@@ -229,6 +231,21 @@ public class PackageWrapper {
         LOG.info("the fileLocation when upload package is :" + fileLocation);
 
         uploadedInputStream.close();
+
+	try {
+		CsarValidator cv = new CsarValidator(packageId, fileLocation);
+
+		if (!cv.validateCsar()) {
+			LOG.error("Could not validate failed");
+			return Response.status(Status.EXPECTATION_FAILED).build();
+		} 
+
+
+	} catch (Exception e) {
+		LOG.error("CSAR validation panicked");
+		return Response.status(Status.EXPECTATION_FAILED).build();
+	}  
+        
 
         PackageBasicInfo basicInfo = PackageWrapperUtil.getPacageBasicInfo(fileLocation);
         UploadPackageResponse result = new UploadPackageResponse();
