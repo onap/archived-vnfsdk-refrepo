@@ -32,7 +32,7 @@ import org.onap.vnfsdk.marketplace.onboarding.entity.ResultKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class LifecycleTestHook 
+public class LifecycleTestHook
 {
     private static final Logger logger = LoggerFactory.getLogger(LifecycleTestHook.class);
 
@@ -42,37 +42,37 @@ public class LifecycleTestHook
      * @return
      */
     public int exec(OnBoradingRequest onBoradingReq)
-    {       
+    {
         logger.info("OnboradingRequest Lifecycle Request received for Package:" + onBoradingReq.getCsarId() + " Path:"+ onBoradingReq.getPackagePath());
 
         buildResultPath(onBoradingReq);
-        
+
         OnBoardingResult olifecycleTestResult = new OnBoardingResult();
         buildlifecycleTestResponse(onBoradingReq,olifecycleTestResult);
         updateResult(olifecycleTestResult);
-        
+
         if(null == onBoradingReq.getCsarIdCatalouge() || onBoradingReq.getCsarIdCatalouge().isEmpty())
-        {          
+        {
             olifecycleTestResult.setOperFinished(true);
-            olifecycleTestResult.setOperStatus(EnumResult.FAIL.getIndex());            
+            olifecycleTestResult.setOperStatus(EnumResult.FAIL.getIndex());
             buildFuncTestResponse(olifecycleTestResult,CommonConstant.LifeCycleTest.LIFECYCLE_TEST_EXEC,EnumOperationStatus.FAILED.getIndex());
-            updateResult(olifecycleTestResult);           
+            updateResult(olifecycleTestResult);
             return EnumResult.FAIL.getIndex();
         }
-      
+
         LifeCycleTestReq oLifeCycleTestReq = new LifeCycleTestReq();
         populateLifeCycleReq(onBoradingReq,oLifeCycleTestReq);
 
-        
+
         //STEP 2: Execute Life Cycle Test and Get Result Back !!!!
         //---------------------------------------------------------
         String lifecycleTestResultKey = LifecycleTestExceutor.execlifecycleTest(onBoradingReq,oLifeCycleTestReq);
         if(null == lifecycleTestResultKey)
-        {          
+        {
             olifecycleTestResult.setOperFinished(true);
-            olifecycleTestResult.setOperStatus(EnumResult.FAIL.getIndex());            
+            olifecycleTestResult.setOperStatus(EnumResult.FAIL.getIndex());
             buildFuncTestResponse(olifecycleTestResult,CommonConstant.LifeCycleTest.LIFECYCLE_TEST_EXEC,EnumOperationStatus.FAILED.getIndex());
-            updateResult(olifecycleTestResult);           
+            updateResult(olifecycleTestResult);
             return EnumResult.FAIL.getIndex();
         }
 
@@ -85,24 +85,24 @@ public class LifecycleTestHook
         //-------------------------------------------------
         storelifecycleResultKey(onBoradingReq,lifecycleTestResultKey);
 
-        return (olifecycleTestResult.getOperStatus() == EnumResult.SUCCESS.getIndex()) 
+        return (olifecycleTestResult.getOperStatus() == EnumResult.SUCCESS.getIndex())
                 ? EnumResult.SUCCESS.getIndex() : EnumResult.FAIL.getIndex();
     }
 
-    private void populateLifeCycleReq(OnBoradingRequest onBoradingReq, LifeCycleTestReq oLifeCycleTestReq) 
-    {            
+    private void populateLifeCycleReq(OnBoradingRequest onBoradingReq, LifeCycleTestReq oLifeCycleTestReq)
+    {
         oLifeCycleTestReq.setCsarId(onBoradingReq.getCsarId());
         oLifeCycleTestReq.setLabVimId(oLifeCycleTestReq.getLabVimId());
-        
-        List<String> vimIds = new ArrayList<String>();
+
+        List<String> vimIds = new ArrayList<>();
         oLifeCycleTestReq.setVimIds(vimIds);
     }
 
     /**
-     * 
+     *
      * @param onBoradingReq
      */
-    private void buildResultPath(OnBoradingRequest onBoradingReq) 
+    private void buildResultPath(OnBoradingRequest onBoradingReq)
     {
         String filePath = getResultStorePath() + File.separator + onBoradingReq.getCsarId();
         if(!FileUtil.checkFileExists(filePath))
@@ -115,12 +115,12 @@ public class LifecycleTestHook
      * Store Function test Execution Results
      * @param oFuncTestResult
      */
-    private void updateResult(OnBoardingResult oFuncTestResult) 
-    {   
+    private void updateResult(OnBoardingResult oFuncTestResult)
+    {
         //STore Results to DB(Currently we will make JSON and Store JSON to Package Path)
         //-------------------------------------------------------------------------------
         logger.info("Lifecycle test Status for Package Id:" + oFuncTestResult.getCsarId() + ", Result:" + ToolUtil.objectToString(oFuncTestResult));
-        String filePath = getResultStorePath()  + File.separator  + oFuncTestResult.getCsarId() + File.separator + "lifecycleTest.json";        
+        String filePath = getResultStorePath()  + File.separator  + oFuncTestResult.getCsarId() + File.separator + "lifecycleTest.json";
         FileUtil.writeJsonDatatoFile(filePath,oFuncTestResult);
     }
 
@@ -129,7 +129,7 @@ public class LifecycleTestHook
      * @param onBoradingReq
      * @param oFuncTestResult
      */
-    private void buildlifecycleTestResponse(OnBoradingRequest onBoradingReq, OnBoardingResult oTestResult) 
+    private void buildlifecycleTestResponse(OnBoradingRequest onBoradingReq, OnBoardingResult oTestResult)
     {
         oTestResult.setOperFinished(false);
         oTestResult.setCsarId(onBoradingReq.getCsarId());
@@ -139,14 +139,14 @@ public class LifecycleTestHook
         lifecycleTestExec.setOperId(CommonConstant.LifeCycleTest.LIFECYCLE_TEST_EXEC);
         lifecycleTestExec.setStatus(EnumOperationStatus.NOTSTARTED.getIndex());
 
-        List<OnBoardingOperResult> operResult = new ArrayList<OnBoardingOperResult>();
-        operResult.add(lifecycleTestExec); 
+        List<OnBoardingOperResult> operResult = new ArrayList<>();
+        operResult.add(lifecycleTestExec);
         oTestResult.setOperResult(operResult);
     }
 
-    public static OnBoardingResult getOnBoardingResult(PackageData packageData) 
+    public static OnBoardingResult getOnBoardingResult(PackageData packageData)
     {
-        String filePath = getResultStorePath()  + File.separator + packageData.getCsarId() +File.separator + "lifecycleTest.json"; 
+        String filePath = getResultStorePath()  + File.separator + packageData.getCsarId() +File.separator + "lifecycleTest.json";
         logger.info("On Boarding Status for Package Id:" + packageData.getCsarId() + ", Result Path:" + filePath);
 
         return (OnBoardingResult)FileUtil.readJsonDatafFromFile(filePath,OnBoardingResult.class);
@@ -157,14 +157,14 @@ public class LifecycleTestHook
      * @param onBoradingReq
      * @param resultKey
      */
-    private void storelifecycleResultKey(OnBoradingRequest onBoradingReq,String resultKey) 
+    private void storelifecycleResultKey(OnBoradingRequest onBoradingReq,String resultKey)
     {
         //Currently we will make JSON and Store JSON to Package Path)
         //-------------------------------------------------------------------------------
-        String filePath = getResultStorePath() + File.separator + onBoradingReq.getCsarId() + File.separator + "lifecycleTestResultKey.json";        
+        String filePath = getResultStorePath() + File.separator + onBoradingReq.getCsarId() + File.separator + "lifecycleTestResultKey.json";
 
         logger.info("Function test Results Key for Package Id:" + onBoradingReq.getCsarId() + ", Key:" + resultKey + " Path" + filePath);
-        
+
         ResultKey oResultKey = new ResultKey();
         oResultKey.setCsarId(onBoradingReq.getCsarId());
         oResultKey.setOperTypeId(CommonConstant.LifeCycleTest.LIFECYCLE_TEST_OPERTYPE_ID);
@@ -172,14 +172,14 @@ public class LifecycleTestHook
 
         FileUtil.writeJsonDatatoFile(filePath,oResultKey);
     }
-    
-    private static String getResultStorePath() 
+
+    private static String getResultStorePath()
     {
         return org.onap.vnfsdk.marketplace.filemanage.http.ToolUtil.getHttpServerAbsolutePath();
     }
 
-    private void buildFuncTestResponse(OnBoardingResult oFuncTestResult, String opreKey, int operStatusVal) 
-    {        
+    private void buildFuncTestResponse(OnBoardingResult oFuncTestResult, String opreKey, int operStatusVal)
+    {
         List<OnBoardingOperResult>  operStatusList = oFuncTestResult.getOperResult();
         for(OnBoardingOperResult operObj: operStatusList)
         {
@@ -191,3 +191,4 @@ public class LifecycleTestHook
         }
     }
 }
+
