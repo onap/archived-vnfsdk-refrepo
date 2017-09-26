@@ -83,8 +83,12 @@ public class ToolUtil {
     }
     File destDir = new File(useDestDirName);
     if (destDir.exists() && overlay) {
-        new File(destDirName).delete();
-    } else if ((destDir.exists() && !overlay) || (!destDir.exists() && !destDir.mkdirs())) {
+        new File(useDestDirName).delete();
+    } else if (destDir.exists() && !overlay) {
+        return false;
+    }
+
+    if (!destDir.mkdirs()) {
         return false;
     }
 
@@ -107,11 +111,11 @@ public class ToolUtil {
       ) {
 
       byte[] buffer = new byte[1024];
-      int byteread = 0;
 
-      while ((byteread = in.read(buffer)) != -1) {
+      for (int byteread = 0; (byteread = in.read(buffer)) != -1;) {
         out.write(buffer, 0, byteread);
       }
+
       return true;
     } catch (IOException e) {
       LOGGER.error("IOException in copyFile", e);
