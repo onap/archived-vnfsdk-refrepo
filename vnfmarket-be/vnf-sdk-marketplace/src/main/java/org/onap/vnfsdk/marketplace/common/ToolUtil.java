@@ -42,6 +42,8 @@ public class ToolUtil {
   public static final String CATALOGUE_CSAR_DIR_NAME = "csar";
 
   public static final String CATALOGUE_IMAGE_DIR_NAME = "image";
+  
+  public static final String CSAR_EXTENSION = ".csar";
 
   public static final int FILE_PERCENT = 1024 * 1024; // 1M
 
@@ -123,12 +125,12 @@ public class ToolUtil {
    */
   public static String getTempDir(String dirName, String fileName) {
     return Thread.currentThread().getContextClassLoader().getResource("/").getPath() + dirName + File.separator
-        + fileName.replace(".csar", "");
+        + fileName.replace(CSAR_EXTENSION, "");
   }
 
   public static String getUnzipDir(String dirName) {
     File tmpDir = new File(File.separator + dirName);
-    return tmpDir.getAbsolutePath().replace(".csar", "");
+    return tmpDir.getAbsolutePath().replace(CSAR_EXTENSION, "");
   }
 
   /**
@@ -199,8 +201,8 @@ public class ToolUtil {
    */
   public static String formatCsar(String csarId) {
     String result = csarId;
-    if (csarId.indexOf(".csar") < 0) {
-      result += ".csar";
+    if (csarId.indexOf(CSAR_EXTENSION) < 0) {
+      result += CSAR_EXTENSION;
     }
     return result;
   }
@@ -245,7 +247,7 @@ public class ToolUtil {
    * @return String
    */
   public static String removeCsarSuffix(String csarName) {
-    return csarName.replaceAll(".csar", "");
+    return csarName.replaceAll(CSAR_EXTENSION, "");
   }
 
   /**
@@ -255,8 +257,8 @@ public class ToolUtil {
    * @return String
    */
   public static String addCsarSuffix(String csarName) {
-    if (csarName.indexOf(".csar") == -1) {
-      return csarName + ".csar";
+    if (csarName.indexOf(CSAR_EXTENSION) == -1) {
+      return csarName + CSAR_EXTENSION;
     }
     return csarName;
   }
@@ -287,8 +289,8 @@ public class ToolUtil {
       return "";
     }
     Gson gson = new Gson();
-    String str = gson.toJson(obj);
-    return str;
+  s
+    return gson.toJson(obj);
   }
 
   public static String generateId() {
