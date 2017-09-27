@@ -184,8 +184,8 @@ public class PackageWrapperUtil {
    */
   public static String getPackageName(String ftpUrl) {
     int index = ftpUrl.lastIndexOf("/");
-    String packageName = ftpUrl.substring(index);
-    return packageName;
+   
+    return ftpUrl.substring(index);
   }
 
   /**
@@ -308,7 +308,7 @@ public class PackageWrapperUtil {
     File file = new File(unzipFile);
     try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 
-      for(String tempString = null; (tempString = reader.readLine()) != null;)
+      for(String tempString; (tempString = reader.readLine()) != null;)
       {
           // If line is empty, ignore
           if ("".equals(tempString)) {

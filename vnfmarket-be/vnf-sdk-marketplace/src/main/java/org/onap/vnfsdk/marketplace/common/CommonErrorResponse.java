@@ -19,6 +19,11 @@ package org.onap.vnfsdk.marketplace.common;
 public class CommonErrorResponse {
 
   private String message;
+  
+  public CommonErrorResponse(String message) {
+	    super();
+	    this.message = message;
+	  }
 
   public String getMessage() {
         return message;
@@ -27,11 +32,5 @@ public class CommonErrorResponse {
   public static Object failure(String message) {
     return message;
   }
-
-  public CommonErrorResponse(String message) {
-    super();
-    this.message = message;
-  }
-
 }
 
