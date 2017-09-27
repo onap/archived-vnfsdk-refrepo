@@ -242,7 +242,7 @@ public class PackageWrapper {
 
 
 	} catch (Exception e) {
-		LOG.error("CSAR validation panicked");
+		LOG.error("CSAR validation panicked", e);
 		return Response.status(Status.EXPECTATION_FAILED).build();
 	}  
         
