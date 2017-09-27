@@ -34,6 +34,7 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.onap.validation.csar.CsarValidator;
 import org.onap.vnfsdk.marketplace.common.CommonConstant;
 import org.onap.vnfsdk.marketplace.common.FileUtil;
 import org.onap.vnfsdk.marketplace.common.JsonUtil;
@@ -57,8 +58,6 @@ import org.onap.vnfsdk.marketplace.onboarding.hooks.validatelifecycle.ValidateLi
 import org.onap.vnfsdk.marketplace.onboarding.onboardmanager.OnBoardingHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.onap.validation.csar.CsarValidator;
 
 import net.sf.json.JSONObject;
 
@@ -184,75 +183,19 @@ public class PackageWrapper {
         return Response.status(Status.INTERNAL_SERVER_ERROR).build();
     }
 
-    /**
-     * Interface for Uploading package
-     * @param packageId
-     * @param uploadedInputStream
-     * @param fileDetail
-     * @param details
-     * @param head
-     * @return
-     * @throws IOException
-     * @throws MarketplaceResourceException
-     */
-    private Response handlePackageUpload(String packageId,InputStream uploadedInputStream, FormDataContentDisposition fileDetail,
-            String details, HttpHeaders head) throws IOException, MarketplaceResourceException
+    private UploadPackageResponse manageUpload(String packageId, InputStream uploadedInputStream,
+            String fileName, String details, String contentRange) throws IOException, MarketplaceResourceException
     {
-        boolean bResult = handleDataValidate(packageId,uploadedInputStream,fileDetail);
-        if(!bResult)
-        {
-            LOG.error("Validation of Input received for Package Upload failed !!!");
-            return Response.status(Status.EXPECTATION_FAILED).build();
-        }
-
-        String fileName = "temp_"+ packageId + ".csar";
-        if (null != fileDetail)
-        {
-            LOG.info("the fileDetail = " + ToolUtil.objectToString(fileDetail));
-
-            fileName = ToolUtil.processFileName(fileDetail.getFileName());
-        }
-
         String localDirName = ToolUtil.getTempDir(CommonConstant.CATALOG_CSAR_DIR_NAME, fileName);
-
-        String contentRange = null;
-        if (head != null)
-        {
-            contentRange = head.getHeaderString(CommonConstant.HTTP_HEADER_CONTENT_RANGE);
-        }
-        LOG.info("store package chunk file, fileName:" + fileName + ",contentRange:" + contentRange);
-        if (ToolUtil.isEmptyString(contentRange))
-        {
-            int fileSize = uploadedInputStream.available();
-            contentRange = "0-" + fileSize + "/" + fileSize;
-        }
-
         String fileLocation = ToolUtil.storeChunkFileInLocal(localDirName, fileName, uploadedInputStream);
         LOG.info("the fileLocation when upload package is :" + fileLocation);
-
-        uploadedInputStream.close();
-
-	try {
-		CsarValidator cv = new CsarValidator(packageId, fileLocation);
-
-		if (!cv.validateCsar()) {
-			LOG.error("Could not validate failed");
-			return Response.status(Status.EXPECTATION_FAILED).build();
-		} 
-
-
-	} catch (Exception e) {
-		LOG.error("CSAR validation panicked", e);
-		return Response.status(Status.EXPECTATION_FAILED).build();
-	}  
-        
 
         PackageBasicInfo basicInfo = PackageWrapperUtil.getPacageBasicInfo(fileLocation);
         UploadPackageResponse result = new UploadPackageResponse();
         Boolean isEnd = PackageWrapperUtil.isUploadEnd(contentRange);
         if (isEnd)
         {
-            PackageMeta packageMeta = PackageWrapperUtil.getPackageMeta(packageId,fileName, fileLocation, basicInfo, details);
+            PackageMeta packageMeta = PackageWrapperUtil.getPackageMeta(packageId, fileName, fileLocation, basicInfo, details);
             try {
                 String path =  basicInfo.getType().toString() + File.separator + basicInfo.getProvider() + File.separator +  packageMeta.getCsarId() + File.separator + fileName.replace(".csar", "") + File.separator + basicInfo.getVersion();
 
@@ -288,10 +231,74 @@ public class PackageWrapper {
                 }
             } catch (NullPointerException e) {
                 LOG.error("Package basicInfo is incorrect ! basicIonfo = " + ToolUtil.objectToString(basicInfo), e);
-                return Response.serverError().build();
+                return null;
             }
         }
-        return Response.ok(ToolUtil.objectToString(result), MediaType.APPLICATION_JSON).build();
+        return result;
+    }
+
+    /**
+     * Interface for Uploading package
+     * @param packageId
+     * @param uploadedInputStream
+     * @param fileDetail
+     * @param details
+     * @param head
+     * @return
+     * @throws IOException
+     * @throws MarketplaceResourceException
+     */
+    private Response handlePackageUpload(String packageId,InputStream uploadedInputStream, FormDataContentDisposition fileDetail,
+            String details, HttpHeaders head) throws IOException, MarketplaceResourceException
+    {
+        boolean bResult = handleDataValidate(packageId,uploadedInputStream,fileDetail);
+        if(!bResult)
+        {
+            LOG.error("Validation of Input received for Package Upload failed !!!");
+            return Response.status(Status.EXPECTATION_FAILED).build();
+        }
+
+        String fileName = "temp_"+ packageId + ".csar";
+        if (null != fileDetail)
+        {
+            LOG.info("the fileDetail = " + ToolUtil.objectToString(fileDetail));
+
+            fileName = ToolUtil.processFileName(fileDetail.getFileName());
+        }
+
+        String contentRange = null;
+        if (head != null)
+        {
+            contentRange = head.getHeaderString(CommonConstant.HTTP_HEADER_CONTENT_RANGE);
+        }
+
+        LOG.info("store package chunk file, fileName:" + fileName + ",contentRange:" + contentRange);
+
+        if (ToolUtil.isEmptyString(contentRange))
+        {
+            int fileSize = uploadedInputStream.available();
+            contentRange = "0-" + fileSize + "/" + fileSize;
+        }
+
+        uploadedInputStream.close();
+
+        try {
+            if (!CsarValidator.validateCsar()) {
+                LOG.error("Could not validate failed");
+                return Response.status(Status.EXPECTATION_FAILED).build();
+            }
+        } catch (Exception e) {
+            LOG.error("CSAR validation panicked", e);
+            return Response.status(Status.EXPECTATION_FAILED).build();
+        }
+
+        UploadPackageResponse result = manageUpload(packageId, uploadedInputStream, fileName, details, contentRange);
+        if (null != result)
+        {
+            return Response.ok(ToolUtil.objectToString(result), MediaType.APPLICATION_JSON).build();
+        } else {
+            return Response.serverError().build();
+        }
     }
 
     /**
