@@ -31,11 +31,11 @@ public class CommonConstant {
 
   public static final String TOSCA_METADATA = "TOSCA-Metadata";
 
-  public static final String CSAR_VERSION_META = "version";
+  public static final String CSAR_VERSION_META = "Version";
 
-  public static final String CSAR_TYPE_META = "type";
+  public static final String CSAR_TYPE_META = "Type";
 
-  public static final String CSAR_PROVIDER_META = "provider";
+  public static final String CSAR_PROVIDER_META = "Provider";
 
   public static final String DEFINITIONS = "Definitions";
 

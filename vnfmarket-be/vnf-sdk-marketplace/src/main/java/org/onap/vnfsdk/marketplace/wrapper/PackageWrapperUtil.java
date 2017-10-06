@@ -279,6 +279,11 @@ public class PackageWrapperUtil {
         if (unzipFile.endsWith(CommonConstant.MANIFEST)) {
           basicInfo = readManifest(unzipFile);
         }
+        
+        if (unzipFile.endsWith(CommonConstant.CSAR_META)) {
+            basicInfo = readMetaData(unzipFile);
+        }
+        
         if (ToolUtil.isYamlFile(new File(unzipFile))) {
           isXmlCsar = false;
         }
@@ -299,7 +304,7 @@ public class PackageWrapperUtil {
    * @param unzipFile
    * @return basic infor about package
    */
-  private static PackageBasicInfo readManifest(String unzipFile) {
+  private static PackageBasicInfo readMetaData(String unzipFile) {
 
     // Fix the package type to CSAR, temporary
     PackageBasicInfo basicInfo = new PackageBasicInfo();
@@ -319,15 +324,22 @@ public class PackageWrapperUtil {
           String meta = tempString.substring(0, count1).trim();
 
           // Check for the package provider name
-          if (meta.equalsIgnoreCase(CommonConstant.MF_PROVIDER_META)) {
+          if (meta.equalsIgnoreCase(CommonConstant.CSAR_PROVIDER_META)) {
             int count = tempString.indexOf(":") + 1;
             basicInfo.setProvider(tempString.substring(count).trim());
           }
 
           // Check for package version
-          if (meta.equalsIgnoreCase(CommonConstant.MF_VERSION_META)) {
+          if (meta.equalsIgnoreCase(CommonConstant.CSAR_VERSION_META)) {
             int count = tempString.indexOf(":") + 1;
             basicInfo.setVersion(tempString.substring(count).trim());
+          }
+          
+       // Check for package type
+          if (meta.equalsIgnoreCase(CommonConstant.CSAR_TYPE_META)) {
+            int count = tempString.indexOf(":") + 1;
+           
+            basicInfo.setType(getEnumType(tempString.substring(count).trim()));
           }
       }
 
@@ -338,6 +350,77 @@ public class PackageWrapperUtil {
 
     return basicInfo;
   }
+  
+  private static EnumType getEnumType (String type)
+  {
+	  EnumType vnfType = EnumType.CSAR;
+	  if (type == "CSAR")
+	  {
+		  vnfType = EnumType.CSAR;
+	  }
+	  
+	  if (type == "GSAR")
+	  {
+		  vnfType = EnumType.GSAR;
+	  }
+	  
+	  if (type == "NSAR")
+	  {
+		  vnfType = EnumType.NSAR;
+	  }
+	  
+	  if (type == "SSAR")
+	  {
+		  vnfType = EnumType.SSAR;
+	  }
+	  
+	  if (type == "NFAR")
+	  {
+		  vnfType = EnumType.NFAR;
+	  }
+	  
+	  return vnfType;
+  }
+  
+  private static PackageBasicInfo readManifest(String unzipFile) {
+
+	    // Fix the package type to CSAR, temporary
+	    PackageBasicInfo basicInfo = new PackageBasicInfo();
+	    basicInfo.setType(EnumType.CSAR);
+
+	    File file = new File(unzipFile);
+	    try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+
+	      for(String tempString; (tempString = reader.readLine()) != null;)
+	      {
+	          // If line is empty, ignore
+	          if ("".equals(tempString)) {
+	            continue;
+	          }
+
+	          int count1 = tempString.indexOf(":");
+	          String meta = tempString.substring(0, count1).trim();
+
+	          // Check for the package provider name
+	          if (meta.equalsIgnoreCase(CommonConstant.MF_PROVIDER_META)) {
+	            int count = tempString.indexOf(":") + 1;
+	            basicInfo.setProvider(tempString.substring(count).trim());
+	          }
+
+	          // Check for package version
+	          if (meta.equalsIgnoreCase(CommonConstant.MF_VERSION_META)) {
+	            int count = tempString.indexOf(":") + 1;
+	            basicInfo.setVersion(tempString.substring(count).trim());
+	          }
+	      }
+
+	      reader.close();
+	    } catch (IOException e) {
+	      LOG.error("Exception while parsing manifest file" + e, e);
+	    }
+
+	    return basicInfo;
+	  }
   /**
    * get package format enum.
    * @param format package format
