@@ -18,13 +18,15 @@ package org.onap.vnfsdk.marketplace.filemanage;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.onap.vnfsdk.marketplace.filemanage.http.HttpFileManagerImpl;
 import org.onap.vnfsdk.marketplace.filemanage.http.ToolUtil;
 
 import mockit.Mock;
@@ -45,6 +47,16 @@ public class FileManageTest {
         assertNull(manager);
     }
 
+    @Test
+    public void testFileManagerFactoryConstructor() {
+        try {
+            Constructor<FileManagerFactory> constructor = FileManagerFactory.class.getDeclaredConstructor();
+            assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Before
     public void createTestFile()
     {
@@ -58,7 +70,14 @@ public class FileManageTest {
 
     @Test
     public void testDelete() throws IOException {
-        HttpFileManagerImpl ManagerImpl = new HttpFileManagerImpl();
+        new MockUp<FileManagerFactory>() {
+            @Mock
+            private FileManagerType getType()  {
+                return FileManagerType.http;
+            }
+        };
+
+        FileManager ManagerImpl = FileManagerFactory.createFileManager();
         String srcPath = "./srcPathForTest";
         new MockUp<ToolUtil>() {
             @Mock
@@ -78,7 +97,14 @@ public class FileManageTest {
 
     @Test
     public void testUpload() throws IOException {
-        HttpFileManagerImpl ManagerImpl = new HttpFileManagerImpl();
+        new MockUp<FileManagerFactory>() {
+            @Mock
+            private FileManagerType getType()  {
+                return FileManagerType.http;
+            }
+        };
+
+        FileManager ManagerImpl = FileManagerFactory.createFileManager();
         String srcPath = "./srcPathForTest";
         String dstPath = "./dstPathForTest";
         new MockUp<ToolUtil>() {
