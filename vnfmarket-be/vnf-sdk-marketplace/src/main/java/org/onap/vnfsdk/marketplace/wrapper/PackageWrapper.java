@@ -34,6 +34,7 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.onap.validation.csar.CsarValidator;
 import org.onap.vnfsdk.marketplace.common.CommonConstant;
 import org.onap.vnfsdk.marketplace.common.FileUtil;
 import org.onap.vnfsdk.marketplace.common.JsonUtil;
@@ -57,8 +58,6 @@ import org.onap.vnfsdk.marketplace.onboarding.hooks.validatelifecycle.ValidateLi
 import org.onap.vnfsdk.marketplace.onboarding.onboardmanager.OnBoardingHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.onap.validation.csar.CsarValidator;
 
 import net.sf.json.JSONObject;
 
@@ -184,6 +183,57 @@ public class PackageWrapper {
         return Response.status(Status.INTERNAL_SERVER_ERROR).build();
     }
 
+    private UploadPackageResponse manageUpload(String packageId, String fileName, String fileLocation,
+            String details, String contentRange) throws IOException, MarketplaceResourceException
+    {
+        String localDirName = ToolUtil.getTempDir(CommonConstant.CATALOG_CSAR_DIR_NAME, fileName);
+        PackageBasicInfo basicInfo = PackageWrapperUtil.getPacageBasicInfo(fileLocation);
+        UploadPackageResponse result = new UploadPackageResponse();
+        Boolean isEnd = PackageWrapperUtil.isUploadEnd(contentRange);
+        if (isEnd)
+        {
+            PackageMeta packageMeta = PackageWrapperUtil.getPackageMeta(packageId, fileName, fileLocation, basicInfo, details);
+            try {
+                String path =  basicInfo.getType().toString() + File.separator + basicInfo.getProvider() + File.separator +  packageMeta.getCsarId() + File.separator + fileName.replace(".csar", "") + File.separator + basicInfo.getVersion();
+
+                String dowloadUri = File.separator + path + File.separator;
+                packageMeta.setDownloadUri(dowloadUri);
+
+                LOG.info("dest path is : " + path);
+                LOG.info("packageMeta = " + ToolUtil.objectToString(packageMeta));
+
+                PackageData packageData = PackageWrapperUtil.getPackageData(packageMeta);
+
+                String destPath = File.separator + path + File.separator + File.separator;
+                boolean uploadResult = FileManagerFactory.createFileManager().upload(localDirName, destPath);
+                if (uploadResult)
+                {
+                    OnBoradingRequest oOnboradingRequest = new OnBoradingRequest();
+                    oOnboradingRequest.setCsarId(packageId);
+                    oOnboradingRequest.setPackageName(fileName);
+                    oOnboradingRequest.setPackagePath(localDirName);
+
+                    packageData.setCsarId(packageId);
+                    packageData.setDownloadCount(-1);
+                    PackageData packateDbData = PackageManager.getInstance().addPackage(packageData);
+
+                    LOG.info("Store package data to database succed ! packateDbData = "  + ToolUtil.objectToString(packateDbData));
+                    LOG.info("upload package file end, fileName:" + fileName);
+
+                    result.setCsarId(packateDbData.getCsarId());
+
+                    addOnBoardingRequest(oOnboradingRequest);
+
+                    LOG.info("OnboradingRequest Data : "  + ToolUtil.objectToString(oOnboradingRequest));
+                }
+            } catch (NullPointerException e) {
+                LOG.error("Package basicInfo is incorrect ! basicIonfo = " + ToolUtil.objectToString(basicInfo), e);
+                return null;
+            }
+        }
+        return result;
+    }
+
     /**
      * Interface for Uploading package
      * @param packageId
@@ -232,66 +282,25 @@ public class PackageWrapper {
 
         uploadedInputStream.close();
 
-	try {
-		CsarValidator cv = new CsarValidator(packageId, fileLocation);
+        try {
+            CsarValidator cv = new CsarValidator(packageId, fileLocation);
 
-		if (!cv.validateCsar()) {
-			LOG.error("Could not validate failed");
-			return Response.status(Status.EXPECTATION_FAILED).build();
-		} 
-
-
-	} catch (Exception e) {
-		LOG.error("CSAR validation panicked", e);
-		return Response.status(Status.EXPECTATION_FAILED).build();
-	}  
-        
-
-        PackageBasicInfo basicInfo = PackageWrapperUtil.getPacageBasicInfo(fileLocation);
-        UploadPackageResponse result = new UploadPackageResponse();
-        Boolean isEnd = PackageWrapperUtil.isUploadEnd(contentRange);
-        if (isEnd)
-        {
-            PackageMeta packageMeta = PackageWrapperUtil.getPackageMeta(packageId,fileName, fileLocation, basicInfo, details);
-            try {
-                String path =  basicInfo.getType().toString() + File.separator + basicInfo.getProvider() + File.separator +  packageMeta.getCsarId() + File.separator + fileName.replace(".csar", "") + File.separator + basicInfo.getVersion();
-
-                String dowloadUri = File.separator + path + File.separator;
-                packageMeta.setDownloadUri(dowloadUri);
-
-                LOG.info("dest path is : " + path);
-                LOG.info("packageMeta = " + ToolUtil.objectToString(packageMeta));
-
-                PackageData packageData = PackageWrapperUtil.getPackageData(packageMeta);
-
-                String destPath = File.separator + path + File.separator + File.separator;
-                boolean uploadResult = FileManagerFactory.createFileManager().upload(localDirName, destPath);
-                if (uploadResult)
-                {
-                    OnBoradingRequest oOnboradingRequest = new OnBoradingRequest();
-                    oOnboradingRequest.setCsarId(packageId);
-                    oOnboradingRequest.setPackageName(fileName);
-                    oOnboradingRequest.setPackagePath(localDirName);
-
-                    packageData.setCsarId(packageId);
-                    packageData.setDownloadCount(-1);
-                    PackageData packateDbData = PackageManager.getInstance().addPackage(packageData);
-
-                    LOG.info("Store package data to database succed ! packateDbData = "  + ToolUtil.objectToString(packateDbData));
-                    LOG.info("upload package file end, fileName:" + fileName);
-
-                    result.setCsarId(packateDbData.getCsarId());
-
-                    addOnBoardingRequest(oOnboradingRequest);
-
-                    LOG.info("OnboradingRequest Data : "  + ToolUtil.objectToString(oOnboradingRequest));
-                }
-            } catch (NullPointerException e) {
-                LOG.error("Package basicInfo is incorrect ! basicIonfo = " + ToolUtil.objectToString(basicInfo), e);
-                return Response.serverError().build();
+            if (!cv.validateCsar()) {
+                LOG.error("Could not validate failed");
+                return Response.status(Status.EXPECTATION_FAILED).build();
             }
+        } catch (Exception e) {
+            LOG.error("CSAR validation panicked", e);
+            return Response.status(Status.EXPECTATION_FAILED).build();
         }
-        return Response.ok(ToolUtil.objectToString(result), MediaType.APPLICATION_JSON).build();
+
+        UploadPackageResponse result = manageUpload(packageId, fileName, fileLocation, details, contentRange);
+        if (null != result)
+        {
+            return Response.ok(ToolUtil.objectToString(result), MediaType.APPLICATION_JSON).build();
+        } else {
+            return Response.serverError().build();
+        }
     }
 
     /**
