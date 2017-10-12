@@ -34,7 +34,7 @@ public class ToolUtil {
   }
 
   /**
-   * copy in directory.
+   * simple copy directory
    * @param srcDirName source directory name
    * @param destDirName destination directory name
    * @param files file list in directory
@@ -42,24 +42,44 @@ public class ToolUtil {
    * @return boolean
    * @throws IOException e
    */
-  public static boolean copyInDirectory(String srcDirName, String destDirName, File[] files, boolean overlay)
+  public static boolean simpleCopyDirectory(String srcDirName, String destDirName)
       throws IOException
   {
+    File srcDir = new File(srcDirName);
+    File[] files = srcDir.listFiles();
     for (int i = 0; i < files.length; i++) {
         boolean flag = false;
         if (files[i].isFile()) {
           flag = copyFile(files[i].getAbsolutePath(), destDirName + files[i].getName(), true);
         }
         if (files[i].isDirectory()) {
-          flag = copyDirectory(files[i].getAbsolutePath(), destDirName + files[i].getName(), overlay);
+          flag = simpleCopyDirectory(files[i].getAbsolutePath(), destDirName + files[i].getName());
         }
         if (!flag) {
           String message = "Copy catagory " + srcDirName + " to " + destDirName + " failed!";
           LOGGER.error(message);
           return false;
         }
-      }
-      return true;
+     }
+     return true;
+  }
+
+  /**
+   * create destDir
+   * @param destDirName destination directory name
+   * @param overlay overwrite or not
+   * @return boolean
+   */
+  public static boolean createDestDir(String destDirName, boolean overlay)
+  {
+    File destDir = new File(destDirName);
+    if (destDir.exists() && overlay) {
+        new File(destDirName).delete();
+    } else if (destDir.exists() && !overlay) {
+        return false;
+    }
+
+    return destDir.mkdirs();
   }
 
   /**
@@ -77,24 +97,17 @@ public class ToolUtil {
       return false;
     }
 
-    String useDestDirName = destDirName;
-    if (!useDestDirName.endsWith(File.separator)) {
-      useDestDirName += File.separator;
-    }
-    File destDir = new File(useDestDirName);
-    if (destDir.exists() && overlay) {
-        new File(useDestDirName).delete();
-    } else if (destDir.exists() && !overlay) {
-        return false;
+    String fullDestDirName = destDirName;
+    if (!fullDestDirName.endsWith(File.separator)) {
+      fullDestDirName += File.separator;
     }
 
-    if (!destDir.mkdirs()) {
-        return false;
+    if (!createDestDir(fullDestDirName, overlay))
+    {
+      return false;
     }
 
-    File[] files = srcDir.listFiles();
-
-    return copyInDirectory(srcDirName, destDirName, files, overlay);
+    return simpleCopyDirectory(srcDirName, fullDestDirName);
   }
 
   /**
