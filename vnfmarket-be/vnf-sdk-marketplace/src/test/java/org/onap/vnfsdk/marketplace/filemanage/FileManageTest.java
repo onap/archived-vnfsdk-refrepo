@@ -58,7 +58,7 @@ public class FileManageTest {
     }
 
     @Before
-    public void createTestFile()
+    public void createTestFile() throws IOException
     {
         String srcPath = "./srcPathForTest";
         String dstPath = "./dstPathForTest";
@@ -76,23 +76,17 @@ public class FileManageTest {
                 return FileManagerType.http;
             }
         };
-
-        FileManager ManagerImpl = FileManagerFactory.createFileManager();
-        String srcPath = "./srcPathForTest";
         new MockUp<ToolUtil>() {
             @Mock
             private String getHttpServerAbsolutePath() {
-                return null;
-            }
-        };
-        new MockUp<ToolUtil>() {
-            @Mock
-            private boolean deleteDir(File dir) {
-                return true;
+                return "";
             }
         };
 
-        assertEquals(ManagerImpl.delete(srcPath), true);
+        FileManager ManagerImpl = FileManagerFactory.createFileManager();
+        String dstPath = "./dstPathForTest";
+
+        assertEquals(ManagerImpl.delete(dstPath), true);
     }
 
     @Test
@@ -103,28 +97,23 @@ public class FileManageTest {
                 return FileManagerType.http;
             }
         };
+        new MockUp<ToolUtil>() {
+            @Mock
+            private String getHttpServerAbsolutePath() {
+                return "";
+            }
+        };
 
         FileManager ManagerImpl = FileManagerFactory.createFileManager();
         String srcPath = "./srcPathForTest";
         String dstPath = "./dstPathForTest";
-        new MockUp<ToolUtil>() {
-            @Mock
-            private String getHttpServerAbsolutePath() {
-                return null;
-            }
-        };
-        new MockUp<ToolUtil>() {
-            @Mock
-            private boolean copyDirectory(String srcDirName, String destDirName, boolean overlay) {
-                return true;
-            }
-        };
+
         assertEquals(ManagerImpl.upload(srcPath, dstPath), true);
 
-        File src = new File(srcPath);
-        if (src.exists())
+        File srcDir = new File(srcPath);
+        if (srcDir.exists())
         {
-            src.delete();
+            ManagerImpl.delete(srcPath);
         }
 
         assertEquals(ManagerImpl.upload(srcPath, dstPath), false);
