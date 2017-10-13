@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.onap.vnfsdk.marketplace.common.CommonConstant;
 import org.onap.vnfsdk.marketplace.msb.MsbDetails;
@@ -32,144 +31,162 @@ import org.onap.vnfsdk.marketplace.onboarding.entity.OnBoradingRequest;
 import org.onap.vnfsdk.marketplace.rest.RestConstant;
 import org.onap.vnfsdk.marketplace.rest.RestResponse;
 import org.onap.vnfsdk.marketplace.rest.RestfulClient;
+import org.onap.vnfsdk.marketplace.common.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class FunctionTestExceutor
-{
-    private static final Logger logger = LoggerFactory.getLogger(FunctionTestExceutor.class);
+/* CALL Flow: onBoardingHandler --> FunctionTestHook--> FunctionTestExecutor */
+public class FunctionTestExceutor {
+	private static final Logger logger = LoggerFactory.getLogger(FunctionTestExceutor.class);
 
-    private FunctionTestExceutor()
-    {}
+	private FunctionTestExceutor() {
+		//Empty constructor
+	}
 
-    /**
-     * Interface to Send Request to Start Function test
-     * @param onBoradFuncTestReq
-     * @return
-     */
-    public static String execFunctionTest(OnBoradingRequest onBoradFuncTestReq)
-    {
-        String packagePath = onBoradFuncTestReq.getPackagePath() + File.separator + onBoradFuncTestReq.getPackageName();
-        logger.info("Package file path Function test:" + packagePath);
+	/**
+	 * Interface to Send Request to Start Function test
+	 * 
+	 * @param onBoradFuncTestReq
+	 * @return null (in case of failure) or function Test Id
+	 */
+	public static String execFunctionTest(OnBoradingRequest onBoradFuncTestReq) {
 
-        String funcTestId = null;
-        MsbDetails oMsbDetails =  MsbDetailsHolder.getMsbDetails();
-        if(null == oMsbDetails)
-        {
-            logger.error("Failed to get MSB details during execFunctionTest !!!");
-            return funcTestId;
-        }
+		String funcTestId = null;		
 
-        try (
-            FileInputStream ifs = new FileInputStream(packagePath);
-            InputStream inStream  = new BufferedInputStream(ifs);
-        ) {
+		String packagePath = onBoradFuncTestReq.getPackagePath() + File.separator + onBoradFuncTestReq.getPackageName();
+		logger.info("Package file path Function test:" + packagePath);
 
+		// Validate package path
+		if (false == FileUtil.validatePath(packagePath)) {
+			logger.error("Failed to validate  path");
+			return funcTestId;
+		}
 
-            //IP and Port needs to be configured !!!
-            RestResponse rsp = RestfulClient.post(oMsbDetails.getDefaultServer().getHost(),
-                                                    Integer.parseInt(oMsbDetails.getDefaultServer().getPort()),
-                                                    CommonConstant.functionTest.FUNCTEST_URL,buildRequest(inStream));
-            if(!checkValidResponse(rsp))
-            {
-                return funcTestId;
-            }
+		MsbDetails oMsbDetails = MsbDetailsHolder.getMsbDetails();
+		if (null == oMsbDetails) {
+			logger.error("Failed to get MSB details during execFunctionTest !!!");
+			return funcTestId;
+		}
 
-            logger.error("Response for Function Test :" , rsp.getResult());
-            funcTestId = rsp.getResult();
-            return funcTestId.replaceAll("\"", "");
-        }
-        catch (FileNotFoundException exp)
-        {
-            logger.error("Fine not fond Exception for file:" , onBoradFuncTestReq.getPackagePath());
-            logger.error("Fine not fond Exception for :" , exp);
-        }
-        catch (IOException e)
-        {
-            logger.error("IOException:" , e);
-        }
+		try (FileInputStream ifs = new FileInputStream(packagePath);
+				InputStream inStream = new BufferedInputStream(ifs);) {
 
-        return funcTestId;
-    }
+			// Validate input stream
+			if (false == FileUtil.validateStream(ifs)) {
+				logger.error("Failed to validate file stream");
+				return funcTestId;
+			}
 
-    /**
-     * Interface to get Function Test Results
-     * @param key
-     * @return
-     */
-    public static String getTestResultsByFuncTestKey(String key)
-    {
-        MsbDetails oMsbDetails =  MsbDetailsHolder.getMsbDetails();
-        if(null == oMsbDetails)
-        {
-            logger.error("Failed to get MSB details during getTestResultsByFuncTestKey !!!");
-            return null;
-        }
+			// IP and Port needs to be configured !!!
+			RestResponse rsp = RestfulClient.post(oMsbDetails.getDefaultServer().getHost(),
+					Integer.parseInt(oMsbDetails.getDefaultServer().getPort()),
+					CommonConstant.functionTest.FUNCTEST_URL, buildRequest(inStream));
+			if (!checkValidResponse(rsp)) {
+				logger.error("Failed to validate response");
+				return funcTestId;
+			}
 
-        logger.info("getTestResultsByFuncTestKey for Function Test Results for :" + key);
-        RestResponse rspGet  = RestfulClient.get(oMsbDetails.getDefaultServer().getHost(),
-                                Integer.parseInt(oMsbDetails.getDefaultServer().getPort()),
-                                CommonConstant.functionTest.FUNCTEST_RESULT_URL + key);
-        if(!checkValidResponse(rspGet))
-        {
-            logger.error("Failed to convert String Json Response to TestResults list:" + rspGet.getResult());
-            return null;
-        }
-        logger.info("Function Test Results for Key:" + key + "Response:" + rspGet.getResult());
-        return  rspGet.getResult();
-    }
+			funcTestId = rsp.getResult();
+			logger.info("Response for Function Test :", funcTestId);
 
-    /**
-     * Interface to get Function Test Results
-     * @param key
-     * @return
-     */
-    public static String executeFunctionTest(String strJsonRequest)
-    {
-        logger.info("executeFunctionTest Test request Received:" + strJsonRequest);
-        MsbDetails oMsbDetails =  MsbDetailsHolder.getMsbDetails();
-        if(null == oMsbDetails)
-        {
-            logger.error("Failed to get MSB details during getTestResultsByFuncTestKey !!!");
-            return null;
-        }
+			return funcTestId.replaceAll("\"", "");
+		} catch (NumberFormatException e) {
+			logger.error("Invalid port number :", oMsbDetails.getDefaultServer().getPort());
+		} catch (FileNotFoundException exp) {
+			logger.error("File not found Exception for file:", onBoradFuncTestReq.getPackagePath());
+			logger.error("File not found Exception for :", exp);
+		} catch (IOException e) {
+			logger.error("IOException:", e);
+		}
 
-        logger.info("getTestResultsByFuncTestKey for Function Test Results for :" + strJsonRequest);
-        RestResponse rspGet  = RestfulClient.sendPostRequest(oMsbDetails.getDefaultServer().getHost(),
-                                                            oMsbDetails.getDefaultServer().getPort(),
-                                                            CommonConstant.functionTest.FUNCTEST_RESULT_URL,
-                                                            strJsonRequest);
-        if(!checkValidResponse(rspGet))
-        {
-            logger.error("Failed to convert String Json Response to TestResults list:" + rspGet.getResult());
-            return null;
-        }
-        logger.info("executeFunctionTest Function Test Result: " + rspGet.getResult());
-        return  rspGet.getResult();
-    }
+		return funcTestId;
+	}
 
-    /**
-     * Check Response is Valid
-     * @param rsp
-     * @return
-     */
-    private static boolean checkValidResponse(RestResponse rsp)
-    {
-        if (rsp.getStatusCode() == null || rsp.getResult() == null
-                || (RestConstant.RESPONSE_CODE_200 != rsp.getStatusCode() && RestConstant.RESPONSE_CODE_201 != rsp.getStatusCode()))
-        {
-            return false;
-        }
-        return true;
-    }
+	/**
+	 * Interface to get Function Test Results
+	 * 
+	 * @param key
+	 * @return null or resultkey
+	 */
+	public static String getTestResultsByFuncTestKey(String key) {
 
-    @SuppressWarnings("deprecation")
-    private static HttpEntity buildRequest(InputStream inputStream)
-            throws FileNotFoundException {
-          MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-          builder.seContentType(ContentType.MULTIPART_FORM_DATA);
-          builder.addBinaryBody("file", inputStream);
-          return builder.build();
-        }
+		// Input key cannot be null- no need to validate
+
+		String result = null;
+		MsbDetails oMsbDetails = MsbDetailsHolder.getMsbDetails();
+		if (null == oMsbDetails) {
+			logger.error("Failed to get MSB details during getTestResultsByFuncTestKey !!!");
+			return result;
+		}
+
+		logger.info("GetTestResultsByFuncTestKey for Function Test Results for :" + key);
+		RestResponse rspGet = RestfulClient.get(oMsbDetails.getDefaultServer().getHost(),
+				Integer.parseInt(oMsbDetails.getDefaultServer().getPort()),
+				CommonConstant.functionTest.FUNCTEST_RESULT_URL + key);
+		if (false == checkValidResponse(rspGet)) {
+			logger.error("Failed to convert String Json Response to TestResults list:" + rspGet.getResult());
+			return result;
+		}
+
+		result = rspGet.getResult();
+		logger.info("Function Test Results for Key:" + key + "Response:" + rspGet.getResult());
+		return result;
+	}
+
+	/**
+	 * Interface to get Function Test Results
+	 * 
+	 * @param strJsonRequest
+	 * @return
+	 */
+	public static String executeFunctionTest(String strJsonRequest) {
+
+		String result = null;
+		if (null == strJsonRequest) {
+			logger.error("Invalid input- Input is null");
+			return result;
+		}
+
+		logger.info("ExecuteFunctionTest Test request Received:" + strJsonRequest);
+
+		MsbDetails oMsbDetails = MsbDetailsHolder.getMsbDetails();
+		if (null == oMsbDetails) {
+			logger.error("Failed to get MSB details during getTestResultsByFuncTestKey !!!");
+			return result;
+		}
+
+		logger.info("GetTestResultsByFuncTestKey for Function Test Results for :" + strJsonRequest);
+		RestResponse rspGet = RestfulClient.sendPostRequest(oMsbDetails.getDefaultServer().getHost(),
+				oMsbDetails.getDefaultServer().getPort(), CommonConstant.functionTest.FUNCTEST_RESULT_URL,
+				strJsonRequest);
+		if (false == checkValidResponse(rspGet)) {
+			logger.error("Failed to convert String Json Response to TestResults list:" + rspGet.getResult());
+			return result;
+		}
+
+		result = rspGet.getResult();
+		logger.info("ExecuteFunctionTest Function Test Result: " + rspGet.getResult());
+		return result;
+	}
+
+	/**
+	 * Check Response is Valid
+	 * 
+	 * @param rsp
+	 * @return valid or invalid
+	 */
+	private static boolean checkValidResponse(RestResponse rsp) {
+		if ((null == rsp.getStatusCode()) || (null == rsp.getResult())
+				|| (RestConstant.RESPONSE_CODE_200 != rsp.getStatusCode()
+						&& RestConstant.RESPONSE_CODE_201 != rsp.getStatusCode())) {
+			return false;
+		}
+		return true;
+	}
+
+	private static HttpEntity buildRequest(InputStream inputStream) throws FileNotFoundException {
+		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+		builder.addBinaryBody("file", inputStream);
+		return builder.build();
+	}
 }
-

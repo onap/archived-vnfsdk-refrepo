@@ -16,34 +16,49 @@
 package org.onap.vnfsdk.marketplace.onboarding.entity;
 
 public class OnBoradingRequest {
-    private String csarId;
-    private String packageName;
-    private String packagePath;
-    private String csarIdCatalouge;
-    
-    public String getPackagePath() {
-        return packagePath;
-    }
-    public void setPackagePath(String packagePath) {
-        this.packagePath = packagePath;
-    }
-    public String getCsarId() {
-        return csarId;
-    }
-    public void setCsarId(String csarId) {
-        this.csarId = csarId;
-    }
-    public String getPackageName() {
-        return packageName;
-    }
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
-    }
-    public String getCsarIdCatalouge() {
-        return csarIdCatalouge;
-    }
-    public void setCsarIdCatalouge(String csarIdCatalouge) {
-        this.csarIdCatalouge = csarIdCatalouge;
-    }
+	
+	// VNF package ID
+	private String csarId;
+	
+	// VNF package name
+	private String packageName;
+	
+	// Path of package (local path)
+	private String packagePath;
+	
+	// csarId to be sent to catalogue module
+	private String csarIdCatalouge;
+
+	public String getPackagePath() {
+		return packagePath;
+	}
+
+	public void setPackagePath(String packagePath) {
+		this.packagePath = packagePath;
+	}
+
+	public String getCsarId() {
+		return csarId;
+	}
+
+	public void setCsarId(String csarId) {
+		this.csarId = csarId;
+	}
+
+	public String getPackageName() {
+		return packageName;
+	}
+
+	public void setPackageName(String packageName) {
+		this.packageName = packageName;
+	}
+
+	public String getCsarIdCatalouge() {
+		return csarIdCatalouge;
+	}
+
+	public void setCsarIdCatalouge(String csarIdCatalouge) {
+		this.csarIdCatalouge = csarIdCatalouge;
+	}
 
 }

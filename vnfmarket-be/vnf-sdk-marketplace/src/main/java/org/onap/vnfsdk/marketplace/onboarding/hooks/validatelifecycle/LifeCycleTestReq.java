@@ -17,27 +17,38 @@ package org.onap.vnfsdk.marketplace.onboarding.hooks.validatelifecycle;
 
 import java.util.List;
 
-public class LifeCycleTestReq 
-{
-    private String csarId;
-    private String labVimId;
-    private List<String> vimIds;
-    public String getCsarId() {
-        return csarId;
-    }
-    public void setCsarId(String csarId) {
-        this.csarId = csarId;
-    }
-    public String getLabVimId() {
-        return labVimId;
-    }
-    public void setLabVimId(String labVimId) {
-        this.labVimId = labVimId;
-    }
-    public List<String> getVimIds() {
-        return vimIds;
-    }
-    public void setVimIds(List<String> vimIds) {
-        this.vimIds = vimIds;
-    }
+public class LifeCycleTestReq {
+	
+	// VNF package Id
+	private String csarId;
+	
+	// VIM (lab-static) Id on which VNFs are located
+	private String labVimId;
+	
+	// Dynamic VIM Ids
+	private List<String> vimIds;
+
+	public String getCsarId() {
+		return csarId;
+	}
+
+	public void setCsarId(String csarId) {
+		this.csarId = csarId;
+	}
+
+	public String getLabVimId() {
+		return labVimId;
+	}
+
+	public void setLabVimId(String labVimId) {
+		this.labVimId = labVimId;
+	}
+
+	public List<String> getVimIds() {
+		return vimIds;
+	}
+
+	public void setVimIds(List<String> vimIds) {
+		this.vimIds = vimIds;
+	}
 }

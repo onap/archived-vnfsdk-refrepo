@@ -422,7 +422,7 @@ public class PackageWrapper {
         boolean bupdateSucess = false;
         try
         {
-            PackageManager.getInstance().updateDwonloadCount(csarId);
+            PackageManager.getInstance().updateDownloadCount(csarId);
             bupdateSucess = true;
         }
         catch (Exception exp)

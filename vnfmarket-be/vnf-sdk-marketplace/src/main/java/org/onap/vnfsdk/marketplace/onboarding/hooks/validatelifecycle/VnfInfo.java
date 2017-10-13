@@ -17,15 +17,16 @@ package org.onap.vnfsdk.marketplace.onboarding.hooks.validatelifecycle;
 
 import java.util.List;
 
-public class VnfInfo 
-{
-    private List<VmsInfo> vms;
+public class VnfInfo {
+	
+	// List of VM Info -Each VNF can run in several VMs
+	private List<VmsInfo> vms;
 
-    public List<VmsInfo> getVms() {
-        return vms;
-    }
+	public List<VmsInfo> getVms() {
+		return vms;
+	}
 
-    public void setVms(List<VmsInfo> vms) {
-        this.vms = vms;
-    }
+	public void setVms(List<VmsInfo> vms) {
+		this.vms = vms;
+	}
 }

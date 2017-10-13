@@ -17,28 +17,38 @@ package org.onap.vnfsdk.marketplace.onboarding.entity;
 
 import java.util.List;
 
-public class OnBoardingStep 
-{
-    private String operTypeName;
-    private String operTypeId;
-    private List<OperationDetails> oper;
-    
-    public String getOperTypeName() {
-        return operTypeName;
-    }
-    public void setOperTypeName(String operTypeName) {
-        this.operTypeName = operTypeName;
-    }
-    public String getOperTypeId() {
-        return operTypeId;
-    }
-    public void setOperTypeId(String operTypeId) {
-        this.operTypeId = operTypeId;
-    }
-    public List<OperationDetails> getOper() {
-        return oper;
-    }
-    public void setOper(List<OperationDetails> oper) {
-        this.oper = oper;
-    }
+public class OnBoardingStep {
+	
+	// Name of operation Type: (Lifecycle test or function test)
+	private String operTypeName;
+	
+	// Id of the operation
+	private String operTypeId;
+	
+	// Details of the operation
+	private List<OperationDetails> oper;
+
+	public String getOperTypeName() {
+		return operTypeName;
+	}
+
+	public void setOperTypeName(String operTypeName) {
+		this.operTypeName = operTypeName;
+	}
+
+	public String getOperTypeId() {
+		return operTypeId;
+	}
+
+	public void setOperTypeId(String operTypeId) {
+		this.operTypeId = operTypeId;
+	}
+
+	public List<OperationDetails> getOper() {
+		return oper;
+	}
+
+	public void setOper(List<OperationDetails> oper) {
+		this.oper = oper;
+	}
 }

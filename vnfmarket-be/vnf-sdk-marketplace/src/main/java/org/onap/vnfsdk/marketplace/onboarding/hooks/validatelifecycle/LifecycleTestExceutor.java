@@ -22,6 +22,7 @@ import java.util.Map;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.onap.vnfsdk.marketplace.common.CommonConstant;
+import org.onap.vnfsdk.marketplace.common.FileUtil;
 import org.onap.vnfsdk.marketplace.common.JsonUtil;
 import org.onap.vnfsdk.marketplace.msb.MsbDetails;
 import org.onap.vnfsdk.marketplace.msb.MsbDetailsHolder;
@@ -37,131 +38,158 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class LifecycleTestExceutor
-{
-    private static final Logger logger = LoggerFactory.getLogger(LifecycleTestExceutor.class);
-    public static final String CATALOUGE_UPLOAD_URL_IN = "{0}:{1}/openoapi/catalog/v1/csars";
+/* CALL Flow: onBoardingHandler --> LifecycleTestHook--> LifecycleTestExecutor */
+public class LifecycleTestExceutor {
+	private static final Logger logger = LoggerFactory.getLogger(LifecycleTestExceutor.class);
+	public static final String CATALOUGE_UPLOAD_URL_IN = "{0}:{1}/openoapi/catalog/v1/csars";
 
-    private LifecycleTestExceutor()
-    {}
+	private LifecycleTestExceutor() {
+		// Empty constructor
+	}
 
-    /**
-     * Interface to Send Request to Start Function test
-     * @param onBoradFuncTestReq
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    public static String uploadPackageToCatalouge(OnBoradingRequest onBoradFuncTestReq)
-    {
-        String packagePath = onBoradFuncTestReq.getPackagePath() + File.separator + onBoradFuncTestReq.getPackageName();
-        logger.info("Package file path uploadPackageToCatalouge:" + packagePath);
+	/**
+	 * Interface to upload package to catalogue
+	 * 
+	 * @param onBoradFuncTestReq
+	 * @return- csarId or null (in case of failure)
+	 */
+	@SuppressWarnings("unchecked")
+	public static String uploadPackageToCatalouge(OnBoradingRequest onBoradFuncTestReq) {
+		String packagePath = onBoradFuncTestReq.getPackagePath() + File.separator + onBoradFuncTestReq.getPackageName();
+		logger.info("Package file path uploadPackageToCatalouge:" + packagePath);
 
-        String catalougeCsarId = null;
-        MsbDetails oMsbDetails =  MsbDetailsHolder.getMsbDetails();
-        if(null == oMsbDetails)
-        {
-            logger.error("Failed to get MSB details during uploadPackageToCatalouge !!!");
-            return catalougeCsarId;
-        }
+		String catalougeCsarId = null;
 
-        File fileData = new File (packagePath);
+		// Validate package path
+		if (false == FileUtil.validatePath(packagePath)) {
+			logger.error("Failed to validate  package path");
+			return catalougeCsarId;
+		}
 
-        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-        builder.addBinaryBody("file", fileData, ContentType.MULTIPART_FORM_DATA, onBoradFuncTestReq.getPackageName());
+		MsbDetails oMsbDetails = MsbDetailsHolder.getMsbDetails();
+		if (null == oMsbDetails) {
+			logger.error("Failed to get MSB details during uploadPackageToCatalouge !!!");
+			return catalougeCsarId;
+		}
 
-        //IP and Port needs to be configured !!!
-        RestResponse rsp = RestfulClient.post(oMsbDetails.getDefaultServer().getHost(),Integer.parseInt(oMsbDetails.getDefaultServer().getPort()),CommonConstant.CATALOUGE_UPLOAD_URL,builder.build());
-        if(!checkValidResponse(rsp))
-        {
-            logger.error("Failed to upload package to catalouge:" + rsp.getStatusCode());
-            return catalougeCsarId;
-        }
+		File fileData = new File(packagePath);
 
-        logger.info("Response for uploadPackageToCatalouge :" +  rsp.getResult());
-        catalougeCsarId = getCsarIdValue(rsp.getResult());
+		// Validate file
+		if (false == FileUtil.validateFile(fileData)) {
+			logger.error("Failed to validate file information");
+			return catalougeCsarId;
+		}
 
-        logger.info("CSARID for uploadPackageToCatalouge :" + catalougeCsarId);
-        return catalougeCsarId;
-    }
+		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+		builder.addBinaryBody("file", fileData, ContentType.MULTIPART_FORM_DATA, onBoradFuncTestReq.getPackageName());
 
+		// IP and Port needs to be configured !!!
+		RestResponse rsp = RestfulClient.post(oMsbDetails.getDefaultServer().getHost(),
+				Integer.parseInt(oMsbDetails.getDefaultServer().getPort()), CommonConstant.CATALOUGE_UPLOAD_URL,
+				builder.build());
+		if (false == checkValidResponse(rsp)) {
+			logger.error("Failed to upload package to catalouge:" + rsp.getStatusCode());
+			return catalougeCsarId;
+		}
 
+		logger.info("Response for uploadPackageToCatalouge :" + rsp.getResult());
+		catalougeCsarId = getCsarIdValue(rsp.getResult());
 
+		logger.info("CSARID for uploadPackageToCatalouge :" + catalougeCsarId);
+		return catalougeCsarId;
+	}
 
-    public static String execlifecycleTest(OnBoradingRequest onBoradFuncTestReq, LifeCycleTestReq oLifeCycleTestReq)
-    {
-        String packagePath = onBoradFuncTestReq.getPackagePath() + File.separator + onBoradFuncTestReq.getPackageName();
-        logger.info("Package file path Function test:" + packagePath);
+	/**
+	 * Interface to execute lifecycle test
+	 * 
+	 * @param onBoradFuncTestReq,
+	 *            oLifeCycleTestReq
+	 * @return result of the test or null (in case of failure)
+	 */
+	public static String execlifecycleTest(OnBoradingRequest onBoradFuncTestReq, LifeCycleTestReq oLifeCycleTestReq) {
 
-        MsbDetails oMsbDetails =  MsbDetailsHolder.getMsbDetails();
-        if(null == oMsbDetails) {
-            logger.error("Failed to get MSB details during execlifecycleTest !!!");
-            return null;
-        }
+		String result = null;
+		if ((null == onBoradFuncTestReq.getPackagePath()) || (null == onBoradFuncTestReq.getPackageName())) {
+			logger.error("Package path or name is invalid");
+			return result;
+		}
 
-        String rawDataJson = JsonUtil.toJson(oLifeCycleTestReq);
-        if(null == rawDataJson) {
-            logger.error("Failed to convert LifeCycleTestReq object to Json String !!!");
-            return null;
-        }
+		String packagePath = onBoradFuncTestReq.getPackagePath() + File.separator + onBoradFuncTestReq.getPackageName();
+		logger.info("Package file path Function test:" + packagePath);
 
-        RestResponse oResponse = RestfulClient.sendPostRequest(oMsbDetails.getDefaultServer().getHost(),
-                oMsbDetails.getDefaultServer().getPort(),
-                CommonConstant.LifeCycleTest.LIFECYCLE_TEST_URL, rawDataJson);
+		// Validate package path
+		if (false == FileUtil.validatePath(packagePath)) {
+			logger.error("Failed to validate  path");
+			return result;
+		}
 
-        if(!checkValidResponse(oResponse)) {
-            logger.error("execlifecycleTest response is faliure :"+ oResponse.getStatusCode());
-            return null;
-        }
-        logger.info("Response execlifecycleTest :"+ oResponse.getResult());
-        return oResponse.getResult();
-    }
+		MsbDetails oMsbDetails = MsbDetailsHolder.getMsbDetails();
+		if (null == oMsbDetails) {
+			logger.error("Failed to get MSB details during execlifecycleTest !!!");
+			return result;
+		}
 
-    /**
-     * Check Response is Valid
-     * @param rsp
-     * @return
-     */
-    private static boolean checkValidResponse(RestResponse rsp)
-    {
-        if (rsp.getStatusCode() == null || rsp.getResult() == null
-                || (RestConstant.RESPONSE_CODE_200 != rsp.getStatusCode() && RestConstant.RESPONSE_CODE_201 != rsp.getStatusCode()))
-        {
-            return false;
-        }
-        return true;
-    }
+		String rawDataJson = JsonUtil.toJson(oLifeCycleTestReq);
+		if (null == rawDataJson) {
+			logger.error("Failed to convert LifeCycleTestReq object to Json String !!!");
+			return result;
+		}
 
-    /**
-     *
-     * @param strJsonData
-     * @return
-     */
-    private static String getCsarIdValue(String strJsonData)
-    {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        Map<String, String> dataMap = null;
-        try
-        {
-            dataMap = mapper.readValue(strJsonData, Map.class);
-        } catch(JsonParseException e) {
-            logger.error("JsonParseException:Failed to upload package to catalouge:", e);
-        } catch(JsonMappingException e) {
-            logger.error("JsonMappingException:Failed to upload package to catalouge:", e);
-        } catch(IOException e) {
-            logger.error("IOException:Failed to upload package to catalouge:", e);
-        }
-        try
-        {
-            if(dataMap != null) {
-                return dataMap.get("csarId");
-            }
-        }
-        catch (NullPointerException e)
-        {
-            logger.error("NullPointerException:Failed to get csarId", e);
-        }
-        return "";
-    }
+		RestResponse oResponse = RestfulClient.sendPostRequest(oMsbDetails.getDefaultServer().getHost(),
+				oMsbDetails.getDefaultServer().getPort(), CommonConstant.LifeCycleTest.LIFECYCLE_TEST_URL, rawDataJson);
+
+		if (false == checkValidResponse(oResponse)) {
+			logger.error("execlifecycleTest response is faliure :" + oResponse.getStatusCode());
+			return result;
+		}
+
+		result = oResponse.getResult();
+		logger.info("Response execlifecycleTest :" + oResponse.getResult());
+		return result;
+	}
+
+	/**
+	 * Check Response is Valid
+	 * 
+	 * @param rsp
+	 * @return valid(true) or invalid(false)
+	 */
+	private static boolean checkValidResponse(RestResponse rsp) {
+		if ((null == rsp.getStatusCode()) || (null == rsp.getResult())
+				|| (RestConstant.RESPONSE_CODE_200 != rsp.getStatusCode()
+						&& RestConstant.RESPONSE_CODE_201 != rsp.getStatusCode())) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Get csar Id value
+	 *
+	 * @param strJsonData
+	 * @return empty(failure), or csarId(success)
+	 */
+	private static String getCsarIdValue(String strJsonData) {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		Map<String, String> dataMap = null;
+
+		try {
+			dataMap = mapper.readValue(strJsonData, Map.class);
+		} catch (JsonParseException e) {
+			logger.error("JsonParseException:Failed to upload package to catalouge:", e);
+		} catch (JsonMappingException e) {
+			logger.error("JsonMappingException:Failed to upload package to catalouge:", e);
+		} catch (IOException e) {
+			logger.error("IOException:Failed to upload package to catalouge:", e);
+		}
+		try {
+			if (null != dataMap) {
+				return dataMap.get("csarId");
+			}
+		} catch (NullPointerException e) {
+			logger.error("NullPointerException:Failed to get csarId", e);
+		}
+		return "";
+	}
 }
-

@@ -19,6 +19,7 @@ import java.util.List;
 
 public class OnBoardingSteps 
 {
+	// List of on-boarding operations
     private List<OnBoardingStep> operTypeList;
 
     public List<OnBoardingStep> getOperTypeList() {

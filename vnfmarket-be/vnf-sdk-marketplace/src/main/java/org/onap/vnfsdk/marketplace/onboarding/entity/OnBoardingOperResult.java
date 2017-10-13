@@ -14,20 +14,27 @@
  * limitations under the License.
  */
 package org.onap.vnfsdk.marketplace.onboarding.entity;
-public class OnBoardingOperResult 
-{
-    private String operId;
-    private int status;
-    public String getOperId() {
-        return operId;
-    }
-    public void setOperId(String operId) {
-        this.operId = operId;
-    }
-    public int getStatus() {
-        return status;
-    }
-    public void setStatus(int status) {
-        this.status = status;
-    } 
+
+public class OnBoardingOperResult {
+	// Operation ID: for on-boarding function
+	private String operId;
+
+	// Status of on-boarding function
+	private int status;
+
+	public String getOperId() {
+		return operId;
+	}
+
+	public void setOperId(String operId) {
+		this.operId = operId;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
 }
