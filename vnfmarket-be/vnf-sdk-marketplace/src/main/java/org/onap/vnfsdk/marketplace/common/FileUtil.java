@@ -43,10 +43,12 @@ public final class FileUtil {
 
 	private static final int BUFFER_SIZE = 2 * 1024 * 1024;
 
+	private static final int MAX_PACKAGE_SIZE = 50 * 1024 * 1024;
+
 	private static final int TRY_COUNT = 3;
 
 	private FileUtil() {
-		// Empty constructor 
+		// Empty constructor
 	}
 
 	/**
@@ -268,14 +270,43 @@ public final class FileUtil {
 	}
 
 	public static boolean validateStream(FileInputStream ifs) {
+
+		if (null == ifs) {
+			logger.error("File stream is null");
+			return false;
+		}
+
+		try {
+			if (false == ifs.getFD().valid()) {
+				logger.error("File descriptor is not valid");
+				return false;
+			}
+		} catch (IOException e) {
+			logger.error("Exception while getting File descriptor", e);
+		}
+
 		return true;
 	}
 
 	public static boolean validatePath(String path) {
+		if (!new File(path).isDirectory()) {
+			logger.error("File is not a directory");
+			return false;
+		}
 		return true;
 	}
 
 	public static boolean validateFile(File fileData) {
+		if (null == fileData) {
+			logger.error("File data is null");
+			return false;
+		}
+
+		if (MAX_PACKAGE_SIZE < fileData.length()) {
+			logger.error("File size is greater than 50 MB", fileData.length());
+			return false;
+		}
+
 		return true;
 	}
 }
