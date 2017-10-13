@@ -32,187 +32,220 @@ import org.onap.vnfsdk.marketplace.onboarding.entity.ResultKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class FunctionTestHook
-{
-    private static final Logger logger = LoggerFactory.getLogger(FunctionTestHook.class);
+/* It executes the function test (test cases in robot framework) test for the VNF on the specified VM and 
+ * collects the result and return result to the caller  
+ *  
+ *  OnBoardingHandler --> FunctionTestHook---> FunctionTestExecutor    */
 
-    /**
-     * Start Executing Function test
-     * @param onBoradingReq
-     * @return
-     */
-    public int exec(OnBoradingRequest onBoradingReq)
-    {
-        logger.info("OnboradingRequest received for Package:" + onBoradingReq.getCsarId() + " Path:"+ onBoradingReq.getPackagePath());
+public class FunctionTestHook {
+	private static final Logger logger = LoggerFactory.getLogger(FunctionTestHook.class);
 
-        buildResultPath(onBoradingReq);
+	/**
+	 * Start Executing Function test
+	 * 
+	 * @param onBoradingReq
+	 * @return Failure or success, Onboarding result
+	 */
+	public int exec(OnBoradingRequest onBoradingReq) {		
+		
+		logger.info("OnboradingRequest received for Package:" + onBoradingReq.getCsarId() + " Path:"
+				+ onBoradingReq.getPackagePath());
 
-        OnBoardingResult oFuncTestResult = new OnBoardingResult();
-        buildFunctResponse(onBoradingReq,oFuncTestResult);
-        updateResult(oFuncTestResult);
+		buildResultPath(onBoradingReq);
 
-        //STEP 1:Check Package Exists
-        //---------------------------
-        if(!FileUtil.checkFileExists(onBoradingReq.getPackagePath()))
-        {
-            logger.info("Package Not Found at Path:" + onBoradingReq.getPackagePath() + ", Package Id:" + onBoradingReq.getCsarId());
-            oFuncTestResult.setOperFinished(true);
-            oFuncTestResult.setOperStatus(EnumResult.FAIL.getIndex());
-            buildFuncTestResponse(oFuncTestResult,CommonConstant.functionTest.FUNCTEST_PACKAGE_EXISTS,EnumOperationStatus.FAILED.getIndex());
-            updateResult(oFuncTestResult);
-            return EnumResult.FAIL.getIndex();
-        }
+		OnBoardingResult oFuncTestResult = new OnBoardingResult();
+		buildFunctResponse(onBoradingReq, oFuncTestResult);
+		updateResult(oFuncTestResult);
 
-        buildFuncTestResponse(oFuncTestResult,CommonConstant.functionTest.FUNCTEST_PACKAGE_EXISTS,EnumOperationStatus.SUCCESS.getIndex());
-        updateResult(oFuncTestResult);
+		// STEP 1:Check Package Exists
+		// ---------------------------
+		if (!FileUtil.checkFileExists(onBoradingReq.getPackagePath())) {
+			logger.error("Package Not Found at Path:" + onBoradingReq.getPackagePath() + ", Package Id:"
+					+ onBoradingReq.getCsarId());
+			oFuncTestResult.setOperFinished(true);
+			oFuncTestResult.setOperStatus(EnumResult.FAIL.getIndex());
+			buildFuncTestResponse(oFuncTestResult, CommonConstant.functionTest.FUNCTEST_PACKAGE_EXISTS,
+					EnumOperationStatus.FAILED.getIndex());
+			updateResult(oFuncTestResult);
+			return EnumResult.FAIL.getIndex();
+		}
 
-        //STEP 2:Handle function test for Package
-        //---------------------------------------
-        String functestResultKey = FunctionTestExceutor.execFunctionTest(onBoradingReq);
-        if(null == functestResultKey)
-        {
-            oFuncTestResult.setOperFinished(true);
-            oFuncTestResult.setOperStatus(EnumResult.FAIL.getIndex());
-            buildFuncTestResponse(oFuncTestResult,CommonConstant.functionTest.FUNCTEST_EXEC,EnumOperationStatus.FAILED.getIndex());
-            updateResult(oFuncTestResult);
-            return EnumResult.FAIL.getIndex();
-        }
+		buildFuncTestResponse(oFuncTestResult, CommonConstant.functionTest.FUNCTEST_PACKAGE_EXISTS,
+				EnumOperationStatus.SUCCESS.getIndex());
+		updateResult(oFuncTestResult);
 
-        oFuncTestResult.setOperFinished(true);
-        oFuncTestResult.setOperStatus(EnumResult.SUCCESS.getIndex());
-        buildFuncTestResponse(oFuncTestResult,CommonConstant.functionTest.FUNCTEST_EXEC,EnumOperationStatus.SUCCESS.getIndex());
-        updateResult(oFuncTestResult);
+		// STEP 2:Handle function test for Package
+		// ---------------------------------------
+		String functestResultKey = FunctionTestExceutor.execFunctionTest(onBoradingReq);
+		if (null == functestResultKey) {
+			oFuncTestResult.setOperFinished(true);
+			oFuncTestResult.setOperStatus(EnumResult.FAIL.getIndex());
+			buildFuncTestResponse(oFuncTestResult, CommonConstant.functionTest.FUNCTEST_EXEC,
+					EnumOperationStatus.FAILED.getIndex());
+			updateResult(oFuncTestResult);
+			return EnumResult.FAIL.getIndex();
+		}
 
-        //STEP 3:Store FuncTest key to get FuncTest Results
-        //-------------------------------------------------
-        storeFuncTestResultKey(onBoradingReq,functestResultKey);
+		oFuncTestResult.setOperFinished(true);
+		oFuncTestResult.setOperStatus(EnumResult.SUCCESS.getIndex());
+		buildFuncTestResponse(oFuncTestResult, CommonConstant.functionTest.FUNCTEST_EXEC,
+				EnumOperationStatus.SUCCESS.getIndex());
+		updateResult(oFuncTestResult);
 
-        return (oFuncTestResult.getOperStatus() == EnumResult.SUCCESS.getIndex())
-                ? EnumResult.SUCCESS.getIndex() : EnumResult.FAIL.getIndex();
-    }
+		// STEP 3:Store FuncTest key to get FuncTest Results
+		// -------------------------------------------------
+		storeFuncTestResultKey(onBoradingReq, functestResultKey);
 
-    /**
-     *
-     * @param onBoradingReq
-     */
-    private void buildResultPath(OnBoradingRequest onBoradingReq)
-    {
-        String filePath = getResultStorePath() + File.separator + onBoradingReq.getCsarId();
-        if(!FileUtil.checkFileExists(filePath))
-        {
-            FileUtil.createDirectory(filePath);
-        }
-    }
+		return (oFuncTestResult.getOperStatus() == EnumResult.SUCCESS.getIndex()) ? EnumResult.SUCCESS.getIndex()
+				: EnumResult.FAIL.getIndex();
+	}
 
-    /**
-     *
-     * @param packageData
-     * @return
-     */
-    public static String getFuncTestResults(PackageData packageData)
-    {
-        logger.info("Function Test results request for Package:" + packageData.getCsarId());
-        ResultKey keydata = getFuncTestResultKey(packageData);
-        if(null == keydata || keydata.getKey().isEmpty())
-        {
-            logger.info("Function Test key Not Found for Package Id:",packageData.getCsarId());
-            return null;
-        }
-        return  FunctionTestExceutor.getTestResultsByFuncTestKey(keydata.getKey());
-    }
+	/**
+	 * Build result path
+	 *
+	 * @param onBoradingReq
+	 */
+	private void buildResultPath(OnBoradingRequest onBoradingReq) {
+		String filePath = getResultStorePath() + File.separator + onBoradingReq.getCsarId();
+		if (!FileUtil.checkFileExists(filePath)) {
+			FileUtil.createDirectory(filePath);
+		}
+	}
 
-    /**
-     * Store Function Test Result key
-     * @param onBoradingReq
-     * @param resultKey
-     */
-    private void storeFuncTestResultKey(OnBoradingRequest onBoradingReq,String resultKey)
-    {
-        //Currently we will make JSON and Store JSON to Package Path)
-        //-------------------------------------------------------------------------------
-        String filePath = getResultStorePath() + File.separator + onBoradingReq.getCsarId() + File.separator + "functestResultKey.json";
+	/**Get Function Test result
+	 *
+	 * @param packageData
+	 * @return null on failure, function test result on success
+	 */
+	public static String getFuncTestResults(PackageData packageData) {
+		if (null == packageData) {
+			logger.error("Package data is invalid - null");
+			return null;
+		}
+		
+		logger.info("Function Test results request for Package:" + packageData.getCsarId());
+		ResultKey keydata = getFuncTestResultKey(packageData);
+		if ((null == keydata) || (keydata.getKey().isEmpty())) {
+			logger.error("Function Test key Not Found for Package Id:", packageData.getCsarId());
+			return null;
+		}
+		return FunctionTestExceutor.getTestResultsByFuncTestKey(keydata.getKey());
+	}
 
-        logger.info("Function test Results Key for Package Id:" + onBoradingReq.getCsarId() + ", Key:" + resultKey + " Path" + filePath);
+	/**
+	 * Store Function Test Result key
+	 * 
+	 * @param onBoradingReq
+	 * @param resultKey
+	 */
+	private void storeFuncTestResultKey(OnBoradingRequest onBoradingReq, String resultKey) {
+		// Currently we will make JSON and Store JSON to Package Path)
+		// -------------------------------------------------------------------------------
+		StringBuffer filePath = new StringBuffer(getResultStorePath());
+		filePath.append(File.separator);
+		filePath.append(onBoradingReq.getCsarId());
+		filePath.append(File.separator);
+		filePath.append("functestResultKey.json");
 
-        ResultKey oResultKey = new ResultKey();
-        oResultKey.setCsarId(onBoradingReq.getCsarId());
-        oResultKey.setOperTypeId(CommonConstant.functionTest.FUNCTEST_OPERTYPE_ID);
-        oResultKey.setKey(resultKey);
+		logger.debug("Function test Results Key for Package Id:" + onBoradingReq.getCsarId() + ", Key:" + resultKey
+				+ " Path" + filePath.toString());
 
-        FileUtil.writeJsonDatatoFile(filePath,oResultKey);
-    }
+		ResultKey oResultKey = new ResultKey();
+		oResultKey.setCsarId(onBoradingReq.getCsarId());
+		oResultKey.setOperTypeId(CommonConstant.functionTest.FUNCTEST_OPERTYPE_ID);
+		oResultKey.setKey(resultKey);
 
-    /**
-     * Store Function test Execution Results
-     * @param oFuncTestResult
-     */
-    private void updateResult(OnBoardingResult oFuncTestResult)
-    {
-        //STore Results to DB(Currently we will make JSON and Store JSON to Package Path)
-        //-------------------------------------------------------------------------------
-        logger.info("Function test Status for Package Id:" + oFuncTestResult.getCsarId() + ", Result:" + ToolUtil.objectToString(oFuncTestResult));
-        String filePath = getResultStorePath()  + File.separator  + oFuncTestResult.getCsarId() + File.separator + "functionTest.json";
-        FileUtil.writeJsonDatatoFile(filePath,oFuncTestResult);
-    }
+		FileUtil.writeJsonDatatoFile(filePath.toString(), oResultKey);
+	}
 
-    /**
-     * Build Function Test Response
-     * @param onBoradingReq
-     * @param oFuncTestResult
-     */
-    private void buildFunctResponse(OnBoradingRequest onBoradingReq, OnBoardingResult oFuncTestResult)
-    {
-        oFuncTestResult.setOperFinished(false);
-        oFuncTestResult.setCsarId(onBoradingReq.getCsarId());
-        oFuncTestResult.setOperTypeId(CommonConstant.functionTest.FUNCTEST_OPERTYPE_ID);
+	/**
+	 * Store Function test Execution Results
+	 * 
+	 * @param oFuncTestResult
+	 */
+	private void updateResult(OnBoardingResult oFuncTestResult) {
+		// STore Results to DB(Currently we will make JSON and Store JSON to
+		// Package Path)
+		// -------------------------------------------------------------------------------
+		logger.debug("Function test Status for Package Id:" + oFuncTestResult.getCsarId() + ", Result:"
+				+ ToolUtil.objectToString(oFuncTestResult));
+		
+		StringBuffer filePath = new StringBuffer(getResultStorePath());
+		filePath.append(File.separator);
+		filePath.append(oFuncTestResult.getCsarId());
+		filePath.append(File.separator);
+		filePath.append("functionTest.json");
+		
+		FileUtil.writeJsonDatatoFile(filePath.toString(), oFuncTestResult);
+	}
 
-        OnBoardingOperResult oPackageExists = new OnBoardingOperResult();
-        oPackageExists.setOperId(CommonConstant.functionTest.FUNCTEST_PACKAGE_EXISTS);
-        oPackageExists.setStatus(EnumOperationStatus.NOTSTARTED.getIndex());
+	/**
+	 * Build Function Test Response
+	 * 
+	 * @param onBoradingReq
+	 * @param oFuncTestResult
+	 */
+	private void buildFunctResponse(OnBoradingRequest onBoradingReq, OnBoardingResult oFuncTestResult) {
+		oFuncTestResult.setOperFinished(false);
+		oFuncTestResult.setCsarId(onBoradingReq.getCsarId());
+		oFuncTestResult.setOperTypeId(CommonConstant.functionTest.FUNCTEST_OPERTYPE_ID);
 
-        OnBoardingOperResult functTesExec = new OnBoardingOperResult();
-        functTesExec.setOperId(CommonConstant.functionTest.FUNCTEST_EXEC);
-        functTesExec.setStatus(EnumOperationStatus.NOTSTARTED.getIndex());
+		OnBoardingOperResult oPackageExists = new OnBoardingOperResult();
+		oPackageExists.setOperId(CommonConstant.functionTest.FUNCTEST_PACKAGE_EXISTS);
+		oPackageExists.setStatus(EnumOperationStatus.NOTSTARTED.getIndex());
 
-        List<OnBoardingOperResult> operResult = new ArrayList<>();
-        operResult.add(oPackageExists);
-        operResult.add(functTesExec);
+		OnBoardingOperResult functTesExec = new OnBoardingOperResult();
+		functTesExec.setOperId(CommonConstant.functionTest.FUNCTEST_EXEC);
+		functTesExec.setStatus(EnumOperationStatus.NOTSTARTED.getIndex());
 
-        oFuncTestResult.setOperResult(operResult);
-    }
+		List<OnBoardingOperResult> operResult = new ArrayList<>();
+		operResult.add(oPackageExists);
+		operResult.add(functTesExec);
 
-    public static OnBoardingResult getOnBoardingResult(PackageData packageData)
-    {
-        String filePath = getResultStorePath()  + File.separator + packageData.getCsarId() +File.separator + "functionTest.json";
-        logger.info("On Boarding Status for Package Id:" + packageData.getCsarId() + ", Result Path:" + filePath);
+		oFuncTestResult.setOperResult(operResult);
+	}
 
-        return (OnBoardingResult)FileUtil.readJsonDatafFromFile(filePath,OnBoardingResult.class);
-    }
+	public static OnBoardingResult getOnBoardingResult(PackageData packageData) {
 
-    private static ResultKey getFuncTestResultKey(PackageData packageData)
-    {
-        String fileName = getResultStorePath() + File.separator + packageData.getCsarId() + File.separator + "functestResultKey.json";
+		if (null == packageData) {
+			logger.error("Pacakage data is invalid-null");
+			return null;
+		}
 
-        logger.info("Func Test Result key for Package Id:" + packageData.getCsarId() + ", Result Path:" + fileName);
-        return (ResultKey) FileUtil.readJsonDatafFromFile(fileName,ResultKey.class);
-    }
+		StringBuffer filePath = new StringBuffer(getResultStorePath());
+		filePath.append(File.separator);
+		filePath.append(packageData.getCsarId());
+		filePath.append(File.separator);
+		filePath.append("functionTest.json");
 
-    private static String getResultStorePath()
-    {
-        return org.onap.vnfsdk.marketplace.filemanage.http.ToolUtil.getHttpServerAbsolutePath();
-    }
+		logger.info("On Boarding Status for Package Id:" + packageData.getCsarId() + ", Result Path:" + filePath);
 
-    private void buildFuncTestResponse(OnBoardingResult oFuncTestResult, String opreKey, int operStatusVal)
-    {
-        List<OnBoardingOperResult>  operStatusList = oFuncTestResult.getOperResult();
-        for(OnBoardingOperResult operObj: operStatusList)
-        {
-            if(operObj.getOperId().equalsIgnoreCase(opreKey))
-            {
-                operObj.setStatus(operStatusVal);
-                break;
-            }
-        }
-    }
+		return (OnBoardingResult) FileUtil.readJsonDatafFromFile(filePath.toString(), OnBoardingResult.class);
+	}
+
+	private static ResultKey getFuncTestResultKey(PackageData packageData) {
+		StringBuffer fileName = new StringBuffer(getResultStorePath());
+		fileName.append(File.separator);
+		fileName.append(packageData.getCsarId());
+		fileName.append(File.separator);
+		fileName.append("functestResultKey.json");
+
+		logger.info("Func Test Result key for Package Id:" + packageData.getCsarId() + ", Result Path:" + fileName);
+		return (ResultKey) FileUtil.readJsonDatafFromFile(fileName.toString(), ResultKey.class);
+	}
+
+	private static String getResultStorePath() {
+		// Using full path due to compilation issue
+		return org.onap.vnfsdk.marketplace.filemanage.http.ToolUtil.getHttpServerAbsolutePath();
+	}
+
+	private void buildFuncTestResponse(OnBoardingResult oFuncTestResult, String opreKey, int operStatusVal) {
+		List<OnBoardingOperResult> operStatusList = oFuncTestResult.getOperResult();
+		for (OnBoardingOperResult operObj : operStatusList) {
+			if (operObj.getOperId().equalsIgnoreCase(opreKey)) {
+				operObj.setStatus(operStatusVal);
+				break;
+			}
+		}
+	}
 }
-

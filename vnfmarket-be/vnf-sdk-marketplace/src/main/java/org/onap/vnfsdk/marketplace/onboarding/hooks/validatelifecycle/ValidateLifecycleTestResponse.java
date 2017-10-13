@@ -15,34 +15,49 @@
  */
 package org.onap.vnfsdk.marketplace.onboarding.hooks.validatelifecycle;
 
-public class ValidateLifecycleTestResponse 
-{
-    private String jobId;
-    private String validate_status;
-    private String lifecycle_status;
-    private VnfInfo vnf_info;
-    public String getJobId() {
-        return jobId;
-    }
-    public void setJobId(String jobId) {
-        this.jobId = jobId;
-    }
-    public String getValidate_status() {
-        return validate_status;
-    }
-    public void setValidate_status(String validate_status) {
-        this.validate_status = validate_status;
-    }
-    public String getLifecycle_status() {
-        return lifecycle_status;
-    }
-    public void setLifecycle_status(String lifecycle_status) {
-        this.lifecycle_status = lifecycle_status;
-    }
-    public VnfInfo getVnf_info() {
-        return vnf_info;
-    }
-    public void setVnf_info(VnfInfo vnf_info) {
-        this.vnf_info = vnf_info;
-    }
+public class ValidateLifecycleTestResponse {
+	
+	// Job Id of the lifecycle test request
+	private String jobId;
+	
+	// Status of the validation
+	private String validate_status;
+	
+	// Status of lifecycle test
+	private String lifecycle_status;
+	
+	// Vnf and VM information where the Vnfs are located
+	private VnfInfo vnf_info;
+
+	public String getJobId() {
+		return jobId;
+	}
+
+	public void setJobId(String jobId) {
+		this.jobId = jobId;
+	}
+
+	public String getValidate_status() {
+		return validate_status;
+	}
+
+	public void setValidate_status(String validate_status) {
+		this.validate_status = validate_status;
+	}
+
+	public String getLifecycle_status() {
+		return lifecycle_status;
+	}
+
+	public void setLifecycle_status(String lifecycle_status) {
+		this.lifecycle_status = lifecycle_status;
+	}
+
+	public VnfInfo getVnf_info() {
+		return vnf_info;
+	}
+
+	public void setVnf_info(VnfInfo vnf_info) {
+		this.vnf_info = vnf_info;
+	}
 }

@@ -24,40 +24,56 @@ import org.onap.vnfsdk.marketplace.onboarding.hooks.validatelifecycle.LifecycleT
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public final class OnBoardingHandler
-{
-    private static final Logger logger = LoggerFactory.getLogger(OnBoardingHandler.class);
+/* Call Flow: PackageWrapper(package upload) --> OnBoardingHandler (package on boarding) */
+public final class OnBoardingHandler {
 
-    public void handleOnBoardingReq(OnBoradingRequest onBoradingReq) 
-    {               
-        //Handle Package Life cycle/Validation
-        //------------------------------------
-        LifecycleTestHook oLifecycleTestHook = new LifecycleTestHook();
-        int iLifeCycleResponse = oLifecycleTestHook.exec(onBoradingReq);        
-        if(EnumResult.SUCCESS.getIndex() != iLifeCycleResponse)
-        {
-            logger.error("Onboarding falied for Package Id during Lifecycle Test:" + onBoradingReq.getCsarId());
-        } 
-        
-        //Handle Package FunctionTest
-        //-------------------------
-        FunctionTestHook oFunctionTestHook = new FunctionTestHook();
-        int iFuncTestResponse = oFunctionTestHook.exec(onBoradingReq);          
-        if(EnumResult.SUCCESS.getIndex() != iFuncTestResponse)
-        {
-            logger.error("Onboarding falied for Package Id during Function Test:" + onBoradingReq.getCsarId());
-            return;
-        }      
-        
-        FileUtil.deleteDirectory(onBoradingReq.getPackagePath());    
-        try 
-        {
-            PackageManager.getInstance().updateDwonloadCount(onBoradingReq.getCsarId());
-        } 
-        catch (Exception e) 
-        {
-            logger.error("Download count udate failed for Package:" + onBoradingReq.getPackagePath() ,e);
-        }
-    }
+	private static final Logger logger = LoggerFactory.getLogger(OnBoardingHandler.class);
+
+	public void handleOnBoardingReq(OnBoradingRequest onBoardingReq) {
+
+		// Step 0: Input validation
+		// ------------------------------
+		if (null == onBoardingReq) {
+			logger.error("Invalid input:Onboarding request is null");
+			return;
+		}
+
+		if ((null == onBoardingReq.getPackagePath()) || (null == onBoardingReq.getPackageName())) {
+			logger.error("Package path or name is invalid");
+			return;
+		}
+		
+		if (null == onBoardingReq.getCsarId()) {
+			logger.error("CsarId is invalid - null");
+			return;
+		}
+
+		// Step 1:Handle Package Life cycle/Validation
+		// ------------------------------------
+		LifecycleTestHook oLifecycleTestHook = new LifecycleTestHook();
+		int iLifeCycleResponse = oLifecycleTestHook.exec(onBoardingReq);
+		if (EnumResult.SUCCESS.getIndex() != iLifeCycleResponse) {
+			logger.error("Onboarding failed for Package Id during Lifecycle Test:" + onBoardingReq.getCsarId());
+			// Note: We need to continue even if life cycle test fails as this
+			// test is not mandatory
+		}
+
+		// Step 2: Handle Package FunctionTest
+		// -------------------------
+		FunctionTestHook oFunctionTestHook = new FunctionTestHook();
+		int iFuncTestResponse = oFunctionTestHook.exec(onBoardingReq);
+		if (EnumResult.SUCCESS.getIndex() != iFuncTestResponse) {
+			logger.error("Onboarding failed for Package Id during Function Test:" + onBoardingReq.getCsarId());
+			// Note: We need to continue even if function test fails as this
+			// test is not mandatory
+		}
+
+		FileUtil.deleteDirectory(onBoardingReq.getPackagePath());
+		try {
+			PackageManager.getInstance().updateDownloadCount(onBoardingReq.getCsarId());
+		} catch (Exception e) {
+			logger.error("Download count update failed for Package:" + onBoardingReq.getPackagePath(), e);
+		}
+	}
 
 }

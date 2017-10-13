@@ -15,28 +15,38 @@
  */
 package org.onap.vnfsdk.marketplace.onboarding.hooks.validatelifecycle;
 
+public class VmsInfo {
+	
+	// Virtual machine ip address
+	private String ip;
+	
+	// Login username 
+	private String username;
+	
+	// Login password 
+	private String passwd;
 
-public class VmsInfo 
-{
-    private String ip;
-    private String username;
-    private String password;
-    public String getIp() {
-        return ip;
-    }
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-    public String getUsername() {
-        return username;
-    }
-    public void setUsername(String username) {
-        this.username = username;
-    }
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return passwd;
+	}
+
+	public void setPassword(String password) {
+		this.passwd = password;
+	}
 }

@@ -126,7 +126,7 @@ public class PackageManager {
      * @param packageId package id
      * @throws MarketplaceResourceException e
      */
-    public void updateDwonloadCount(String packageId) throws MarketplaceResourceException
+    public void updateDownloadCount(String packageId) throws MarketplaceResourceException
     {
         LOGGER.info("Request received for Updating down load count for ID:" + packageId);
 

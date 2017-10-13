@@ -37,255 +37,245 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
 public final class FileUtil {
 
-    public static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
+	public static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
 
-    private static final int BUFFER_SIZE = 2 * 1024 * 1024;
+	private static final int BUFFER_SIZE = 2 * 1024 * 1024;
 
-    private static final int TRY_COUNT = 3;
+	private static final int TRY_COUNT = 3;
 
-    private FileUtil() {
+	private FileUtil() {
+		// Empty constructor 
+	}
 
-    }
+	/**
+	 * create dir.
+	 * 
+	 * @param dir
+	 *            dir to create
+	 * @return boolean
+	 */
+	public static boolean createDirectory(String dir) {
+		File folder = new File(dir);
+		int tryCount = 0;
+		while (tryCount < TRY_COUNT) {
+			tryCount++;
+			if (!folder.exists() && !folder.mkdirs()) {
+				continue;
+			} else {
+				return true;
+			}
+		}
 
+		return folder.exists();
+	}
 
-    /**
-     * create dir.
-     * @param dir dir to create
-     * @return boolean
-     */
-    public static boolean createDirectory(String dir) {
-        File folder = new File(dir);
-        int tryCount = 0;
-        while (tryCount < TRY_COUNT) {
-            tryCount++;
-            if (!folder.exists() && !folder.mkdirs()) {
-                continue;
-            } else {
-                return true;
-            }
-        }
+	/**
+	 * delete file.
+	 * 
+	 * @param file
+	 *            the file to delete
+	 * @return boolean
+	 */
+	public static boolean deleteFile(File file) {
+		String hintInfo = file.isDirectory() ? "dir " : "file ";
+		boolean isFileDeleted = file.delete();
+		boolean isFileExist = file.exists();
+		if (!isFileExist) {
+			if (isFileDeleted) {
+				logger.info("delete " + hintInfo + file.getAbsolutePath());
+			} else {
+				isFileDeleted = true;
+				logger.info("file not exist. no need delete " + hintInfo + file.getAbsolutePath());
+			}
+		} else {
+			logger.info("fail to delete " + hintInfo + file.getAbsolutePath());
+		}
+		return isFileDeleted;
+	}
 
-        return folder.exists();
-    }
+	/**
+	 * unzip zip file.
+	 * 
+	 * @param zipFileName
+	 *            file name to zip
+	 * @param extPlace
+	 *            extPlace
+	 * @return unzip file name
+	 * @throws IOException
+	 *             e1
+	 */
+	public static List<String> unzip(String zipFileName, String extPlace) throws IOException {
+		List<String> unzipFileNams = new ArrayList<>();
 
-    /**
-     * delete file.
-     * @param file the file to delete
-     * @return boolean
-     */
-    public static boolean deleteFile(File file) {
-        String hintInfo = file.isDirectory() ? "dir " : "file ";
-        boolean isFileDeleted = file.delete();
-        boolean isFileExist = file.exists();
-        if (!isFileExist) {
-            if (isFileDeleted) {
-                logger.info("delete " + hintInfo + file.getAbsolutePath());
-            } else {
-                isFileDeleted = true;
-                logger.info("file not exist. no need delete " + hintInfo + file.getAbsolutePath());
-            }
-        } else {
-            logger.info("fail to delete " + hintInfo + file.getAbsolutePath());
-        }
-        return isFileDeleted;
-    }
+		try (ZipFile zipFile = new ZipFile(zipFileName);) {
+			Enumeration<?> fileEn = zipFile.entries();
+			byte[] buffer = new byte[BUFFER_SIZE];
 
+			while (fileEn.hasMoreElements()) {
+				ZipEntry entry = (ZipEntry) fileEn.nextElement();
+				if (entry.isDirectory()) {
+					continue;
+				}
 
-    /**
-     * unzip zip file.
-     * @param zipFileName file name to zip
-     * @param extPlace extPlace
-     * @return unzip file name
-     * @throws IOException e1
-     */
-    public static List<String> unzip(String zipFileName, String extPlace) throws IOException {
-        List<String> unzipFileNams = new ArrayList<>();
+				File file = new File(extPlace, entry.getName());
+				if (!file.getParentFile().exists()) {
+					createDirectory(file.getParentFile().getAbsolutePath());
+				}
 
-        try (
-            ZipFile zipFile = new ZipFile(zipFileName);
-        ) {
-            Enumeration<?> fileEn = zipFile.entries();
-            byte[] buffer = new byte[BUFFER_SIZE];
+				try (InputStream input = zipFile.getInputStream(entry);
+						BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));) {
+					int length = 0;
+					while ((length = input.read(buffer)) != -1) {
+						bos.write(buffer, 0, length);
+					}
+					unzipFileNams.add(file.getAbsolutePath());
+				}
+			}
+		}
+		return unzipFileNams;
+	}
 
-            while (fileEn.hasMoreElements()) {
-                ZipEntry entry = (ZipEntry) fileEn.nextElement();
-                if (entry.isDirectory()) {
-                    continue;
-                }
+	/**
+	 * close InputStream.
+	 *
+	 * @param inputStream
+	 *            the inputstream to close
+	 */
+	public static void closeInputStream(InputStream inputStream) {
+		try {
+			if (inputStream != null) {
+				inputStream.close();
+			}
+		} catch (Exception e1) {
+			logger.info("error while closing InputStream!", e1);
+		}
+	}
 
-                File file = new File(extPlace, entry.getName());
-                if (!file.getParentFile().exists()) {
-                    createDirectory(file.getParentFile().getAbsolutePath());
-                }
+	/**
+	 * close OutputStream.
+	 *
+	 * @param outputStream
+	 *            the output stream to close
+	 */
+	public static void closeOutputStream(OutputStream outputStream) {
+		try {
+			if (outputStream != null) {
+				outputStream.close();
+			}
+		} catch (Exception e1) {
+			logger.info("error while closing OutputStream!", e1);
+		}
+	}
 
-                try (
-                    InputStream input = zipFile.getInputStream(entry);
-                    BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-                ) {
-                    int length = 0;
-                    while ((length = input.read(buffer)) != -1) {
-                        bos.write(buffer, 0, length);
-                    }
-                    unzipFileNams.add(file.getAbsolutePath());
-                }
-            }
-        }
-        return unzipFileNams;
-    }
+	public static void closeFileStream(FileInputStream ifs) {
+		try {
+			if (ifs != null) {
+				ifs.close();
+			}
+		} catch (Exception e1) {
+			logger.info("error while closing OutputStream", e1);
+		}
+	}
 
-    /**
-     * close InputStream.
-     *
-     * @param inputStream the inputstream to close
-     */
-    public static void closeInputStream(InputStream inputStream) {
-        try {
-            if (inputStream != null) {
-                inputStream.close();
-            }
-        } catch (Exception e1) {
-            logger.info("error while closing InputStream!", e1);
-        }
-    }
+	/**
+	 * close zipFile.
+	 *
+	 * @param zipFile
+	 *            the zipFile to close
+	 */
+	public static void closeZipFile(ZipFile zipFile) {
+		try {
+			if (zipFile != null) {
+				zipFile.close();
+			}
+		} catch (IOException e1) {
+			logger.info("close ZipFile error!", e1);
+		}
+	}
 
-    /**
-     * close OutputStream.
-     *
-     * @param outputStream the output stream to close
-     */
-    public static void closeOutputStream(OutputStream outputStream) {
-        try {
-            if (outputStream != null) {
-                outputStream.close();
-            }
-        } catch (Exception e1) {
-            logger.info("error while closing OutputStream!", e1);
-        }
-    }
+	public static boolean checkFileExists(String filePath) {
+		File file = new File(filePath);
+		return file.exists();
+	}
 
-    public static void closeFileStream(FileInputStream ifs) {
-        try {
-            if (ifs != null) {
-                ifs.close();
-            }
-        } catch (Exception e1) {
-            logger.info("error while closing OutputStream", e1);
-        }
-    }
+	public static boolean deleteFile(String filePath) {
+		File file = new File(filePath);
+		return deleteFile(file);
+	}
 
-    /**
-     * close zipFile.
-     *
-     * @param zipFile the zipFile to close
-     */
-    public static void closeZipFile(ZipFile zipFile) {
-        try {
-            if (zipFile != null) {
-                zipFile.close();
-            }
-        } catch (IOException e1) {
-            logger.info("close ZipFile error!", e1);
-        }
-    }
+	public static boolean writeJsonDatatoFile(String fileAbsPath, Object obj) {
+		logger.info("Write JsonData to file :" + fileAbsPath);
 
-    public static boolean checkFileExists(String filePath)
-    {
-        File file = new File(filePath);
-        return file.exists();
-    }
+		boolean bResult = false;
+		if (checkFileExists(fileAbsPath)) {
+			deleteFile(fileAbsPath);
+		}
 
-    public static boolean deleteFile(String filePath)
-    {
-        File file = new File(filePath);
-        return deleteFile(file);
-    }
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			mapper.writeValue(new File(fileAbsPath), obj);
+			bResult = true;
+		} catch (JsonGenerationException e) {
+			logger.info("JsonGenerationException Exception: writeJsonDatatoFile-->" + fileAbsPath, e);
+		} catch (JsonMappingException e) {
+			logger.info("JsonMappingException Exception: writeJsonDatatoFile-->" + fileAbsPath, e);
+		} catch (IOException e) {
+			logger.info("IOException Exception: writeJsonDatatoFile-->" + fileAbsPath, e);
+		}
+		return bResult;
+	}
 
-    public static boolean writeJsonDatatoFile(String fileAbsPath, Object obj)
-    {
-        logger.info("Write JsonData to file :"+fileAbsPath);
+	public static <T> Object readJsonDatafFromFile(String fileAbsPath, Class<T> clazz) {
+		if (!checkFileExists(fileAbsPath)) {
+			logger.info("read JsonData from file , file not found :" + fileAbsPath);
+			return null;
+		}
 
-        boolean bResult = false;
-        if(checkFileExists(fileAbsPath))
-        {
-            deleteFile(fileAbsPath);
-        }
+		logger.info("read JsonData from file :" + fileAbsPath);
 
-        ObjectMapper mapper = new ObjectMapper();
-        try
-        {
-            mapper.writeValue(new File(fileAbsPath), obj);
-            bResult = true;
-        }
-        catch (JsonGenerationException e)
-        {
-            logger.info("JsonGenerationException Exception: writeJsonDatatoFile-->"+fileAbsPath, e);
-        }
-        catch (JsonMappingException e)
-        {
-            logger.info("JsonMappingException Exception: writeJsonDatatoFile-->"+fileAbsPath, e);
-        }
-        catch (IOException e)
-        {
-            logger.info("IOException Exception: writeJsonDatatoFile-->"+fileAbsPath, e);
-        }
-        return bResult;
-    }
+		T obj = null;
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		try {
+			obj = mapper.readValue(new File(fileAbsPath), clazz);
+		} catch (JsonParseException e1) {
+			logger.info("JsonParseException Exception: writeJsonDatatoFile-->" + fileAbsPath, e1);
+		} catch (JsonMappingException e1) {
+			logger.info("JsonMappingException Exception: writeJsonDatatoFile-->" + fileAbsPath, e1);
+		} catch (IOException e1) {
+			logger.info("IOException Exception: writeJsonDatatoFile-->" + fileAbsPath, e1);
+		}
+		return obj;
+	}
 
-    public static <T> Object readJsonDatafFromFile(String fileAbsPath, Class<T> clazz)
-    {
-        if(!checkFileExists(fileAbsPath))
-        {
-            logger.info("read JsonData from file , file not found :"+fileAbsPath);
-            return null;
-        }
+	public static boolean deleteDirectory(String path) {
+		File file = new File(path);
+		return deleteDirectory(file);
+	}
 
-        logger.info("read JsonData from file :"+fileAbsPath);
+	public static boolean deleteDirectory(File file) {
+		if (!file.exists()) {
+			return true;
+		}
+		if (file.isDirectory()) {
+			for (File f : file.listFiles()) {
+				deleteDirectory(f);
+			}
+		}
+		return file.delete();
+	}
 
-        T obj = null;
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        try
-        {
-            obj = mapper.readValue(new File(fileAbsPath), clazz);
-        }
-        catch (JsonParseException e1)
-        {
-            logger.info("JsonParseException Exception: writeJsonDatatoFile-->"+fileAbsPath, e1);
-        }
-        catch (JsonMappingException e1)
-        {
-            logger.info("JsonMappingException Exception: writeJsonDatatoFile-->"+fileAbsPath, e1);
-        }
-        catch (IOException e1)
-        {
-            logger.info("IOException Exception: writeJsonDatatoFile-->"+fileAbsPath, e1);
-        }
-        return obj;
-    }
+	public static boolean validateStream(FileInputStream ifs) {
+		return true;
+	}
 
-    public static boolean  deleteDirectory(String path)
-    {
-        File file = new File(path);
-        return deleteDirectory(file);
-    }
+	public static boolean validatePath(String path) {
+		return true;
+	}
 
-    public static boolean  deleteDirectory(File file)
-    {
-        if (!file.exists())
-        {
-            return true;
-        }
-        if (file.isDirectory())
-        {
-            for (File f : file.listFiles())
-            {
-                deleteDirectory(f);
-            }
-        }
-        return file.delete();
-    }
+	public static boolean validateFile(File fileData) {
+		return true;
+	}
 }
-

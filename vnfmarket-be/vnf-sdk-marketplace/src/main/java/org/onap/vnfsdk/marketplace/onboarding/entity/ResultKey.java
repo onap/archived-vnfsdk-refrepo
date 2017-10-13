@@ -15,27 +15,38 @@
  */
 package org.onap.vnfsdk.marketplace.onboarding.entity;
 
-public class ResultKey 
-{
+public class ResultKey {
+	
+	// VNF package Id
 	private String csarId;
-    private String operTypeId;
-    private String key;
-    public String getCsarId() {
-        return csarId;
-    }
-    public void setCsarId(String csarId) {
-        this.csarId = csarId;
-    }
-    public String getOperTypeId() {
-        return operTypeId;
-    }
-    public void setOperTypeId(String operTypeId) {
-        this.operTypeId = operTypeId;
-    }
-    public String getKey() {
-        return key;
-    }
-    public void setKey(String key) {
-        this.key = key;
-    }
+	
+	// Operation Type ID - Lifecycle/Function test
+	private String operTypeId;
+	
+	// Key for fetching result
+	private String key;
+
+	public String getCsarId() {
+		return csarId;
+	}
+
+	public void setCsarId(String csarId) {
+		this.csarId = csarId;
+	}
+
+	public String getOperTypeId() {
+		return operTypeId;
+	}
+
+	public void setOperTypeId(String operTypeId) {
+		this.operTypeId = operTypeId;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
 }
