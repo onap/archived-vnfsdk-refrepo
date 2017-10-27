@@ -1,0 +1,5 @@
+tosca_definitions_version: tosca_simple_yaml_1_0_0
+metadata:
+    template_name: UTF-8
+    template_author: UTF-8
+    template_version: description

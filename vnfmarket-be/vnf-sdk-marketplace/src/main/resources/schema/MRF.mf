@@ -1,0 +1,5 @@
+metadata:
+    vnf_product_name: UTF-8
+    vnf_provider_id: UTF-8
+    vnf_package_version: Double
+    vnf_release_data_time: String_IETF_RFC-3339
