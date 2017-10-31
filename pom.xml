@@ -21,7 +21,6 @@
       <groupId>org.onap.oparent</groupId>
       <artifactId>oparent</artifactId>
       <version>0.1.1</version>
-      <relativePath>../../oparent</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -31,7 +30,8 @@
     <packaging>pom</packaging>
     <name>vnfsdk-refrepo</name>
 
-    <modules>       
-        <module>vnfmarket-be</module>     
+    <modules>
+        <module>vnfmarket</module>
+        <module>vnfmarket-be</module>
     </modules>
 </project>
