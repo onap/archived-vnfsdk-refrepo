@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a4e6583_7830a056",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/wrapper/PackageWrapper.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 749
+      },
+      "writtenOn": "2017-11-07T09:44:43Z",
+      "side": 1,
+      "message": "Here earlier response is sent to the caller if the validation failed, Now it is throwing exception which is not handled by caller.Hence unit test case is failing and build is failing",
+      "revId": "f171c0170a8523de1a09a2bee237e4b6270e8647",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
