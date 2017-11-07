@@ -36,6 +36,7 @@ import javax.ws.rs.core.Response;
 
 import org.codehaus.jackson.JsonNode;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.onap.vnfsdk.marketplace.common.FileUtil;
@@ -55,6 +56,7 @@ import org.onap.vnfsdk.marketplace.entity.request.PackageBasicInfo;
 import org.onap.vnfsdk.marketplace.entity.response.CsarFileUriResponse;
 import org.onap.vnfsdk.marketplace.entity.response.PackageMeta;
 import org.onap.vnfsdk.marketplace.entity.response.PackageResponse;
+import org.onap.vnfsdk.marketplace.exception.InputValidationException;
 import org.onap.vnfsdk.marketplace.filemanage.http.HttpFileManagerImpl;
 import org.onap.vnfsdk.marketplace.onboarding.entity.OnBoardingResult;
 import org.onap.vnfsdk.marketplace.onboarding.entity.OnBoradingRequest;
@@ -216,17 +218,17 @@ public class PackageResourceTest {
 
         try {
             response = PackageWrapper.getInstance().delPackage( "" );
+            Assert.fail("An input validation exception is expected");
         } catch ( Exception e5 ) {
-            e5.printStackTrace();
+            Assert.assertTrue("Input validation exception is expected", e5 instanceof InputValidationException);
         }
-        assertEquals( 500, response.getStatus());
 
         try {
             response = PackageWrapper.getInstance().delPackage( null );
+            Assert.fail("An input validation exception is expected");
         } catch ( Exception e5 ) {
-            e5.printStackTrace();
+            Assert.assertTrue("Input validation exception is expected", e5 instanceof InputValidationException);
         }
-        assertEquals( 500, response.getStatus());
     }
 
     @Test
@@ -700,12 +702,11 @@ public class PackageResourceTest {
 
         try {
             result = PackageWrapper.getInstance().uploadPackage(null, null, null,null);
+            Assert.fail("An input validation exception is expected");
         } catch (Exception e4) {
-            e4.printStackTrace();
+            Assert.assertTrue("Input validation exception is expected", e4 instanceof InputValidationException);
         }
-
-        assertEquals(417, result.getStatus());}
-
+    }
 
     @Test
     public void testGetOnBoardingStepsSuccess() {
