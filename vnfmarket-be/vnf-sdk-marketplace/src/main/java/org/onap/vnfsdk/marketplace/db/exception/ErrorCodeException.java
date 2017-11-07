@@ -16,7 +16,9 @@
 package org.onap.vnfsdk.marketplace.db.exception;
 
 
-public class ErrorCodeException extends Exception {
+import org.onap.vnfsdk.marketplace.exception.CoreException;
+
+public class ErrorCodeException extends CoreException {
 
   private static final long serialVersionUID = 3220072444842529499L;
   private final int categoryCode;
@@ -132,5 +134,9 @@ public class ErrorCodeException extends Exception {
     return arguments;
   }
 
+  @Override
+  public ErrorCategory getErrorCategory() {
+    return ErrorCategory.APPLICATION;
+  }
 }
 
