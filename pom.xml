@@ -30,8 +30,7 @@
     <packaging>pom</packaging>
     <name>vnfsdk-refrepo</name>
 
-    <modules>
-        <module>vnfmarket</module>
+    <modules>     
         <module>vnfmarket-be</module>
     </modules>
 </project>
