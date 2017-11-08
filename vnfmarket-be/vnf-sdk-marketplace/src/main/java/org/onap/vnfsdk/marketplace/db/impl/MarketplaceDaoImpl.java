@@ -17,6 +17,7 @@
 package org.onap.vnfsdk.marketplace.db.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.PersistenceException;
 
@@ -68,6 +69,22 @@ public class MarketplaceDaoImpl implements IMarketplaceDao {
         try {
             IMarketplaceMapper mapper = session.getMapper(IMarketplaceMapper.class);
             csars = mapper.getAllPackageData();
+            session.commit();
+        } catch(PersistenceException e) {
+            LOGGER.error("Exception caught {}", e);
+        } finally {
+            session.close();
+        }
+        return csars;
+    }
+
+    @Override
+    public List<PackageData> getPackageDataSubset(Map<String, String> paramsMap) {
+        SqlSession session = sqlSessionFactory.openSession();
+        List<PackageData> csars = null;
+        try {
+            IMarketplaceMapper mapper = session.getMapper(IMarketplaceMapper.class);
+            csars = mapper.getPackageDataSubset(paramsMap);
             session.commit();
         } catch(PersistenceException e) {
             LOGGER.error("Exception caught {}", e);

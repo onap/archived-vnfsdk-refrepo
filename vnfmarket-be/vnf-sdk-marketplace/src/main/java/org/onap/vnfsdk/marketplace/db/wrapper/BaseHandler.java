@@ -86,7 +86,7 @@ public abstract class BaseHandler<T extends BaseData> {
       throws MarketplaceResourceException {
     logger.info("BaseHandler:start query data .info:" + MarketplaceDbUtil.objectToString(queryParam));
     IMarketplaceDao dao = new MarketplaceDaoImpl();
-    List<PackageData> datas = dao.getAllPackageData();
+    List<PackageData> datas = dao.getPackageDataSubset(queryParam);
     logger.info("BaseHandler: query data end .info:" + MarketplaceDbUtil.objectToString(datas));
     return datas;
   }

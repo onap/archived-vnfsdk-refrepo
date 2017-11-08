@@ -32,7 +32,28 @@
 	WHERE 
 	CSARID=#{csarId}
     </select>
-	
+
+    <select id="getPackageDataSubset" resultType="org.onap.vnfsdk.marketplace.db.entity.PackageData" parameterType="java.util.Map">
+        SELECT * FROM CSAR_PACKAGE_TABLE
+        <where>
+            <if test="name != null">
+                NAME like #{name}
+            </if>
+            <if test="version != null">
+                AND VERSION like #{version}
+            </if>
+            <if test="deletionPending != null">
+                AND DELETIONPENDING like #{deletionPending}
+            </if>
+            <if test="type != null">
+                AND TYPE like #{type}
+            </if>
+            <if test="provider != null">
+                AND PROVIDER like #{provider}
+            </if>
+        </where>
+    </select>
+
 	<insert id="savePackageData" parameterType="org.onap.vnfsdk.marketplace.db.entity.PackageData">
         INSERT INTO
         CSAR_PACKAGE_TABLE

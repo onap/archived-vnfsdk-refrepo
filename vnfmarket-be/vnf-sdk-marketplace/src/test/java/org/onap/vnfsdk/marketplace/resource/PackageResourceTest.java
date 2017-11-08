@@ -29,6 +29,7 @@ import java.io.FileWriter;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -141,7 +142,7 @@ public class PackageResourceTest {
     public void testQueryPackageListByCond() throws Exception{
         new MockUp<MarketplaceDaoImpl>() {
             @Mock
-            public List<PackageData> getAllPackageData() {
+            public List<PackageData> getPackageDataSubset(Map<String, String> queryParam) {
                 return new ArrayList<PackageData>();
             }
         };
