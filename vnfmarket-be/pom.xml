@@ -18,13 +18,13 @@
     <parent>
         <groupId>org.onap.vnfsdk.refrepo</groupId>
         <artifactId>vnfmarket</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.onap.vnfsdk.refrepo</groupId>
     <artifactId>vnf-sdk-marketplace-core-parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>vnf-sdk-marketplace-core-parent</name>
 	<scm>
