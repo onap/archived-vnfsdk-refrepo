@@ -39,7 +39,7 @@ ENV CATALINA_HOME /service
 ADD ./STAGE  /service
 RUN yum install -y gcc-c++ make &&  curl -sL https://rpm.nodesource.com/setup_6.x |  bash -
 RUN yum install -y nodejs
-RUN cd /service/webapps/openoui/vnfmarket &&  npm install phantomjs-prebuilt@2.1.14 --ignore-scripts &&  npm install
+RUN cd /service/webapps/onapui/vnfmarket &&  npm install phantomjs-prebuilt@2.1.14 --ignore-scripts &&  npm install
 
 # https://nexus.onap.org/service/local/artifact/maven/redirect?r=snapshots&g=org.onap.vnfsdk.refrepo.marketplace&a=vnf-sdk-marketplace-deployment&e=zip&c=&v=LATEST
 # RUN wget -q -O vnf-sdk-marketplace-1.0.0-SNAPSHOT.zip "https://nexus.onap.org/service/local/repositories/snapshots/content/org/onap/vnfsdk/refrepo/vnf-sdk-marketplace-deployment/1.0.0-SNAPSHOT/vnf-sdk-marketplace-deployment-1.0.0-20170515.020618-24.zip" && unzip -q -o -B vnf-sdk-marketplace-1.0.0-SNAPSHOT.zip && rm -f vnf-sdk-marketplace-1.0.0-SNAPSHOT.zip
