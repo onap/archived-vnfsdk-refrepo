@@ -68,7 +68,7 @@
                                 ant.mkdir(dir: "${deployUnzip}")
 
                                 ant.mkdir(dir: "${deployUnzip}/webapps/ROOT")
-                                ant.mkdir(dir: "${deployUnzip}/webapps/openoui")
+                                ant.mkdir(dir: "${deployUnzip}/webapps/onapui")
 
                                 ant.copy(todir: "${deployUnzip}") {
                                 fileset(dir: "${basedir}/src/main/release"){
@@ -80,7 +80,7 @@
                                 fileset(dir: "${project.build.directory}/../../../vnf-sdk-marketplace/target/ROOT")
                                 }
 								
-								ant.copy(todir: "${deployUnzip}/webapps/openoui") {
+								ant.copy(todir: "${deployUnzip}/webapps/onapui") {
                                 fileset(dir: "${project.build.directory}/../../../../vnfmarket/src/main/webapp")
                                 }
 
