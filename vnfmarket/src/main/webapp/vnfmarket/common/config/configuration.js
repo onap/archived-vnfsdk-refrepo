@@ -30,49 +30,49 @@
             "api": {
                 "home": {
                     "postServiceUpload": {
-                        "url": "/openoapi/vnfsdk-marketplace/v1/PackageResource/csars",
+                        "url": "/onapapi/vnfsdk-marketplace/v1/PackageResource/csars",
                         "method": "POST"
                     },
 					"repostServiceUpload": {
-                        "url": "/openoapi/vnfsdk-marketplace/v1/PackageResource/csars/:csarId/reupload",
+                        "url": "/onapapi/vnfsdk-marketplace/v1/PackageResource/csars/:csarId/reupload",
                         "method": "POST"
                     },
                     "getFeaturesList": {
-                        "url": "/openoapi/vnfsdk-marketplace/v1/PackageResource/csars",
+                        "url": "/onapapi/vnfsdk-marketplace/v1/PackageResource/csars",
                         "method": "GET"
                     },
                     "downloadServiceFile": {
-                        "url": "/openoapi/vnfsdk-marketplace/v1/PackageResource/csars/:csarId/files",
+                        "url": "/onapapi/vnfsdk-marketplace/v1/PackageResource/csars/:csarId/files",
                         "method": "GET"
                     },
                     "serviceDelete": {
-                        "url": "/openoapi/vnfsdk-marketplace/v1/PackageResource/csars/:csarId",
+                        "url": "/onapapi/vnfsdk-marketplace/v1/PackageResource/csars/:csarId",
                         "method": "DELETE"
                     },
                     "serviceDetails": {
-                        "url": "/openoapi/vnfsdk-marketplace/v1/PackageResource/csars/:csarId",
+                        "url": "/onapapi/vnfsdk-marketplace/v1/PackageResource/csars/:csarId",
                         "method": "GET"
                     },
 					"getFunctionTestDetails" : {
-						"url" : "/openoapi/vnfsdk-marketplace/v1/PackageResource/csars/:csarId/operresult?operTypeId=functiontest",
+						"url" : "/onapapi/vnfsdk-marketplace/v1/PackageResource/csars/:csarId/operresult?operTypeId=functiontest",
 						"method" : "GET"
 					},
 					"updateDownloadCount" :{
-						"url" : "/openoapi/vnfsdk-marketplace/v1/PackageResource/csars/:csarId/downloaded",
+						"url" : "/onapapi/vnfsdk-marketplace/v1/PackageResource/csars/:csarId/downloaded",
 						"method" : "GET"
 					},
 					"getOnBoardingSteps": {
-                        "url": "/openoapi/vnfsdk-marketplace/v1/PackageResource/csars/onboardsteps",
+                        "url": "/onapapi/vnfsdk-marketplace/v1/PackageResource/csars/onboardsteps",
                         "method": "GET"
                     },
                     "getFunctionalList": {
-                        "url": "/openoapi/vnfsdk-marketplace/v1/PackageResource/csars/:csarId/onboardstatus",
+                        "url": "/onapapi/vnfsdk-marketplace/v1/PackageResource/csars/:csarId/onboardstatus",
                         "method": "GET"
                     }
                 }
             },
             "modulePath": {
-                "home": "/openoui/vnfmarket/app/modules/home"
+                "home": "/onapui/vnfmarket/app/modules/home"
             }
         })
 })();

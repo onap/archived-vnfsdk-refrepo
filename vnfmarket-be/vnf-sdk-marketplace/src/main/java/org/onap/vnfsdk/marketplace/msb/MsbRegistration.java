@@ -42,8 +42,8 @@ public class MsbRegistration {
     private static MsbRegistration oMsbRegistration = new MsbRegistration();
 
     private static final String MSB_REGISTION_FILE = "etc/microservice/marketplace_rest.json";
-    private static final String MSB_REGISTION_URL = "/openoapi/microservices/v1/services?createOrUpdate=false";
-    private static final String MSB_UN_REGISTION_URL = "/openoapi/microservices/v1/services/{0}/version/{1}/nodes/{2}/{3}";
+    private static final String MSB_REGISTION_URL = "/onapapi/microservices/v1/services?createOrUpdate=false";
+    private static final String MSB_UN_REGISTION_URL = "/onapapi/microservices/v1/services/{0}/version/{1}/nodes/{2}/{3}";
     private static final String NODES = "nodes";
     private static final String IP = "ip";
     private static final String PORT = "port";

@@ -79,16 +79,17 @@
             }, 500);
 			
 			if(vm.isUpload){
+				var filename = vm.service.file.name;
 				serviceUploadService.postServiceUpload(fd, headers)
 					.then(function(response) {
 						vm.hide("Uploading")
-						$state.go('home.onboarding', {"csarId": response.data.csarId});
+						$state.go('home.onboarding', {"csarId": response.data.csarId, "csarName": filename});
 					});
 			} else {
 				serviceUploadService.repostServiceUpload(fd, headers, vm.csarId)
 					.then(function(response) {
 						vm.hide("Uploading")
-						$state.go('home.onboarding', {"csarId": response.data.csarId});
+						$state.go('home.onboarding', {"csarId": response.data.csarId, "csarName": filename});
 					});
 			}
         };

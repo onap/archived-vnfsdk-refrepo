@@ -110,11 +110,11 @@
 
 			},
 			"sideNav" : {
-				"title" :  "VNF  Marketplace",
-				"marketplaceNav" : "Marketplace"
+				"title" :  "VNF  Repository",
+				"marketplaceNav" : "VNF Repository"
 			},
 			"main" : {
-				"headerTitle" : "Welcome to VNF Marketplace",
+				"headerTitle" : "Welcome to VNF Repository",
 				"description" : "Market place for VNF-SDK does the following task:",
 				"pointOne" : "Upload and download of VNF products and offerings",
 				"pointTwo" : "Show the interface about other component in VNF-SDK",

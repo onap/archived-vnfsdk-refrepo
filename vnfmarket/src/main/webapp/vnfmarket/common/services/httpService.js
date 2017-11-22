@@ -51,7 +51,7 @@
                 var parentEl = angular.element(document.body);
                 $mdDialog.show({
                     parent:parentEl,
-                    templateUrl:'/openoui/vnfmarket/common/templates/serverError.html',
+                    templateUrl:'/onapui/vnfmarket/common/templates/serverError.html',
                     locals:{
                         error:error
                     },
@@ -94,7 +94,7 @@
                 var parentEl = angular.element(document.body);
                 $mdDialog.show({
                     parent:parentEl,
-                    templateUrl:'/openoui/vnfmarket/common/templates/serverError.html',
+                    templateUrl:'/onapui/vnfmarket/common/templates/serverError.html',
                     locals:{
                         error:error
                     },

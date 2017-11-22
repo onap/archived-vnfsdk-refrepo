@@ -50,8 +50,11 @@
 
         $(".onboardProgress .progress3 .progressDiv").removeClass("progressed");
         $(".onboardProgress .progress3 .roundProg").removeClass("progressed");
+	var fileName = $stateParams.csarName
+		
+	vm.mainTitle = fileName.slice(0, fileName.lastIndexOf("."));
 
-        vm.mainTitle = "clearwater_ns";
+        //vm.mainTitle = $stateParams.csarName;//"clearwater_ns";
         var csarId = $stateParams.csarId;
         if(!csarId) {
             $state.go("home.marketplace", {});
@@ -159,10 +162,13 @@
                         //First list is completed
                         $(".onboardProgress .progress1 .progressDiv").addClass("progressed");
                         $(".onboardProgress .progress1 .roundProg").addClass("progressed");
-                        currentIteration.list = vm.lifeCycle;
-                        currentIteration.item = 0
+                        /*currentIteration.list = vm.lifeCycle;
+                        currentIteration.item = 0*/
+
+                        listIterFinished = true;
+                        $state.go('home.onboardingSuccess', {"csarId": csarId});
                     }
-                    else if(currentIteration.list == vm.lifeCycle){
+                    /*else if(currentIteration.list == vm.lifeCycle){
                         //Second list is completed
                         $(".onboardProgress .progress2 .progressDiv").addClass("progressed");
                         $(".onboardProgress .progress2 .roundProg").addClass("progressed");
@@ -176,7 +182,7 @@
                         $(".onboardProgress .progress3 .roundProg").addClass("progressed");
                         listIterFinished = true;
                         $state.go('home.onboardingSuccess', {"csarId": csarId});
-                    }
+                    }*/
                 }
             }
             else if(stepStatus == -1) {

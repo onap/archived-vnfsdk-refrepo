@@ -26,7 +26,7 @@
 angular.module('vnfmarket')
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider, vnfConfig) {
 
-        var homePath = '/openoui/vnfmarket/app/modules/home';
+        var homePath = '/onapui/vnfmarket/app/modules/home';
         $stateProvider
             .state('home', {
                 url: '',
@@ -73,7 +73,8 @@ angular.module('vnfmarket')
                 url: '/onboarding',
                 templateUrl: homePath + '/serviceUpload/onboarding/onboarding.html',
                 params: {
-                    csarId: undefined
+                    csarId: undefined,
+                    csarName: undefined
                 },
                 controller: 'onBoardingCtrl',
                 controllerAs: 'vm'

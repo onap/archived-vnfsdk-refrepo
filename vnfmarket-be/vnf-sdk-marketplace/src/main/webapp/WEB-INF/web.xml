@@ -18,7 +18,7 @@
    </servlet> 
    <servlet-mapping> 
       <servlet-name>Jersey RESTful Application</servlet-name> 
-      <url-pattern>/openoapi/vnfsdk-marketplace/v1/*</url-pattern> 
+      <url-pattern>/onapapi/vnfsdk-marketplace/v1/*</url-pattern> 
    </servlet-mapping>  
 
     <filter>

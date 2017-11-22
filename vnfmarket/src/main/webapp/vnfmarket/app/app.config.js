@@ -85,7 +85,7 @@
 
         $translateProvider.useSanitizeValueStrategy(null);
         $translateProvider.useStaticFilesLoader({
-            prefix: "/openoui/vnfmarket/common/locale/locale-",
+            prefix: "/onapui/vnfmarket/common/locale/locale-",
             suffix: ".json"
         });
         $translateProvider.preferredLanguage('en')

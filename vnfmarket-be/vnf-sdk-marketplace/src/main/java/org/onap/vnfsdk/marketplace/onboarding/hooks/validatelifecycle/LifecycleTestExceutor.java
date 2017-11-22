@@ -41,7 +41,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /* CALL Flow: onBoardingHandler --> LifecycleTestHook--> LifecycleTestExecutor */
 public class LifecycleTestExceutor {
 	private static final Logger logger = LoggerFactory.getLogger(LifecycleTestExceutor.class);
-	public static final String CATALOUGE_UPLOAD_URL_IN = "{0}:{1}/openoapi/catalog/v1/csars";
+	public static final String CATALOUGE_UPLOAD_URL_IN = "{0}:{1}/onapapi/catalog/v1/csars";
 
 	private LifecycleTestExceutor() {
 		// Empty constructor
