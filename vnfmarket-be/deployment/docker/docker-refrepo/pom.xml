@@ -60,6 +60,11 @@
                             </includes>
                         </resource>
                     </resources>
+                     <buildArgs>
+         								<http_proxy>${HTTP_PROXY}</http_proxy>
+         								<https_proxy>${HTTPS_PROXY}</https_proxy>
+         								<no_proxy>localhost,127.0.0.1</no_proxy>
+    								</buildArgs>
                 </configuration>
                
                 <executions>                   
