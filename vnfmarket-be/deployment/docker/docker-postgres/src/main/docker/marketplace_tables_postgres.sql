@@ -20,5 +20,6 @@ CREATE TABLE CSAR_PACKAGE_TABLE (
 	TYPE                     VARCHAR(300)       NULL,
 	DETAILS		             TEXT			    NULL,
 	REMARKS		             TEXT			    NULL,
-	DOWNLOADCOUNT            INT                NULL
+	DOWNLOADCOUNT            INT                NULL,
+	CONSTRAINT csar_package_table_pkey PRIMARY KEY (CSARID)
 );
