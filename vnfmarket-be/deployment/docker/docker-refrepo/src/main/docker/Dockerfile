@@ -42,9 +42,9 @@ RUN yum install -y nodejs
 RUN cd /service/webapps/onapui/vnfmarket &&  npm install phantomjs-prebuilt@2.1.14 --ignore-scripts &&  npm install
 
 # https://nexus.onap.org/service/local/artifact/maven/redirect?r=snapshots&g=org.onap.vnfsdk.refrepo.marketplace&a=vnf-sdk-marketplace-deployment&e=zip&c=&v=LATEST
-# RUN wget -q -O vnf-sdk-marketplace-1.0.0-SNAPSHOT.zip "https://nexus.onap.org/service/local/repositories/snapshots/content/org/onap/vnfsdk/refrepo/vnf-sdk-marketplace-deployment/1.0.0-SNAPSHOT/vnf-sdk-marketplace-deployment-1.0.0-20170515.020618-24.zip" && unzip -q -o -B vnf-sdk-marketplace-1.0.0-SNAPSHOT.zip && rm -f vnf-sdk-marketplace-1.0.0-SNAPSHOT.zip
+# RUN wget -q -O vnf-sdk-marketplace-1.0.0.zip "https://nexus.onap.org/service/local/repositories/snapshots/content/org/onap/vnfsdk/refrepo/vnf-sdk-marketplace-deployment/1.0.0/vnf-sdk-marketplace-deployment-1.0.0-20170515.020618-24.zip" && unzip -q -o -B vnf-sdk-marketplace-1.0.0.zip && rm -f vnf-sdk-marketplace-1.0.0.zip
 EXPOSE 8702
-# RUN echo ONAP vnf-sdk-marketplace 1.0.0-SNAPSHOT "https://nexus.onap.org/service/local/repositories/snapshots/content/org/openo/vnfsdk/refrepo/vnf-sdk-marketplace-deployment/1.0.0-SNAPSHOT/vnf-sdk-marketplace-deployment-1.0.0-20170515.020618-24.zip" > ONAP_VERSION
+# RUN echo ONAP vnf-sdk-marketplace 1.0.0 "https://nexus.onap.org/service/local/repositories/snapshots/content/org/openo/vnfsdk/refrepo/vnf-sdk-marketplace-deployment/1.0.0/vnf-sdk-marketplace-deployment-1.0.0-20170515.020618-24.zip" > ONAP_VERSION
 
 
 # 90-entrypoint.txt
