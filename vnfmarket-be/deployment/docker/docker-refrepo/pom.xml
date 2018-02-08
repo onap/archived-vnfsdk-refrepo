@@ -45,7 +45,7 @@
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
-                <version>0.4.11</version>
+                <version>1.0.0</version>
                 <configuration>
                     <verbose>true</verbose>
                     <imageName>onap/refrepo</imageName>
@@ -60,11 +60,6 @@
                             </includes>
                         </resource>
                     </resources>
-                     <buildArgs>
-         								<http_proxy>${HTTP_PROXY}</http_proxy>
-         								<https_proxy>${HTTPS_PROXY}</https_proxy>
-         								<no_proxy>localhost,127.0.0.1</no_proxy>
-    								</buildArgs>
                 </configuration>
                
                 <executions>                   
