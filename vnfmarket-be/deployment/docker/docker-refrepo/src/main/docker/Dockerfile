@@ -19,16 +19,15 @@ ENV JAVA_HOME /usr/lib/jvm/jre
 WORKDIR /service
 
 # 20-mysq.txt
-RUN yum install epel-release
-RUN yum install nginx && \
+RUN yum -y install epel-release
+RUN yum -y install nginx && \
     mkdir -p /etc/nginx/ssl
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY certgen.sh .
-CMD  chmod +x ./certgen.sh && \
-     ./certgen.sh
-COPY example.key example.cert /etc/nginx/ssl/
-#CMD service nginx start 
-
+CMD  chmod +x ./certgen.sh 
+RUN ./certgen.sh 
+# && systemctl start nginx
+     
 # Set up mysql
 RUN wget -q http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm && rpm -ivh mysql-community-release-el7-5.noarch.rpm && rm -f mysql-community-release-el7-5.noarch.rpm
 RUN yum -y update
