@@ -27,6 +27,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -931,7 +932,8 @@ public class PackageResourceTest {
     public void testformatFileSize()
     {
         String res = ToolUtil.formatFileSize(10000.0,10);
-        assertEquals(res,"1000.00M");
+        String expected=new DecimalFormat("#0.00").format(1000)+"M";//may be "1000.00" or "1000,00" depending on Locale
+        assertEquals(res,expected);
     }
 
     @Test
