@@ -25,13 +25,13 @@ public class AppServletContextListener implements ServletContextListener
     @Override
     public void contextInitialized(ServletContextEvent eventData)
     {
-        MsbRegister.handleMsbRegistration();
+        //MsbRegister.handleMsbRegistration();
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent eventData)
     {
-        MsbRegister.handleMsbUnRegistration();
+        //MsbRegister.handleMsbUnRegistration();
     }
 }
 
