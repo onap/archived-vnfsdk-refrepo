@@ -27,7 +27,7 @@ public class ValidateLifecycleTestResponse {
 	private String lifecycle_status;
 	
 	// Vnf and VM information where the Vnfs are located
-	private VnfInfo vnf_info;
+
 
 	public String getJobId() {
 		return jobId;
@@ -53,11 +53,5 @@ public class ValidateLifecycleTestResponse {
 		this.lifecycle_status = lifecycle_status;
 	}
 
-	public VnfInfo getVnf_info() {
-		return vnf_info;
-	}
-
-	public void setVnf_info(VnfInfo vnf_info) {
-		this.vnf_info = vnf_info;
-	}
+	
 }

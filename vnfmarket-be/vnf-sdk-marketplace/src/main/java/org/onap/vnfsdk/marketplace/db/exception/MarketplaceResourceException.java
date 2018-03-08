@@ -19,53 +19,6 @@ public class MarketplaceResourceException extends ErrorCodeException {
   private static final long serialVersionUID = 5699508780537383310L;
 
 
-  public MarketplaceResourceException(int errcode) {
-    super(errcode, "");
-  }
-
-
-  public MarketplaceResourceException(int errcode, Throwable cause) {
-    super(cause, errcode);
-  }
-
-
-  public MarketplaceResourceException(int errcode, String message, Throwable cause) {
-    super(cause, errcode, message);
-  }
-
-
-  public MarketplaceResourceException() {
-    super(9999999, null);
-  }
-
-
-  public MarketplaceResourceException(String message) {
-    super(9999999, message);
-  }
-
-
-  public MarketplaceResourceException(Throwable cause) {
-    super(cause, 9999999);
-  }
-
-
-  public MarketplaceResourceException(String message, Throwable cause) {
-    super(cause, 9999999, message);
-  }
-
-
-  /**
-   * catalog resource exception.
-   * @param source throwable source
-   * @param errId error Id
-   * @param debugMessage debug message
-   * @param arguments arguments
-   */
-  public MarketplaceResourceException(Throwable source, int errId, String debugMessage,
-      String[] arguments) {
-    super(source, errId, debugMessage, arguments);
-  }
-
   public MarketplaceResourceException(Throwable source, int category, int code, String debugMessage,
       String[] arguments) {
     super(source, category, code, debugMessage, arguments);
