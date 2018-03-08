@@ -59,6 +59,7 @@ import org.onap.vnfsdk.marketplace.entity.response.CsarFileUriResponse;
 import org.onap.vnfsdk.marketplace.entity.response.PackageMeta;
 import org.onap.vnfsdk.marketplace.entity.response.PackageResponse;
 import org.onap.vnfsdk.marketplace.filemanage.http.HttpFileManagerImpl;
+import org.onap.vnfsdk.marketplace.msb.MsbDetailsHolder;
 import org.onap.vnfsdk.marketplace.onboarding.entity.OnBoardingResult;
 import org.onap.vnfsdk.marketplace.onboarding.entity.OnBoradingRequest;
 import org.onap.vnfsdk.marketplace.onboarding.entity.ResultKey;
@@ -740,6 +741,7 @@ public class PackageResourceTest {
         if(ins != null) {
             try {
                 result = PackageWrapper.getInstance().uploadPackage(ins, fileDetail, null, null);
+                PackageWrapper.getInstance().updateValidateStatus(ins);
             } catch(Exception e3) {
                 e3.printStackTrace();
             }
@@ -1076,8 +1078,9 @@ public class PackageResourceTest {
     public void testPkgFormat() {
         assertNotNull(PackageWrapperUtil.getPackageFormat("xml"));
         assertNotNull(PackageWrapperUtil.getPackageFormat("yml"));
-        assertNull(PackageWrapperUtil.getPackageFormat("pdf"));
+        assertNull(PackageWrapperUtil.getPackageFormat("pdf"));        
 
+        MsbDetailsHolder.getMsbDetails();
         try {
             IMarketplaceDao dao = new MarketplaceDaoImpl();
             

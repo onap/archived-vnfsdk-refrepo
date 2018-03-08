@@ -25,33 +25,6 @@ public class MsbDetails
     
     public MsbServer getDefaultServer() {
         return defaultServer;
-    }
-    public void setDefaultServer(MsbServer defaultServer) {
-        this.defaultServer = defaultServer;
-    }
-    public String getConnectTimeout() {
-        return ConnectTimeout;
-    }
-    public void setConnectTimeout(String connectTimeout) {
-        ConnectTimeout = connectTimeout;
-    }
-    public String getThread() {
-        return thread;
-    }
-    public void setThread(String thread) {
-        this.thread = thread;
-    }
-    public String getIdletimeout() {
-        return idletimeout;
-    }
-    public void setIdletimeout(String idletimeout) {
-        this.idletimeout = idletimeout;
-    }
-    public String getTimeout() {
-        return timeout;
-    }
-    public void setTimeout(String timeout) {
-        this.timeout = timeout;
-    }
+    }  
 
 }
