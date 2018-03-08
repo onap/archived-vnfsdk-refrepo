@@ -91,35 +91,7 @@ public abstract class BaseHandler<T extends BaseData> {
     return datas;
   }
 
-  /**
-   * union query.
-   * @param filter filter
-   * @param resouceType resource type
-   * @return T list
-   * @throws MarketplaceResourceException e1
-   */
-  @SuppressWarnings({"rawtypes", "unchecked"})
-  public List<T> unionQuery(String filter) throws MarketplaceResourceException {
-    logger.info("BaseHandler:start union query data.fliter:" + filter);
-    List<T> datas = null;
-    logger.info("BaseHandler:union query data end .info:" + MarketplaceDbUtil.objectToString(datas));
-    return datas;
-  }
 
-  /**
-   * union delete.
-   * @param filter filter
-   * @param resouceType resource type
-   * @return int
-   * @throws MarketplaceResourceException e1
-   */
-  @SuppressWarnings({"rawtypes", "unchecked"})
-  public int unionDelete(String filter) throws MarketplaceResourceException {
-    logger.info("BaseHandler:start delete query data.fliter:" + filter);
-    int num=0;
-    logger.info("BaseHandler:union delete data end .num:" + num);
-    return num;
-  }
 
   @SuppressWarnings({"rawtypes", "unchecked"})
   public void update(T data) throws MarketplaceResourceException {
