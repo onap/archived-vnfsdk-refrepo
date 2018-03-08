@@ -16,12 +16,10 @@
 
 package org.onap.vnfsdk.marketplace.common;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +46,7 @@ public final class JsonUtil {
     public static String toJson(Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             LOGGER.error("Parser to json error.", ex);
             throw new IllegalArgumentException("Parser obj to json error, obj = " + obj, ex);
         }
@@ -67,52 +65,11 @@ public final class JsonUtil {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             return mapper.readValue(jsonStr, objClass);
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             LOGGER.error("Parser to object error.", ex);
             throw new IllegalArgumentException(
                     "Parser json to object error, json = " + jsonStr + ", expect class = " + objClass, ex);
         }
     }
 
-    /**
-     * Convert JSON to object.<br>
-     * 
-     * @param jsonStr The JSON to be converted
-     * @param typeRef The object type
-     * @return The typeRef object
-     * @since GSO 0.5
-     */
-    public static <T> T fromJson(String jsonStr, TypeReference<T> typeRef) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            return mapper.readValue(jsonStr, typeRef);
-        } catch(IOException ex) {
-            LOGGER.error("Parser to object by type reference error.", ex);
-            throw new IllegalArgumentException(
-                    "Parser json to object error, json = " + jsonStr + ", expect type = " + typeRef.getType(), ex);
-        }
-    }
-
-    /**
-     * Turn a json file in to a java object. <br>
-     * 
-     * @param file the json file need to change.
-     * @param objClass the java class json string represent.
-     * @return the java object parsed from json string.
-     * @since GSO 0.5
-     */
-    public static <T> T fromJson(File file, Class<T> objClass) {
-        try {
-
-            ObjectMapper mapper = new ObjectMapper();
-
-            mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            return mapper.readValue(file, objClass);
-        } catch(IOException ex) {
-            LOGGER.error("Parser to object error.", ex);
-            throw new IllegalArgumentException(
-                    "Parser json to object error, file = " + file.getName() + ", expect class = " + objClass, ex);
-        }
-    }
 }
