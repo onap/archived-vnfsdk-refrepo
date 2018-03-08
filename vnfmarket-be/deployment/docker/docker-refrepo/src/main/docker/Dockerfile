@@ -84,9 +84,9 @@ WORKDIR /service
 
 RUN  mkdir -p /etc/nginx/ssl
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY certgen.sh .
-CMD  chmod +x ./certgen.sh
-RUN ./certgen.sh
+COPY certgen.sh /service
+RUN  chmod +x /service/certgen.sh 
+RUN  /service/certgen.sh
 
 
 
@@ -111,12 +111,16 @@ RUN apt-get install -y g++ make &&  curl -sL https://rpm.nodesource.com/setup_6.
 RUN apt-get install -y nodejs
 RUN apt-get install -y npm
 RUN apt-get -qq update && apt-get -qq -y install bzip2
-RUN cd /service/webapps/onapui/vnfmarket &&  npm install phantomjs-prebuilt@2.1.14 --ignore-scripts &&  npm install
-CMD chmod +x ./bin/*.sh && service nginx start
+RUN chmod +x /service/bin/*.sh
+RUN service nginx start &
+#RUN cd /service/webapps/onapui/vnfmarket && npm install phantomjs-prebuilt@2.1.14 --ignore-scripts && npm install
 
 
 ENTRYPOINT /service/docker-entrypoint.sh
 RUN chmod a+x /service/docker-entrypoint.sh
 ENTRYPOINT ["/service/docker-entrypoint.sh"]
+RUN cd /service/webapps/onapui/vnfmarket && npm install phantomjs-prebuilt@2.1.14 --ignore-scripts && npm install
+
+
 
 COPY LICENSE ./ONAP_LICENSE
