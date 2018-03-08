@@ -18,6 +18,8 @@
 # Start tomcat service
 ./bin/start.sh
 
+
+service nginx start
 # Show log files
 echo Waiting for log file...
 while [ ! -f /service/logs/* ]; do
