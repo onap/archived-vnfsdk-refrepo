@@ -21,7 +21,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -48,7 +47,7 @@ public final class FileUtil {
 	private static final int TRY_COUNT = 3;
 
 	private FileUtil() {
-		// Empty constructor
+		//Empty constructor
 	}
 
 	/**
@@ -137,64 +136,6 @@ public final class FileUtil {
 			}
 		}
 		return unzipFileNams;
-	}
-
-	/**
-	 * close InputStream.
-	 *
-	 * @param inputStream
-	 *            the inputstream to close
-	 */
-	public static void closeInputStream(InputStream inputStream) {
-		try {
-			if (inputStream != null) {
-				inputStream.close();
-			}
-		} catch (Exception e1) {
-			logger.info("error while closing InputStream!", e1);
-		}
-	}
-
-	/**
-	 * close OutputStream.
-	 *
-	 * @param outputStream
-	 *            the output stream to close
-	 */
-	public static void closeOutputStream(OutputStream outputStream) {
-		try {
-			if (outputStream != null) {
-				outputStream.close();
-			}
-		} catch (Exception e1) {
-			logger.info("error while closing OutputStream!", e1);
-		}
-	}
-
-	public static void closeFileStream(FileInputStream ifs) {
-		try {
-			if (ifs != null) {
-				ifs.close();
-			}
-		} catch (Exception e1) {
-			logger.info("error while closing OutputStream", e1);
-		}
-	}
-
-	/**
-	 * close zipFile.
-	 *
-	 * @param zipFile
-	 *            the zipFile to close
-	 */
-	public static void closeZipFile(ZipFile zipFile) {
-		try {
-			if (zipFile != null) {
-				zipFile.close();
-			}
-		} catch (IOException e1) {
-			logger.info("close ZipFile error!", e1);
-		}
 	}
 
 	public static boolean checkFileExists(String filePath) {
