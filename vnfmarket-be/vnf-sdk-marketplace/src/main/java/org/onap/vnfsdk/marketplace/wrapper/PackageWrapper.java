@@ -38,7 +38,6 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.onap.validation.csar.CsarValidator;
 import org.onap.vnfsdk.marketplace.common.CommonConstant;
 import org.onap.vnfsdk.marketplace.common.FileUtil;
-import org.onap.vnfsdk.marketplace.common.JsonUtil;
 import org.onap.vnfsdk.marketplace.common.RestUtil;
 import org.onap.vnfsdk.marketplace.common.ToolUtil;
 import org.onap.vnfsdk.marketplace.db.entity.PackageData;
@@ -86,8 +85,8 @@ public class PackageWrapper {
             return Response.status(Status.EXPECTATION_FAILED).build();
         }
 
-        ValidateLifecycleTestResponse lyfValidateResp =
-                JsonUtil.fromJson(reqParam, ValidateLifecycleTestResponse.class);
+        ValidateLifecycleTestResponse lyfValidateResp = null; //TBD - Use Gson - jackson has security issue/
+                //JsonUtil.fromJson(reqParam, ValidateLifecycleTestResponse.class);
         if(!checkOperationSucess(lyfValidateResp)) {
             return Response.status(Status.EXPECTATION_FAILED).build();
         }

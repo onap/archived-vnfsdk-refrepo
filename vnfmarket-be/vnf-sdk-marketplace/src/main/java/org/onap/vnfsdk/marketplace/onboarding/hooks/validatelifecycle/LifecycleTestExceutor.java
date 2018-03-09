@@ -23,7 +23,6 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.onap.vnfsdk.marketplace.common.CommonConstant;
 import org.onap.vnfsdk.marketplace.common.FileUtil;
-import org.onap.vnfsdk.marketplace.common.JsonUtil;
 import org.onap.vnfsdk.marketplace.msb.MsbDetails;
 import org.onap.vnfsdk.marketplace.msb.MsbDetailsHolder;
 import org.onap.vnfsdk.marketplace.onboarding.entity.OnBoradingRequest;
@@ -129,11 +128,11 @@ public class LifecycleTestExceutor {
 			return result;
 		}
 
-		String rawDataJson = JsonUtil.toJson(oLifeCycleTestReq);
-		if (null == rawDataJson) {
-			logger.error("Failed to convert LifeCycleTestReq object to Json String !!!");
-			return result;
-		}
+		String rawDataJson = ""; //TBD - Use Gson - jackson has security issue//JsonUtil.toJson(oLifeCycleTestReq);
+//		if (null == rawDataJson) {
+//			logger.error("Failed to convert LifeCycleTestReq object to Json String !!!");
+//			return result;
+//		}
 
 		RestResponse oResponse = RestfulClient.sendPostRequest(oMsbDetails.getDefaultServer().getHost(),
 				oMsbDetails.getDefaultServer().getPort(), CommonConstant.LifeCycleTest.LIFECYCLE_TEST_URL, rawDataJson);
