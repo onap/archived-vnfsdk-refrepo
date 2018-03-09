@@ -35,13 +35,10 @@ import java.util.zip.ZipOutputStream;
 
 import javax.ws.rs.core.Response;
 
-import org.apache.ibatis.exceptions.PersistenceException;
-import org.codehaus.jackson.JsonNode;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.junit.Before;
 import org.junit.Test;
 import org.onap.vnfsdk.marketplace.common.FileUtil;
-import org.onap.vnfsdk.marketplace.common.JsonUtil;
 import org.onap.vnfsdk.marketplace.common.ToolUtil;
 import org.onap.vnfsdk.marketplace.db.entity.PackageData;
 import org.onap.vnfsdk.marketplace.db.impl.MarketplaceDaoImpl;
@@ -1032,21 +1029,6 @@ public class PackageResourceTest {
         assertEquals(res, true);
     }
 
-    @Test
-    public void testToJson() {
-        List<String> listObj = new ArrayList<String>();
-        listObj.add("test");
-        String res = JsonUtil.toJson(listObj);
-        assertNotNull(res);
-    }
-
-    @Test
-    public void testfromJson() {
-
-        String carJson = "{ \"brand\" : \"Mercedes\", \"doors\" : 5 }";
-        JsonNode res = JsonUtil.fromJson(carJson, JsonNode.class);
-        assertNotNull(res);
-    }
 
     @Test
     public void testUnzip() {
