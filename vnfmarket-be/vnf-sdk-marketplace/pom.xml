@@ -22,7 +22,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<cxf.version>3.2.1</cxf.version>
+		<cxf.version>3.2.2</cxf.version>
 		<!-- slf4j.version>1.6.1</slf4j.version> -->
 		<maven.test.skip>false</maven.test.skip>
 		<maven.test.failure.ignore>false</maven.test.failure.ignore>
@@ -55,7 +55,7 @@
 		<dependency>
 			<groupId>io.dropwizard</groupId>
 			<artifactId>dropwizard-core</artifactId>
-			<version>0.9.3</version>
+			<version>1.2.4</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.slf4j</groupId>
@@ -66,12 +66,12 @@
 		<dependency>
 			<groupId>io.dropwizard</groupId>
 			<artifactId>dropwizard-assets</artifactId>
-			<version>0.9.3</version>
+			<version>1.2.4</version>
 		</dependency>
 		<dependency>
 			<groupId>io.dropwizard</groupId>
 			<artifactId>dropwizard-hibernate</artifactId>
-			<version>0.9.3</version>
+			<version>1.2.4</version>
 		</dependency>
 		<dependency>
 			<groupId>io.swagger</groupId>
