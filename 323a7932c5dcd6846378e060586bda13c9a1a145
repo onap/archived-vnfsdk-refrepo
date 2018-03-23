@@ -1,0 +1,8 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+2: Chris Donley <christopher.donley@huawei.com>
+Code-Review+2: Andy Mayer <am803u@att.com>
+Submitted-by: Chris Donley <christopher.donley@huawei.com>
+Submitted-at: Fri, 23 Mar 2018 16:08:22 +0000
+Reviewed-on: https://gerrit.onap.org/r/38129
+Project: vnfsdk/refrepo
+Branch: refs/heads/master
