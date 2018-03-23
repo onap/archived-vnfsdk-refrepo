@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Copyright 2017 Huawei Technologies Co., Ltd.
+    Copyright 2017-2018 Huawei Technologies Co., Ltd.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.onap.vnfsdk.refrepo</groupId>
         <artifactId>vnf-sdk-marketplace-core-parent</artifactId>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
     </parent>
 
     <artifactId>vnfmarket-docker-refrepo</artifactId>
@@ -80,7 +80,7 @@
                             <goal>tag</goal>
                         </goals>
                         <configuration>
-                            <image>onap/refrepo</image>
+                            <image>onap/vnfsdk/refrepo</image>
                             <newName>${docker.push.registry}/onap/refrepo:${project.version}-${maven.build.timestamp}</newName>
                             <pushImage>${skip.docker.push}</pushImage>
                             <skipDockerTag>${skip.docker.tag}</skipDockerTag>
