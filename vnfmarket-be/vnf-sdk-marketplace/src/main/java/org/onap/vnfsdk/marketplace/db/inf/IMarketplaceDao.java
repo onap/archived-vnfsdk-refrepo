@@ -17,6 +17,7 @@
 package org.onap.vnfsdk.marketplace.db.inf;
 
 import java.util.List;
+import java.util.Map;
 
 import org.onap.vnfsdk.marketplace.db.entity.PackageData;
 
@@ -48,6 +49,8 @@ public interface IMarketplaceDao {
     void savePackageData(PackageData lPackageData);
 
     List<PackageData> getPackageData(String csarID);
+
+    List<PackageData> getPackageDataSubset(Map<String, String> paramsMap);
 
 	void deletePackageData(String csarId);	
 	   
