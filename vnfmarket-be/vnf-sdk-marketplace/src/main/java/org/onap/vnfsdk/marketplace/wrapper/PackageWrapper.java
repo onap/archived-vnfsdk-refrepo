@@ -198,6 +198,13 @@ public class PackageWrapper {
                 LOG.info("packageMeta = " + ToolUtil.objectToString(packageMeta));
 
                 PackageData packageData = PackageWrapperUtil.getPackageData(packageMeta);
+                
+                List<PackageData> lstPkgData = PackageManager.getInstance().queryPackage(packageMeta.getName(), "", "", "", "");
+                if (!lstPkgData.isEmpty())
+                {
+                    LOG.error ("Package name is not unique");
+                    return null;
+                }
 
                 String destPath = File.separator + path + File.separator + File.separator;
                 boolean uploadResult = FileManagerFactory.createFileManager().upload(localDirName, destPath);

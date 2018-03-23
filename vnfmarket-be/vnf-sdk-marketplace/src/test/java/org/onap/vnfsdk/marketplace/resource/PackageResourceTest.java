@@ -640,6 +640,13 @@ public class PackageResourceTest {
                 packageDataList.add(packageData);
                 return packageDataList;
             }
+            
+            @Mock
+            public List<PackageData> getPackageDataSubset(Map<String, String> paramsMap) {
+                List<PackageData> packageDataList = new ArrayList<PackageData>();
+               
+                return packageDataList;
+            }
         };
 
         new MockUp<HttpFileManagerImpl>() {
@@ -739,7 +746,7 @@ public class PackageResourceTest {
         if(ins != null) {
             try {
                 result = PackageWrapper.getInstance().uploadPackage(ins, fileDetail, null, null);
-                PackageWrapper.getInstance().updateValidateStatus(ins);
+                // PackageWrapper.getInstance().updateValidateStatus(ins);
             } catch(Exception e3) {
                 e3.printStackTrace();
             }
