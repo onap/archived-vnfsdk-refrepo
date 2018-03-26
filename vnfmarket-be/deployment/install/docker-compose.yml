@@ -20,7 +20,7 @@ services:
         restart: "always"
         image: "${NEXUS_REPO}/onap/refrepo:${REFREPO_TAG}"
         ports:
-            - "8702:8702"
+            - "8702-8703:8702-8703"
         environment:
             POSTGRES_IP: postgres
         links:
