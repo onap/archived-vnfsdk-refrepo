@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 Huawei Technologies Co., Ltd.
+ * Copyright 2017-2018 Huawei Technologies Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,10 +33,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+/* commenting out to avoid security vulnerabilities
+ * import com.fasterxml.jackson.databind.DeserializationFeature;
+ * import com.fasterxml.jackson.databind.JsonMappingException;
+ * import com.fasterxml.jackson.databind.ObjectMapper;
+ */
 /* CALL Flow: onBoardingHandler --> LifecycleTestHook--> LifecycleTestExecutor */
 public class LifecycleTestExceutor {
 	private static final Logger logger = LoggerFactory.getLogger(LifecycleTestExceutor.class);
