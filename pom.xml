@@ -28,7 +28,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.onap.vnfsdk.refrepo</groupId>
     <artifactId>vnfmarket</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <packaging>pom</packaging>
     <name>vnfsdk-refrepo</name>
 
