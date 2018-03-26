@@ -33,8 +33,10 @@
 
     <modules>
         <module>zip</module>
+	<!--
         <module>docker/docker-postgres</module>
         <module>docker/docker-refrepo</module>        
+	-->
     </modules>
 
 </project>
