@@ -23,5 +23,7 @@ services:
             - "8702-8703:8702-8703"
         environment:
             POSTGRES_IP: postgres
+        volumes:
+            - /data/csars:/service/webapps/ROOT/WEB-INF/tomcat/webapps/ROOT/CSAR
         links:
             - postgres
