@@ -34,6 +34,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.eclipse.jetty.http.HttpStatus;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.onap.validation.csar.CsarValidator;
 import org.onap.vnfsdk.marketplace.common.CommonConstant;
@@ -41,6 +42,7 @@ import org.onap.vnfsdk.marketplace.common.FileUtil;
 import org.onap.vnfsdk.marketplace.common.RestUtil;
 import org.onap.vnfsdk.marketplace.common.ToolUtil;
 import org.onap.vnfsdk.marketplace.db.entity.PackageData;
+import org.onap.vnfsdk.marketplace.db.exception.ErrorCodeException;
 import org.onap.vnfsdk.marketplace.db.exception.MarketplaceResourceException;
 import org.onap.vnfsdk.marketplace.db.resource.PackageManager;
 import org.onap.vnfsdk.marketplace.db.util.MarketplaceDbUtil;
@@ -85,8 +87,9 @@ public class PackageWrapper {
             return Response.status(Status.EXPECTATION_FAILED).build();
         }
 
-        ValidateLifecycleTestResponse lyfValidateResp = null; //TBD - Use Gson - jackson has security issue/
-                //JsonUtil.fromJson(reqParam, ValidateLifecycleTestResponse.class);
+        ValidateLifecycleTestResponse lyfValidateResp = null; // TBD - Use Gson - jackson has
+                                                              // security issue/
+        // JsonUtil.fromJson(reqParam, ValidateLifecycleTestResponse.class);
         if(!checkOperationSucess(lyfValidateResp)) {
             return Response.status(Status.EXPECTATION_FAILED).build();
         }
@@ -166,7 +169,7 @@ public class PackageWrapper {
      * @throws Exception e
      */
     public Response uploadPackage(InputStream uploadedInputStream, FormDataContentDisposition fileDetail,
-            String details, HttpHeaders head) throws MarketplaceResourceException {
+            String details, HttpHeaders head) {
         LOG.info("Upload/Reupload request Received !!!!");
         try {
             String packageId = MarketplaceDbUtil.generateId();
@@ -178,7 +181,7 @@ public class PackageWrapper {
     }
 
     private UploadPackageResponse manageUpload(String packageId, String fileName, String fileLocation, String details,
-            String contentRange) throws IOException, MarketplaceResourceException {
+            String contentRange) throws IOException, ErrorCodeException {
         String localDirName = ToolUtil.getTempDir(CommonConstant.CATALOG_CSAR_DIR_NAME, fileName);
         PackageBasicInfo basicInfo = PackageWrapperUtil.getPacageBasicInfo(fileLocation);
         UploadPackageResponse result = new UploadPackageResponse();
@@ -198,12 +201,12 @@ public class PackageWrapper {
                 LOG.info("packageMeta = " + ToolUtil.objectToString(packageMeta));
 
                 PackageData packageData = PackageWrapperUtil.getPackageData(packageMeta);
-                
-                List<PackageData> lstPkgData = PackageManager.getInstance().queryPackage(packageMeta.getName(), "", "", "", "");
-                if (!lstPkgData.isEmpty())
-                {
-                    LOG.error ("Package name is not unique");
-                    return null;
+
+                List<PackageData> lstPkgData =
+                        PackageManager.getInstance().queryPackage(packageMeta.getName(), "", "", "", "");
+                if(!lstPkgData.isEmpty()) {
+                    LOG.error("Package name is not unique");
+                    throw new ErrorCodeException(HttpStatus.INTERNAL_SERVER_ERROR_500, "Package name already exists");
                 }
 
                 String destPath = File.separator + path + File.separator + File.separator;
@@ -249,12 +252,12 @@ public class PackageWrapper {
      * @throws MarketplaceResourceException
      */
     private Response handlePackageUpload(String packageId, InputStream uploadedInputStream,
-            FormDataContentDisposition fileDetail, String details, HttpHeaders head)
-            throws IOException, MarketplaceResourceException {
+            FormDataContentDisposition fileDetail, String details, HttpHeaders head) throws IOException {
         boolean bResult = handleDataValidate(packageId, uploadedInputStream, fileDetail);
         if(!bResult) {
             LOG.error("Validation of Input received for Package Upload failed !!!");
-            return Response.status(Status.EXPECTATION_FAILED).build();
+            return Response.status(Status.EXPECTATION_FAILED)
+                    .entity("Input package is empty or exception happened during validation").build();
         }
 
         String fileName = "temp_" + packageId + ".csar";
@@ -284,16 +287,23 @@ public class PackageWrapper {
         try {
             CsarValidator cv = new CsarValidator(packageId, fileLocation);
 
-            if(!cv.validateCsar()) {
+            String validationResp = cv.validateCsar();
+            if("SUCCESS" != validationResp) {
                 LOG.error("Could not validate failed");
-                return Response.status(Status.EXPECTATION_FAILED).build();
+                return Response.status(Status.EXPECTATION_FAILED).entity(validationResp).build();
             }
         } catch(Exception e) {
             LOG.error("CSAR validation panicked", e);
-            return Response.status(Status.EXPECTATION_FAILED).build();
+            return Response.status(Status.EXPECTATION_FAILED)
+                    .entity("Exception occurred while validating csar package:" + e.getMessage()).build();
         }
 
-        UploadPackageResponse result = manageUpload(packageId, fileName, fileLocation, details, contentRange);
+        UploadPackageResponse result = null;
+        try {
+            result = manageUpload(packageId, fileName, fileLocation, details, contentRange);
+        } catch(ErrorCodeException e) {
+            return Response.status(Status.EXPECTATION_FAILED).entity("Package Name already exists").build();
+        }
         if(null != result) {
             return Response.ok(ToolUtil.objectToString(result), MediaType.APPLICATION_JSON).build();
         } else {
