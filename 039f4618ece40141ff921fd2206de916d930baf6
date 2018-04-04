@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_a220f349",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/wrapper/PackageWrapper.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 335
+      },
+      "writtenOn": "2018-04-04T13:43:05Z",
+      "side": 1,
+      "message": "I think your build is failing here.  Error message is \n\n[ERROR] /w/workspace/vnfsdk-refrepo-master-verify-java/vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/wrapper/PackageWrapper.java:[290,52] incompatible types: boolean cannot be converted to java.lang.String",
+      "revId": "039f4618ece40141ff921fd2206de916d930baf6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
