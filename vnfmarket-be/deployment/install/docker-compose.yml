@@ -21,8 +21,11 @@ services:
         image: "${NEXUS_REPO}/onap/refrepo:${REFREPO_TAG}"
         ports:
             - "8702-8703:8702-8703"
+            - "8000:8000"
         environment:
             POSTGRES_IP: postgres
+            JPDA_ADDRESS: 8000
+            JPDA_TRANSPORT: dt_socket
         volumes:
             - /data/csars:/service/webapps/ROOT/WEB-INF/tomcat/webapps/ROOT/CSAR
         links:

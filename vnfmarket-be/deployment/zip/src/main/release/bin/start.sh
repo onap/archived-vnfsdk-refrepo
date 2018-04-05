@@ -40,6 +40,6 @@ LOG_DIR=$CATALINA_BASE/logs
 if [ ! -d "$LOG_DIR" ]; then
   mkdir $LOG_DIR
 fi
-$CATALINA_HOME/bin/catalina.sh start
+$CATALINA_HOME/bin/catalina.sh jpda start
 
 
