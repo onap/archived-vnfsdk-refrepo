@@ -968,9 +968,8 @@ input {
 }
 
 #listView .btnIconSpacing {
-	top: -2px !important;
-	position: relative;
-	/*top: -2px;*/
+	top: 0px !important;
+	position: relative;	
 	left: -3px;
 }
 
