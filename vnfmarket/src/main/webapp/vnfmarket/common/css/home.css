@@ -432,6 +432,8 @@ th.fontSize {
 .deleteIconSize {
 	font-size: 37px;
 }
+
+/* if display block then button and text is getting overlapped */
 .fullWidth {
 	width: 100%;
 	display: inline-block;
