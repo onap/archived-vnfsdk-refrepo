@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- (function () {
+(function () {
 	'use strict';
 
 	/**
@@ -36,7 +36,7 @@
 	* and bindable members up top.
 	*/
 
-	function Layout($mdSidenav, $cookies, $state, $mdToast, $mdDialog ) {
+	function Layout($mdSidenav, $cookies, $state, $mdToast, $mdDialog) {
 		/*jshint validthis: true */
 		var vm = this;
 

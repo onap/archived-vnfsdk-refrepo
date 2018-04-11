@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-(function() {
+(function () {
     'use strict';
 
     /**
@@ -41,8 +41,8 @@
         return directive;
 
         function link(scope, element, attrs) {
-            element.bind("change", function(changeEvent) {
-                scope.$apply(function() {
+            element.bind("change", function (changeEvent) {
+                scope.$apply(function () {
                     scope.fileUpload = changeEvent.target.files[0];
                 });
             });

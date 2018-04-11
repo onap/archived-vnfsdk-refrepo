@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-(function() {
+(function () {
     'use strict';
 
     /**
@@ -33,7 +33,7 @@
                         "url": "/onapapi/vnfsdk-marketplace/v1/PackageResource/csars",
                         "method": "POST"
                     },
-					"repostServiceUpload": {
+                    "repostServiceUpload": {
                         "url": "/onapapi/vnfsdk-marketplace/v1/PackageResource/csars/:csarId/reupload",
                         "method": "POST"
                     },
@@ -53,15 +53,15 @@
                         "url": "/onapapi/vnfsdk-marketplace/v1/PackageResource/csars/:csarId",
                         "method": "GET"
                     },
-					"getFunctionTestDetails" : {
-						"url" : "/onapapi/vnfsdk-marketplace/v1/PackageResource/csars/:csarId/operresult?operTypeId=functiontest",
-						"method" : "GET"
-					},
-					"updateDownloadCount" :{
-						"url" : "/onapapi/vnfsdk-marketplace/v1/PackageResource/csars/:csarId/downloaded",
-						"method" : "GET"
-					},
-					"getOnBoardingSteps": {
+                    "getFunctionTestDetails": {
+                        "url": "/onapapi/vnfsdk-marketplace/v1/PackageResource/csars/:csarId/operresult?operTypeId=functiontest",
+                        "method": "GET"
+                    },
+                    "updateDownloadCount": {
+                        "url": "/onapapi/vnfsdk-marketplace/v1/PackageResource/csars/:csarId/downloaded",
+                        "method": "GET"
+                    },
+                    "getOnBoardingSteps": {
                         "url": "/onapapi/vnfsdk-marketplace/v1/PackageResource/csars/onboardsteps",
                         "method": "GET"
                     },

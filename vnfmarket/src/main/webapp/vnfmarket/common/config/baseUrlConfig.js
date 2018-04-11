@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-(function() {
+(function () {
     'use strict';
 
     /**
@@ -28,8 +28,8 @@
         .module('vnfmarket')
         .constant("baseUrlConfig", {
             "common": {
-                "ip" : "", //ses
-                "port" : "" //ses
+                "ip": "", //ses
+                "port": "" //ses
             }
         })
 })();

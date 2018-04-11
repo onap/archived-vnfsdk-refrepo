@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-(function() {
+(function () {
     'use strict';
 
     /**
@@ -65,16 +65,16 @@
             'A200': '#E1E4E5',
             'A400': '#858CA8',
             'A700': '#FFFFFF'
-            });
+        });
 
-            $mdThemingProvider.theme('default')
-            .primaryPalette('amazingPaletteName',{
-                'default' : 'A400',
-                'hue-1' : "A700",
-                'hue-2' : "100",
-                'hue-3' : "A200"
+        $mdThemingProvider.theme('default')
+            .primaryPalette('amazingPaletteName', {
+                'default': 'A400',
+                'hue-1': "A700",
+                'hue-2': "100",
+                'hue-3': "A200"
             }).accentPalette('amazingPaletteName', {
-            'hue-1' : 'A400'
+                'hue-1': 'A400'
             })
 
         $locationProvider.hashPrefix('!');

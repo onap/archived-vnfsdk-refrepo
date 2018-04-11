@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- (function () {
+(function () {
 	'use strict';
 
 	/**
@@ -26,7 +26,7 @@
 	angular
 		.module('vnfmarket')
 		.controller('SidenavCtrl', SidenavCtrl)
-		// .controller('SettingsCtrl', SettingsCtrl);
+	// .controller('SettingsCtrl', SettingsCtrl);
 
 	// Injecting Denpendencies
 
@@ -47,7 +47,7 @@
 			$mdSidenav(menuId).toggle();
 		};
 
-		vm.closeSidenav = function() {
+		vm.closeSidenav = function () {
 			$mdSidenav('left').close();
 		};
 
