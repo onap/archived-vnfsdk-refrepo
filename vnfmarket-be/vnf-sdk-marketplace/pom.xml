@@ -161,6 +161,11 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.4</version>
 		</dependency>
+		<dependency>
+           <groupId>org.glassfish.jersey.bundles.repackaged</groupId>
+           <artifactId>jersey-guava</artifactId>
+           <version>2.6</version>
+        </dependency>
 		<!-- UT end -->
 		<dependency>
 			<groupId>org.onap.vnfsdk.validation</groupId>
