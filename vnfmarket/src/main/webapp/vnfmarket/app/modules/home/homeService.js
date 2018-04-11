@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-(function() {
+(function () {
     'use strict';
 
     /**
@@ -34,8 +34,8 @@
             getFeaturesList: getFeaturesList,
             downloadServiceFile: downloadServiceFile,
             openDeleteDialog: openDeleteDialog,
-			updateDownloadCount:updateDownloadCount,
-			openUploadDialog:openUploadDialog
+            updateDownloadCount: updateDownloadCount,
+            openUploadDialog: openUploadDialog
         };
 
         function getFeaturesList() {
@@ -44,23 +44,23 @@
 
             var defer = $q.defer()
             httpService.apiRequest(url, method)
-                .then(function(response) {
+                .then(function (response) {
                     defer.resolve(response);
-                }, function(error) {
+                }, function (error) {
                     defer.reject(error);
                 });
             return defer.promise;
         }
-		
-		function updateDownloadCount(csarId) {
+
+        function updateDownloadCount(csarId) {
             var url = vnfConfig.api.home.updateDownloadCount.url;
-			var method = vnfConfig.api.home.updateDownloadCount.method;
-			url = url.replace(":csarId", csarId)
+            var method = vnfConfig.api.home.updateDownloadCount.method;
+            url = url.replace(":csarId", csarId)
             var defer = $q.defer()
             httpService.apiRequest(url, method)
-                .then(function(response) {
+                .then(function (response) {
                     defer.resolve(response);
-                }, function(error) {
+                }, function (error) {
                     defer.reject(error);
                 });
             return defer.promise;
@@ -74,34 +74,34 @@
 
         function openDeleteDialog(serviceDetails, callbackFunction) {
             $mdDialog.show({
-                    controller: 'serviceDeleteCtrl',
-                    templateUrl: vnfConfig.modulePath.home + '/serviceDelete/serviceDelete.html',
-                    serviceDetails: serviceDetails,
-                    controllerAs: 'vm'
-                })
-                .then(function(answer) {
+                controller: 'serviceDeleteCtrl',
+                templateUrl: vnfConfig.modulePath.home + '/serviceDelete/serviceDelete.html',
+                serviceDetails: serviceDetails,
+                controllerAs: 'vm'
+            })
+                .then(function (answer) {
                     //vm.status = 'You said the information was "' + answer + '".';
                     callbackFunction();
-                }, function() {
+                }, function () {
                     //vm.status = 'You cancelled the dialog.';
                 });
         }
-		
-		function openUploadDialog(callbackFunction,isUpload ,csarId) {
+
+        function openUploadDialog(callbackFunction, isUpload, csarId) {
             $mdDialog.show({
-				controller: 'serviceUploadCtrl',
-				templateUrl: vnfConfig.modulePath.home + '/serviceUpload/serviceUpload.html',
-				controllerAs: 'vm',
-				isUpload: isUpload,
-				csarId: csarId ? csarId : null
-			})
-			.then(function(answer) {
-				if(callbackFunction)
-					callbackFunction();
-				// vm.status = 'You said the information was "' + answer + '".';
-			}, function() {
-				// vm.status = 'You cancelled the dialog.';
-			});
+                controller: 'serviceUploadCtrl',
+                templateUrl: vnfConfig.modulePath.home + '/serviceUpload/serviceUpload.html',
+                controllerAs: 'vm',
+                isUpload: isUpload,
+                csarId: csarId ? csarId : null
+            })
+                .then(function (answer) {
+                    if (callbackFunction)
+                        callbackFunction();
+                    // vm.status = 'You said the information was "' + answer + '".';
+                }, function () {
+                    // vm.status = 'You cancelled the dialog.';
+                });
         }
 
     }

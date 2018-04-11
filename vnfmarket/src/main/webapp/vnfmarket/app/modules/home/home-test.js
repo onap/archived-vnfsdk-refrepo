@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-(function() {
+(function () {
     'use strict';
 
     /**
@@ -24,19 +24,19 @@
      * Test of the app
      */
 
-    describe('Home - Marketplace', function() {
+    describe('Home - Marketplace', function () {
         var controller = null,
             $scope = null,
             $location, service, httpBackend, config, state;
 
-        beforeEach(function() {
+        beforeEach(function () {
             module('vnfmarket');
         });
         beforeEach(module('ui.router'));
         beforeEach(module('md.data.table'));
         beforeEach(module('pascalprecht.translate'));
 
-        beforeEach(inject(function($controller, $rootScope, _$location_, homeService, $httpBackend, vnfConfig, $state) {
+        beforeEach(inject(function ($controller, $rootScope, _$location_, homeService, $httpBackend, vnfConfig, $state) {
             $scope = $rootScope.$new();
             $location = _$location_;
             service = homeService;
@@ -48,11 +48,11 @@
             });
         }));
 
-        it('Should HomeCtrl must be defined', function() {
+        it('Should HomeCtrl must be defined', function () {
             expect(controller).toBeDefined();
         });
 
-        it('Service List response should be of type array', function() {
+        it('Service List response should be of type array', function () {
             var data = [{
                 "csarId": "26b4d6c4-a157-43c0-8ebc-9d6af1d6c40c",
                 "name": "clearwater_vnf",
@@ -75,28 +75,28 @@
             var returnData = {};
             httpBackend.expectGET(config.common.baseUrl + config.api.home.getFeaturesList.url).respond(returnData);
 
-            service.getFeaturesList().then(function(response) {
+            service.getFeaturesList().then(function (response) {
                 expect(response.data).toBeDefined();
                 expect(Array.isArray(response.data)).toBeTruthy();
             });
             httpBackend.flush();
         });
 
-        it('Service List response is not of array type', function() {
+        it('Service List response is not of array type', function () {
             var data = {};
             httpBackend.whenGET(config.common.baseUrl + config.api.home.getFeaturesList.url).respond(200, data);
 
             var returnData = {};
             httpBackend.expectGET(config.common.baseUrl + config.api.home.getFeaturesList.url).respond(returnData);
 
-            service.getFeaturesList().then(function(response) {
+            service.getFeaturesList().then(function (response) {
                 expect(response.data).toBeDefined();
                 expect(Array.isArray(response.data)).toBeFalsy();
             });
             httpBackend.flush();
         });
 
-        it('Service List response should contain service details', function() {
+        it('Service List response should contain service details', function () {
             var returnData = {};
             var data = [{
                 "csarId": "26b4d6c4-a157-43c0-8ebc-9d6af1d6c40c",
@@ -118,7 +118,7 @@
             httpBackend.whenGET(config.common.baseUrl + config.api.home.getFeaturesList.url).respond(200, data);
 
             httpBackend.expectGET(config.common.baseUrl + config.api.home.getFeaturesList.url).respond(returnData);
-            service.getFeaturesList().then(function(response) {
+            service.getFeaturesList().then(function (response) {
                 expect(response.data).toBeDefined();
                 var serviceDetails = response.data[0];
                 expect(serviceDetails.csarId).toBeDefined();
@@ -140,24 +140,24 @@
             httpBackend.flush();
         });
 
-        it('Should match the path Module name', function() {
+        it('Should match the path Module name', function () {
             $location.path('/marketplace');
             expect($location.path()).toBe('/marketplace');
         });
 
-        it('Path to the state home has to be defined', function() {
+        it('Path to the state home has to be defined', function () {
             expect(state.href("home")).toBe('#!');
         });
 
-        it('Path to the state home.marketplace has to be defined', function() {
+        it('Path to the state home.marketplace has to be defined', function () {
             expect(state.href("home.marketplace")).toBe('#!/marketplace');
         });
 
-        it('Path to the state home.serviceDetails has to be defined', function() {
+        it('Path to the state home.serviceDetails has to be defined', function () {
             expect(state.href("home.serviceDetails")).toBe('#!/serviceDetails');
         });
 
-        it('When a state is invalid', function() {
+        it('When a state is invalid', function () {
             expect(state.href("blah")).toBeNull('/marketplace');
         });
     });

@@ -24,7 +24,7 @@
  */
 
 angular.module('vnfmarket')
-    .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider, vnfConfig) {
+    .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider, vnfConfig) {
 
         var homePath = '/onapui/vnfmarket/app/modules/home';
         $stateProvider

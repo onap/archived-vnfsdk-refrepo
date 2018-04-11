@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-(function() {
+(function () {
     'use strict';
 
     /**
@@ -57,7 +57,7 @@
 
         vm.pagination = [5, 10, 15, {
             label: 'All',
-            value: function() {
+            value: function () {
                 return vm.services.length ? vm.services.length : 0;
             }
         }];
@@ -80,9 +80,9 @@
             pageSelect: true
         };
 
-        vm.getFeatureList = function() {
+        vm.getFeatureList = function () {
             vm.SpinClass = "fa-spin"
-            homeService.getFeaturesList().then(function(response) {
+            homeService.getFeaturesList().then(function (response) {
                 for (var i = 0; i < response.data.length; i++) {
                     response.data[i].createTime = new Date(response.data[i].createTime);
                     response.data[i].modifyTime = new Date(response.data[i].modifyTime);
@@ -92,35 +92,35 @@
             });
         }
 
-        vm.downloadService = function(csarId) {
-			homeService.updateDownloadCount(csarId).then(function(response){
-				homeService.downloadServiceFile(csarId);
+        vm.downloadService = function (csarId) {
+            homeService.updateDownloadCount(csarId).then(function (response) {
+                homeService.downloadServiceFile(csarId);
                 vm.getFeatureList();
-			});
-            
+            });
+
         }
 
-        vm.changeView = function(viewType) {
+        vm.changeView = function (viewType) {
             vm.hasGridView = !vm.hasGridView;
             localStorage.setItem('viewType', viewType);
         }
 
-        vm.showDetails = function(serviceDetails) {
+        vm.showDetails = function (serviceDetails) {
             $state.go('home.serviceDetails', {
                 serviceDetails: serviceDetails
             });
         }
 
-        vm.serviceUpload = function(isUpload, csarId) {
-			homeService.openUploadDialog(vm.getFeatureList, isUpload, csarId);
+        vm.serviceUpload = function (isUpload, csarId) {
+            homeService.openUploadDialog(vm.getFeatureList, isUpload, csarId);
         };
-		
 
-        vm.onDeleteCompletion = function() {
+
+        vm.onDeleteCompletion = function () {
             vm.getFeatureList();
         }
 
-        vm.serviceDelete = function(serviceDetails) {
+        vm.serviceDelete = function (serviceDetails) {
             homeService.openDeleteDialog(serviceDetails, vm.onDeleteCompletion);
         };
 
