@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-(function() {
+(function () {
     'use strict';
 
     /**
@@ -40,9 +40,9 @@
             url = url.replace(":csarId", csarId)
             var defer = $q.defer()
             httpService.apiRequest(url, method)
-                .then(function(response) {
+                .then(function (response) {
                     defer.resolve(response);
-                }, function(error) {
+                }, function (error) {
                     defer.reject(error);
                 });
             return defer.promise;

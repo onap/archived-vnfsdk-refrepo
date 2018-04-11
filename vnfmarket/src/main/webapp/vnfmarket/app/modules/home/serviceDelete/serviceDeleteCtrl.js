@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-(function() {
+(function () {
     'use strict';
 
     /**
@@ -40,24 +40,24 @@
         var vm = this;
         vm.serviceDetails = serviceDetails;
 
-        vm.hide = function() {
+        vm.hide = function () {
             $mdDialog.hide();
         };
 
-        vm.cancel = function() {
+        vm.cancel = function () {
             $mdDialog.cancel();
         };
 
-        vm.answer = function(answer) {
+        vm.answer = function (answer) {
             serviceDeleteService.serviceDelete(vm.serviceDetails.csarId)
-                .then(function(response) {
+                .then(function (response) {
                     $mdDialog.hide(response);
                     $mdToast.show(
                         $mdToast.simple()
-                        .textContent('Service deleted successfully')
-                        .position("bottom right")
-                        .action('Ok')
-                        .theme('success-toast')
+                            .textContent('Service deleted successfully')
+                            .position("bottom right")
+                            .action('Ok')
+                            .theme('success-toast')
                     );
                 });
         };

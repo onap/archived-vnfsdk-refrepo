@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-(function() {
+(function () {
     'use strict';
 
     /**
@@ -23,39 +23,39 @@
      * # homeTest
      * Test of the app
      */
-     angular
-            .module('vnfmarket')
-            .constant("serviceDetails", {
-                "csarId": "26b4d6c4-a157-43c0-8ebc-9d6af1d6c40c",
-                "name": "clearwater_vnf",
-                "downloadUri": "null/files/catalog-http/NFAR/Canonical/clearwater_vnf/v1.0/clearwater_vnf.csar",
-                "report": "/Demo/reports/b3232e0c-3843-4df8-88e7-734cf2d7a97c/report.html",
-                "size": "1.8 MB",
-                "version": "v1.0",
-                "provider": "Canonical",
-                "type": "NFAR",
-                "format": "yaml",
-                "deletionPending": false,
-                "createTime": "2017-02-22 08:59:06",
-                "modifyTime": "2017-02-22 08:59:06",
-                "shortDesc": "",
-                "details": "",
-                "remarks": ""
-            })
+    angular
+        .module('vnfmarket')
+        .constant("serviceDetails", {
+            "csarId": "26b4d6c4-a157-43c0-8ebc-9d6af1d6c40c",
+            "name": "clearwater_vnf",
+            "downloadUri": "null/files/catalog-http/NFAR/Canonical/clearwater_vnf/v1.0/clearwater_vnf.csar",
+            "report": "/Demo/reports/b3232e0c-3843-4df8-88e7-734cf2d7a97c/report.html",
+            "size": "1.8 MB",
+            "version": "v1.0",
+            "provider": "Canonical",
+            "type": "NFAR",
+            "format": "yaml",
+            "deletionPending": false,
+            "createTime": "2017-02-22 08:59:06",
+            "modifyTime": "2017-02-22 08:59:06",
+            "shortDesc": "",
+            "details": "",
+            "remarks": ""
+        })
 
-    describe('Home - serviceDeleteCtrl', function() {
+    describe('Home - serviceDeleteCtrl', function () {
         var controller = null,
             $scope = null,
             $location, service, httpBackend, config, state, blah;
 
-        beforeEach(function() {
+        beforeEach(function () {
             module('vnfmarket');
         });
         beforeEach(module('ui.router'));
         beforeEach(module('md.data.table'));
         beforeEach(module('pascalprecht.translate'));
 
-        beforeEach(inject(function($controller, $rootScope, serviceDeleteService, $httpBackend, vnfConfig, serviceDetails) {
+        beforeEach(inject(function ($controller, $rootScope, serviceDeleteService, $httpBackend, vnfConfig, serviceDetails) {
             $scope = $rootScope.$new();
             service = serviceDeleteService;
             httpBackend = $httpBackend;
@@ -66,11 +66,11 @@
             });
         }));
 
-        it('Should serviceDeleteCtrl must be defined', function() {
+        it('Should serviceDeleteCtrl must be defined', function () {
             expect(controller).toBeDefined();
         });
 
-        it('Delete service for a valid scenario', function() {
+        it('Delete service for a valid scenario', function () {
             var csarId = "26b4d6c4-a157-43c0-8ebc-9d6af1d6c40c", url = config.common.baseUrl + config.api.home.serviceDelete.url;
             url = url.replace(":csarId", csarId);
             httpBackend.whenDELETE(url).respond(200, {});
@@ -78,7 +78,7 @@
             var returnData = {};
             httpBackend.expectDELETE(url).respond(returnData);
 
-            service.serviceDelete(csarId).then(function(response) {
+            service.serviceDelete(csarId).then(function (response) {
                 expect(response.status).toBeDefined();
                 expect(response.status).toBe(200);
             });
