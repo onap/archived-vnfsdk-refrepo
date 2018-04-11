@@ -19,23 +19,29 @@
         <div class=" md-padding layout-row">
             <div class="flex-50">
                 <div class="md-title fontSize md-padding gridServiceTitle">{{vm.service.name}}</div>
-                  <div class="md-padding">{{vm.service.details}}</div>
+                <div class="md-padding">{{vm.service.details}}</div>
             </div>
 
-                <div class="flex-50">
-                    <div class=" md-padding layout-row" id="rightFlex">
-                        <div class="flex-70" id="childLeftFlex">
-                            <span class="md-subhead gridBottomFonts ng-binding">{{'module.marketplace.serviceDetails.info.typeLbl' | translate}} :</span><br>
-                            <span class="md-subhead gridBottomFonts ng-binding">{{'module.marketplace.serviceDetails.info.createLbl' | translate}} :</span><br>
-                            <span class="md-subhead gridBottomFonts ng-binding">{{'module.marketplace.serviceDetails.info.modLbl' | translate}} :</span><br>
-                        </div>
-                        <div class="flex-30" id="childRightFlex">
-                            <span class="md-padding">{{vm.service.type}}</span><br>
-                            <span class="md-padding">{{vm.service.createTime | date:'yyyy-MM-dd h:mm a'}}</span><br>
-                            <span class="md-padding">{{vm.service.modifyTime | date:'yyyy-MM-dd h:mm a'}}</span><br>
-                        </div>
+            <div class="flex-50">
+                <div class=" md-padding layout-row" id="rightFlex">
+                    <div class="flex-70" id="childLeftFlex">
+                        <span class="md-subhead gridBottomFonts ng-binding">{{'module.marketplace.serviceDetails.info.typeLbl' | translate}} :</span>
+                        <br>
+                        <span class="md-subhead gridBottomFonts ng-binding">{{'module.marketplace.serviceDetails.info.createLbl' | translate}} :</span>
+                        <br>
+                        <span class="md-subhead gridBottomFonts ng-binding">{{'module.marketplace.serviceDetails.info.modLbl' | translate}} :</span>
+                        <br>
+                    </div>
+                    <div class="flex-30" id="childRightFlex">
+                        <span class="md-padding">{{vm.service.type}}</span>
+                        <br>
+                        <span class="md-padding">{{vm.service.createTime | date:'yyyy-MM-dd h:mm a'}}</span>
+                        <br>
+                        <span class="md-padding">{{vm.service.modifyTime | date:'yyyy-MM-dd h:mm a'}}</span>
+                        <br>
                     </div>
                 </div>
+            </div>
         </div>
 
         <div class="md-toolbar-tools  flex-md-50 flex-sm-100" id="buttonsbar">
@@ -69,18 +75,20 @@
 
     </main>
     <md-content class="md-padding backgroundWhite">
-      <div class="md-padding">
-        <div class="md-title fontSize paddingBottom">{{'module.marketplace.serviceDetails.info.reportTitle' | translate}}</div>
-        <nav class="navbar nomargin" id="detailsTabs">
-            <div class="container-fluid nopadding">
-                <ul class="nav navbar-nav">
-                    <li ui-sref-active="active " class="fontSize  md-title" ng-class="vm.active == 'validation'? 'active' : ''"><a ng-click="vm.navigateValidation()">{{'module.marketplace.serviceDetails.tabs.validationTabTitle' | translate}}</a></li>
-                    <!--<li ui-sref-active="active "  class=" fontSize  md-title" ng-class="vm.active == 'lifeCycle'? 'active' : ''"><a  ng-click="vm.navigateLifecycle()">{{'module.marketplace.serviceDetails.tabs.lifecycleTabTitle' | translate}}</a></li>
+        <div class="md-padding">
+            <div class="md-title fontSize paddingBottom">{{'module.marketplace.serviceDetails.info.reportTitle' | translate}}</div>
+            <nav class="navbar nomargin" id="detailsTabs">
+                <div class="container-fluid nopadding">
+                    <ul class="nav navbar-nav">
+                        <li ui-sref-active="active " class="fontSize  md-title" ng-class="vm.active == 'validation'? 'active' : ''">
+                            <a ng-click="vm.navigateValidation()">{{'module.marketplace.serviceDetails.tabs.validationTabTitle' | translate}}</a>
+                        </li>
+                        <!--<li ui-sref-active="active "  class=" fontSize  md-title" ng-class="vm.active == 'lifeCycle'? 'active' : ''"><a  ng-click="vm.navigateLifecycle()">{{'module.marketplace.serviceDetails.tabs.lifecycleTabTitle' | translate}}</a></li>
                     <li ui-sref-active="active "  class=" fontSize  md-title" ng-class="vm.active == 'functionalTest'? 'active' : ''"><a ng-click="vm.navigationFunctionalTest()">{{'module.marketplace.serviceDetails.tabs.functionalTabTitle' | translate}}</a></li>-->
-                </ul>
-            </div>
-        </nav>
-        <ui-view></ui-view>
-      </div>
+                    </ul>
+                </div>
+            </nav>
+            <ui-view></ui-view>
+        </div>
     </md-content>
 </md-card>

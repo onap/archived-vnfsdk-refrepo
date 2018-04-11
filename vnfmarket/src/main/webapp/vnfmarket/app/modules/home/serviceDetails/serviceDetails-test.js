@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-(function() {
+(function () {
     'use strict';
 
     /**
@@ -24,7 +24,7 @@
      * Test of the app
      */
 
-    describe('Home - serviceDetailsCtrl', function() {
+    describe('Home - serviceDetailsCtrl', function () {
         var controller = null,
             $scope = null,
             $location, stateParams, httpBackend, config, state, blah;
@@ -46,14 +46,14 @@
             "remarks": ""
         };
 
-        beforeEach(function() {
+        beforeEach(function () {
             module('vnfmarket');
         });
         beforeEach(module('ui.router'));
         beforeEach(module('md.data.table'));
         beforeEach(module('pascalprecht.translate'));
 
-        beforeEach(inject(function($controller, $rootScope, $stateParams, $httpBackend, vnfConfig) {
+        beforeEach(inject(function ($controller, $rootScope, $stateParams, $httpBackend, vnfConfig) {
             $scope = $rootScope.$new();
             stateParams = $stateParams;
             httpBackend = $httpBackend;
@@ -64,26 +64,26 @@
             });
         }));
 
-        it('Should serviceDetailsCtrl must be defined', function() {
+        it('Should serviceDetailsCtrl must be defined', function () {
             expect(controller).toBeDefined();
         });
 
-        it('Receving state param service details', function() {
-                expect(stateParams.serviceDetails.csarId).toBeDefined();
-                expect(stateParams.serviceDetails.name).toBeDefined();
-                expect(stateParams.serviceDetails.downloadUri).toBeDefined();
-                expect(stateParams.serviceDetails.report).toBeDefined();
-                expect(stateParams.serviceDetails.size).toBeDefined();
-                expect(stateParams.serviceDetails.version).toBeDefined();
-                expect(stateParams.serviceDetails.provider).toBeDefined();
-                expect(stateParams.serviceDetails.type).toBeDefined();
-                expect(stateParams.serviceDetails.format).toBeDefined();
-                expect(stateParams.serviceDetails.deletionPending).toBeDefined();
-                expect(stateParams.serviceDetails.createTime).toBeDefined();
-                expect(stateParams.serviceDetails.modifyTime).toBeDefined();
-                expect(stateParams.serviceDetails.shortDesc).toBeDefined();
-                expect(stateParams.serviceDetails.details).toBeDefined();
-                expect(stateParams.serviceDetails.remarks).toBeDefined();
+        it('Receving state param service details', function () {
+            expect(stateParams.serviceDetails.csarId).toBeDefined();
+            expect(stateParams.serviceDetails.name).toBeDefined();
+            expect(stateParams.serviceDetails.downloadUri).toBeDefined();
+            expect(stateParams.serviceDetails.report).toBeDefined();
+            expect(stateParams.serviceDetails.size).toBeDefined();
+            expect(stateParams.serviceDetails.version).toBeDefined();
+            expect(stateParams.serviceDetails.provider).toBeDefined();
+            expect(stateParams.serviceDetails.type).toBeDefined();
+            expect(stateParams.serviceDetails.format).toBeDefined();
+            expect(stateParams.serviceDetails.deletionPending).toBeDefined();
+            expect(stateParams.serviceDetails.createTime).toBeDefined();
+            expect(stateParams.serviceDetails.modifyTime).toBeDefined();
+            expect(stateParams.serviceDetails.shortDesc).toBeDefined();
+            expect(stateParams.serviceDetails.details).toBeDefined();
+            expect(stateParams.serviceDetails.remarks).toBeDefined();
         });
     });
 })();

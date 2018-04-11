@@ -1,42 +1,44 @@
 <div class="">
 
-<md-card flex="100" class="nomargin">
+    <md-card flex="100" class="nomargin">
         <md-table-container>
             <table md-table>
                 <thead md-head md-order="vm.filter.name" md-on-reorder="vm.getValidations">
                     <tr md-row>
-                        <th md-column class="fontSize"  md-order-by="step">
+                        <th md-column class="fontSize" md-order-by="step">
                             <md-tooltip md-direction="top">{{'common.tabs.validation.stepTHead' | translate}}</md-tooltip>
                             {{'common.tabs.validation.stepTHead' | translate}}
                         </th>
-                        <th md-column class="fontSize"   md-order-by="parameter">
+                        <th md-column class="fontSize" md-order-by="parameter">
                             <md-tooltip md-direction="top">{{'common.tabs.validation.ParamTHead' | translate}}</md-tooltip>
                             {{'common.tabs.validation.ParamTHead' | translate}}
                         </th>
-                        <th md-column class="fontSize"    md-order-by="result">
+                        <th md-column class="fontSize" md-order-by="result">
                             <md-tooltip md-direction="top">{{'common.tabs.validation.ResultTHead' | translate}}</md-tooltip>
                             {{'common.tabs.validation.ResultTHead' | translate}}
                         </th>
-                        
+
                     </tr>
                 </thead>
                 <tbody md-body>
                     <tr md-row md-select="dessert" md-select-id="name" md-auto-select ng-repeat="validation in vm.validations | orderBy: vm.filter.name |
                      limitTo: vm.paginationQuery.limit: (vm.paginationQuery.page - 1) * vm.paginationQuery.limit track by $index">
                         <td md-cell>
-	                        <md-tooltip md-direction="top">{{validation.step}}</md-tooltip>{{validation.step}}
+                            <md-tooltip md-direction="top">{{validation.step}}</md-tooltip>{{validation.step}}
                         </td>
                         <td md-cell>
-	                        <md-tooltip md-direction="top">{{validation.parameter}}</md-tooltip>{{validation.parameter}}
+                            <md-tooltip md-direction="top">{{validation.parameter}}</md-tooltip>{{validation.parameter}}
                         </td>
                         <td md-cell>
-	                        <md-tooltip md-direction="top">{{validation.result}}</md-tooltip>{{validation.result}}
+                            <md-tooltip md-direction="top">{{validation.result}}</md-tooltip>{{validation.result}}
                         </td>
-                        
+
                     </tr>
                 </tbody>
             </table>
         </md-table-container>
-        <md-table-pagination class="pagination-class" md-limit="vm.paginationQuery.limit" md-limit-options="vm.pagination" md-page="vm.paginationQuery.page" md-total="{{vm.validations.length}}" md-page-select="vm.paginationOptions.pageSelect" md-boundary-links="vm.paginationOptions.boundaryLink" md-label="{ page : 'Page', RowPerPage:'row per page', of:'of'}"></md-table-pagination>
-</md-card>
+        <md-table-pagination class="pagination-class" md-limit="vm.paginationQuery.limit" md-limit-options="vm.pagination" md-page="vm.paginationQuery.page"
+            md-total="{{vm.validations.length}}" md-page-select="vm.paginationOptions.pageSelect" md-boundary-links="vm.paginationOptions.boundaryLink"
+            md-label="{ page : 'Page', RowPerPage:'row per page', of:'of'}"></md-table-pagination>
+    </md-card>
 </div>

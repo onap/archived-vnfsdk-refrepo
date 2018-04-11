@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-(function() {
+(function () {
     'use strict';
 
     /**
@@ -28,7 +28,7 @@
         .module('vnfmarket')
         .controller('functionalTestCtrl', functionalTest);
 
-    functionalTest.$inject = [ 'vnfConfig', 'baseUrlConfig', 'functionalTestService', '$stateParams'];
+    functionalTest.$inject = ['vnfConfig', 'baseUrlConfig', 'functionalTestService', '$stateParams'];
 
     /*
      * recommend
@@ -36,10 +36,10 @@
      * and bindable members up top.
      */
 
-    function functionalTest(vnfConfig, baseUrlConfig, functionalTestService,$stateParams) {
+    function functionalTest(vnfConfig, baseUrlConfig, functionalTestService, $stateParams) {
         var vm = this;
         vm.validations = [];
-		vm.csarId = $stateParams.csarId;
+        vm.csarId = $stateParams.csarId;
         console.log("functionalTest")
         vm.filter = {
             "search": '',
@@ -52,7 +52,7 @@
 
         vm.pagination = [5, 10, 15, {
             label: 'All',
-            value: function() {
+            value: function () {
                 return vm.validations.length ? vm.validations.length : 0;
             }
         }];
@@ -74,16 +74,16 @@
             limitSelect: true,
             pageSelect: true
         };
-        vm.getvalidations = function(){
+        vm.getvalidations = function () {
             console.log(vm.functionalTests)
         }
-		
-		vm.getFunctionTestDetails = function() {
-			functionalTestService.getFunctionTestDetails(vm.csarId).then(function(response){
-				vm.validations = response.data;
-			})
-		}
-		
-		vm.getFunctionTestDetails();
+
+        vm.getFunctionTestDetails = function () {
+            functionalTestService.getFunctionTestDetails(vm.csarId).then(function (response) {
+                vm.validations = response.data;
+            })
+        }
+
+        vm.getFunctionTestDetails();
     }
 })();
