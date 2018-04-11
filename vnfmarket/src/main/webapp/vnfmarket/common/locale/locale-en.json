@@ -1,193 +1,188 @@
- {
-	"common" : {
-		"actions" : {
-			"save" : "Save",
-			"upload":"Upload",
-			"delete" : "Delete",
-			"close" : "Close",
-			"search" : "Search",
-			"download" :"Download",
-			"yes" : "Yes",
-			"no" : "No",
-			"update" :"Re Upload",
-			"clickHere" : "Click Here",
-			"getApp" : "get_app",
-			"fileUpload" : "file_upload",
-			"ok" : "Ok",
-            "return" : "Return",
-            "detail" : "See Details",
-            "backToList" : "Back to List",
-            "add" : "Add file"
+{
+	"common": {
+		"actions": {
+			"save": "Save",
+			"upload": "Upload",
+			"delete": "Delete",
+			"close": "Close",
+			"search": "Search",
+			"download": "Download",
+			"yes": "Yes",
+			"no": "No",
+			"update": "Re Upload",
+			"clickHere": "Click Here",
+			"getApp": "get_app",
+			"fileUpload": "file_upload",
+			"ok": "Ok",
+			"return": "Return",
+			"detail": "See Details",
+			"backToList": "Back to List",
+			"add": "Add file"
 		},
-		"message" : {
-			"statusTitle" : "Status : ",
-			"statusText" : "Status text : ",
-			"viewDetails" : "Click here to view details"
+		"message": {
+			"statusTitle": "Status : ",
+			"statusText": "Status text : ",
+			"viewDetails": "Click here to view details"
 		},
-        "tabs" : {
-            "validation" :{
-                "title" : "Validation",
-                "stepTHead" : "Step",
-                "ParamTHead" : "Parameter",
-                "ResultTHead" : "Result"
-            },
-            "lifeCycle" : {
-                "title" : "Lifecycle Test",
-                "stepTHead" : "Step",
-                "ParamTHead" : "Parameter",
-                "ResultTHead" : "Result"
-            },
-            "functionTest": {
-                "title" : "Functional Test",
-                "testTHead" : "Test case",
-                "descTHead" : "Description",
-                "resultTHead" : "Test Result"
-            }
-        }
-	},
-	"module" : {
-		"marketplace" : {
-			"serviceDelete" : {
-				"title" : "Delete Service",
-				"confirmationMesaage" : "Are you sure that you want to delete "
-
+		"tabs": {
+			"validation": {
+				"title": "Validation",
+				"stepTHead": "Step",
+				"ParamTHead": "Parameter",
+				"ResultTHead": "Result"
 			},
-			"serviceUpload" : {
-				"title" : "Upload Service",
-                "updateTitle" : "Re Upload",
-				"fields" : {
-					"fileUpload" : {
-						"label" : "Select File",
-                        "noFileSelected" : "No file selected"
+			"lifeCycle": {
+				"title": "Lifecycle Test",
+				"stepTHead": "Step",
+				"ParamTHead": "Parameter",
+				"ResultTHead": "Result"
+			},
+			"functionTest": {
+				"title": "Functional Test",
+				"testTHead": "Test case",
+				"descTHead": "Description",
+				"resultTHead": "Test Result"
+			}
+		}
+	},
+	"module": {
+		"marketplace": {
+			"serviceDelete": {
+				"title": "Delete Service",
+				"confirmationMesaage": "Are you sure that you want to delete "
+			},
+			"serviceUpload": {
+				"title": "Upload Service",
+				"updateTitle": "Re Upload",
+				"fields": {
+					"fileUpload": {
+						"label": "Select File",
+						"noFileSelected": "No file selected"
 					},
-					"shortDescription" : {
-						 "placeholder" : "Short Description"
+					"shortDescription": {
+						"placeholder": "Short Description"
 					},
-					"details" : {
-						 "placeholder" : "Details"
+					"details": {
+						"placeholder": "Details"
 					},
-					"remarks" : {
-						 "placeholder" : "Remarks"
+					"remarks": {
+						"placeholder": "Remarks"
 					},
-					"funcTestReport" : {
-						"label":"Function Test Report: "
+					"funcTestReport": {
+						"label": "Function Test Report: "
 					}
 				},
-				"messages" : {
-					"onUploading" : "Please wait, Upload is in progress",
-					"onSuccessful" : "Service upload successful"
+				"messages": {
+					"onUploading": "Please wait, Upload is in progress",
+					"onSuccessful": "Service upload successful"
 				},
-                "onBoarding" : {
-                    "onBoardProcessTitle" : "Onboarding Process"
-                },
-                "onBoardingSuccess" : {
-                  "successTitle" : "Onboarding is successful"
-                }
-
-			},
-			"serviceDetails" : {
-				"title" : "Service Name : ",
-				"info" : {
-					"details" : "Details",
-					"remarks" : "Remarks",
-					"provider" : "Provider",
-					"serviceType" : "Service Type",
-					"csarId" : "CSAR Id",
-					"fileSize" : "File Size",
-					"funcTestReport"  :"Function Test Report",
-                    "reportTitle" : "Onboarding Report",
-                    "typeLbl" : "Type",
-                    "createLbl" : "Created At",
-                    "modLbl" : "Last Modfied at"
-
+				"onBoarding": {
+					"onBoardProcessTitle": "Onboarding Process"
 				},
-                "tabs" : {
-                    "validationTabTitle" : "Validation",
-                    "lifecycleTabTitle" : "Lifecycle Test",
-                    "functionalTabTitle" : "Function Test"
-                }
-
-
+				"onBoardingSuccess": {
+					"successTitle": "Onboarding is successful"
+				}
 			},
-			"sideNav" : {
-				"title" :  "VNF  Repository",
-				"marketplaceNav" : "VNF Repository"
+			"serviceDetails": {
+				"title": "Service Name : ",
+				"info": {
+					"details": "Details",
+					"remarks": "Remarks",
+					"provider": "Provider",
+					"serviceType": "Service Type",
+					"csarId": "CSAR Id",
+					"fileSize": "File Size",
+					"funcTestReport": "Function Test Report",
+					"reportTitle": "Onboarding Report",
+					"typeLbl": "Type",
+					"createLbl": "Created At",
+					"modLbl": "Last Modfied at"
+				},
+				"tabs": {
+					"validationTabTitle": "Validation",
+					"lifecycleTabTitle": "Lifecycle Test",
+					"functionalTabTitle": "Function Test"
+				}
 			},
-			"main" : {
-				"headerTitle" : "Welcome to VNF Repository",
-				"description" : "Market place for VNF-SDK does the following task:",
-				"pointOne" : "Upload and download of VNF products and offerings",
-				"pointTwo" : "Show the interface about other component in VNF-SDK",
-				"sortBy" : {
-					"title" : "Please select",
-					"label" : "Sort by ",
-					"options" : {
-						"name" : {
-							"key" :"Name",
-							"value" :"name"
+			"sideNav": {
+				"title": "VNF  Repository",
+				"marketplaceNav": "VNF Repository"
+			},
+			"main": {
+				"headerTitle": "Welcome to VNF Repository",
+				"description": "Market place for VNF-SDK does the following task:",
+				"pointOne": "Upload and download of VNF products and offerings",
+				"pointTwo": "Show the interface about other component in VNF-SDK",
+				"sortBy": {
+					"title": "Please select",
+					"label": "Sort by ",
+					"options": {
+						"name": {
+							"key": "Name",
+							"value": "name"
 						},
-						"dateModified" : {
-							"key" :"Data Modified",
-							"value" : "date"
+						"dateModified": {
+							"key": "Data Modified",
+							"value": "date"
 						},
-						"downloads" : {
-							"key":"Downloads",
-							"value" : "downloads"
+						"downloads": {
+							"key": "Downloads",
+							"value": "downloads"
 						}
 					}
 				},
-				"search" :{
-					"label" : "Search",
-					"placeholder" : "Search keyword",
-					"close" : "Close"
+				"search": {
+					"label": "Search",
+					"placeholder": "Search keyword",
+					"close": "Close"
 				},
-				"upload" : {
-					"label" : "Upload"
+				"upload": {
+					"label": "Upload"
 				},
-				"gridView" : {
-					"label" :  "Grid View",
-					"serviceType" : {
-						"label" : "Type",
+				"gridView": {
+					"label": "Grid View",
+					"serviceType": {
+						"label": "Type",
 						"value": "description"
 					},
-					"downloads" : {
-						"label" : "Downloads",
-						"value":"get_app",
-						"tooltip" : "Download history",
-						"buttonLabel" :"Downloads"
+					"downloads": {
+						"label": "Downloads",
+						"value": "get_app",
+						"tooltip": "Download history",
+						"buttonLabel": "Downloads"
 					},
-					"upload" : {
-						"tooltip" : "Uploads history",
-						"buttonLabel" : "Uploads"
+					"upload": {
+						"tooltip": "Uploads history",
+						"buttonLabel": "Uploads"
 					},
-					"moreDetails" : {
-						"label" : "More details"
+					"moreDetails": {
+						"label": "More details"
 					},
-					"title" : {
-						"label" : "Title"
+					"title": {
+						"label": "Title"
 					}
 				},
-				"listView" : {
-					"label" :  "List View",
-					"headers" : {
-						"name" : "Name",
-						"provider" : "Provider",
-						"description" : "Description",
-						"type" : "Type",
-						"size" : "Size",
-						"createdAt" : "Created at",
-						"lastModified" : "Last Modified at",
-						"donwloads" : "Downloads",
-						"actions" : "Actions"
+				"listView": {
+					"label": "List View",
+					"headers": {
+						"name": "Name",
+						"provider": "Provider",
+						"description": "Description",
+						"type": "Type",
+						"size": "Size",
+						"createdAt": "Created at",
+						"lastModified": "Last Modified at",
+						"donwloads": "Downloads",
+						"actions": "Actions"
 					}
 				},
-				"refresh" : {
-					"label" :  "Refresh"
+				"refresh": {
+					"label": "Refresh"
 				},
-				"emptyList" : {
-					"label" : "Service list is empty. Would you like to upload one? If yes,",
-					"anchor" : "Click here",
-					"labelContinued" : "to upload a new service"
+				"emptyList": {
+					"label": "Service list is empty. Would you like to upload one? If yes,",
+					"anchor": "Click here",
+					"labelContinued": "to upload a new service"
 				}
 			}
 		}

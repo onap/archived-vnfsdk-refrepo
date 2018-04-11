@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-(function() {
+(function () {
     'use strict';
 
     /**
@@ -39,8 +39,8 @@
             var defer = $q.defer()
             $http({
                 method: method,
-               //ses url: baseUrlConfig.common.ip + ":" + baseUrlConfig.common.port + url,
-			   url:url,
+                //ses url: baseUrlConfig.common.ip + ":" + baseUrlConfig.common.port + url,
+                url: url,
                 data: data,
                 headers: headers
             }).then(function successCallback(response) {
@@ -50,15 +50,15 @@
             }, function errorCallback(error) {
                 var parentEl = angular.element(document.body);
                 $mdDialog.show({
-                    parent:parentEl,
-                    templateUrl:'/onapui/vnfmarket/common/templates/serverError.html',
-                    locals:{
-                        error:error
+                    parent: parentEl,
+                    templateUrl: '/onapui/vnfmarket/common/templates/serverError.html',
+                    locals: {
+                        error: error
                     },
-                    skipHide:true,
-                    controller:function($scope, $mdDialog, error){
+                    skipHide: true,
+                    controller: function ($scope, $mdDialog, error) {
                         $scope.error = error;
-                        $scope.closeDialog= function(){
+                        $scope.closeDialog = function () {
                             $mdDialog.hide();
                         }
                     }
@@ -74,13 +74,13 @@
             var defer = $q.defer()
             $http({
                 method: method,
-              //ses  url: baseUrlConfig.common.ip + ":" + baseUrlConfig.common.port + url,
-			   url:url,
+                //ses  url: baseUrlConfig.common.ip + ":" + baseUrlConfig.common.port + url,
+                url: url,
                 data: data,
                 headers: headers,
                 transformRequest: angular.identity,
                 uploadEventHandlers: {
-                    progress: function(e) {
+                    progress: function (e) {
                         if (e.lengthComputable) {
                             $rootScope.progressBar = (e.loaded / e.total) * 100;
                         }
@@ -93,15 +93,15 @@
             }, function errorCallback(error) {
                 var parentEl = angular.element(document.body);
                 $mdDialog.show({
-                    parent:parentEl,
-                    templateUrl:'/onapui/vnfmarket/common/templates/serverError.html',
-                    locals:{
-                        error:error
+                    parent: parentEl,
+                    templateUrl: '/onapui/vnfmarket/common/templates/serverError.html',
+                    locals: {
+                        error: error
                     },
-                    skipHide:true,
-                    controller:function($scope, $mdDialog, error){
+                    skipHide: true,
+                    controller: function ($scope, $mdDialog, error) {
                         $scope.error = error;
-                        $scope.closeDialog= function(){
+                        $scope.closeDialog = function () {
                             $mdDialog.hide();
                         }
                     }
