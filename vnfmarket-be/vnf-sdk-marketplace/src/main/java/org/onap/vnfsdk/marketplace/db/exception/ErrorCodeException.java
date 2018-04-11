@@ -13,20 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.onap.vnfsdk.marketplace.db.exception;
 
 public class ErrorCodeException extends Exception {
 
-	private static final long serialVersionUID = 3220072444842529499L;
-	private final int errorCode;	
+    private static final long serialVersionUID = 3220072444842529499L;
 
-	public ErrorCodeException(Throwable source, int category, int code, String debugMessage, String[] arguments) {
-		super(debugMessage, source);
-		this.errorCode = code;
-	}
+    private final int errorCode;
 
-	public int getErrorCode() {
-		return errorCode;
-	}
+    public ErrorCodeException(Throwable source, int category, int code, String debugMessage, String[] arguments) {
+        super(debugMessage, source);
+        this.errorCode = code;
+    }
+
+    public ErrorCodeException(int errorCode, String debugMessage) {
+        super(debugMessage);
+        this.errorCode = errorCode;
+    }
+
+    public int getErrorCode() {
+        return errorCode;
+    }
 
 }
