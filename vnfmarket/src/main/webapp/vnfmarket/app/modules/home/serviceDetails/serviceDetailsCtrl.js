@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-(function() {
+(function () {
     'use strict';
 
     /**
@@ -39,68 +39,68 @@
     function ServiceDetail(serviceDetailsService, $state, $stateParams, vnfConfig, homeService, baseUrlConfig) {
         var vm = this;
         vm.index = 0;
-		vm.active = 'validation';
+        vm.active = 'validation';
         if (!$stateParams.serviceDetails) {
             $state.go('home.marketplace');
             return;
         }
 
         vm.service = $stateParams.serviceDetails;
-      //ses  vm.service.funcTestReportUrl = baseUrlConfig.common.ip + ":" + baseUrlConfig.common.port + vm.service.report;
-	    vm.service.funcTestReportUrl =  vm.service.report;
+        //ses  vm.service.funcTestReportUrl = baseUrlConfig.common.ip + ":" + baseUrlConfig.common.port + vm.service.report;
+        vm.service.funcTestReportUrl = vm.service.report;
 
-        vm.downloadService = function(csarId) {
-            homeService.updateDownloadCount(csarId).then(function(response){
+        vm.downloadService = function (csarId) {
+            homeService.updateDownloadCount(csarId).then(function (response) {
                 homeService.downloadServiceFile(csarId);
             })
         }
 
-        vm.onDeleteCompletion = function() {
+        vm.onDeleteCompletion = function () {
             $state.go('home.marketplace', {}, {
                 reload: true
             });
         }
 
-        vm.serviceDelete = function(serviceDetails) {
+        vm.serviceDelete = function (serviceDetails) {
             homeService.openDeleteDialog(serviceDetails, vm.onDeleteCompletion);
         };
-		
-		vm.navigateValidation = function() {
-			vm.active = 'validation';
+
+        vm.navigateValidation = function () {
+            vm.active = 'validation';
             $state.go('home.serviceDetails.validation');
         };
-		
-		vm.navigateLifecycle = function() {
-			vm.active = 'lifeCycle';
+
+        vm.navigateLifecycle = function () {
+            vm.active = 'lifeCycle';
             $state.go('home.serviceDetails.lifeCycle');
         };
-		
-		vm.navigationFunctionalTest = function() {
-			vm.active = 'functionTest';
+
+        vm.navigationFunctionalTest = function () {
+            vm.active = 'functionTest';
             $state.go('home.serviceDetails.functionTest', {
-				csarId: vm.service.csarId
-			});
+                csarId: vm.service.csarId
+            });
         };
 
-        vm.navigateTab = function(sref, index) {
+        vm.navigateTab = function (sref, index) {
             $state.go(sref);
             vm.index = index;
         };
-		
-		vm.reupload = function(isUpload, csarId){
-			homeService.openUploadDialog(null, isUpload, csarId);
-		}
 
-        if(!$state.current.name.startsWith("home.serviceDetails.")){
-			$state.go('home.serviceDetails.validation');
-		} else {
-			if($state.current.name.endsWith("validation")){
-				vm.active = 'validation';
-			} else if ($state.current.name.endsWith("lifeCycle")){
-				vm.active = 'lifeCycle';
-			} else if($state.current.name.endsWith("functionTest")){
-				vm.active = 'functionalTest';
-			}
-		}
+        vm.reupload = function (isUpload, csarId) {
+            homeService.openUploadDialog(null, isUpload, csarId);
+        }
+
+        if (!$state.current.name.startsWith("home.serviceDetails.")) {
+            $state.go('home.serviceDetails.validation');
+        } else {
+            if ($state.current.name.endsWith("validation")) {
+                vm.active = 'validation';
+            } else if ($state.current.name.endsWith("lifeCycle")) {
+                vm.active = 'lifeCycle';
+            } else if ($state.current.name.endsWith("functionTest")) {
+                vm.active = 'functionalTest';
+            }
+        }
     }
 })();
