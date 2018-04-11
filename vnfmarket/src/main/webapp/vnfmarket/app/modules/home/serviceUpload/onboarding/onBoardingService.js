@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-(function() {
+(function () {
     'use strict';
 
     /**
@@ -40,8 +40,8 @@
                 method = vnfConfig.api.home.getFunctionalList.method;
 
             url = url.replace(":csarId", csarId);
-            url += "?operTypeId="+operTypeId;
-            url += "&operId="+operId;
+            url += "?operTypeId=" + operTypeId;
+            url += "&operId=" + operId;
 
 
             /*var response =
@@ -73,9 +73,9 @@
             //defer.resolve(response);
 
             httpService.apiRequest(url, method)
-                .then(function(response) {
+                .then(function (response) {
                     defer.resolve(response);
-                }, function(error) {
+                }, function (error) {
                     defer.reject(error);
                 });
             return defer.promise;
@@ -144,9 +144,9 @@
 
 
             httpService.apiRequest(url, method)
-                .then(function(response) {
+                .then(function (response) {
                     defer.resolve(response);
-                }, function(error) {
+                }, function (error) {
                     defer.reject(error);
                 });
             return defer.promise;

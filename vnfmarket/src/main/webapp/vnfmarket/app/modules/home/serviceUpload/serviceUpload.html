@@ -17,11 +17,11 @@
 
     <md-toolbar class="md-hue-3 dialogHeader">
         <div class="md-toolbar-tools" id="uploadStyle">
-            <h2  ng-if="vm.isUpload" >{{'module.marketplace.serviceUpload.title' | translate}}</h2>
-			<h2  ng-if="!vm.isUpload" >{{'module.marketplace.serviceUpload.updateTitle' | translate}}</h2>
+            <h2 ng-if="vm.isUpload">{{'module.marketplace.serviceUpload.title' | translate}}</h2>
+            <h2 ng-if="!vm.isUpload">{{'module.marketplace.serviceUpload.updateTitle' | translate}}</h2>
             <span flex></span>
             <button class="btnTransparency" ng-click="vm.cancel()" ng-hide="vm.status == 'progress'">
-                    <i class="fa fa-close fa-sm" aria-hidden="true"></i>
+                <i class="fa fa-close fa-sm" aria-hidden="true"></i>
             </button>
         </div>
     </md-toolbar>
@@ -35,7 +35,7 @@
                         <label for="file" class="btn btnDefault"> {{'common.actions.add' | translate}} </label>
                         <label>
                             <span ng-if="!vm.service.file"> {{'module.marketplace.serviceUpload.fields.fileUpload.noFileSelected' | translate}}</span>
-                            <span ng-if="vm.service.file">  {{ vm.service.file.name}}</span>
+                            <span ng-if="vm.service.file"> {{ vm.service.file.name}}</span>
                         </label>
                     </div>
                     <input class="hidden" id="file" type="file" file-upload="vm.service.file" md-asterisk accept=".csar">
@@ -43,18 +43,18 @@
                 </div>
 
                 <div>
-                        <label for="shortDesc" class="labels">{{'module.marketplace.serviceUpload.fields.shortDescription.placeholder' | translate}}</label>
-                        <input ng-model="vm.service.shortDesc" type="text" id="shortDesc" name="shortDesc">
+                    <label for="shortDesc" class="labels">{{'module.marketplace.serviceUpload.fields.shortDescription.placeholder' | translate}}</label>
+                    <input ng-model="vm.service.shortDesc" type="text" id="shortDesc" name="shortDesc">
                 </div>
                 <div>
-                    
-                        <label class="labels">{{'module.marketplace.serviceUpload.fields.details.placeholder' | translate}}</label>
-                        <textarea name="details" ng-model="vm.service.details" maxlength="150" rows="3" md-select-on-focus></textarea>
+
+                    <label class="labels">{{'module.marketplace.serviceUpload.fields.details.placeholder' | translate}}</label>
+                    <textarea name="details" ng-model="vm.service.details" maxlength="150" rows="3" md-select-on-focus></textarea>
                 </div>
                 <div>
-                   
-                        <label for="remarks" class="labels">{{'module.marketplace.serviceUpload.fields.remarks.placeholder' | translate}}</label>
-                        <input ng-model="vm.service.remarks" type="text" id="remarks" name="remarks">
+
+                    <label for="remarks" class="labels">{{'module.marketplace.serviceUpload.fields.remarks.placeholder' | translate}}</label>
+                    <input ng-model="vm.service.remarks" type="text" id="remarks" name="remarks">
                 </div>
             </div>
         </md-dialog-content>
@@ -76,7 +76,10 @@
                     </div>
                     <md-progress-linear md-mode="determinate" value="{{vm.apiInfo}}"></md-progress-linear>
                     <h4 class="text-center"> {{vm.apiInfo}} % </h4>
-                    <span class="text-center" ng-if="vm.status == 'success'">{{'module.marketplace.serviceUpload.fields.funcTestReport.label' | translate}} <a href="{{vm.funcTestReportUrl}}" target="_blank">{{'common.actions.clickHere' | translate}}</a></span>
+                    <span class="text-center" ng-if="vm.status == 'success'">{{'module.marketplace.serviceUpload.fields.funcTestReport.label' | translate}}
+                        <a href="{{vm.funcTestReportUrl}}"
+                            target="_blank">{{'common.actions.clickHere' | translate}}</a>
+                    </span>
                 </div>
                 <div flex="25" layout="column">
                 </div>
@@ -88,19 +91,21 @@
 
     <md-dialog-actions layout="row" ng-show="vm.status == 'Idle'" class="marginAuto">
         <!-- <span flex></span> -->
-        
-		<button ng-if="!vm.isUpload" class="md-raised btn btnPrimary btnPrimaryPadding btnSpacing" ng-click="vm.answer('Uploaded')" ng-disabled="!vm.service.file">
+
+        <button ng-if="!vm.isUpload" class="md-raised btn btnPrimary btnPrimaryPadding btnSpacing" ng-click="vm.answer('Uploaded')"
+            ng-disabled="!vm.service.file">
             {{'common.actions.update' | translate}}
         </button>
-		
-        <button ng-if="vm.isUpload" class="md-raised btn btnPrimary btnPrimaryPadding btnSpacing" ng-click="vm.answer('Uploaded')" ng-disabled="!vm.service.file">
+
+        <button ng-if="vm.isUpload" class="md-raised btn btnPrimary btnPrimaryPadding btnSpacing" ng-click="vm.answer('Uploaded')"
+            ng-disabled="!vm.service.file">
             {{'common.actions.upload' | translate}}
         </button>
 
         <button class="md-raised btn btnDefault btnPrimaryPadding btnSpacing" ng-click="vm.cancel()">
             {{'common.actions.close' | translate}}
         </button>
-       
+
 
     </md-dialog-actions>
     <md-dialog-actions class="marginAuto" layout="row" ng-show="vm.status == 'success'">

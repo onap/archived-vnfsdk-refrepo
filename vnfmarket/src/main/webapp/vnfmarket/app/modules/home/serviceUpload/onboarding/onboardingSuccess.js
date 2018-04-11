@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-(function() {
+(function () {
     'use strict';
 
     /**
@@ -28,7 +28,7 @@
         .module('vnfmarket')
         .controller('onBoardingSuccessCtrl', onBoardingSuccess);
 
-    onBoardingSuccess.$inject = [ 'vnfConfig', 'baseUrlConfig', 'homeService', '$state', '$stateParams'];
+    onBoardingSuccess.$inject = ['vnfConfig', 'baseUrlConfig', 'homeService', '$state', '$stateParams'];
 
     /*
      * recommend
@@ -39,36 +39,36 @@
     function onBoardingSuccess(vnfConfig, baseUrlConfig, homeService, $state, $stateParams) {
         var vm = this;
         console.log("onBoardingSuccess");
-        vm.services= [], vm.serviceDetails;
+        vm.services = [], vm.serviceDetails;
 
         var csarId = $stateParams.csarId;
-        if(!csarId) {
+        if (!csarId) {
             $state.go("home.marketplace", {});
-			return;
+            return;
         }
 
-        vm.return = function() {
+        vm.return = function () {
             $state.go('home.marketplace', {}, {
                 reload: true
             });
         }
-        vm.showDetailPage = function() {
-            homeService.getFeaturesList().then(function(response) {
+        vm.showDetailPage = function () {
+            homeService.getFeaturesList().then(function (response) {
                 for (var i = 0; i < response.data.length; i++) {
                     response.data[i].createTime = new Date(response.data[i].createTime);
                     response.data[i].modifyTime = new Date(response.data[i].modifyTime);
                 }
                 vm.services = response.data;
 
-                for(var j = 0; j < response.data.length; j++) {
-                    if(response.data[j].csarId == csarId) {
+                for (var j = 0; j < response.data.length; j++) {
+                    if (response.data[j].csarId == csarId) {
                         vm.serviceDetails = response.data[j];
                         break;
                     }
                 }
 
                 $state.go("home.serviceDetails.validation", {
-                    serviceDetails : vm.serviceDetails
+                    serviceDetails: vm.serviceDetails
                 });
             });
         }

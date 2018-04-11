@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-(function() {
+(function () {
     'use strict';
 
     /**
@@ -28,7 +28,7 @@
         .module('vnfmarket')
         .controller('onBoardingCtrl', onBoarding);
 
-    onBoarding.$inject = [ 'vnfConfig', 'baseUrlConfig', '$interval', '$timeout', '$state', '$mdDialog', '$stateParams', 'onBoardingService'];
+    onBoarding.$inject = ['vnfConfig', 'baseUrlConfig', '$interval', '$timeout', '$state', '$mdDialog', '$stateParams', 'onBoardingService'];
 
     /*
      * recommend
@@ -50,36 +50,36 @@
 
         $(".onboardProgress .progress3 .progressDiv").removeClass("progressed");
         $(".onboardProgress .progress3 .roundProg").removeClass("progressed");
-	var fileName = $stateParams.csarName
-		
-	vm.mainTitle = fileName.slice(0, fileName.lastIndexOf("."));
+        var fileName = $stateParams.csarName
+
+        vm.mainTitle = fileName.slice(0, fileName.lastIndexOf("."));
 
         //vm.mainTitle = $stateParams.csarName;//"clearwater_ns";
         var csarId = $stateParams.csarId;
-        if(!csarId) {
+        if (!csarId) {
             $state.go("home.marketplace", {});
-			return;
+            return;
         }
 
         /*onBoardingService.getFunctionalList(csarId).then(function(response) {
             vm.functionalDataList = response.data;
         });*/
 
-        vm.getIconClass = function(status) {
+        vm.getIconClass = function (status) {
             var classIcon = "";
-            if(status == undefined || status == 1) {
+            if (status == undefined || status == 1) {
                 //classIcon = "fa fa-clock-o";
                 classIcon = "clock-icon";
             }
-            else if(status == 2) {
+            else if (status == 2) {
                 //classIcon = "fa fa-spinner fa-spin";
                 classIcon = "progress-icon fa-spin";
             }
-            else if(status == 0) {
+            else if (status == 0) {
                 //classIcon = "fa fa-check-circle";
                 classIcon = "success-icon";
             }
-            else if(status == -1) {
+            else if (status == -1) {
                 classIcon = "failed-icon fa fa-exclamation";
             }
             return classIcon;
@@ -90,11 +90,11 @@
         vm.functional = [];
         var currentIteration = {};
 
-        onBoardingService.getOnBoardingSteps().then(function(response) {
+        onBoardingService.getOnBoardingSteps().then(function (response) {
 
             var operTypeList = response.data.operTypeList;
-            for(var i = 0; i < operTypeList.length; i++) {
-                
+            for (var i = 0; i < operTypeList.length; i++) {
+
                 switch (operTypeList[i].operTypeId) {
                     case "validation":
                         vm.validation = operTypeList[i];
@@ -110,13 +110,13 @@
                         break;
                 }
             }
-            currentIteration = {"list":vm.validation, "item":0};
+            currentIteration = { "list": vm.validation, "item": 0 };
 
             updateStepStatus();
         });
 
         function addDefaultStatus(listArr) {
-            for(var index = 0; index < listArr.oper.length; index++) {
+            for (var index = 0; index < listArr.oper.length; index++) {
                 listArr.oper[index].status = 1;
             }
         }
@@ -132,7 +132,7 @@
             var operTypeId = currentIteration.list["operTypeId"];
             var operId = currentIteration.list.oper[currentIteration.item].operId;
 
-            if(operTypeId == "validation" || operTypeId == "lifecycletest") {
+            if (operTypeId == "validation" || operTypeId == "lifecycletest") {
                 updateView(0);
             }
             else {
@@ -150,15 +150,15 @@
 
         function updateView(stepStatus) {
             var listIterFinished = false;
-            if(stepStatus == 0) {
+            if (stepStatus == 0) {
                 currentIteration.list.oper[currentIteration.item].status = stepStatus;
                 //Success, go to next step
-                if(currentIteration.list.oper.length - 1 > currentIteration.item) {
+                if (currentIteration.list.oper.length - 1 > currentIteration.item) {
                     currentIteration.item++;
                 }
                 else {
                     //Choose next list
-                    if(currentIteration.list == vm.validation){
+                    if (currentIteration.list == vm.validation) {
                         //First list is completed
                         $(".onboardProgress .progress1 .progressDiv").addClass("progressed");
                         $(".onboardProgress .progress1 .roundProg").addClass("progressed");
@@ -166,7 +166,7 @@
                         currentIteration.item = 0*/
 
                         listIterFinished = true;
-                        $state.go('home.onboardingSuccess', {"csarId": csarId});
+                        $state.go('home.onboardingSuccess', { "csarId": csarId });
                     }
                     /*else if(currentIteration.list == vm.lifeCycle){
                         //Second list is completed
@@ -185,55 +185,55 @@
                     }*/
                 }
             }
-            else if(stepStatus == -1) {
+            else if (stepStatus == -1) {
                 //Failed case
                 currentIteration.list.oper[currentIteration.item].status = stepStatus;
                 listIterFinished = true;
             }
 
-            if(!listIterFinished) {
+            if (!listIterFinished) {
                 updateStepStatus();
             }
         }
 
-		vm.displayValidationDialog = function(){
-			$mdDialog.show({
-				controller: 'validationOnboardingCtrl',
-				templateUrl: vnfConfig.modulePath.home + '/serviceUpload/onboarding/validation/view.html',
-				controllerAs: 'vm'
-			})
-			.then(function(answer) {
-				vm.getFeatureList();
-				// vm.status = 'You said the information was "' + answer + '".';
-			}, function() {
-				// vm.status = 'You cancelled the dialog.';
-			});
-		}
-		vm.displayLifecycleDialog = function(){
-			$mdDialog.show({
-				controller: 'lifeCycleOnboardingCtrl',
-				templateUrl: vnfConfig.modulePath.home + '/serviceUpload/onboarding/lifeCycle/view.html',
-				controllerAs: 'vm'
-			})
-			.then(function(answer) {
-				vm.getFeatureList();
-				// vm.status = 'You said the information was "' + answer + '".';
-			}, function() {
-				// vm.status = 'You cancelled the dialog.';
-			});
-		}
-		vm.displayFunctionalTestDialog  = function(){
-			$mdDialog.show({
-				controller: 'functionalTestOnboardingCtrl',
-				templateUrl: vnfConfig.modulePath.home + '/serviceUpload/onboarding/functionalTest/view.html',
-				controllerAs: 'vm'
-			})
-			.then(function(answer) {
-				vm.getFeatureList();
-				// vm.status = 'You said the information was "' + answer + '".';
-			}, function() {
-				// vm.status = 'You cancelled the dialog.';
-			});
-		}
+        vm.displayValidationDialog = function () {
+            $mdDialog.show({
+                controller: 'validationOnboardingCtrl',
+                templateUrl: vnfConfig.modulePath.home + '/serviceUpload/onboarding/validation/view.html',
+                controllerAs: 'vm'
+            })
+                .then(function (answer) {
+                    vm.getFeatureList();
+                    // vm.status = 'You said the information was "' + answer + '".';
+                }, function () {
+                    // vm.status = 'You cancelled the dialog.';
+                });
+        }
+        vm.displayLifecycleDialog = function () {
+            $mdDialog.show({
+                controller: 'lifeCycleOnboardingCtrl',
+                templateUrl: vnfConfig.modulePath.home + '/serviceUpload/onboarding/lifeCycle/view.html',
+                controllerAs: 'vm'
+            })
+                .then(function (answer) {
+                    vm.getFeatureList();
+                    // vm.status = 'You said the information was "' + answer + '".';
+                }, function () {
+                    // vm.status = 'You cancelled the dialog.';
+                });
+        }
+        vm.displayFunctionalTestDialog = function () {
+            $mdDialog.show({
+                controller: 'functionalTestOnboardingCtrl',
+                templateUrl: vnfConfig.modulePath.home + '/serviceUpload/onboarding/functionalTest/view.html',
+                controllerAs: 'vm'
+            })
+                .then(function (answer) {
+                    vm.getFeatureList();
+                    // vm.status = 'You said the information was "' + answer + '".';
+                }, function () {
+                    // vm.status = 'You cancelled the dialog.';
+                });
+        }
     }
 })();

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-(function() {
+(function () {
     'use strict';
 
     /**
@@ -32,7 +32,7 @@
     function serviceUpload($q, vnfConfig, httpService) {
         return {
             postServiceUpload: postServiceUpload,
-			repostServiceUpload: repostServiceUpload
+            repostServiceUpload: repostServiceUpload
         };
 
         function postServiceUpload(data, headers) {
@@ -42,25 +42,25 @@
 
             var defer = $q.defer()
             httpService.apiRequestWithProgress(url, method, apiData, headers)
-                .then(function(response) {
+                .then(function (response) {
                     defer.resolve(response);
-                }, function(error) {
+                }, function (error) {
                     defer.reject(error);
                 });
             return defer.promise;
         }
-		
-		function repostServiceUpload(data, headers, csarId) {
+
+        function repostServiceUpload(data, headers, csarId) {
             var url = vnfConfig.api.home.repostServiceUpload.url,
                 method = vnfConfig.api.home.repostServiceUpload.method,
                 apiData = data;
-			url = url.replace(":csarId", csarId)
+            url = url.replace(":csarId", csarId)
 
             var defer = $q.defer()
             httpService.apiRequestWithProgress(url, method, apiData, headers)
-                .then(function(response) {
+                .then(function (response) {
                     defer.resolve(response);
-                }, function(error) {
+                }, function (error) {
                     defer.reject(error);
                 });
             return defer.promise;
