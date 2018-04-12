@@ -13,12 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#searchField {
+
+#searchField,
+#searchField:focus {
 	position: relative;
-	top: 13px;
+	top: 11px !important;
 	border-bottom-color: whitesmoke;
 	background-color: #858ca8;
-	height: 33px;
+	height: 31px !important;
+	line-height: 29px !important;
+	padding: 2px 2px 1px 2px !important;
+	border-bottom-width: 1px !important;
+}
+
+#searchIcon,
+#cancelSearch {
+	background-color: #858ca8;
+	height: 29px;
+	position: relative;
+	top: -1.5px;
+	margin: 0px;
 }
 .hidden {
 	display: none;
@@ -556,18 +570,6 @@ table tr {
 	top: -2px;
 }
 
-#searchIcon {
-	background-color: #858ca8;
-	height: 31px;
-	position: relative;
-	top: 1.5px;
-}
-#cancelSearch {
-	background-color: #858ca8;
-	height: 31px;
-	position: relative;
-	top: 1.5px;
-}
 .searchIconColor {
 	color: rgb(234, 234, 234);
 }
