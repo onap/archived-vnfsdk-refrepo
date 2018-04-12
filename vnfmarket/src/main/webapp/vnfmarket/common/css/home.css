@@ -912,12 +912,13 @@ table tr {
 .content .imageContainer img {
 	height: 100%;
 }
-.content .backLink {
-	text-decoration: underline;
-	/*color: #9d9d9d;*/
+.content .vnfLink {
+	color: #007bff !important;
 }
-.content .backLink:hover {
-	color: #333;
+
+.content .vnfLink:hover {
+	text-decoration: underline !important;
+	cursor: pointer;
 }
 
 textarea {
