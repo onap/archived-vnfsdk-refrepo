@@ -48,7 +48,7 @@
                 <version>1.0.0</version>
                 <configuration>
                     <verbose>true</verbose>
-                    <imageName>onap/refrepo</imageName>
+                    <imageName>onap/vnfsdk/refrepo</imageName>
                     <serverId>docker-hub</serverId>
                     <dockerDirectory>${basedir}/src/main/docker</dockerDirectory>
                     <resources>
@@ -80,8 +80,8 @@
                             <goal>tag</goal>
                         </goals>
                         <configuration>
-                            <image>onap/refrepo</image>
-                            <newName>${docker.push.registry}/onap/refrepo:${project.version}-${maven.build.timestamp}</newName>
+                            <image>onap/vnfsdk/refrepo</image>
+                            <newName>${docker.push.registry}/onap/vnfsdk/refrepo:${project.version}-${maven.build.timestamp}</newName>
                             <pushImage>${skip.docker.push}</pushImage>
                             <skipDockerTag>${skip.docker.tag}</skipDockerTag>
                         </configuration>
@@ -93,8 +93,8 @@
                             <goal>tag</goal>
                         </goals>
                         <configuration>
-                            <image>onap/refrepo</image>
-                            <newName>${docker.push.registry}/onap/refrepo:latest</newName>
+                            <image>onap/vnfsdk/refrepo</image>
+                            <newName>${docker.push.registry}/onap/vnfsdk/refrepo:latest</newName>
                             <pushImage>${skip.docker.push}</pushImage>
                             <skipDockerTag>${skip.docker.tag}</skipDockerTag>
                         </configuration>
