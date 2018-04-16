@@ -13,24 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.onap.vnfsdk.marketplace.common;
 
+package org.onap.vnfsdk.marketplace.common;
 
 public class CommonErrorResponse {
 
-  private String message;
-  
-  public CommonErrorResponse(String message) {
-	    super();
-	    this.message = message;
-	  }
+    private String statusText;
 
-  public String getMessage() {
-        return message;
+    public CommonErrorResponse(String statusText) {
+        super();
+        this.statusText = statusText;
     }
 
-  public static Object failure(String message) {
-    return message;
-  }
-}
+    public String getMessage() {
+        return statusText;
+    }
 
+    public static Object failure(String statusText) {
+        return statusText;
+    }
+}

@@ -38,6 +38,7 @@ import org.eclipse.jetty.http.HttpStatus;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.onap.validation.csar.CsarValidator;
 import org.onap.vnfsdk.marketplace.common.CommonConstant;
+import org.onap.vnfsdk.marketplace.common.CommonErrorResponse;
 import org.onap.vnfsdk.marketplace.common.FileUtil;
 import org.onap.vnfsdk.marketplace.common.RestUtil;
 import org.onap.vnfsdk.marketplace.common.ToolUtil;
@@ -257,7 +258,8 @@ public class PackageWrapper {
         if(!bResult) {
             LOG.error("Validation of Input received for Package Upload failed !!!");
             return Response.status(Status.EXPECTATION_FAILED)
-                    .entity("Input package is empty or exception happened during validation").build();
+                    .entity(new CommonErrorResponse("Input package is empty or exception happened during validation"))
+                    .build();
         }
 
         String fileName = "temp_" + packageId + ".csar";
@@ -290,19 +292,22 @@ public class PackageWrapper {
             String validationResp = cv.validateCsar();
             if("SUCCESS" != validationResp) {
                 LOG.error("Could not validate failed");
-                return Response.status(Status.EXPECTATION_FAILED).entity(validationResp).build();
+                return Response.status(Status.EXPECTATION_FAILED).entity(new CommonErrorResponse(validationResp))
+                        .build();
             }
         } catch(Exception e) {
             LOG.error("CSAR validation panicked", e);
-            return Response.status(Status.EXPECTATION_FAILED)
-                    .entity("Exception occurred while validating csar package:" + e.getMessage()).build();
+            return Response.status(Status.EXPECTATION_FAILED).entity(
+                    new CommonErrorResponse("Exception occurred while validating csar package:" + e.getMessage()))
+                    .build();
         }
 
         UploadPackageResponse result = null;
         try {
             result = manageUpload(packageId, fileName, fileLocation, details, contentRange);
         } catch(ErrorCodeException e) {
-            return Response.status(Status.EXPECTATION_FAILED).entity("Package Name already exists").build();
+            return Response.status(Status.EXPECTATION_FAILED)
+                    .entity(new CommonErrorResponse("Package Name already exists")).build();
         }
         if(null != result) {
             return Response.ok(ToolUtil.objectToString(result), MediaType.APPLICATION_JSON).build();
