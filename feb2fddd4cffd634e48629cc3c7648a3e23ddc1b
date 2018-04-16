@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_eab6a5f8",
+        "filename": "vnfmarket-be/deployment/docker/docker-postgres/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 749
+      },
+      "writtenOn": "2018-04-16T09:38:04Z",
+      "side": 1,
+      "message": "We also need to change in ci-management and also csit test scripts.I have changed them.\nhttps://gerrit.onap.org/r/#/c/42989/\nhttps://gerrit.onap.org/r/#/c/42993/",
+      "revId": "feb2fddd4cffd634e48629cc3c7648a3e23ddc1b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
