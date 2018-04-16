@@ -50,9 +50,9 @@
 
         $(".onboardProgress .progress3 .progressDiv").removeClass("progressed");
         $(".onboardProgress .progress3 .roundProg").removeClass("progressed");
-        var fileName = $stateParams.csarName
+        var fileName = $stateParams.csarName;
 
-        vm.mainTitle = fileName.slice(0, fileName.lastIndexOf("."));
+        vm.mainTitle = fileName ? fileName.slice(0, fileName.lastIndexOf(".")) : '';
 
         //vm.mainTitle = $stateParams.csarName;//"clearwater_ns";
         var csarId = $stateParams.csarId;
