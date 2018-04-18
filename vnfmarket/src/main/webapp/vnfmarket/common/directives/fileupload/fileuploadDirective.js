@@ -43,7 +43,15 @@
         function link(scope, element, attrs) {
             element.bind("change", function (changeEvent) {
                 scope.$apply(function () {
-                    scope.fileUpload = changeEvent.target.files[0];
+                    var fileType = changeEvent.target.accept;
+                    var ext = "." + changeEvent.target.value.match(/\.(.+)$/)[1];
+                    scope.fileUpload = null;
+                    if (typeof fileType == undefined || fileType == "") {
+                        scope.fileUpload = changeEvent.target.files[0];
+                    }
+                    else if ((Array.isArray(fileType) && fileType.indexOf(ext) > -1) || (fileType == ext)) {
+                        scope.fileUpload = changeEvent.target.files[0];
+                    }
                 });
             });
         }

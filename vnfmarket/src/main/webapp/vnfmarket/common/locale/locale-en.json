@@ -57,7 +57,7 @@
 				"fields": {
 					"fileUpload": {
 						"label": "Select File",
-						"noFileSelected": "No file selected"
+						"noFileSelected": "No file selected (Select .csar file)"
 					},
 					"shortDescription": {
 						"placeholder": "Short Description"
