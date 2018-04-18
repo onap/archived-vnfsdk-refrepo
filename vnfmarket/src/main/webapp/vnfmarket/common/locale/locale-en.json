@@ -127,7 +127,7 @@
 						},
 						"downloads": {
 							"key": "Downloads",
-							"value": "downloads"
+							"value": "downloadCount"
 						}
 					}
 				},

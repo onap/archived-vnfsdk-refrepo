@@ -24,7 +24,7 @@
         <md-toolbar id="homeToolbar" class="md-hue-3">
             <div class="md-toolbar-tools">
                 <label ng-if="vm.services.length > 0" class="md-title fontSize marginAuto selectLblAlignment">{{'module.marketplace.main.sortBy.label' | translate}}</label>
-                <select ng-model="sortBy" class="md-no-underline noMargin iconMargin md-title fontSize" id="sortByLabel" ng-if="vm.services.length > 0">
+                <select ng-model="vm.filter.sortBy" class="md-no-underline noMargin iconMargin md-title fontSize" id="sortByLabel" ng-if="vm.services.length > 0">
                     <option class="md-title fontSize " value="" disabled selected>{{'module.marketplace.main.sortBy.title' | translate}}</option>
                     <option class="md-title fontSize " value="{{'module.marketplace.main.sortBy.options.name.value' | translate}}">{{'module.marketplace.main.sortBy.options.name.key' | translate}}</option>
                     <option class="md-title fontSize " value="{{'module.marketplace.main.sortBy.options.dateModified.value' | translate}}">{{'module.marketplace.main.sortBy.options.dateModified.key' | translate}}</option>
@@ -82,7 +82,7 @@
         </md-toolbar>
     </md-card>
     <div class="md-padding" layout-xs="column" layout="row" layout-wrap ng-if="vm.hasGridView && vm.services.length > 0" id="gridView">
-        <md-card class="gridViewMargin md-padding tiles flex-md-100 flex-gt-md-30 flex-lt-md-100" ng-repeat="service in vm.services | filter: vm.filter.search| orderBy:sortBy"
+        <md-card class="gridViewMargin md-padding tiles flex-md-100 flex-gt-md-30 flex-lt-md-100" ng-repeat="service in vm.services | filter: vm.filter.search| orderBy:vm.filter.sortBy"
             layout-wrap>
             <md-card-header class="nopadding">
                 <md-card-header-text>
@@ -143,7 +143,7 @@
     <md-card flex="100" ng-if="!vm.hasGridView  && vm.services.length > 0" id="listView">
         <md-table-container>
             <table md-table>
-                <thead md-head md-order="sortBy">
+                <thead md-head md-order="vm.filter.sortBy">
                     <tr md-row>
                         <th md-column class="text-center fontSize">
                             <md-tooltip md-direction="top">{{'module.marketplace.main.listView.headers.name' | translate}}</md-tooltip>{{'module.marketplace.main.listView.headers.name'
@@ -176,7 +176,7 @@
                     </tr>
                 </thead>
                 <tbody md-body>
-                    <tr md-row md-select="dessert" md-select-id="name" md-auto-select ng-repeat="service in vm.services | filter: vm.filter.search | orderBy:sortBy | limitTo: vm.paginationQuery.limit: (vm.paginationQuery.page - 1) * vm.paginationQuery.limit">
+                    <tr md-row md-select="dessert" md-select-id="name" md-auto-select ng-repeat="service in vm.services | filter: vm.filter.search | orderBy:vm.filter.sortBy | limitTo: vm.paginationQuery.limit: (vm.paginationQuery.page - 1) * vm.paginationQuery.limit">
                         <td md-cell class="text-center">
                             <md-tooltip md-direction="top">{{service.name}}</md-tooltip>
                             <a class="pointerClick" ng-click="vm.showDetails(service)">{{service.name}}</a>
