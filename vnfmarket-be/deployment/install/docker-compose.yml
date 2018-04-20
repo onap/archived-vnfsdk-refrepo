@@ -13,7 +13,9 @@ services:
         mem_limit: "1g"
         memswap_limit: "1g"
         ports:
-         - "5432:5432"   
+         - "5432:5432"
+        volumes:
+            - /data/refrepo/postgres:/var/lib/postgresql/data
 
     refrepo:
         container_name: "refrepo"
@@ -27,6 +29,6 @@ services:
             JPDA_ADDRESS: 8000
             JPDA_TRANSPORT: dt_socket
         volumes:
-            - /data/csars:/service/webapps/ROOT/WEB-INF/tomcat/webapps/ROOT/CSAR
+            - /data/refrepo/csars:/service/webapps/ROOT/WEB-INF/tomcat/webapps/ROOT/CSAR
         links:
             - postgres
