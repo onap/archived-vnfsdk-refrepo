@@ -6,19 +6,19 @@
          "oper":[  
             {  
                "operId":"upload_id_1",
-               "operName":"Validation Step 1 Execute"
+               "operName":"Validation Step 1: Extract the CSAR package"
             },
             {  
                "operId":"upload_id_2",
-               "operName":"Validation Step 2 Execute"
+               "operName":"Validation Step 2: Check CSAR Integrity"
             },
 			{  
                "operId":"upload_id_3",
-               "operName":"Validation Step 3 Execute"
+               "operName":"Validation Step 3: Validate CSAR Meta Data file or MainService file"
             },
             {  
                "operId":"upload_id_4",
-               "operName":"Validation Step 4 Execute"
+               "operName":"Validation Step 4: Validate and scan TOSCA Meta Data"
             }
          ]
       },
