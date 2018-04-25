@@ -9,17 +9,34 @@
       <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class> 
       <init-param> 
          <param-name>jersey.config.server.provider.packages</param-name> 
-         <param-value>org.onap.vnfsdk.marketplace.resource</param-value> 
+         <param-value>io.swagger.jaxrs.listing,
+                      org.onap.vnfsdk.marketplace.resource
+         </param-value> 
       </init-param> 
       <init-param>
           <param-name>jersey.config.server.provider.classnames</param-name>
       <param-value>org.glassfish.jersey.media.multipart.MultiPartFeature</param-value>
-      </init-param>
+      </init-param> 
+      <load-on-startup>1</load-on-startup>   
    </servlet> 
    <servlet-mapping> 
       <servlet-name>Jersey RESTful Application</servlet-name> 
       <url-pattern>/onapapi/vnfsdk-marketplace/v1/*</url-pattern> 
-   </servlet-mapping>  
+   </servlet-mapping>
+   
+    <servlet>
+        <servlet-name>Jersey2Config</servlet-name>
+        <servlet-class>io.swagger.jersey.config.JerseyJaxrsConfig</servlet-class>
+        <init-param>
+            <param-name>api.version</param-name>
+            <param-value>1.0.0</param-value>
+        </init-param>
+        <init-param>
+            <param-name>swagger.api.basepath</param-name>
+            <param-value>http://localhost:8702//onapapi/vnfsdk-marketplace/v1</param-value>
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
 
     <filter>
         <filter-name>CorsFilter</filter-name>
