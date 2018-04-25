@@ -69,6 +69,7 @@
 
                                 ant.mkdir(dir: "${deployUnzip}/webapps/ROOT")
                                 ant.mkdir(dir: "${deployUnzip}/webapps/onapui")
+                                ant.mkdir(dir: "${deployUnzip}/webapps/apidocs")
 
                                 ant.copy(todir: "${deployUnzip}") {
                                 fileset(dir: "${basedir}/src/main/release"){
@@ -82,6 +83,13 @@
 								
 								ant.copy(todir: "${deployUnzip}/webapps/onapui") {
                                 fileset(dir: "${project.build.directory}/../../../../vnfmarket/src/main/webapp")
+                                }
+                                
+                                ant.copy(todir: "${deployUnzip}/webapps/apidocs") {
+                                fileset(dir: "${project.build.directory}/../../../vnf-sdk-marketplace/target/swagger-ui-master/dist") {                                
+                                exclude(name: "index.html")
+                                }
+                                fileset(dir: "${project.build.directory}/../../../vnf-sdk-marketplace/src/main/webapp/apidocs")
                                 }
 
                                 ant.zip(destfile: "${deployFolder}/${outfileName}") {
