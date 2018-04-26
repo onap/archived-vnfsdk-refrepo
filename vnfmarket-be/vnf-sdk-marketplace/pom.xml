@@ -173,7 +173,7 @@
         <dependency>
             <groupId>org.onap.vnfsdk.validation</groupId>
             <artifactId>validation-csar</artifactId>
-            <version>1.1.1</version>
+            <version>1.1.2</version>
         </dependency>
     </dependencies>
     <profiles>
