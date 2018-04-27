@@ -9,7 +9,7 @@ services:
     postgres:
         container_name: "postgres"
         restart: "always"
-        image: "${NEXUS_REPO}/onap/vnfsdk/refrepo/postgres:${POSTGRES_TAG}"
+        image: "${NEXUS_DOCKER_REPO}/onap/vnfsdk/refrepo/postgres:${POSTGRES_TAG}"
         mem_limit: "1g"
         memswap_limit: "1g"
         ports:
@@ -20,7 +20,7 @@ services:
     refrepo:
         container_name: "refrepo"
         restart: "always"
-        image: "${NEXUS_REPO}/onap/vnfsdk/refrepo:${REFREPO_TAG}"
+        image: "${NEXUS_DOCKER_REPO}/onap/vnfsdk/refrepo:${REFREPO_TAG}"
         ports:
             - "8702-8703:8702-8703"
             - "8000:8000"
