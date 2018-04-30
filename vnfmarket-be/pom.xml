@@ -32,7 +32,6 @@
     </scm>
       <modules>
           <module>vnf-sdk-marketplace</module>
-          <module>portal-marketplace</module>
           <module>deployment</module>
     </modules>
 </project>
