@@ -1,3 +1,10 @@
+/**
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v1.1.3
+ */
+ 
 // Should already be required, here for clarity
 require('angular');
 
