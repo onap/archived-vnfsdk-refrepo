@@ -22,7 +22,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <cxf.version>3.2.3</cxf.version>
+        <cxf.version>3.2.1</cxf.version>
         <!-- slf4j.version>1.6.1</slf4j.version> -->
         <maven.test.skip>false</maven.test.skip>
         <maven.test.failure.ignore>false</maven.test.failure.ignore>
