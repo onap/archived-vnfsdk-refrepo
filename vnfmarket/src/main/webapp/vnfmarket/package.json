@@ -1,12 +1,12 @@
 {
   "name": "vnfmarket",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Marketplace UI for VNF Services",
   "scripts": {
     "test": "karma start karma.conf.js"
   },
   "author": "HTIPL",
-  "license": "Apache license",
+  "license": "Apache-2.0",
   "devDependencies": {
     "karma": "~0.12.0",
     "karma-chrome-launcher": "~0.1.2",
