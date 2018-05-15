@@ -2,3 +2,4 @@
 .settings/
 .checkstyle
 .classpath
+/target/
