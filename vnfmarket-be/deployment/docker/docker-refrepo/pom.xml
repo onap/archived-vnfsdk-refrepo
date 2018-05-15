@@ -23,14 +23,14 @@
     <parent>
         <groupId>org.onap.vnfsdk.refrepo</groupId>
         <artifactId>vnf-sdk-marketplace-core-parent</artifactId>
-        <version>1.1.0</version>
+        <version>1.1.1</version>
     </parent>
 
     <artifactId>vnfmarket-docker-refrepo</artifactId>
     <name>vnfmarket/deployment/docker/refrepo</name>
     <packaging>pom</packaging>
 
-  <properties>    
+  <properties>
         <maven.build.timestamp.format>yyyyMMdd'T'HHmmss'Z'</maven.build.timestamp.format>
         <docker.push.registry></docker.push.registry>
         <skip.docker.build>true</skip.docker.build>
@@ -61,8 +61,8 @@
                         </resource>
                     </resources>
                 </configuration>
-               
-                <executions>                   
+
+                <executions>
                     <execution>
                         <id>build-image</id>
                         <phase>package</phase>
@@ -72,7 +72,7 @@
                         <configuration>
                             <skipDockerBuild>${skip.docker.build}</skipDockerBuild>
                         </configuration>
-                    </execution>  
+                    </execution>
 <execution>
                         <id>tag-image-timestamped-version</id>
                         <phase>deploy</phase>
@@ -99,12 +99,12 @@
                             <skipDockerTag>${skip.docker.tag}</skipDockerTag>
                         </configuration>
                     </execution>
-                                  
+
                 </executions>
             </plugin>
-             
+
 
         </plugins>
     </build>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
 </project>

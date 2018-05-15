@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   Copyright (c) 2017, Huawei Technologies Co., Ltd.
- 
+
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
- 
+
       http://www.apache.org/licenses/LICENSE-2.0
- 
+
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,7 +19,7 @@
    <parent>
         <groupId>org.onap.vnfsdk.refrepo</groupId>
         <artifactId>vnf-sdk-marketplace-core-parent</artifactId>
-        <version>1.1.0</version>
+        <version>1.1.1</version>
     </parent>
 
     <artifactId>vnf-sdk-marketplace-deployment</artifactId>
@@ -79,13 +79,13 @@
                                 ant.copy(todir: "${deployUnzip}/webapps/ROOT") {
                                 fileset(dir: "${project.build.directory}/../../../vnf-sdk-marketplace/target/ROOT")
                                 }
-								
-								ant.copy(todir: "${deployUnzip}/webapps/onapui") {
+
+                                ant.copy(todir: "${deployUnzip}/webapps/onapui") {
                                 fileset(dir: "${project.build.directory}/../../../../vnfmarket/src/main/webapp")
                                 }
-                                
+
                                 ant.copy(todir: "${deployUnzip}/webapps/apidocs") {
-                                fileset(dir: "${project.build.directory}/../../../vnf-sdk-marketplace/target/swagger-ui-master/dist") {                                
+                                fileset(dir: "${project.build.directory}/../../../vnf-sdk-marketplace/target/swagger-ui-master/dist") {
                                 exclude(name: "index.html")
                                 }
                                 fileset(dir: "${project.build.directory}/../../../vnf-sdk-marketplace/src/main/webapp/apidocs")
@@ -123,5 +123,5 @@
             </plugin>
         </plugins>
     </build>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
 </project>
