@@ -17,5 +17,5 @@
 
 
 #Set postgres instance IP
-sed -i 's|127.0.0.1|'"$POSTGRES_SERVICE_HOST"'|' webapps/ROOT/WEB-INF/classes/mybatis/configuration/configuration.xml
+sed -i 's|127.0.0.1|'"$VNFSDK_DBSET_SERVICE_HOST"'|' webapps/ROOT/WEB-INF/classes/mybatis/configuration/configuration.xml
 

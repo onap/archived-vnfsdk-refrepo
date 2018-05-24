@@ -23,8 +23,8 @@
 if [ -z "$SERVICE_IP" ]; then
     export SERVICE_IP=`hostname -i`
 fi
-if [ -z "$POSTGRES_SERVICE_HOST" ]; then
-    export POSTGRES_SERVICE_HOST=127.0.0.1
+if [ -z "$VNFSDK_DBSET_SERVICE_HOST" ]; then
+    export VNFSDK_DBSET_SERVICE_HOST=127.0.0.1
 fi
 
 echo
