@@ -47,7 +47,7 @@ RUN add-apt-repository ppa:openjdk-r/ppa -y && \
 
 
 # Set up tomcat
-RUN wget -q http://mirrors.ocf.berkeley.edu/apache/tomcat/tomcat-8/v8.5.31/bin/apache-tomcat-8.5.31.tar.gz && tar --strip-components=1 -xf apache-tomcat-8.5.31.tar.gz && rm -f apache-tomcat-8.5.31.tar.gz && rm -rf webapps && mkdir -p webapps/ROOT
+RUN wget -q http://mirrors.ocf.berkeley.edu/apache/tomcat/tomcat-8/v8.5.32/bin/apache-tomcat-8.5.32.tar.gz && tar --strip-components=1 -xf apache-tomcat-8.5.32.tar.gz && rm -f apache-tomcat-8.5.32.tar.gz && rm -rf webapps && mkdir -p webapps/ROOT
 RUN echo 'export CATALINA_OPTS="$CATALINA_OPTS -Xms64m -Xmx256m -XX:MaxPermSize=64m"' > /service/bin/setenv.sh
 ENV CATALINA_HOME /service
 
