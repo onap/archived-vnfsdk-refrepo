@@ -93,7 +93,7 @@ committers:
     - name: 'Mickael Jezequel'
       email: 'mickael.jezequel@orange.com'
       company: 'Orange'
-      id: ''
+      id: 'mjzql'
       timezone: 'Europe/Paris'
 tsc:
     approval: 'https://lists.onap.org/pipermail/onap-tsc'
