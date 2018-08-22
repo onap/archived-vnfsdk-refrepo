@@ -1,0 +1,7 @@
+FROM alpine:3.7 AS builder
+
+ADD https://github.com/multiarch/qemu-user-static/releases/download/v2.12.0-1/qemu-aarch64-static.tar.gz /tmp
+RUN tar xzf /tmp/qemu-aarch64-static.tar.gz -C /tmp
+
+FROM arm64v8/ubuntu:16.04
+COPY --from=builder /tmp/qemu-aarch64-static /usr/bin
