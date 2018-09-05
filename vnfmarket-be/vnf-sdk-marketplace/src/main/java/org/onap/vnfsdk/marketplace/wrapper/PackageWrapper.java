@@ -36,7 +36,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
-import org.onap.validation.csar.CsarValidator;
 import org.onap.vnfsdk.marketplace.common.CommonConstant;
 import org.onap.vnfsdk.marketplace.common.CommonErrorResponse;
 import org.onap.vnfsdk.marketplace.common.FileUtil;
@@ -59,6 +58,8 @@ import org.onap.vnfsdk.marketplace.onboarding.hooks.functiontest.FunctionTestExc
 import org.onap.vnfsdk.marketplace.onboarding.hooks.functiontest.FunctionTestHook;
 import org.onap.vnfsdk.marketplace.onboarding.hooks.validatelifecycle.ValidateLifecycleTestResponse;
 import org.onap.vnfsdk.marketplace.onboarding.onboardmanager.OnBoardingHandler;
+import org.open.infc.grpc.Result;
+import org.open.infc.grpc.client.OpenRemoteCli;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,7 +71,7 @@ public class PackageWrapper {
 
     /**
      * get PackageWrapper instance.
-     * 
+     *
      * @return package wrapper instance
      */
     public static PackageWrapper getInstance() {
@@ -124,7 +125,7 @@ public class PackageWrapper {
 
     /**
      * query package list by condition.
-     * 
+     *
      * @param name package name
      * @param provider package provider
      * @param version package version
@@ -150,7 +151,7 @@ public class PackageWrapper {
 
     /**
      * query package by id.
-     * 
+     *
      * @param csarId package id
      * @return Response
      */
@@ -162,7 +163,7 @@ public class PackageWrapper {
 
     /**
      * upload package.
-     * 
+     *
      * @param uploadedInputStream inputStream
      * @param fileDetail package detail
      * @param head http header
@@ -242,7 +243,7 @@ public class PackageWrapper {
 
     /**
      * Interface for Uploading package
-     * 
+     *
      * @param packageId
      * @param uploadedInputStream
      * @param fileDetail
@@ -287,15 +288,18 @@ public class PackageWrapper {
         uploadedInputStream.close();
 
         try {
-            CsarValidator cv = new CsarValidator(packageId, fileLocation);
+            Result result = OpenRemoteCli.run(new String[] { "-P", "onap-vtp", "csar-validate", "--csar", fileLocation, "--format", "json" });
+            LOG.info("CSAR validation is successful" + result.getOutput());
 
-            String validationResp = cv.validateCsar();
-            if("SUCCESS" != validationResp) {
-                LOG.error("Could not validate failed");
-                return Response.status(Status.EXPECTATION_FAILED).entity(new CommonErrorResponse(validationResp))
-                        .build();
+            int exitCode = result.getExitCode();
+            String output = result.getOutput();
+
+            if((exitCode != 0) ||  !output.contains("\"error\":\"SUCCESS\"")) {
+              LOG.error("Could not validate failed");
+              return Response.status(Status.EXPECTATION_FAILED).entity(new CommonErrorResponse(output))
+                      .build();
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             LOG.error("CSAR validation panicked", e);
             return Response.status(Status.EXPECTATION_FAILED).entity(
                     new CommonErrorResponse("Exception occurred while validating csar package:" + e.getMessage()))
@@ -318,7 +322,7 @@ public class PackageWrapper {
 
     /**
      * Execute OnBarding request
-     * 
+     *
      * @param oOnboradingRequest
      */
     private void addOnBoardingRequest(final OnBoradingRequest oOnboradingRequest) {
@@ -332,7 +336,7 @@ public class PackageWrapper {
 
     /**
      * delete package by package id.
-     * 
+     *
      * @param csarId package id
      * @return Response
      */
@@ -348,7 +352,7 @@ public class PackageWrapper {
 
     /**
      * Delete Package by CSAR ID
-     * 
+     *
      * @param csarId
      */
     private void deletePackageDataById(String csarId) {
@@ -372,7 +376,7 @@ public class PackageWrapper {
 
     /**
      * download package by package id.
-     * 
+     *
      * @param csarId package id
      * @return Response
      */
@@ -406,7 +410,7 @@ public class PackageWrapper {
 
     /**
      * get package file uri.
-     * 
+     *
      * @param csarId package id
      * @param relativePath file relative path
      * @return Response
@@ -417,7 +421,7 @@ public class PackageWrapper {
 
     /**
      * Interface to Update Download count for CSAR ID
-     * 
+     *
      * @param csarId
      * @return
      */
@@ -428,7 +432,7 @@ public class PackageWrapper {
 
     /**
      * Handle downlowa count update
-     * 
+     *
      * @param csarId
      * @return
      */
@@ -445,7 +449,7 @@ public class PackageWrapper {
 
     /**
      * Interface to Re upload Package
-     * 
+     *
      * @param csarId
      * @param uploadedInputStream
      * @param fileDetail
@@ -483,7 +487,7 @@ public class PackageWrapper {
 
     /**
      * Interface to get OnBoarding Result by Operation Type
-     * 
+     *
      * @param csarId
      * @param operTypeId
      * @param operId
@@ -539,7 +543,7 @@ public class PackageWrapper {
 
     /**
      * Interface to get OnBoarding Status by Operation ID
-     * 
+     *
      * @param csarId
      * @param operTypeId
      * @return
@@ -578,7 +582,7 @@ public class PackageWrapper {
 
     /**
      * Interface to get OnBoarding Steps
-     * 
+     *
      * @return
      */
     public Response getOnBoardingSteps() {
