@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_10769ed7",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 335
+      },
+      "writtenOn": "2018-09-05T21:23:29Z",
+      "side": 1,
+      "message": "It looks like this is only in Nexus autorelease repos, and hasn\u0027t been released yet.  I think that\u0027s why Jenkins is having trouble validating.",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 36
+      },
+      "revId": "2b1488e798211a702488643adeb2cad68de76d76",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
