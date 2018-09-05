@@ -31,6 +31,12 @@
 
 
     <dependencies>
+    <!--  oclip -->
+          <dependency>
+            <groupId>org.onap.cli</groupId>
+            <artifactId>oclip-grpc-client</artifactId>
+            <version>1.0.0</version>
+          </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-frontend-jaxrs</artifactId>
@@ -174,12 +180,6 @@
             <version>25.0-jre</version>
         </dependency>
 
-        <!-- UT end -->
-        <dependency>
-            <groupId>org.onap.vnfsdk.validation</groupId>
-            <artifactId>validation-csar</artifactId>
-            <version>1.1.2</version>
-        </dependency>
     </dependencies>
     <profiles>
         <profile>

@@ -67,6 +67,8 @@ import org.onap.vnfsdk.marketplace.rest.RestResponse;
 import org.onap.vnfsdk.marketplace.rest.RestfulClient;
 import org.onap.vnfsdk.marketplace.wrapper.PackageWrapper;
 import org.onap.vnfsdk.marketplace.wrapper.PackageWrapperUtil;
+import org.open.infc.grpc.Result;
+import org.open.infc.grpc.client.OpenRemoteCli;
 
 import mockit.Mock;
 import mockit.MockUp;
@@ -640,11 +642,11 @@ public class PackageResourceTest {
                 packageDataList.add(packageData);
                 return packageDataList;
             }
-            
+
             @Mock
             public List<PackageData> getPackageDataSubset(Map<String, String> paramsMap) {
                 List<PackageData> packageDataList = new ArrayList<PackageData>();
-               
+
                 return packageDataList;
             }
         };
@@ -728,6 +730,20 @@ public class PackageResourceTest {
                 packageDataObj.setShortDesc("description");
                 packageDataObj.setRemarks("remarks");
                 return packageDataObj;
+            }
+        };
+
+
+        new MockUp<OpenRemoteCli>() {
+
+            @Mock
+            public Result run(String[] args) {
+                Result result = Result.newBuilder().
+                        setExitCode(0).
+                        setOutput("{\"error\":\"SUCCESS\"}").
+                        build();
+
+                return result;
             }
         };
 
@@ -1068,12 +1084,12 @@ public class PackageResourceTest {
     public void testPkgFormat() {
         assertNotNull(PackageWrapperUtil.getPackageFormat("xml"));
         assertNotNull(PackageWrapperUtil.getPackageFormat("yml"));
-        assertNull(PackageWrapperUtil.getPackageFormat("pdf"));        
+        assertNull(PackageWrapperUtil.getPackageFormat("pdf"));
 
         MsbDetailsHolder.getMsbDetails();
         try {
             IMarketplaceDao dao = new MarketplaceDaoImpl();
-            
+
             packageDataList = new ArrayList<PackageData>();
             packageData = new PackageData();
             packageData.setCsarId("21");
@@ -1083,13 +1099,13 @@ public class PackageResourceTest {
             packageData.setVersion("v1.0");
             packageData.setProvider("Huawei");
             packageDataList.add(packageData);
-            
+
             dao.savePackageData(packageData);
             dao.getAllPackageData();
             dao.getPackageData("21");
             dao.updatePackageData(packageData);
-            dao.deletePackageData("21");           
-            
+            dao.deletePackageData("21");
+
         } catch(Exception e) {
         }
 
