@@ -47,6 +47,8 @@ import org.onap.vnfsdk.marketplace.rest.RestConstant;
 import org.onap.vnfsdk.marketplace.rest.RestResponse;
 import org.onap.vnfsdk.marketplace.rest.RestfulClient;
 import org.onap.vnfsdk.marketplace.wrapper.PackageWrapper;
+import org.open.infc.grpc.Result;
+import org.open.infc.grpc.client.OpenRemoteCli;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -54,24 +56,23 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-/**
- * csar package service.
- *
- * @author 10189609
- */
+
 @Path("/PackageResource")
-@Api(tags = {"Package Resource"})
+@Api(tags = { "Package Resource" })
 public class PackageResource {
 
+    static {
+
+    }
     @Path("/updatestatus")
     @POST
     @ApiOperation(value = "update validate and lifecycle test status", response = UploadPackageResponse.class)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @ApiResponses(value = {
-                    @ApiResponse(code = HttpStatus.NOT_FOUND_404, message = "microservice not found", response = String.class),
-                    @ApiResponse(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE_415, message = "Unprocessable MicroServiceInfo Entity ", response = String.class),
-                    @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "update  error", response = String.class)})
+            @ApiResponse(code = HttpStatus.NOT_FOUND_404, message = "microservice not found", response = String.class),
+            @ApiResponse(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE_415, message = "Unprocessable MicroServiceInfo Entity ", response = String.class),
+            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "update  error", response = String.class) })
     public Response updateValidateStatus(@ApiParam(value = "http request body") @Context HttpServletRequest request,
             @ApiParam(value = "http header") @Context HttpHeaders head) throws IOException {
         InputStream input = request.getInputStream();
@@ -84,9 +85,9 @@ public class PackageResource {
     @ApiOperation(value = "get csar package list by condition", response = PackageMeta.class, responseContainer = "List")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiResponses(value = {
-                    @ApiResponse(code = HttpStatus.NOT_FOUND_404, message = "microservice not found", response = String.class),
-                    @ApiResponse(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE_415, message = "Unprocessable MicroServiceInfo Entity ", response = String.class),
-                    @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "resource grant error", response = String.class)})
+            @ApiResponse(code = HttpStatus.NOT_FOUND_404, message = "microservice not found", response = String.class),
+            @ApiResponse(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE_415, message = "Unprocessable MicroServiceInfo Entity ", response = String.class),
+            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "resource grant error", response = String.class) })
     public Response queryPackageListByCond(@ApiParam(value = "csar name") @QueryParam("name") String name,
             @ApiParam(value = "csar provider") @QueryParam("provider") String provider,
             @ApiParam(value = "csar version") @QueryParam("version") String version,
@@ -100,9 +101,9 @@ public class PackageResource {
     @ApiOperation(value = "get csar package list", response = PackageMeta.class, responseContainer = "List")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiResponses(value = {
-                    @ApiResponse(code = HttpStatus.NOT_FOUND_404, message = "microservice not found", response = String.class),
-                    @ApiResponse(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE_415, message = "Unprocessable MicroServiceInfo Entity ", response = String.class),
-                    @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "resource grant error", response = String.class)})
+            @ApiResponse(code = HttpStatus.NOT_FOUND_404, message = "microservice not found", response = String.class),
+            @ApiResponse(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE_415, message = "Unprocessable MicroServiceInfo Entity ", response = String.class),
+            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "resource grant error", response = String.class) })
     public Response queryPackageById(@ApiParam(value = "csar id") @PathParam("csarId") String csarId) {
         return PackageWrapper.getInstance().queryPackageById(csarId);
     }
@@ -113,9 +114,9 @@ public class PackageResource {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     @ApiResponses(value = {
-                    @ApiResponse(code = HttpStatus.NOT_FOUND_404, message = "microservice not found", response = String.class),
-                    @ApiResponse(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE_415, message = "Unprocessable MicroServiceInfo Entity ", response = String.class),
-                    @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "resource grant error", response = String.class)})
+            @ApiResponse(code = HttpStatus.NOT_FOUND_404, message = "microservice not found", response = String.class),
+            @ApiResponse(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE_415, message = "Unprocessable MicroServiceInfo Entity ", response = String.class),
+            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "resource grant error", response = String.class) })
     public Response uploadPackage(
             @ApiParam(value = "file inputstream", required = true) @FormDataParam("file") InputStream uploadedInputStream,
             @FormDataParam("params") String details,
@@ -125,13 +126,30 @@ public class PackageResource {
         return PackageWrapper.getInstance().uploadPackage(uploadedInputStream, fileDetail, details, head);
     }
 
+    @Path("/vtp/tests")
+    @GET
+    @ApiOperation(value = "VTP Test cases", response = UploadPackageResponse.class)
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiResponses(value = {
+            @ApiResponse(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE_415, message = "Unsupported type", response = String.class),
+            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "Failed to retrieve the tests", response = String.class) })
+    public Response listTests() throws IOException, MarketplaceResourceException {
+        Result result = null;
+        try {
+            result = OpenRemoteCli.run(new String[] { "-P", "open-cli", "schema-list", "--product", "onap-vtp", "--format", "json" });
+        } catch (Exception e) {
+            return Response.serverError().build();
+        }
+        return Response.ok(result.getOutput(), MediaType.APPLICATION_JSON).build();
+    }
+
     @Path("/csars/{csarId}")
     @DELETE
     @ApiOperation(value = "delete a package")
     @ApiResponses(value = {
-                    @ApiResponse(code = HttpStatus.NOT_FOUND_404, message = "microservice not found", response = String.class),
-                    @ApiResponse(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE_415, message = "Unprocessable MicroServiceInfo Entity ", response = String.class),
-                    @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "resource grant error", response = String.class)})
+            @ApiResponse(code = HttpStatus.NOT_FOUND_404, message = "microservice not found", response = String.class),
+            @ApiResponse(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE_415, message = "Unprocessable MicroServiceInfo Entity ", response = String.class),
+            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "resource grant error", response = String.class) })
     public Response delPackage(@ApiParam(value = "csar Id") @PathParam("csarId") String csarId) {
         return PackageWrapper.getInstance().delPackage(csarId);
     }
@@ -141,9 +159,9 @@ public class PackageResource {
     @ApiOperation(value = "get csar file uri by csarId", response = CsarFileUriResponse.class)
     @Produces(MediaType.APPLICATION_JSON)
     @ApiResponses(value = {
-                    @ApiResponse(code = HttpStatus.NOT_FOUND_404, message = "microservice not found", response = String.class),
-                    @ApiResponse(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE_415, message = "Unprocessable MicroServiceInfo Entity ", response = String.class),
-                    @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "resource grant error", response = String.class)})
+            @ApiResponse(code = HttpStatus.NOT_FOUND_404, message = "microservice not found", response = String.class),
+            @ApiResponse(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE_415, message = "Unprocessable MicroServiceInfo Entity ", response = String.class),
+            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "resource grant error", response = String.class) })
     public Response getCsarFileUri(@ApiParam(value = "csar Id", required = true) @PathParam("csarId") String csarId) {
         return PackageWrapper.getInstance().getCsarFileUri(csarId);
     }
@@ -161,9 +179,9 @@ public class PackageResource {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     @ApiResponses(value = {
-                    @ApiResponse(code = HttpStatus.NOT_FOUND_404, message = "microservice not found", response = String.class),
-                    @ApiResponse(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE_415, message = "Unprocessable MicroServiceInfo Entity ", response = String.class),
-                    @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "resource grant error", response = String.class)})
+            @ApiResponse(code = HttpStatus.NOT_FOUND_404, message = "microservice not found", response = String.class),
+            @ApiResponse(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE_415, message = "Unprocessable MicroServiceInfo Entity ", response = String.class),
+            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "resource grant error", response = String.class) })
     public Response reUploadPackage(@ApiParam(value = "csar Id") @PathParam("csarId") String csarId,
             @ApiParam(value = "file inputstream", required = true) @FormDataParam("file") InputStream uploadedInputStream,
             @FormDataParam("params") String details,
@@ -208,17 +226,18 @@ public class PackageResource {
 
         // Step 1: Check whether tomcat server is up
         RestResponse resp = RestfulClient.get("127.0.0.1", CommonConstant.HTTP_PORT, CommonConstant.BASE_URL);
-        if(RestConstant.RESPONSE_CODE_200 != resp.getStatusCode()) {
+        if (RestConstant.RESPONSE_CODE_200 != resp.getStatusCode()) {
             return Response.serverError().build();
         }
 
         // Step 2: Check whether postgres database is up
         try {
             PackageManager.getInstance().queryPackageByCsarId("01");
-        } catch(Exception e) {
+        } catch (Exception e) {
             return Response.serverError().build();
         }
 
         return Response.ok().build();
     }
+
 }
