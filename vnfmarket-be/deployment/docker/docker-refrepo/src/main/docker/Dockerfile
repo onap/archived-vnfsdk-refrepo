@@ -102,7 +102,8 @@ COPY instance-init.sh .
 COPY instance-run.sh .
 COPY instance-workaround.sh .
 COPY docker-entrypoint.sh .
-
+COPY install-vtp.sh .
+COPY vtp-tc.sh .
 
 
 # Set up microservice
@@ -115,6 +116,11 @@ RUN chmod +x /service/bin/*.sh
 RUN service nginx start &
 RUN cd /service/webapps/onapui/vnfmarket && npm install phantomjs-prebuilt@2.1.14 --ignore-scripts && npm install
 
+#VTP setup
+RUN chmod a+x /service/install-vtp.sh
+RUN chmod a+x /service/vtp-tc.sh
+RUN /service/install-vtp.sh
+EXPOSE 50051
 
 ENTRYPOINT /service/docker-entrypoint.sh
 RUN chmod a+x /service/docker-entrypoint.sh
