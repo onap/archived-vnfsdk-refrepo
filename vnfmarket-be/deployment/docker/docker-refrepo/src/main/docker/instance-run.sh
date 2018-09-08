@@ -15,6 +15,9 @@
 # limitations under the License.
 #
 
+#Start VTP service
+service vtp-tc start
+
 # Start tomcat service
 ./bin/start.sh
 
@@ -27,4 +30,5 @@ while [ ! -f /service/logs/* ]; do
 done
 echo /service/logs/*
 tail -F /service/logs/*
+
 

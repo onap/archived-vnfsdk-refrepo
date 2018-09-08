@@ -8,8 +8,8 @@
 
 FROM ubuntu:16.04
 #RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
-RUN apt-get install -y 
-RUN apt-get update -y
+RUN apt-get install -y
+RUN apt-get update --fix-missing -y
 RUN apt-get install wget -y
 
 WORKDIR /service
@@ -23,7 +23,7 @@ ENV JAVA_VERSION_MAJOR=8 \
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install python-software-properties
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install software-properties-common
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install software-properties-common sudo
 
 RUN add-apt-repository ppa:openjdk-r/ppa -y && \
 
@@ -85,7 +85,7 @@ WORKDIR /service
 RUN  mkdir -p /etc/nginx/ssl
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY certgen.sh /service
-RUN  chmod +x /service/certgen.sh 
+RUN  chmod +x /service/certgen.sh
 RUN  /service/certgen.sh
 
 
@@ -102,12 +102,13 @@ COPY instance-init.sh .
 COPY instance-run.sh .
 COPY instance-workaround.sh .
 COPY docker-entrypoint.sh .
-
+COPY install-vtp.sh .
+COPY vtp-tc.sh .
 
 
 # Set up microservice
 ADD ./STAGE  /service
-RUN apt-get install -y g++ make &&  curl -sL https://rpm.nodesource.com/setup_6.x 
+RUN apt-get install -y g++ make &&  curl -sL https://rpm.nodesource.com/setup_6.x
 RUN apt-get install -y nodejs
 RUN apt-get install -y npm
 RUN apt-get -qq update && apt-get -qq -y install bzip2
@@ -115,6 +116,11 @@ RUN chmod +x /service/bin/*.sh
 RUN service nginx start &
 RUN cd /service/webapps/onapui/vnfmarket && npm install phantomjs-prebuilt@2.1.14 --ignore-scripts && npm install
 
+#VTP setup
+RUN chmod a+x /service/install-vtp.sh
+RUN chmod a+x /service/vtp-tc.sh
+RUN /service/install-vtp.sh
+EXPOSE 50051
 
 ENTRYPOINT /service/docker-entrypoint.sh
 RUN chmod a+x /service/docker-entrypoint.sh
