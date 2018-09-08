@@ -47,7 +47,7 @@ RUN add-apt-repository ppa:openjdk-r/ppa -y && \
 
 
 # Set up tomcat
-RUN wget -q http://mirrors.ocf.berkeley.edu/apache/tomcat/tomcat-8/v8.5.32/bin/apache-tomcat-8.5.32.tar.gz && tar --strip-components=1 -xf apache-tomcat-8.5.32.tar.gz && rm -f apache-tomcat-8.5.32.tar.gz && rm -rf webapps && mkdir -p webapps/ROOT
+RUN wget -q https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.30/bin/apache-tomcat-8.5.30.tar.gz && tar --strip-components=1 -xf apache-tomcat-8.5.30.tar.gz && rm -f apache-tomcat-8.5.30.tar.gz && rm -rf webapps && mkdir -p webapps/ROOT
 RUN echo 'export CATALINA_OPTS="$CATALINA_OPTS -Xms64m -Xmx256m -XX:MaxPermSize=64m"' > /service/bin/setenv.sh
 ENV CATALINA_HOME /service
 
@@ -102,7 +102,8 @@ COPY instance-init.sh .
 COPY instance-run.sh .
 COPY instance-workaround.sh .
 COPY docker-entrypoint.sh .
-
+COPY install-vtp.sh .
+COPY vtp-tc.sh .
 
 
 # Set up microservice
@@ -115,6 +116,11 @@ RUN chmod +x /service/bin/*.sh
 RUN service nginx start &
 RUN cd /service/webapps/onapui/vnfmarket && npm install phantomjs-prebuilt@2.1.14 --ignore-scripts && npm install
 
+#VTP setup
+RUN chmod a+x /service/install-vtp.sh
+RUN chmod a+x /service/vtp-tc.sh
+RUN /service/install-vtp.sh
+EXPOSE 50051
 
 ENTRYPOINT /service/docker-entrypoint.sh
 RUN chmod a+x /service/docker-entrypoint.sh

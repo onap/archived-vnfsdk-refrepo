@@ -24,6 +24,7 @@ services:
         ports:
             - "8702-8703:8702-8703"
             - "8000:8000"
+            - "50051:50051"
         environment:
             POSTGRES_SERVICE_HOST: postgres
             JPDA_ADDRESS: 8000
