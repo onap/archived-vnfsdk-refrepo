@@ -21,12 +21,15 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +37,9 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import javax.servlet.ReadListener;
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
@@ -778,6 +784,74 @@ public class PackageResourceTest {
         }
 
         assertEquals(417, result.getStatus());
+    }
+
+    @Test
+    public void testVtpGetTests() throws Exception {
+        new MockUp<OpenRemoteCli>() {
+
+            @Mock
+            public Result run(String[] args) {
+                Result result = Result.newBuilder().
+                        setExitCode(0).
+                        setOutput("{}").
+                        build();
+
+                return result;
+            }
+        };
+
+        Response result = packageResource.listTests();
+        assertEquals(200, result.getStatus());
+    }
+
+    @Test
+    public void testVtpRunTests() throws Exception {
+        new MockUp<OpenRemoteCli>() {
+
+            @Mock
+            public Result run(String[] args) {
+                Result result = Result.newBuilder().
+                        setExitCode(0).
+                        setOutput("{}").
+                        build();
+
+                return result;
+            }
+        };
+
+        MockUp mockReq = new MockUp<HttpServletRequest>() {
+
+            @Mock
+            public ServletInputStream getInputStream() throws IOException {
+                  ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
+                          "{\"csar\"=\"VoLTE.csar\"}".getBytes());
+
+                  return new ServletInputStream(){
+                    public int read() throws IOException {
+                      return byteArrayInputStream.read();
+                    }
+
+                    @Override
+                    public boolean isFinished() {
+                        return true;
+                    }
+
+                    @Override
+                    public boolean isReady() {
+                        return true;
+                    }
+
+                    @Override
+                    public void setReadListener(ReadListener arg0) {
+                    }
+                  };
+                }
+
+        };
+
+        Response result = packageResource.runTest("csar-validate", (HttpServletRequest) mockReq.getMockInstance());
+        assertEquals(200, result.getStatus());
     }
 
     @Test
