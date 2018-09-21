@@ -18,9 +18,6 @@ package org.onap.vnfsdk.marketplace.resource;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -36,12 +33,10 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.onap.vnfsdk.marketplace.common.CommonConstant;
-import org.onap.vnfsdk.marketplace.common.ToolUtil;
 import org.onap.vnfsdk.marketplace.db.exception.MarketplaceResourceException;
 import org.onap.vnfsdk.marketplace.db.resource.PackageManager;
 import org.onap.vnfsdk.marketplace.entity.response.CsarFileUriResponse;
@@ -52,10 +47,6 @@ import org.onap.vnfsdk.marketplace.rest.RestConstant;
 import org.onap.vnfsdk.marketplace.rest.RestResponse;
 import org.onap.vnfsdk.marketplace.rest.RestfulClient;
 import org.onap.vnfsdk.marketplace.wrapper.PackageWrapper;
-import org.open.infc.grpc.Result;
-import org.open.infc.grpc.client.OpenRemoteCli;
-
-import com.google.gson.internal.LinkedTreeMap;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -131,64 +122,6 @@ public class PackageResource {
             @ApiParam(value = "http header") @Context HttpHeaders head)
             throws IOException, MarketplaceResourceException {
         return PackageWrapper.getInstance().uploadPackage(uploadedInputStream, fileDetail, details, head);
-    }
-
-    @Path("/vtp/tests")
-    @GET
-    @ApiOperation(value = "VTP Test cases", response = String.class)
-    @Produces(MediaType.APPLICATION_JSON)
-    @ApiResponses(value = {
-            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "Failed to retrieve the tests", response = String.class) })
-    public Response listTests() throws IOException, MarketplaceResourceException {
-        Result result = null;
-        try {
-            result = OpenRemoteCli.run(new String[] { "-P", "open-cli", "schema-list", "--product", "onap-vtp", "--format", "json" });
-        } catch (Exception e) {
-            return Response.serverError().build();
-        }
-
-        if (result.getExitCode() != 0) {
-            return Response.serverError().entity(result.getOutput()).build();
-        }
-
-        return Response.ok(result.getOutput(), MediaType.APPLICATION_JSON).build();
-    }
-
-    @Path("/vtp/tests/{testName}/run")
-    @POST
-    @ApiOperation(value = "Run VTP testcase")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @ApiResponses(value = {
-            @ApiResponse(code = HttpStatus.NOT_FOUND_404, message = "Test case not found", response = String.class),
-            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "VTP internal failure", response = String.class) })
-    public Response runTest(@ApiParam(value = "test Name") @PathParam("testName") String testName,
-            @Context HttpServletRequest request)
-            throws IOException, MarketplaceResourceException {
-        String details = IOUtils.toString(request.getInputStream());
-        Result result = null;
-        try {
-            List<String> cmdArgsList = new ArrayList<>();
-            for (String defaultArg: new String[] { "-P", "onap-vtp", testName, "--format", "json" }) {
-                cmdArgsList.add(defaultArg);
-            }
-
-            LinkedTreeMap<String, String> cmdArgs = ToolUtil.fromJson(details, LinkedTreeMap.class);
-            for (Entry<String, String> arg : cmdArgs.entrySet()) {
-                cmdArgsList.add("--" + arg.getKey());
-                cmdArgsList.add(arg.getValue());
-            }
-
-            result = OpenRemoteCli.run(cmdArgsList.toArray(new String []{}));
-        } catch (Exception e) {
-            return Response.serverError().build();
-        }
-
-        if (result.getExitCode() != 0) {
-            return Response.serverError().entity(result.getOutput()).build();
-        }
-
-        return Response.ok(result.getOutput(), MediaType.APPLICATION_JSON).build();
     }
 
     @Path("/csars/{csarId}")
