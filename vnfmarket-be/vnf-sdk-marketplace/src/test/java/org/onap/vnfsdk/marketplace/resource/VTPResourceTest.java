@@ -62,6 +62,24 @@ public class VTPResourceTest {
     }
 
     @Test
+    public void testVtpGetTestsFailure1() throws Exception {
+        new MockUp<OpenRemoteCli>() {
+
+            @Mock
+            public Result run(String[] args) {
+                Result result = Result.newBuilder().
+                        setExitCode(1).
+                        build();
+
+                return result;
+            }
+        };
+
+        Response result = vtpResource.listTests();
+        assertEquals(500, result.getStatus());
+    }
+    
+    @Test
     public void testVtpRunTests() throws Exception {
         new MockUp<OpenRemoteCli>() {
 
@@ -108,5 +126,53 @@ public class VTPResourceTest {
 
         Response result = vtpResource.runTest("csar-validate", (HttpServletRequest) mockReq.getMockInstance());
         assertEquals(200, result.getStatus());
+    }
+    
+    @Test
+    public void testVtpRunTestsFailure1() throws Exception {
+        new MockUp<OpenRemoteCli>() {
+
+            @Mock
+            public Result run(String[] args) {
+                Result result = Result.newBuilder().
+                        setExitCode(1).
+                        build();
+
+                return result;
+            }
+        };
+
+        MockUp mockReq = new MockUp<HttpServletRequest>() {
+
+            @Mock
+            public ServletInputStream getInputStream() throws IOException {
+                  ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
+                          "{\"csar\"=\"VoLTE.csar\"}".getBytes());
+
+                  return new ServletInputStream(){
+                    public int read() throws IOException {
+                      return byteArrayInputStream.read();
+                    }
+
+                    @Override
+                    public boolean isFinished() {
+                        return true;
+                    }
+
+                    @Override
+                    public boolean isReady() {
+                        return true;
+                    }
+
+                    @Override
+                    public void setReadListener(ReadListener arg0) {
+                    }
+                  };
+                }
+
+        };
+
+        Response result = vtpResource.runTest("csar-validate", (HttpServletRequest) mockReq.getMockInstance());
+        assertEquals(500, result.getStatus());
     }
 }
