@@ -685,30 +685,6 @@ public class PackageResourceTest {
             }
         };
 
-        new MockUp<PackageWrapperUtil>() {
-
-            @Mock
-            public PackageData getPackageData(PackageMeta meta) {
-                PackageData packageData = new PackageData();
-                packageData.setCreateTime("25-3-2017 15:26:00");
-                packageData.setDeletionPending("deletion");
-                packageData.setDownloadUri("downloaduri");
-                packageData.setFormat("format");
-                packageData.setModifyTime("time");
-                packageData.setName("name");
-                packageData.setCsarId("csarid");
-                packageData.setProvider("huawei");
-                String fileSize = "10 mb";
-                packageData.setSize(fileSize);
-                packageData.setType("type");
-                packageData.setVersion("v2.0");
-                packageData.setDetails("details");
-                packageData.setShortDesc("description");
-                packageData.setRemarks("remarks");
-                return packageData;
-            }
-        };
-
         new MockUp<PackageHandler>() {
 
             @Mock
