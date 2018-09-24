@@ -301,7 +301,7 @@ public class PackageWrapper {
             }
         } catch (Exception e) {
             LOG.error("CSAR validation panicked", e);
-            return Response.status(Status.EXPECTATION_FAILED).entity(
+            return Response.serverError().entity(
                     new CommonErrorResponse("Exception occurred while validating csar package:" + e.getMessage()))
                     .build();
         }
