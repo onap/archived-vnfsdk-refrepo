@@ -48,7 +48,7 @@ public class FileManagerFactory {
   private static FileManagerType getType() {
     String type = System.getenv("useFtp");
     logger.info("read environment varibale uesFtp:" + type);
-    if (type != null && "true".equals(type)) {
+    if ((type != null) && "true".equals(type)) {
       return FileManagerType.ftp;
     } else {
       return FileManagerType.http;
