@@ -781,6 +781,155 @@ public class PackageResourceTest {
     }
 
     @Test
+    public void testUploadPackageFailedOnVtp() throws Exception {
+        InputStream ins = null;
+        Response result = null;
+        /*
+         * Response result1 = null; Response result2 = null; PackageData
+         * packageData = new PackageData(); packageData = getPackageData();
+         */
+
+        new MockUp<MarketplaceDaoImpl>() {
+
+            @Mock
+            public List<PackageData> getPackageData(String csarId) {
+                List<PackageData> packageDataList = new ArrayList<PackageData>();
+                PackageData packageData = new PackageData();
+                packageData = new PackageData();
+                packageData.setCsarId(csarId);
+                packageData.setDownloadUri("src\\test\\resources\\");
+                packageData.setName("clearwater_ns.csar");
+                packageData.setSize("59,854  bytes");
+                packageData.setVersion("v1.0");
+                packageData.setProvider("Airtel");
+                packageDataList.add(packageData);
+                return packageDataList;
+            }
+
+            @Mock
+            public List<PackageData> getPackageDataSubset(Map<String, String> paramsMap) {
+                List<PackageData> packageDataList = new ArrayList<PackageData>();
+
+                return packageDataList;
+            }
+        };
+
+        new MockUp<HttpFileManagerImpl>() {
+
+            @Mock
+            public boolean delete(String srcPath) {
+                return true;
+            }
+        };
+
+        new MockUp<MarketplaceDaoImpl>() {
+
+            @Mock
+            public void deletePackageData(String csarId) {
+                return;
+            }
+        };
+
+        new MockUp<ToolUtil>() {
+
+            @Mock
+            public String getTempDir(String dirName, String fileName) {
+                String filena =
+                        "src" + File.separator + "test" + File.separator + "resources" + File.separator + "testfolder";
+                return filena;
+            }
+        };
+
+        new MockUp<HttpFileManagerImpl>() {
+
+            @Mock
+            public boolean upload(String srcPath, String dstPath) {
+                return false;
+            }
+        };
+
+        new MockUp<PackageWrapperUtil>() {
+
+            @Mock
+            public PackageData getPackageData(PackageMeta meta) {
+                PackageData packageData = new PackageData();
+                packageData.setCreateTime("25-3-2017 15:26:00");
+                packageData.setDeletionPending("deletion");
+                packageData.setDownloadUri("downloaduri");
+                packageData.setFormat("format");
+                packageData.setModifyTime("time");
+                packageData.setName("name");
+                packageData.setCsarId("csarid");
+                packageData.setProvider("huawei");
+                String fileSize = "10 mb";
+                packageData.setSize(fileSize);
+                packageData.setType("type");
+                packageData.setVersion("v2.0");
+                packageData.setDetails("details");
+                packageData.setShortDesc("description");
+                packageData.setRemarks("remarks");
+                return packageData;
+            }
+        };
+
+        new MockUp<PackageHandler>() {
+
+            @Mock
+            public PackageData create(PackageData packageData) {
+                PackageData packageDataObj = new PackageData();
+                packageDataObj.setCreateTime("25-3-2017 15:26:00");
+                packageDataObj.setDeletionPending("deletion");
+                packageDataObj.setDownloadUri("downloaduri");
+                packageDataObj.setFormat("format");
+                packageDataObj.setModifyTime("modifytime");
+                packageDataObj.setName("name");
+                packageDataObj.setCsarId("csarid");
+                packageDataObj.setProvider("huawei");
+                String fileSize = "10 mb";
+                packageDataObj.setSize(fileSize);
+                packageDataObj.setType("type");
+                packageDataObj.setVersion("v2.0");
+                packageDataObj.setDetails("details");
+                packageDataObj.setShortDesc("description");
+                packageDataObj.setRemarks("remarks");
+                return packageDataObj;
+            }
+        };
+
+
+        new MockUp<OpenRemoteCli>() {
+
+            @Mock
+            public Result run(String[] args) throws Exception {
+                throw new Exception();
+            }
+        };
+
+        FormDataContentDisposition fileDetail =
+                FormDataContentDisposition.name("fileName").fileName("clearwater_ns.csar").build();
+
+        String filenama =
+                "src" + File.separator + "test" + File.separator + "resources" + File.separator + "clearwater_ns.csar";
+        File packageFile = new File(filenama);
+
+        try {
+            ins = new FileInputStream(packageFile);
+        } catch(FileNotFoundException e2) {
+            e2.printStackTrace();
+        }
+        if(ins != null) {
+            try {
+                result = PackageWrapper.getInstance().uploadPackage(ins, fileDetail, null, null);
+                // PackageWrapper.getInstance().updateValidateStatus(ins);
+            } catch(Exception e3) {
+                e3.printStackTrace();
+            }
+        }
+
+        assertEquals(500, result.getStatus());
+    }
+
+    @Test
     public void testGetOnBoardingStepsSuccess() {
         new MockUp<org.onap.vnfsdk.marketplace.filemanage.http.ToolUtil>() {
 
