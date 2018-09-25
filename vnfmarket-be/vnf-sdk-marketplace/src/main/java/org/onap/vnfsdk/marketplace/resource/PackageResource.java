@@ -37,6 +37,7 @@ import org.eclipse.jetty.http.HttpStatus;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.onap.vnfsdk.marketplace.common.CommonConstant;
+import org.onap.vnfsdk.marketplace.db.connection.ConnectionUtil;
 import org.onap.vnfsdk.marketplace.db.exception.MarketplaceResourceException;
 import org.onap.vnfsdk.marketplace.db.resource.PackageManager;
 import org.onap.vnfsdk.marketplace.entity.response.CsarFileUriResponse;
@@ -201,17 +202,7 @@ public class PackageResource {
     @ApiOperation(value = "Health for VNF Repository", response = Response.class)
     @Produces(MediaType.APPLICATION_JSON)
     public Response healthCheck() {
-
-        // Step 1: Check whether tomcat server is up
-        RestResponse resp = RestfulClient.get("127.0.0.1", CommonConstant.HTTP_PORT, CommonConstant.BASE_URL);
-        if (RestConstant.RESPONSE_CODE_200 != resp.getStatusCode()) {
-            return Response.serverError().build();
-        }
-
-        // Step 2: Check whether postgres database is up
-        try {
-            PackageManager.getInstance().queryPackageByCsarId("01");
-        } catch (Exception e) {
+        if (ConnectionUtil.getSession() == null){
             return Response.serverError().build();
         }
 
