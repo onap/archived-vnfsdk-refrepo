@@ -21,11 +21,13 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -34,6 +36,9 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import javax.servlet.ReadListener;
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
@@ -168,6 +173,12 @@ public class PackageResourceTest {
 
         assertNotNull(response);
         assertEquals(200, response.getStatus());
+
+        try {
+            response = packageResource.queryPackageListByCond(null, null, null, null, null);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
         // assertNull(res5);
         // assertEquals(00,res5.getStatus());
     }
@@ -206,6 +217,12 @@ public class PackageResourceTest {
         }
         assertNotNull(response);
         assertEquals(200, response.getStatus());
+
+        try {
+            response = packageResource.queryPackageById(csarID);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -242,9 +259,21 @@ public class PackageResourceTest {
         assertEquals(500, response.getStatus());
 
         try {
+            response = packageResource.delPackage("");
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
             response = PackageWrapper.getInstance().delPackage(null);
         } catch(Exception e5) {
             e5.printStackTrace();
+        }
+
+        try {
+            response = packageResource.delPackage(null);
+        } catch(Exception e) {
+            e.printStackTrace();
         }
         assertEquals(500, response.getStatus());
     }
@@ -309,6 +338,12 @@ public class PackageResourceTest {
 
         assertNotNull(response);
         assertEquals(200, response.getStatus());
+
+        try {
+            response = packageResource.delPackage("csarid");
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -344,6 +379,11 @@ public class PackageResourceTest {
         response = PackageWrapper.getInstance().getCsarFileUri("csarId");
         assertEquals(200, response.getStatus());
 
+        try {
+            response = packageResource.getCsarFileUri("csarId");
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -375,6 +415,12 @@ public class PackageResourceTest {
         }
         assertNotNull(response);
         assertEquals(200, response.getStatus());
+
+        try {
+            response = packageResource.updateDwonloadCount(csarID);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -487,12 +533,24 @@ public class PackageResourceTest {
         assertEquals(417, response.getStatus());
 
         try {
+            response = packageResource.reUploadPackage(null, null, null, null, null);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
             fileDetail = FormDataContentDisposition.name("fileName").fileName("clearwater_ns.csar").build();
             String fileName = "src" + File.separator + "test" + File.separator + "resources" + File.separator
                     + "clearwater_ns.csar";
             inputStream = new FileInputStream(fileName);
             response = PackageWrapper.getInstance().reUploadPackage("csarID", inputStream, fileDetail, null, null);
             // assertEquals( 200, response.getStatus() );
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            response = packageResource.reUploadPackage("csarID", inputStream, null, null, null);
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -549,6 +607,12 @@ public class PackageResourceTest {
             e.printStackTrace();
         }
         assertEquals(400, response.getStatus());
+
+        try {
+            response = packageResource.getOnBoardingResult(null, null, null);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -614,6 +678,8 @@ public class PackageResourceTest {
         } catch(Exception e) {
             e.printStackTrace();
         }
+
+
     }
 
     // @Ignore
@@ -754,6 +820,12 @@ public class PackageResourceTest {
         }
 
         assertEquals(417, result.getStatus());
+
+        try {
+            response = packageResource.uploadPackage(null, null, null, null);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -923,6 +995,59 @@ public class PackageResourceTest {
         }
 
         assertNotNull(response);
+
+        try {
+            response = packageResource.getOnBoardingSteps();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testGetOOprStatusSuccess() {
+        try {
+            response = packageResource.getOperStatus(null, null);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testUpdateStatusSuccess() {
+        MockUp mockReq = new MockUp<HttpServletRequest>() {
+
+            @Mock
+            public ServletInputStream getInputStream() throws IOException {
+                  ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
+                          "{\"csar\"=\"VoLTE.csar\"}".getBytes());
+
+                  return new ServletInputStream(){
+                    public int read() throws IOException {
+                      return byteArrayInputStream.read();
+                    }
+
+                    @Override
+                    public boolean isFinished() {
+                        return true;
+                    }
+
+                    @Override
+                    public boolean isReady() {
+                        return true;
+                    }
+
+                    @Override
+                    public void setReadListener(ReadListener arg0) {
+                    }
+                  };
+                }
+
+        };
+        try {
+            response = packageResource.updateValidateStatus((HttpServletRequest) mockReq.getMockInstance(), null);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
