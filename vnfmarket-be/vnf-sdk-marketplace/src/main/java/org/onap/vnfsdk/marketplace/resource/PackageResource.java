@@ -59,9 +59,6 @@ import io.swagger.annotations.ApiResponses;
 @Api(tags = { "Package Resource" })
 public class PackageResource {
 
-    static {
-
-    }
     @Path("/updatestatus")
     @POST
     @ApiOperation(value = "update validate and lifecycle test status", response = UploadPackageResponse.class)
