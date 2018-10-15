@@ -23,7 +23,8 @@
     <parent>
         <groupId>org.onap.vnfsdk.refrepo</groupId>
         <artifactId>vnfmarket-deployment</artifactId>
-        <version>1.1.2</version>
+        <version>1.2.0</version>
+        <relativePath>../..</relativePath>
     </parent>
 
     <artifactId>vnfmarket-docker-refrepo-postgres</artifactId>
