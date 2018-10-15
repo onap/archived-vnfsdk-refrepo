@@ -22,8 +22,9 @@
 
     <parent>
         <groupId>org.onap.vnfsdk.refrepo</groupId>
-        <artifactId>vnf-sdk-marketplace-core-parent</artifactId>
-        <version>1.1.1</version>
+        <artifactId>vnfmarket-deployment</artifactId>
+        <version>1.1.2</version>
+        <relativePath>../..</relativePath>
     </parent>
 
     <artifactId>vnfmarket-docker-refrepo-postgres</artifactId>
@@ -109,5 +110,4 @@
     </build>
     </profile>
 </profiles>
-  <version>1.1.2</version>
 </project>
