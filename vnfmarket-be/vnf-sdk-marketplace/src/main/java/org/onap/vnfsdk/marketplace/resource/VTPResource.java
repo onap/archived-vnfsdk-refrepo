@@ -39,6 +39,9 @@ import org.onap.vnfsdk.marketplace.db.exception.MarketplaceResourceException;
 import org.open.infc.grpc.Result;
 import org.open.infc.grpc.client.OpenRemoteCli;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.internal.LinkedTreeMap;
 
 import io.swagger.annotations.Api;
@@ -106,6 +109,11 @@ public class VTPResource {
             return Response.serverError().entity(result.getOutput()).build();
         }
 
-        return Response.ok(result.getOutput(), MediaType.APPLICATION_JSON).build();
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode resultJson = mapper.readTree(result.getOutput());
+
+        ((ObjectNode)resultJson).put("build_tag", System.getenv("BUILD_TAG"));
+
+        return Response.ok(resultJson.toString(), MediaType.APPLICATION_JSON).build();
     }
 }
