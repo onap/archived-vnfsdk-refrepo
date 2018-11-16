@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_c9c78244",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/resource/VTPResource.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 39
+      },
+      "writtenOn": "2018-11-16T09:50:57Z",
+      "side": 1,
+      "message": "I think the value of criteria should be \u0027PASS\u0027 or \u0027FAIL\u0027",
+      "revId": "42f69562851f7eb7041cf37592436477d3703fe2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
