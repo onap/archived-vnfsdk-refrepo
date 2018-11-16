@@ -41,6 +41,7 @@ import org.open.infc.grpc.client.OpenRemoteCli;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.internal.LinkedTreeMap;
 
@@ -113,6 +114,15 @@ public class VTPResource {
         JsonNode resultJson = mapper.readTree(result.getOutput());
 
         ((ObjectNode)resultJson).put("build_tag", System.getenv("BUILD_TAG"));
+        
+        JsonNode results = resultJson.get("results");
+        if (results != null && results.isArray()) {
+        	ArrayNode resultsArray = (ArrayNode)results;
+        	if (resultsArray.size() >= 0) {
+        		String error = resultsArray.get(0).get("error").asText();
+      			((ObjectNode)resultJson).put("criteria", "SUCCESS".equalsIgnoreCase(error) ? "PASS" : "FAILED");
+        	}
+        }
 
         return Response.ok(resultJson.toString(), MediaType.APPLICATION_JSON).build();
     }
