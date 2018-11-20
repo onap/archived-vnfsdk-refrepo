@@ -28,7 +28,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y install software-properties-common
 RUN add-apt-repository ppa:openjdk-r/ppa -y && \
 
     # update data from repositories
-    apt-get update && \
+    apt-get update --fix-missing -y && \
 
     # upgrade OS
     apt-get -y dist-upgrade && \
