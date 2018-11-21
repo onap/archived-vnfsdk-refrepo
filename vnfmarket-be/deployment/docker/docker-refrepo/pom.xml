@@ -38,6 +38,7 @@
         <skip.docker.tag>true</skip.docker.tag>
         <skip.docker.push>true</skip.docker.push>
         <docker.skip>false</docker.skip>
+        <docker.noCache>true</docker.noCache>
         <docker.skip.build>false</docker.skip.build>
   </properties>
 
@@ -50,6 +51,7 @@
                 <configuration>
                     <verbose>true</verbose>
                     <imageName>onap/vnfsdk/refrepo</imageName>
+                    <noCache>${docker.noCache}</noCache>
                     <serverId>docker-hub</serverId>
                     <dockerDirectory>${basedir}/src/main/docker</dockerDirectory>
                     <resources>
