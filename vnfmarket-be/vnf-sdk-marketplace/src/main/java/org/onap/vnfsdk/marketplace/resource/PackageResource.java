@@ -36,17 +36,12 @@ import javax.ws.rs.core.Response;
 import org.eclipse.jetty.http.HttpStatus;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
-import org.onap.vnfsdk.marketplace.common.CommonConstant;
 import org.onap.vnfsdk.marketplace.db.connection.ConnectionUtil;
 import org.onap.vnfsdk.marketplace.db.exception.MarketplaceResourceException;
-import org.onap.vnfsdk.marketplace.db.resource.PackageManager;
 import org.onap.vnfsdk.marketplace.entity.response.CsarFileUriResponse;
 import org.onap.vnfsdk.marketplace.entity.response.PackageMeta;
 import org.onap.vnfsdk.marketplace.entity.response.UploadPackageResponse;
 import org.onap.vnfsdk.marketplace.onboarding.entity.OnBoardingResult;
-import org.onap.vnfsdk.marketplace.rest.RestConstant;
-import org.onap.vnfsdk.marketplace.rest.RestResponse;
-import org.onap.vnfsdk.marketplace.rest.RestfulClient;
 import org.onap.vnfsdk.marketplace.wrapper.PackageWrapper;
 
 import io.swagger.annotations.Api;
