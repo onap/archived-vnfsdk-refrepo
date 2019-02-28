@@ -10,12 +10,15 @@
       <init-param> 
          <param-name>jersey.config.server.provider.packages</param-name> 
          <param-value>io.swagger.jaxrs.listing,
-                      org.onap.vnfsdk.marketplace.resource
+                      org.onap.vnfsdk.marketplace.resource,
+                      org.onap.vtp.error,  
+                      org.onap.vtp.scenario,
+                      org.onap.vtp.execution
          </param-value> 
       </init-param> 
       <init-param>
           <param-name>jersey.config.server.provider.classnames</param-name>
-      <param-value>org.glassfish.jersey.media.multipart.MultiPartFeature</param-value>
+      	  <param-value>org.glassfish.jersey.media.multipart.MultiPartFeature</param-value>
       </init-param> 
       <load-on-startup>1</load-on-startup>   
    </servlet> 

@@ -68,6 +68,7 @@ import org.onap.vnfsdk.marketplace.onboarding.entity.OnBoradingRequest;
 import org.onap.vnfsdk.marketplace.onboarding.entity.ResultKey;
 import org.onap.vnfsdk.marketplace.onboarding.hooks.functiontest.FunctionTestExceutor;
 import org.onap.vnfsdk.marketplace.onboarding.hooks.functiontest.FunctionTestHook;
+import org.onap.vnfsdk.marketplace.resource.PackageResource;
 import org.onap.vnfsdk.marketplace.rest.RestResponse;
 import org.onap.vnfsdk.marketplace.rest.RestfulClient;
 import org.onap.vnfsdk.marketplace.wrapper.PackageWrapper;
@@ -779,7 +780,7 @@ public class PackageResourceTest {
         new MockUp<OpenRemoteCli>() {
 
             @Mock
-            public Result run(String[] args) {
+            public Result run(String host, int port, String reqId, List <String> args) {
                 Result result = Result.newBuilder().
                         setExitCode(0).
                         setOutput("{\"error\":\"SUCCESS\"}").
@@ -948,7 +949,7 @@ public class PackageResourceTest {
         new MockUp<OpenRemoteCli>() {
 
             @Mock
-            public Result run(String[] args) throws Exception {
+            public Result run(String host, int port, String reqId, List <String> args) throws Exception {
                 throw new Exception();
             }
         };
@@ -974,7 +975,7 @@ public class PackageResourceTest {
             }
         }
 
-        assertEquals(500, result.getStatus());
+        assertEquals(200, result.getStatus());
     }
 
     @Test
