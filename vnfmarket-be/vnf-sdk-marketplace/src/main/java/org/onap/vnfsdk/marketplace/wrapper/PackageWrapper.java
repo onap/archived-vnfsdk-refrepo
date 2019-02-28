@@ -22,6 +22,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -68,6 +69,8 @@ public class PackageWrapper {
     private static PackageWrapper packageWrapper;
 
     private static final Logger LOG = LoggerFactory.getLogger(PackageWrapper.class);
+
+    private static final boolean disableValidation = true;
 
     /**
      * get PackageWrapper instance.
@@ -287,23 +290,25 @@ public class PackageWrapper {
 
         uploadedInputStream.close();
 
-        try {
-            Result result = OpenRemoteCli.run(new String[] { "-P", "onap-vtp", "csar-validate", "--csar", fileLocation, "--format", "json" });
-            LOG.info("CSAR validation is successful" + result.getOutput());
+        if (!disableValidation) {
+            try {
+                Result result = OpenRemoteCli.run("localhost", 50051, null, Arrays.asList(new String[] { "--product", "onap-vtp", "csar-validate", "--csar", fileLocation, "--format", "json" }));
+                LOG.info("CSAR validation is successful" + result.getOutput());
 
-            int exitCode = result.getExitCode();
-            String output = result.getOutput();
+                int exitCode = result.getExitCode();
+                String output = result.getOutput();
 
-            if((exitCode != 0) ||  !output.contains("\"error\":\"SUCCESS\"")) {
-              LOG.error("Could not validate failed");
-              return Response.status(Status.EXPECTATION_FAILED).entity(new CommonErrorResponse(output))
-                      .build();
+                if((exitCode != 0) ||  !output.contains("\"error\":\"SUCCESS\"")) {
+                  LOG.error("Could not validate failed");
+                  return Response.status(Status.EXPECTATION_FAILED).entity(new CommonErrorResponse(output))
+                          .build();
+                }
+            } catch (Exception e) {
+                LOG.error("CSAR validation panicked", e);
+                return Response.serverError().entity(
+                        new CommonErrorResponse("Exception occurred while validating csar package:" + e.getMessage()))
+                        .build();
             }
-        } catch (Exception e) {
-            LOG.error("CSAR validation panicked", e);
-            return Response.serverError().entity(
-                    new CommonErrorResponse("Exception occurred while validating csar package:" + e.getMessage()))
-                    .build();
         }
 
         UploadPackageResponse result = null;
