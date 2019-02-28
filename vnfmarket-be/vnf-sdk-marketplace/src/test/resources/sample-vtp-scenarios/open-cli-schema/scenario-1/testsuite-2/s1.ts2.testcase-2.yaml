@@ -1,0 +1,52 @@
+# Copyright 2019 Huawei Technologies Co., Ltd.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+open_cli_schema_version: 1.0
+name: s1.ts2.testcase-2
+description: s1.ts2.testcase-2
+
+info:
+  product: scenario-1
+  service: testsuite-2
+  type: cmd
+  author: Kanagaraj Manickam kanagaraj.manickam@huawei.com
+
+parameters:
+  - name: input1
+    type: string
+    description: Input 1
+    short_option: x
+    long_option: input1
+    is_optional: false
+  - name: input2
+    type: string
+    description: Input 2
+    short_option: y
+    long_option: input2
+    is_optional: true
+    default_value: v2
+
+results:
+  direction: landscape
+  attributes:
+    - name: output1
+      description: output 1
+      scope: short
+      type: string
+      default_value: ${input1}
+    - name: output2
+      description: output 2
+      scope: short
+      type: string
+      default_value: ${input2}
