@@ -1,0 +1,993 @@
+{
+    "info": {
+        "_postman_id": "e3493353-2062-4d2c-833d-ff4d1c60084c",
+        "name": "VTP-CVC-Test",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "List Scenarios",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Accept",
+                        "type": "text",
+                        "value": "application/json",
+                        "disabled": true
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": ""
+                },
+                "url": {
+                    "raw": "{{vtp-host}}/onapapi/vnfsdk-marketplace/v1/vtp/scenarios",
+                    "host": [
+                        "{{vtp-host}}"
+                    ],
+                    "path": [
+                        "onapapi",
+                        "vnfsdk-marketplace",
+                        "v1",
+                        "vtp",
+                        "scenarios"
+                    ]
+                }
+            },
+            "response": [
+                {
+                    "name": "List Scenarios",
+                    "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "type": "text",
+                                "value": "application/json",
+                                "disabled": true
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": ""
+                        },
+                        "url": {
+                            "raw": "{{vtp-host}}/onapapi/vnfsdk-marketplace/v1/vtp/scenarios",
+                            "host": [
+                                "{{vtp-host}}"
+                            ],
+                            "path": [
+                                "onapapi",
+                                "vnfsdk-marketplace",
+                                "v1",
+                                "vtp",
+                                "scenarios"
+                            ]
+                        }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {
+                            "key": "Server",
+                            "value": "Apache-Coyote/1.1"
+                        },
+                        {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                        },
+                        {
+                            "key": "Content-Length",
+                            "value": "21"
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Tue, 19 Feb 2019 07:51:36 GMT"
+                        }
+                    ],
+                    "cookie": [],
+                    "body": "[\n    {\n        \"name\": \"open-cli\"\n    }\n]"
+                },
+                {
+                    "name": "List Tests",
+                    "originalRequest": {
+                        "method": "GET",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": ""
+                        },
+                        "url": {
+                            "raw": "http://localhost:7070/vnf-sdk-marketplace/onapapi/vnfsdk-marketplace/v1/PackageResource/vtp/tests",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "7070",
+                            "path": [
+                                "vnf-sdk-marketplace",
+                                "onapapi",
+                                "vnfsdk-marketplace",
+                                "v1",
+                                "PackageResource",
+                                "vtp",
+                                "tests"
+                            ]
+                        }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {
+                            "key": "Content-Length",
+                            "value": "124",
+                            "name": "Content-Length",
+                            "description": "The length of the response body in octets (8-bit bytes)"
+                        },
+                        {
+                            "key": "Content-Type",
+                            "value": "application/json",
+                            "name": "Content-Type",
+                            "description": "The mime type of this content"
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Mon, 10 Sep 2018 06:23:57 GMT",
+                            "name": "Date",
+                            "description": "The date and time that the message was sent"
+                        },
+                        {
+                            "key": "Server",
+                            "value": "Apache-Coyote/1.1",
+                            "name": "Server",
+                            "description": "A name for the server"
+                        }
+                    ],
+                    "cookie": [],
+                    "body": "\n{\"results\":[{\"schema\":\"vtp-validate-csar.yaml\",\"ocs-version\":\"1.0\",\"sr.no\":\"1\",\"type\":\"basic\",\"command\":\"csar-validate\"}]}\n"
+                }
+            ]
+        },
+        {
+            "name": "List Test Suites",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Accept",
+                        "type": "text",
+                        "value": "application/json",
+                        "disabled": true
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": ""
+                },
+                "url": {
+                    "raw": "{{vtp-host}}/onapapi/vnfsdk-marketplace/v1/vtp/scenarios/scenario-1/testsuites",
+                    "host": [
+                        "{{vtp-host}}"
+                    ],
+                    "path": [
+                        "onapapi",
+                        "vnfsdk-marketplace",
+                        "v1",
+                        "vtp",
+                        "scenarios",
+                        "scenario-1",
+                        "testsuites"
+                    ]
+                }
+            },
+            "response": [
+                {
+                    "name": "List Test Suites",
+                    "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "type": "text",
+                                "value": "application/json",
+                                "disabled": true
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": ""
+                        },
+                        "url": {
+                            "raw": "{{vtp-host}}/onapapi/vnfsdk-marketplace/v1/vtp/scenarios/open-cli/testsuites",
+                            "host": [
+                                "{{vtp-host}}"
+                            ],
+                            "path": [
+                                "onapapi",
+                                "vnfsdk-marketplace",
+                                "v1",
+                                "vtp",
+                                "scenarios",
+                                "open-cli",
+                                "testsuites"
+                            ]
+                        }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {
+                            "key": "Server",
+                            "value": "Apache-Coyote/1.1"
+                        },
+                        {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                        },
+                        {
+                            "key": "Content-Length",
+                            "value": "118"
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Tue, 19 Feb 2019 07:51:50 GMT"
+                        }
+                    ],
+                    "cookie": [],
+                    "body": "[\n    {\n        \"name\": \"artifact\"\n    },\n    {\n        \"name\": \"schema\"\n    },\n    {\n        \"name\": \"execution\"\n    },\n    {\n        \"name\": \"product\"\n    },\n    {\n        \"name\": \"rpc\"\n    },\n    {\n        \"name\": \"profile\"\n    }\n]"
+                },
+                {
+                    "name": "List Tests",
+                    "originalRequest": {
+                        "method": "GET",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": ""
+                        },
+                        "url": {
+                            "raw": "http://localhost:7070/vnf-sdk-marketplace/onapapi/vnfsdk-marketplace/v1/PackageResource/vtp/tests",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "7070",
+                            "path": [
+                                "vnf-sdk-marketplace",
+                                "onapapi",
+                                "vnfsdk-marketplace",
+                                "v1",
+                                "PackageResource",
+                                "vtp",
+                                "tests"
+                            ]
+                        }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {
+                            "key": "Content-Length",
+                            "value": "124",
+                            "name": "Content-Length",
+                            "description": "The length of the response body in octets (8-bit bytes)"
+                        },
+                        {
+                            "key": "Content-Type",
+                            "value": "application/json",
+                            "name": "Content-Type",
+                            "description": "The mime type of this content"
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Mon, 10 Sep 2018 06:23:57 GMT",
+                            "name": "Date",
+                            "description": "The date and time that the message was sent"
+                        },
+                        {
+                            "key": "Server",
+                            "value": "Apache-Coyote/1.1",
+                            "name": "Server",
+                            "description": "A name for the server"
+                        }
+                    ],
+                    "cookie": [],
+                    "body": "\n{\"results\":[{\"schema\":\"vtp-validate-csar.yaml\",\"ocs-version\":\"1.0\",\"sr.no\":\"1\",\"type\":\"basic\",\"command\":\"csar-validate\"}]}\n"
+                }
+            ]
+        },
+        {
+            "name": "List Tests",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Accept",
+                        "type": "text",
+                        "value": "application/json",
+                        "disabled": true
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": ""
+                },
+                "url": {
+                    "raw": "{{vtp-host}}/onapapi/vnfsdk-marketplace/v1/vtp/scenarios/scenario-1/testcases",
+                    "host": [
+                        "{{vtp-host}}"
+                    ],
+                    "path": [
+                        "onapapi",
+                        "vnfsdk-marketplace",
+                        "v1",
+                        "vtp",
+                        "scenarios",
+                        "scenario-1",
+                        "testcases"
+                    ]
+                }
+            },
+            "response": [
+                {
+                    "name": "List Tests",
+                    "originalRequest": {
+                        "method": "GET",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": ""
+                        },
+                        "url": {
+                            "raw": "http://localhost:7070/vnf-sdk-marketplace/onapapi/vnfsdk-marketplace/v1/PackageResource/vtp/tests",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "7070",
+                            "path": [
+                                "vnf-sdk-marketplace",
+                                "onapapi",
+                                "vnfsdk-marketplace",
+                                "v1",
+                                "PackageResource",
+                                "vtp",
+                                "tests"
+                            ]
+                        }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {
+                            "key": "Content-Length",
+                            "value": "124",
+                            "name": "Content-Length",
+                            "description": "The length of the response body in octets (8-bit bytes)"
+                        },
+                        {
+                            "key": "Content-Type",
+                            "value": "application/json",
+                            "name": "Content-Type",
+                            "description": "The mime type of this content"
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Mon, 10 Sep 2018 06:23:57 GMT",
+                            "name": "Date",
+                            "description": "The date and time that the message was sent"
+                        },
+                        {
+                            "key": "Server",
+                            "value": "Apache-Coyote/1.1",
+                            "name": "Server",
+                            "description": "A name for the server"
+                        }
+                    ],
+                    "cookie": [],
+                    "body": "\n{\"results\":[{\"schema\":\"vtp-validate-csar.yaml\",\"ocs-version\":\"1.0\",\"sr.no\":\"1\",\"type\":\"basic\",\"command\":\"csar-validate\"}]}\n"
+                }
+            ]
+        },
+        {
+            "name": "Get Test",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                    "mode": "raw",
+                    "raw": ""
+                },
+                "url": {
+                    "raw": "{{vtp-host}}/onapapi/vnfsdk-marketplace/v1/vtp/scenarios/scenario-1/testsuites/testsuite-1/testcases/s1.ts1.testcase-1",
+                    "host": [
+                        "{{vtp-host}}"
+                    ],
+                    "path": [
+                        "onapapi",
+                        "vnfsdk-marketplace",
+                        "v1",
+                        "vtp",
+                        "scenarios",
+                        "scenario-1",
+                        "testsuites",
+                        "testsuite-1",
+                        "testcases",
+                        "s1.ts1.testcase-1"
+                    ]
+                }
+            },
+            "response": [
+                {
+                    "name": "List Tests",
+                    "originalRequest": {
+                        "method": "GET",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": ""
+                        },
+                        "url": {
+                            "raw": "http://localhost:7070/vnf-sdk-marketplace/onapapi/vnfsdk-marketplace/v1/PackageResource/vtp/tests",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "7070",
+                            "path": [
+                                "vnf-sdk-marketplace",
+                                "onapapi",
+                                "vnfsdk-marketplace",
+                                "v1",
+                                "PackageResource",
+                                "vtp",
+                                "tests"
+                            ]
+                        }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {
+                            "key": "Content-Length",
+                            "value": "124",
+                            "name": "Content-Length",
+                            "description": "The length of the response body in octets (8-bit bytes)"
+                        },
+                        {
+                            "key": "Content-Type",
+                            "value": "application/json",
+                            "name": "Content-Type",
+                            "description": "The mime type of this content"
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Mon, 10 Sep 2018 06:23:57 GMT",
+                            "name": "Date",
+                            "description": "The date and time that the message was sent"
+                        },
+                        {
+                            "key": "Server",
+                            "value": "Apache-Coyote/1.1",
+                            "name": "Server",
+                            "description": "A name for the server"
+                        }
+                    ],
+                    "cookie": [],
+                    "body": "\n{\"results\":[{\"schema\":\"vtp-validate-csar.yaml\",\"ocs-version\":\"1.0\",\"sr.no\":\"1\",\"type\":\"basic\",\"command\":\"csar-validate\"}]}\n"
+                }
+            ]
+        },
+        {
+            "name": "List Tests in test suite",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Accept",
+                        "type": "text",
+                        "value": "application/json",
+                        "disabled": true
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": ""
+                },
+                "url": {
+                    "raw": "{{vtp-host}}/onapapi/vnfsdk-marketplace/v1/vtp/scenarios/scenario-2/testcases?testSuiteName=testsuite-1",
+                    "host": [
+                        "{{vtp-host}}"
+                    ],
+                    "path": [
+                        "onapapi",
+                        "vnfsdk-marketplace",
+                        "v1",
+                        "vtp",
+                        "scenarios",
+                        "scenario-2",
+                        "testcases"
+                    ],
+                    "query": [
+                        {
+                            "key": "testSuiteName",
+                            "value": "testsuite-1"
+                        }
+                    ]
+                }
+            },
+            "response": [
+                {
+                    "name": "List Tests",
+                    "originalRequest": {
+                        "method": "GET",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": ""
+                        },
+                        "url": {
+                            "raw": "http://localhost:7070/vnf-sdk-marketplace/onapapi/vnfsdk-marketplace/v1/PackageResource/vtp/tests",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "7070",
+                            "path": [
+                                "vnf-sdk-marketplace",
+                                "onapapi",
+                                "vnfsdk-marketplace",
+                                "v1",
+                                "PackageResource",
+                                "vtp",
+                                "tests"
+                            ]
+                        }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {
+                            "key": "Content-Length",
+                            "value": "124",
+                            "name": "Content-Length",
+                            "description": "The length of the response body in octets (8-bit bytes)"
+                        },
+                        {
+                            "key": "Content-Type",
+                            "value": "application/json",
+                            "name": "Content-Type",
+                            "description": "The mime type of this content"
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Mon, 10 Sep 2018 06:23:57 GMT",
+                            "name": "Date",
+                            "description": "The date and time that the message was sent"
+                        },
+                        {
+                            "key": "Server",
+                            "value": "Apache-Coyote/1.1",
+                            "name": "Server",
+                            "description": "A name for the server"
+                        }
+                    ],
+                    "cookie": [],
+                    "body": "\n{\"results\":[{\"schema\":\"vtp-validate-csar.yaml\",\"ocs-version\":\"1.0\",\"sr.no\":\"1\",\"type\":\"basic\",\"command\":\"csar-validate\"}]}\n"
+                }
+            ]
+        },
+        {
+            "name": "List Test Executions",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Accept",
+                        "type": "text",
+                        "value": "application/json",
+                        "disabled": true
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": ""
+                },
+                "url": {
+                    "raw": "{{vtp-host}}/onapapi/vnfsdk-marketplace/v1/vtp/executions",
+                    "host": [
+                        "{{vtp-host}}"
+                    ],
+                    "path": [
+                        "onapapi",
+                        "vnfsdk-marketplace",
+                        "v1",
+                        "vtp",
+                        "executions"
+                    ]
+                }
+            },
+            "response": [
+                {
+                    "name": "List Tests",
+                    "originalRequest": {
+                        "method": "GET",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": ""
+                        },
+                        "url": {
+                            "raw": "http://localhost:7070/vnf-sdk-marketplace/onapapi/vnfsdk-marketplace/v1/PackageResource/vtp/tests",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "7070",
+                            "path": [
+                                "vnf-sdk-marketplace",
+                                "onapapi",
+                                "vnfsdk-marketplace",
+                                "v1",
+                                "PackageResource",
+                                "vtp",
+                                "tests"
+                            ]
+                        }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {
+                            "key": "Content-Length",
+                            "value": "124",
+                            "name": "Content-Length",
+                            "description": "The length of the response body in octets (8-bit bytes)"
+                        },
+                        {
+                            "key": "Content-Type",
+                            "value": "application/json",
+                            "name": "Content-Type",
+                            "description": "The mime type of this content"
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Mon, 10 Sep 2018 06:23:57 GMT",
+                            "name": "Date",
+                            "description": "The date and time that the message was sent"
+                        },
+                        {
+                            "key": "Server",
+                            "value": "Apache-Coyote/1.1",
+                            "name": "Server",
+                            "description": "A name for the server"
+                        }
+                    ],
+                    "cookie": [],
+                    "body": "\n{\"results\":[{\"schema\":\"vtp-validate-csar.yaml\",\"ocs-version\":\"1.0\",\"sr.no\":\"1\",\"type\":\"basic\",\"command\":\"csar-validate\"}]}\n"
+                }
+            ]
+        },
+        {
+            "name": "Get Test Execution",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Accept",
+                        "type": "text",
+                        "value": "application/json",
+                        "disabled": true
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": ""
+                },
+                "url": {
+                    "raw": "{{vtp-host}}/onapapi/vnfsdk-marketplace/v1/vtp/executions/ebaa5f21-ed68-4098-97a9-775ac8800f09-1550575025614",
+                    "host": [
+                        "{{vtp-host}}"
+                    ],
+                    "path": [
+                        "onapapi",
+                        "vnfsdk-marketplace",
+                        "v1",
+                        "vtp",
+                        "executions",
+                        "ebaa5f21-ed68-4098-97a9-775ac8800f09-1550575025614"
+                    ]
+                }
+            },
+            "response": [
+                {
+                    "name": "List Tests",
+                    "originalRequest": {
+                        "method": "GET",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": ""
+                        },
+                        "url": {
+                            "raw": "http://localhost:7070/vnf-sdk-marketplace/onapapi/vnfsdk-marketplace/v1/PackageResource/vtp/tests",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "7070",
+                            "path": [
+                                "vnf-sdk-marketplace",
+                                "onapapi",
+                                "vnfsdk-marketplace",
+                                "v1",
+                                "PackageResource",
+                                "vtp",
+                                "tests"
+                            ]
+                        }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {
+                            "key": "Content-Length",
+                            "value": "124",
+                            "name": "Content-Length",
+                            "description": "The length of the response body in octets (8-bit bytes)"
+                        },
+                        {
+                            "key": "Content-Type",
+                            "value": "application/json",
+                            "name": "Content-Type",
+                            "description": "The mime type of this content"
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Mon, 10 Sep 2018 06:23:57 GMT",
+                            "name": "Date",
+                            "description": "The date and time that the message was sent"
+                        },
+                        {
+                            "key": "Server",
+                            "value": "Apache-Coyote/1.1",
+                            "name": "Server",
+                            "description": "A name for the server"
+                        }
+                    ],
+                    "cookie": [],
+                    "body": "\n{\"results\":[{\"schema\":\"vtp-validate-csar.yaml\",\"ocs-version\":\"1.0\",\"sr.no\":\"1\",\"type\":\"basic\",\"command\":\"csar-validate\"}]}\n"
+                }
+            ]
+        },
+        {
+            "name": "Execute  Test case",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "name": "Content-Type",
+                        "type": "text",
+                        "value": "multipart/form-data"
+                    }
+                ],
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "executions",
+                            "value": "[{\n  \"scenario\": \"scenario-1\",\n  \"testSuiteName\": \"testsuite-1\",\n  \"testCaseName\": \"s1.ts1.testcase-1\",\n  \"parameters\": {\n\t\"input1\": \"v1\",\n\t\"input2\": \"v2\"\n  }\n},{\n  \"scenario\": \"scenario-1\",\n  \"testSuiteName\": \"testsuite-2\",\n  \"testCaseName\": \"s1.ts2.testcase-1\",\n  \"parameters\": {\n\t\"input1\": \"v1\"\n  }\n}]",
+                            "type": "text"
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "{{vtp-host}}/onapapi/vnfsdk-marketplace/v1/vtp/executions?requestId=ebaa5f21-ed68-4098-97a9-775ac8800f09",
+                    "host": [
+                        "{{vtp-host}}"
+                    ],
+                    "path": [
+                        "onapapi",
+                        "vnfsdk-marketplace",
+                        "v1",
+                        "vtp",
+                        "executions"
+                    ],
+                    "query": [
+                        {
+                            "key": "requestId",
+                            "value": "ebaa5f21-ed68-4098-97a9-775ac8800f09"
+                        }
+                    ]
+                }
+            },
+            "response": [
+                {
+                    "name": "List Tests",
+                    "originalRequest": {
+                        "method": "GET",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": ""
+                        },
+                        "url": {
+                            "raw": "http://localhost:7070/vnf-sdk-marketplace/onapapi/vnfsdk-marketplace/v1/PackageResource/vtp/tests",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "7070",
+                            "path": [
+                                "vnf-sdk-marketplace",
+                                "onapapi",
+                                "vnfsdk-marketplace",
+                                "v1",
+                                "PackageResource",
+                                "vtp",
+                                "tests"
+                            ]
+                        }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {
+                            "key": "Content-Length",
+                            "value": "124",
+                            "name": "Content-Length",
+                            "description": "The length of the response body in octets (8-bit bytes)"
+                        },
+                        {
+                            "key": "Content-Type",
+                            "value": "application/json",
+                            "name": "Content-Type",
+                            "description": "The mime type of this content"
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Mon, 10 Sep 2018 06:23:57 GMT",
+                            "name": "Date",
+                            "description": "The date and time that the message was sent"
+                        },
+                        {
+                            "key": "Server",
+                            "value": "Apache-Coyote/1.1",
+                            "name": "Server",
+                            "description": "A name for the server"
+                        }
+                    ],
+                    "cookie": [],
+                    "body": "\n{\"results\":[{\"schema\":\"vtp-validate-csar.yaml\",\"ocs-version\":\"1.0\",\"sr.no\":\"1\",\"type\":\"basic\",\"command\":\"csar-validate\"}]}\n"
+                }
+            ]
+        },
+        {
+            "name": "Execute  Test case with binary",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "name": "Content-Type",
+                        "type": "text",
+                        "value": "multipart/form-data"
+                    }
+                ],
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "file",
+                            "type": "file",
+                            "src": ""
+                        },
+                        {
+                            "key": "executions",
+                            "value": "[{ \n  \"scenario\": \"open-cli\",\n  \"testSuiteName\": \"schema\",\n  \"testCaseName\": \"schema-validate\",\n  \"parameters\": {\n      \"schema-location\": \"file://s1.ts1.testcase-1.yaml\"\n  }\n}]",
+                            "type": "text"
+                        },
+                        {
+                            "key": "file",
+                            "type": "file",
+                            "src": "",
+                            "disabled": true
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "{{vtp-host}}/onapapi/vnfsdk-marketplace/v1/vtp/executions?requestId=ebaa5f21-ed68-4098-97a9-775ac8800f07",
+                    "host": [
+                        "{{vtp-host}}"
+                    ],
+                    "path": [
+                        "onapapi",
+                        "vnfsdk-marketplace",
+                        "v1",
+                        "vtp",
+                        "executions"
+                    ],
+                    "query": [
+                        {
+                            "key": "requestId",
+                            "value": "ebaa5f21-ed68-4098-97a9-775ac8800f07"
+                        }
+                    ]
+                }
+            },
+            "response": [
+                {
+                    "name": "List Tests",
+                    "originalRequest": {
+                        "method": "GET",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": ""
+                        },
+                        "url": {
+                            "raw": "http://localhost:7070/vnf-sdk-marketplace/onapapi/vnfsdk-marketplace/v1/PackageResource/vtp/tests",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "7070",
+                            "path": [
+                                "vnf-sdk-marketplace",
+                                "onapapi",
+                                "vnfsdk-marketplace",
+                                "v1",
+                                "PackageResource",
+                                "vtp",
+                                "tests"
+                            ]
+                        }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {
+                            "key": "Content-Length",
+                            "value": "124",
+                            "name": "Content-Length",
+                            "description": "The length of the response body in octets (8-bit bytes)"
+                        },
+                        {
+                            "key": "Content-Type",
+                            "value": "application/json",
+                            "name": "Content-Type",
+                            "description": "The mime type of this content"
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Mon, 10 Sep 2018 06:23:57 GMT",
+                            "name": "Date",
+                            "description": "The date and time that the message was sent"
+                        },
+                        {
+                            "key": "Server",
+                            "value": "Apache-Coyote/1.1",
+                            "name": "Server",
+                            "description": "A name for the server"
+                        }
+                    ],
+                    "cookie": [],
+                    "body": "\n{\"results\":[{\"schema\":\"vtp-validate-csar.yaml\",\"ocs-version\":\"1.0\",\"sr.no\":\"1\",\"type\":\"basic\",\"command\":\"csar-validate\"}]}\n"
+                }
+            ]
+        }
+    ]
+}
