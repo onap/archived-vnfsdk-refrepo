@@ -76,7 +76,7 @@
                             <skipDockerBuild>${skip.docker.build}</skipDockerBuild>
                         </configuration>
                     </execution>
-<execution>
+                    <execution>
                         <id>tag-image-timestamped-version</id>
                         <phase>deploy</phase>
                         <goals>
