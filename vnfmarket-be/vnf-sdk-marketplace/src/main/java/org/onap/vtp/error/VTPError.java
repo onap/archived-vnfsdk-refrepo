@@ -28,7 +28,7 @@ public class VTPError extends VTPModelBase {
 
     public static final String TIMEOUT = "0x9999";
 
-    public static final String []NOT_FOUND = new String []{
+    protected static final String []NOT_FOUND = new String []{
             "0xc002", //Profile not found
             "0x6003",  //Command not found
             "0x6009", //Execution not found
