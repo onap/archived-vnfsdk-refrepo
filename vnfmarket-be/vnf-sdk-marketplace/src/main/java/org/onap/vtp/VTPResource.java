@@ -42,12 +42,12 @@ public class VTPResource {
 
     protected static final Logger LOG = LoggerFactory.getLogger(VTPResource.class);
 
-    public static String VTP_TEST_CENTER_IP = "localhost";
-    public static int VTP_TEST_CENTER_PORT = 50051;
-    public static String VTP_ARTIFACT_STORE = "d:/temp/data/artifacts/";
-    public static String VTP_EXECUTION_TEMP_STORE = "d:/temp/data/transient";
+    protected static String VTP_TEST_CENTER_IP;  // NOSONAR
+    protected static int VTP_TEST_CENTER_PORT;  // NOSONAR
+    protected static String VTP_ARTIFACT_STORE;  // NOSONAR
+    protected static String VTP_EXECUTION_TEMP_STORE;  // NOSONAR
 
-    public static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
+    protected static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);  // NOSONAR
 
     static {
         dateFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -59,7 +59,7 @@ public class VTPResource {
             VTP_TEST_CENTER_PORT = Integer.parseInt(prp.getProperty("vtp.grpc.port"));
             VTP_ARTIFACT_STORE = prp.getProperty("vtp.artifact.store");
             VTP_EXECUTION_TEMP_STORE = prp.getProperty("vtp.file.store");
-        } catch (Exception e) {
+        } catch (Exception e) {  // NOSONAR
             LOG.error(e.getMessage());
         }
     }
@@ -71,9 +71,9 @@ public class VTPResource {
             result = OpenRemoteCli.run(
                     VTP_TEST_CENTER_IP, VTP_TEST_CENTER_PORT, requestId,
                     args);
-//        } catch(OpenInterfaceGrpcClient.OpenInterfaceGrpcTimeoutExecption e) {
-//            throw new VTPException(
-//                    new VTPError().setHttpStatus(HttpStatus.SC_GATEWAY_TIMEOUT).setMessage("Timeout.").setCode(VTPError.TIMEOUT));
+        } catch(OpenInterfaceGrpcClient.OpenInterfaceGrpcTimeoutExecption e) {
+            throw new VTPException(
+                    new VTPError().setHttpStatus(HttpStatus.SC_GATEWAY_TIMEOUT).setMessage("Timeout.").setCode(VTPError.TIMEOUT));
         } catch (Exception e) {
             throw new VTPException(new VTPError().setMessage(e.getMessage()));
         }
@@ -104,9 +104,9 @@ public class VTPResource {
         Map <String, String> args = mapper.convertValue(argsJsonNode, Map.class);
         try {
             output = OpenRemoteCli.invoke(VTP_TEST_CENTER_IP, VTP_TEST_CENTER_PORT, scenario, profile, testCase, requestId, args);
-//        } catch(OpenInterfaceGrpcClient.OpenInterfaceGrpcTimeoutExecption e) {
-//            throw new VTPException(
-//                    new VTPError().setHttpStatus(HttpStatus.SC_GATEWAY_TIMEOUT).setMessage(e.getMessage()).setCode(VTPError.TIMEOUT));
+        } catch(OpenInterfaceGrpcClient.OpenInterfaceGrpcTimeoutExecption e) {
+            throw new VTPException(
+                    new VTPError().setHttpStatus(HttpStatus.SC_GATEWAY_TIMEOUT).setMessage(e.getMessage()).setCode(VTPError.TIMEOUT));
         } catch (Exception e) {
             throw new VTPException(
                     new VTPError().setMessage(e.getMessage()));

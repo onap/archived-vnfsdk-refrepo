@@ -26,9 +26,9 @@ public class VTPError extends VTPModelBase {
 
     private int httpStatus = HttpStatus.INTERNAL_SERVER_ERROR_500;
 
-    public static String TIMEOUT = "0x9999";
+    public static final String TIMEOUT = "0x9999";
 
-    public static String []NOT_FOUND = new String []{
+    public static final String []NOT_FOUND = new String []{
             "0xc002", //Profile not found
             "0x6003",  //Command not found
             "0x6009", //Execution not found
@@ -74,12 +74,13 @@ public class VTPError extends VTPModelBase {
     public static class VTPException extends Exception {
         private static final long serialVersionUID = -2894780740467107391L;
 
-        VTPError error;
+        VTPError error; // NOSONAR
 
         public VTPException(VTPError error) {
             this.error = error;
         }
 
+        @Override
         public String getMessage() {
             return this.error.toJsonString();
         }
