@@ -13,27 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.onap.vtp;
+package org.onap.vtp.scenario.model;
 
 import org.junit.Test;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 import static org.junit.Assert.*;
 
-public class VTPResourceTest {
-    @Test(expected = Exception.class)
-    public void testGetStorePath() throws  Exception
-    {
-        VTPResource vtpResource= new VTPResource();
-        String requestId = UUID.randomUUID().toString();
-        List<String> args= new ArrayList<>();
-        args.add("open-cli");
-        args.add("abc");
-        args.add("abc");
-        args.add(requestId);
-        vtpResource.makeRpc(args);
-    }
-
+public class VTPTestSuiteTest {
+VTPTestSuite vtpTestSuite= new VTPTestSuite();
+@Test
+    public void testSettersGetters()
+{
+    vtpTestSuite.setDescription("abc");
+    vtpTestSuite.setName("abc");
+    assertEquals(vtpTestSuite.getDescription(),"abc");
+    assertEquals(vtpTestSuite.getName(),"abc");
+    VTPTestSuite.VTPTestSuiteList vtpTestSuiteList=new VTPTestSuite.VTPTestSuiteList();
+    vtpTestSuiteList.setSuites(null);
+    assertNull(vtpTestSuiteList.getSuites());
+}
 }
