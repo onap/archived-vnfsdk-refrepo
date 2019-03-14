@@ -39,6 +39,8 @@ export VTP_DOWNLOAD_URL="https://nexus.onap.org/content/repositories/autorelease
 export CSAR_VALIDATE_DOWNLOAD_URL="https://nexus.onap.org/content/repositories/autorelease-114111/org/onap/vnfsdk/validation/csarvalidation-deployment/1.1.5/csarvalidation-deployment-1.1.5.zip"
 export TOMCAT8_DOWNLOAD_URL="https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.30/bin/apache-tomcat-8.5.30.tar.gz"
 export SAMPLE_VTP_CSAR="https://github.com/onap/vnfsdk-validation/raw/master/csarvalidation/src/test/resources/VoLTE.csar"
+export VVP_GITHUB="https://github.com/onap/vvp-validation-scripts"
+export SAMPLE_VTP_HOT="https://git.openstack.org/cgit/openstack/heat-templates/plain/hot/hello_world.yaml"
 
 export VTP_STAGE_DIR=/opt/vtp_stage
 
@@ -46,13 +48,14 @@ export OPEN_CLI_HOME=/opt/oclip
 export PATH=$OPEN_CLI_HOME/bin:$PATH
 export CATALINA_HOME=/opt/controller
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
-
+export ONAP_VVP_HOME=$VTP_STAGE_DIR/vvp-validation-scripts/ice_validator
 export VTP_TRACK_MARK=++++++++++++++++++++++++
 
 function vtp_download() {
     echo $VTP_TRACK_MARK Downloading VTP binaries and setup the dependencies ...
 
-    apt-get install -y tar wget unzip
+    apt-get install -y tar wget unzip git python3 python3-pip
+    pip3 install --upgrade pip
 
     mkdir -p $VTP_STAGE_DIR
 
@@ -85,6 +88,15 @@ function vtp_download() {
         echo $VTP_TRACK_MARK $VTP_DOWNLOAD_URL already downloded
     fi
 
+    if [ ! -d $VTP_STAGE_DIR/vvp-validation-scripts ]
+    then
+        git clone $VVP_GITHUB $VTP_STAGE_DIR/vvp-validation-scripts
+        mkdir -p $VTP_STAGE_DIR/HOT
+        wget -O $VTP_STAGE_DIR/HOT/HOT.yaml $SAMPLE_VTP_HOT
+    else
+        echo $VTP_TRACK_MARK $VTP_DOWNLOAD_URL already cloned
+    fi
+
     if [ ! -d $JAVA_HOME ]
     then
         apt-get install -y openjdk-8-jre
@@ -102,7 +114,7 @@ function vtp_backend_install() {
         unzip $VTP_STAGE_DIR/CLI.zip -d $OPEN_CLI_HOME
         ln -s $OPEN_CLI_HOME/bin/oclip.sh $OPEN_CLI_HOME/bin/oclip
 
-        echo $VTP_TRACK_MARK Installing CSAR Validation Test cases
+        echo "$VTP_TRACK_MARK Installing CSAR Validation Test cases (TOSCA & HEAT)"
         mkdir -p $OPEN_CLI_HOME/CSAR-VALIDATE
         unzip $VTP_STAGE_DIR/CSAR-VALIDATE.zip -d $OPEN_CLI_HOME/CSAR-VALIDATE
         cp $OPEN_CLI_HOME/CSAR-VALIDATE/validation-csar-*.jar $OPEN_CLI_HOME/lib
@@ -161,6 +173,8 @@ function vtp_purge() {
     echo $VTP_TRACK_MARK Purging VTP...
     rm -rf $OPEN_CLI_HOME
     rm -rf $CATALINA_HOME
+
+    vtp_vvp_uninstall
 }
 
 function vtp_trace() {
@@ -168,3 +182,23 @@ function vtp_trace() {
     tailf $OPEN_CLI_HOME/logs/open-cli.log &
 }
 
+function vtp_vvp_install() {
+    echo $VTP_TRACK_MARK Installing VVP scripts
+    _CWD=`pwd`
+    cd $VTP_STAGE_DIR/vvp-validation-scripts
+    pip install -r requirements.txt
+    cd $_CWD
+}
+
+function vtp_vvp_uninstall() {
+    echo $VTP_TRACK_MARK Installing VVP scripts
+    _CWD=`pwd`
+    cd $VTP_STAGE_DIR/vvp-validation-scripts
+    pip uninstall -y -r requirements.txt
+    cd $_CWD
+}
+
+function vtp_test() {
+    oclip --product onap-vtp csar-validate --csar $VTP_STAGE_DIR/CSAR.csar
+    oclip --product onap-vtp hot-validate --hot-folder $VTP_STAGE_DIR/HOT --format json
+}
