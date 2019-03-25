@@ -33,7 +33,8 @@
 #
 export OCLIP_DOWNLOAD_URL="https://nexus.onap.org/content/repositories/autorelease-114174/org/onap/cli/cli-zip/2.0.6/cli-zip-2.0.6.zip"
 export VTP_DOWNLOAD_URL="https://nexus.onap.org/content/repositories/autorelease-114194/org/onap/vnfsdk/refrepo/vnf-sdk-marketplace/1.2.1/vnf-sdk-marketplace-1.2.1.war"
-export CSAR_VALIDATE_DOWNLOAD_URL="https://nexus.onap.org/content/repositories/autorelease-114111/org/onap/vnfsdk/validation/csarvalidation-deployment/1.1.5/csarvalidation-deployment-1.1.5.zip"
+export CSAR_VALIDATE_DOWNLOAD_URL="https://nexus.onap.org/content/repositories/autorelease-117252/org/onap/vnfsdk/validation/csarvalidation-deployment/1.1.5/csarvalidation-deployment-1.1.5.zip"
+export CSAR_VALIDATE_JAR_DOWNLOAD_URL="https://nexus.onap.org/content/repositories/autorelease-117252/org/onap/vnfsdk/validation/validation-csar/1.1.5/validation-csar-1.1.5.jar"
 export TOMCAT8_DOWNLOAD_URL="https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.30/bin/apache-tomcat-8.5.30.tar.gz"
 export SAMPLE_VTP_CSAR="https://github.com/onap/vnfsdk-validation/raw/master/csarvalidation/src/test/resources/VoLTE.csar"
 export VVP_GITHUB="https://github.com/onap/vvp-validation-scripts"
@@ -67,6 +68,7 @@ function vtp_download() {
     then
         wget -O $VTP_STAGE_DIR/CSAR-VALIDATE.zip $CSAR_VALIDATE_DOWNLOAD_URL
         wget -O $VTP_STAGE_DIR/CSAR.csar $SAMPLE_VTP_CSAR
+        wget -O $VTP_STAGE_DIR/csar-validate.jar $CSAR_VALIDATE_JAR_DOWNLOAD_URL
     else
         echo $VTP_TRACK_MARK $CSAR_VALIDATE_DOWNLOAD_URL already downloded
     fi
@@ -111,21 +113,26 @@ function vtp_backend_install() {
         mkdir -p $OPEN_CLI_HOME
         unzip $VTP_STAGE_DIR/CLI.zip -d $OPEN_CLI_HOME
         ln -s $OPEN_CLI_HOME/bin/oclip.sh $OPEN_CLI_HOME/bin/oclip
+        rm -rf $OPEN_CLI_HOME/lib/cli-products-*.jar
 
         echo $VTP_TRACK_MARK Configuring VTP Backend...
         cp $OPEN_CLI_HOME/conf/oclip.service /etc/systemd/system
         systemctl daemon-reload
-        systemctl status oclip
+        systemctl status oclip | cat
     else
         echo "VTP Backend already installed"
     fi
 }
 
 function vtp_csar_validation_install() {
-    echo "$VTP_TRACK_MARK Installing CSAR Validation Test cases (TOSCA & HEAT)"
-    mkdir -p $OPEN_CLI_HOME/CSAR-VALIDATE
-    unzip $VTP_STAGE_DIR/CSAR-VALIDATE.zip -d $OPEN_CLI_HOME/CSAR-VALIDATE
-    cp $OPEN_CLI_HOME/CSAR-VALIDATE/validation-csar-*.jar $OPEN_CLI_HOME/lib
+    if [ ! -f $OPEN_CLI_HOME/lib/csar-validate.jar ]
+    then
+        echo "$VTP_TRACK_MARK Installing CSAR Validation Test cases (TOSCA & HEAT)"
+        mkdir -p $OPEN_CLI_HOME/CSAR-VALIDATE
+        cp $VTP_STAGE_DIR/csar-validate.jar $OPEN_CLI_HOME/lib
+    else
+        echo "CSAR Validation Test cases (TOSCA & HEAT) already installed"
+    fi
 }
 
 function vtp_controller_install() {
@@ -148,7 +155,7 @@ function vtp_controller_install() {
 function vtp_start() {
     echo $VTP_TRACK_MARK Starting VTP Backend...
     systemctl start oclip
-    systemctl status oclip --no-pager
+    systemctl status oclip  | cat
 
     echo $VTP_TRACK_MARK Starting VTP Controller...
     $CATALINA_HOME/bin/startup.sh
@@ -157,7 +164,7 @@ function vtp_start() {
 function vtp_stop() {
     echo $VTP_TRACK_MARK Stoping VTP Backend...
     systemctl stop oclip
-    systemctl status oclip --no-pager
+    systemctl status oclip | cat
 
     echo $VTP_TRACK_MARK Stoping VTP Controller...
     $CATALINA_HOME/bin/shutdown.sh
@@ -173,6 +180,8 @@ function vtp_purge() {
     echo $VTP_TRACK_MARK Purging VTP...
     rm -rf $OPEN_CLI_HOME
     rm -rf $CATALINA_HOME
+
+    rm -f /etc/systemd/system/oclip.service
 
     vtp_vvp_uninstall
 }
@@ -191,7 +200,7 @@ function vtp_vvp_install() {
 }
 
 function vtp_vvp_uninstall() {
-    echo $VTP_TRACK_MARK Installing VVP scripts
+    echo $VTP_TRACK_MARK Uninstalling VVP scripts
     _CWD=`pwd`
     cd $VTP_STAGE_DIR/vvp-validation-scripts
     pip uninstall -y -r requirements.txt
@@ -205,8 +214,16 @@ function vtp_sample_scenario_install() {
 }
 
 function vtp_test() {
+    echo $VTP_TRACK_MARK Check the CSAR validation
     oclip --product onap-vtp csar-validate --csar $VTP_STAGE_DIR/CSAR.csar
+
+    echo $VTP_TRACK_MARK Check the HOT validation
     oclip --product onap-vtp hot-validate --hot-folder $VTP_STAGE_DIR/HOT --format json
+
+    echo $VTP_TRACK_MARK Check the VTP Controller
+    curl -X GET http://localhost:8080/onapapi/vnfsdk-marketplace/v1/vtp/scenarios
+    curl -X GET http://localhost:8080/onapapi/vnfsdk-marketplace/v1/vtp/scenarios/onap-vtp/testcases
+    echo ..... Happy VTPing ......
 }
 
 function vtp_setup() {
