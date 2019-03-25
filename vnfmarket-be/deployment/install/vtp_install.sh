@@ -33,7 +33,7 @@
 #
 export OCLIP_DOWNLOAD_URL="https://nexus.onap.org/content/repositories/autorelease-114174/org/onap/cli/cli-zip/2.0.6/cli-zip-2.0.6.zip"
 export VTP_DOWNLOAD_URL="https://nexus.onap.org/content/repositories/autorelease-114194/org/onap/vnfsdk/refrepo/vnf-sdk-marketplace/1.2.1/vnf-sdk-marketplace-1.2.1.war"
-export CSAR_VALIDATE_DOWNLOAD_URL="https://nexus.onap.org/content/repositories/autorelease-114111/org/onap/vnfsdk/validation/csarvalidation-deployment/1.1.5/csarvalidation-deployment-1.1.5.zip"
+export CSAR_VALIDATE_DOWNLOAD_URL="https://nexus.onap.org/content/repositories/autorelease-117252/org/onap/vnfsdk/validation/csarvalidation-deployment/1.1.5/csarvalidation-deployment-1.1.5.zip"
 export TOMCAT8_DOWNLOAD_URL="https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.30/bin/apache-tomcat-8.5.30.tar.gz"
 export SAMPLE_VTP_CSAR="https://github.com/onap/vnfsdk-validation/raw/master/csarvalidation/src/test/resources/VoLTE.csar"
 export VVP_GITHUB="https://github.com/onap/vvp-validation-scripts"
