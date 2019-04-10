@@ -25,7 +25,7 @@
 #
 
 dir="/opt"
-cmd="vtp-tc"
+cmd="/opt/vtp/bin/vtp.sh"
 user="root"
 
 name=`basename $0`

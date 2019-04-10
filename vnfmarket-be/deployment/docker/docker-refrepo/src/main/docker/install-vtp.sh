@@ -57,10 +57,14 @@ done
 
 chmod +x ./bin/oclip.sh
 chmod +x ./bin/oclip-rcli.sh
-chmod +x ./bin/oclip-cmdflow-server.sh
+chmod +x ./bin/oclip-grpc-server.sh
+
+echo export OPEN_CLI_HOME=/opt/vtp > $OPEN_CLI_HOME/bin/vtp.sh
+echo  $OPEN_CLI_HOME/bin/oclip-grpc-server.sh>> $OPEN_CLI_HOME/bin/vtp.sh
+chmod +x $OPEN_CLI_HOME/bin/vtp.sh
 
 ln -sf $OPEN_CLI_HOME/bin/oclip-rcli.sh /usr/bin/vtp-cli
-ln -sf $OPEN_CLI_HOME/bin/oclip-cmdflow-server.sh /usr/bin/vtp-tc
+ln -sf $OPEN_CLI_HOME/bin/oclip-grpc-server.sh /usr/bin/vtp-tc
 
 echo ################ Deploy sample csar validation test case
 CSARVALIDATOR_LATEST_BINARY="https://nexus.onap.org/service/local/artifact/maven/redirect?r=releases&g=org.onap.vnfsdk.validation&a=csarvalidation-deployment&e=zip&v=LATEST"
