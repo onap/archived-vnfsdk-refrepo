@@ -31,10 +31,10 @@
 #
 # Happy VTPing ...
 #
-export OCLIP_DOWNLOAD_URL="https://nexus.onap.org/content/repositories/autorelease-114174/org/onap/cli/cli-zip/2.0.6/cli-zip-2.0.6.zip"
-export VTP_DOWNLOAD_URL="https://nexus.onap.org/content/repositories/autorelease-114194/org/onap/vnfsdk/refrepo/vnf-sdk-marketplace/1.2.1/vnf-sdk-marketplace-1.2.1.war"
-export CSAR_VALIDATE_DOWNLOAD_URL="https://nexus.onap.org/content/repositories/autorelease-117252/org/onap/vnfsdk/validation/csarvalidation-deployment/1.1.5/csarvalidation-deployment-1.1.5.zip"
-export CSAR_VALIDATE_JAR_DOWNLOAD_URL="https://nexus.onap.org/content/repositories/autorelease-117252/org/onap/vnfsdk/validation/validation-csar/1.1.5/validation-csar-1.1.5.jar"
+export OCLIP_DOWNLOAD_URL="https://nexus.onap.org/content/repositories/autorelease-123158/org/onap/cli/cli-zip/2.0.6/cli-zip-2.0.6.zip"
+export VTP_DOWNLOAD_URL="https://nexus.onap.org/content/repositories/autorelease-123068/org/onap/vnfsdk/refrepo/vnf-sdk-marketplace/1.2.1/vnf-sdk-marketplace-1.2.1.war"
+export CSAR_VALIDATE_DOWNLOAD_URL="https://nexus.onap.org/content/repositories/autorelease-122981/org/onap/vnfsdk/validation/csarvalidation-deployment/1.1.5/csarvalidation-deployment-1.1.5.zip"
+export CSAR_VALIDATE_JAR_DOWNLOAD_URL="https://nexus.onap.org/content/repositories/autorelease-122981/org/onap/vnfsdk/validation/validation-csar/1.1.5/validation-csar-1.1.5.jar"
 export TOMCAT8_DOWNLOAD_URL="https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.30/bin/apache-tomcat-8.5.30.tar.gz"
 export SAMPLE_VTP_CSAR="https://github.com/onap/vnfsdk-validation/raw/master/csarvalidation/src/test/resources/VoLTE.csar"
 export VVP_GITHUB="https://github.com/onap/vvp-validation-scripts"
@@ -48,6 +48,9 @@ export CATALINA_HOME=/opt/controller
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
 export ONAP_VVP_HOME=$VTP_STAGE_DIR/vvp-validation-scripts/ice_validator
 export VTP_TRACK_MARK=++++++++++++++++++++++++
+#init.d or systemd
+export SERVICE_MODE=init.d
+
 
 function vtp_download() {
     echo $VTP_TRACK_MARK Downloading VTP binaries and setup the dependencies ...
@@ -116,9 +119,19 @@ function vtp_backend_install() {
         rm -rf $OPEN_CLI_HOME/lib/cli-products-*.jar
 
         echo $VTP_TRACK_MARK Configuring VTP Backend...
-        cp $OPEN_CLI_HOME/conf/oclip.service /etc/systemd/system
-        systemctl daemon-reload
-        systemctl status oclip | cat
+
+        if [[ $SERVICE_MODE == 'systemd' ]]
+        then
+            cp $OPEN_CLI_HOME/conf/oclip.service /etc/systemd/system
+            systemctl daemon-reload
+            systemctl status oclip | cat
+        else
+            echo export OPEN_CLI_HOME=$OPEN_CLI_HOME > $OPEN_CLI_HOME/bin/oclip-grpc-service.sh
+            echo  $OPEN_CLI_HOME/bin/oclip-grpc-server.sh>> $OPEN_CLI_HOME/bin/oclip-grpc-service.sh
+            chmod +x $OPEN_CLI_HOME/bin/oclip-grpc-service.sh
+            cp $OPEN_CLI_HOME/conf/oclip-service.sh /etc/init.d/oclip-grpc && update-rc.d oclip-grpc defaults
+        fi
+
     else
         echo "VTP Backend already installed"
     fi
@@ -154,8 +167,13 @@ function vtp_controller_install() {
 
 function vtp_start() {
     echo $VTP_TRACK_MARK Starting VTP Backend...
-    systemctl start oclip
-    systemctl status oclip  | cat
+    if [[ $SERVICE_MODE == 'systemd' ]]
+    then
+        systemctl start oclip
+        systemctl status oclip | cat
+    else
+        service oclip-grpc start
+    fi
 
     echo $VTP_TRACK_MARK Starting VTP Controller...
     $CATALINA_HOME/bin/startup.sh
@@ -163,8 +181,13 @@ function vtp_start() {
 
 function vtp_stop() {
     echo $VTP_TRACK_MARK Stoping VTP Backend...
-    systemctl stop oclip
-    systemctl status oclip | cat
+    if [[ $SERVICE_MODE == 'systemd' ]]
+    then
+       systemctl stop oclip
+       systemctl status oclip | cat
+    else
+        service oclip-grpc stop
+    fi
 
     echo $VTP_TRACK_MARK Stoping VTP Controller...
     $CATALINA_HOME/bin/shutdown.sh
@@ -182,6 +205,7 @@ function vtp_purge() {
     rm -rf $CATALINA_HOME
 
     rm -f /etc/systemd/system/oclip.service
+    rm -f /etc/init.d/oclip
 
     vtp_vvp_uninstall
 }
@@ -226,18 +250,25 @@ function vtp_test() {
     echo ..... Happy VTPing ......
 }
 
-function vtp_setup() {
+function vtp_install() {
     vtp_download
     vtp_backend_install
     vtp_controller_install
     vtp_csar_validation_install
     vtp_vvp_install
     vtp_sample_scenario_install
+}
+
+function vtp_setup() {
+    vtp_install
     vtp_start
     vtp_test
 }
 
 if [[ $1 == '--install' ]]
+then
+    vtp_install
+elif [[ $1 == '--setup' ]]
 then
     vtp_setup
 elif [[ $1 == '--uninstall' ]]
