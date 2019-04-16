@@ -27,7 +27,7 @@ public class VTPTestCase extends VTPModelBase{
     private String scenario;
     private String testCaseName;
     private String testSuiteName;
-    private String descripton;
+    private String description;
     private String author;
     private List<VTPTestCaseInput> inputs = new ArrayList<>();
     private List<VTPTestCaseOutput> outputs = new ArrayList<>();
@@ -47,11 +47,11 @@ public class VTPTestCase extends VTPModelBase{
         return this;
     }
 
-    public String getDescripton() {
-        return descripton;
+    public String getDescription() {
+        return description;
     }
-    public void setDescripton(String descripton) {
-        this.descripton = descripton;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public List<VTPTestCaseInput> getInputs() {
