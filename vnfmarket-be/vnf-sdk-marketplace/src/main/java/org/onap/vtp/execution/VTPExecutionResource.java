@@ -88,17 +88,23 @@ public class VTPExecutionResource  extends VTPResource{
             execution.setEndTime(endTime);
             execution.setExecutionId(output.getAddonsMap().get("execution-id"));
 
+            // set execution status based on success from test.
             if (output.getSuccess()) {
-                execution.setStatus(VTPTestExecution.Status.COMPLETED.name());
+              execution.setStatus(VTPTestExecution.Status.COMPLETED.name());
+            }
+            else {
+              execution.setStatus(VTPTestExecution.Status.FAILED.name());
+            }
 
-                ObjectMapper mapper = new ObjectMapper();
-                JsonNode resultJson = mapper.readTree(output.getAttrsMap().get("results"));
-                execution.setResults(resultJson);
-            } else {
-                execution.setStatus(VTPTestExecution.Status.FAILED.name());
-                ObjectMapper mapper = new ObjectMapper();
-                JsonNode resultJson = mapper.readTree(output.getAttrsMap().get("error"));
-                execution.setResults(resultJson);
+            // set the results from what is available in the output independent of status.
+            // tests can fail but still produce results.
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String,String> m = output.getAttrsMap();
+            if (m.containsKey("results")) {
+              execution.setResults(mapper.readTree(m.get("results")));
+            }
+            else if (m.containsKey("error")) {
+              execution.setResults(mapper.readTree(m.get("error")));
             }
         }
 
