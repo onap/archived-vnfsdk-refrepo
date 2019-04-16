@@ -38,14 +38,14 @@ public class VTPTestCaseTest {
         List<VTPTestCase.VTPTestCaseInput> list= new ArrayList<>();
         List<VTPTestCase.VTPTestCaseOutput> list1=new ArrayList<>();
         vtpTestCase.setAuthor("abc");
-        vtpTestCase.setDescripton("abc");
+        vtpTestCase.setDescription("abc");
         vtpTestCase.setInputs(null);
         vtpTestCase.setOutputs(null);
         vtpTestCase.setScenario("abc");
         vtpTestCase.setTestCaseName("abc");
         vtpTestCase.setTestSuiteName("abc");
         assertEquals(vtpTestCase.getAuthor(),"abc");
-        assertEquals(vtpTestCase.getDescripton(),"abc");
+        assertEquals(vtpTestCase.getDescription(),"abc");
         assertNull(vtpTestCase.getInputs());
         assertNull(vtpTestCase.getOutputs());
         assertEquals(vtpTestCase.getTestCaseName(),"abc");
