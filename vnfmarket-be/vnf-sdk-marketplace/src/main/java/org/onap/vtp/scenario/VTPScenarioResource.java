@@ -198,7 +198,7 @@ public class VTPScenarioResource extends VTPResource{
 
         VTPTestCase tc = new VTPTestCase();
         tc.setTestCaseName(schema.get("name").asText());
-        tc.setDescripton(schema.get("description").asText());
+        tc.setDescription(schema.get("description").asText());
         tc.setTestSuiteName(schema.get("service").asText());
         tc.setAuthor(schema.get("author").asText());
         JsonNode inputsJson = schema.get("inputs");
