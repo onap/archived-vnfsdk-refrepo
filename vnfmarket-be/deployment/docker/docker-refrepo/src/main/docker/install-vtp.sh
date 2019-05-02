@@ -72,7 +72,8 @@ CSARVAL_ZIP=csarvalidator.zip
 wget -O $CSARVAL_ZIP $CSARVALIDATOR_LATEST_BINARY
 unzip -d csarvalidator $CSARVAL_ZIP
 echo install csarvalidator into vtp
-cp csarvalidator/*.jar $VTP_INSTALL_DIR/lib/
+cp csarvalidator/commons-lang3*.jar $VTP_INSTALL_DIR/lib/
+cp csarvalidator/validation-csar*.jar $VTP_INSTALL_DIR/lib/
 rm -rf csarvalidator $CSARVAL_ZIP $VTP_ZIP
 cd -
 
