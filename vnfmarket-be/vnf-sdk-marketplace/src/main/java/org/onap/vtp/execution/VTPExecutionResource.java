@@ -100,11 +100,11 @@ public class VTPExecutionResource  extends VTPResource{
             // tests can fail but still produce results.
             ObjectMapper mapper = new ObjectMapper();
             Map<String,String> m = output.getAttrsMap();
-            if (m.containsKey("results")) {
-              execution.setResults(mapper.readTree(m.get("results")));
-            }
-            else if (m.containsKey("error")) {
+            if (m.containsKey("error")) {
               execution.setResults(mapper.readTree(m.get("error")));
+            }
+            else if (m.containsKey("results")) {
+              execution.setResults(mapper.readTree(m.get("results")));
             }
         }
 
