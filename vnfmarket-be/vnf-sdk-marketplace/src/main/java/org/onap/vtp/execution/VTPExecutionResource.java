@@ -40,6 +40,7 @@ import javax.ws.rs.core.Response;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.glassfish.jersey.media.multipart.BodyPartEntity;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
@@ -100,11 +101,11 @@ public class VTPExecutionResource  extends VTPResource{
             // tests can fail but still produce results.
             ObjectMapper mapper = new ObjectMapper();
             Map<String,String> m = output.getAttrsMap();
-            if (m.containsKey("results")) {
-              execution.setResults(mapper.readTree(m.get("results")));
-            }
-            else if (m.containsKey("error")) {
+            if ((m.containsKey("error")) && (!StringUtils.equals(m.get("error"), "{}"))) {
               execution.setResults(mapper.readTree(m.get("error")));
+            }
+            else if (m.containsKey("results")) {
+              execution.setResults(mapper.readTree(m.get("results")));
             }
         }
 
