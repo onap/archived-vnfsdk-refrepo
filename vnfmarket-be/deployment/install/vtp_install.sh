@@ -31,10 +31,10 @@
 #
 # Happy VTPing ...
 #
-export OCLIP_DOWNLOAD_URL="https://nexus.onap.org/content/repositories/autorelease-126371/org/onap/cli/cli-zip/2.0.6/cli-zip-2.0.6.zip"
-export VTP_DOWNLOAD_URL="https://nexus.onap.org/content/repositories/autorelease-126402/org/onap/vnfsdk/refrepo/vnf-sdk-marketplace/1.3.0/vnf-sdk-marketplace-1.3.0.war"
-export CSAR_VALIDATE_DOWNLOAD_URL="https://nexus.onap.org/content/repositories/autorelease-126305/org/onap/vnfsdk/validation/csarvalidation-deployment/1.2.0/csarvalidation-deployment-1.2.0.zip"
-export CSAR_VALIDATE_JAR_DOWNLOAD_URL="https://nexus.onap.org/content/repositories/autorelease-126305/org/onap/vnfsdk/validation/validation-csar/1.2.0/validation-csar-1.2.0.jar"
+export OCLIP_DOWNLOAD_URL="https://nexus.onap.org/service/local/artifact/maven/redirect?r=releases&g=org.onap.cli&a=cli-zip&e=zip&v=LATEST"
+export VTP_DOWNLOAD_URL="https://nexus.onap.org/service/local/artifact/maven/redirect?r=releases&g=org.onap.vnfsdk&a=vnf-sdk-marketplace&e=war&v=LATEST"
+export CSAR_VALIDATE_DOWNLOAD_URL="https://nexus.onap.org/service/local/artifact/maven/redirect?r=releases&g=org.onap.vnfsdk.validation&a=csarvalidation-deployment&e=zip&v=LATEST"
+export CSAR_VALIDATE_JAR_DOWNLOAD_URL=https://nexus.onap.org/service/local/artifact/maven/redirect?r=releases&g=org.onap.vnfsdk.validation&a=validation-csar&e=jar&v=LATEST
 export TOMCAT8_DOWNLOAD_URL="https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.30/bin/apache-tomcat-8.5.30.tar.gz"
 export SAMPLE_VTP_CSAR="https://github.com/onap/vnfsdk-validation/raw/master/csarvalidation/src/test/resources/VoLTE.csar"
 export VVP_GITHUB="https://github.com/onap/vvp-validation-scripts"
