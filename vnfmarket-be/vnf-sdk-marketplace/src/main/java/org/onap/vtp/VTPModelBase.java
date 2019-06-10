@@ -16,11 +16,15 @@
 
 package org.onap.vtp;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class VTPModelBase {
+    public static final Logger logger = LoggerFactory.getLogger(VTPModelBase.class);
+
     public String toJsonString() {
         return toJsonString(this);
     }
@@ -32,6 +36,7 @@ public class VTPModelBase {
             objectMapper.setSerializationInclusion(Include.NON_EMPTY);
             return objectMapper.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
+            logger.error("Exception while processing json {}", e.getMessage());
             return "{}";
         }
     }
