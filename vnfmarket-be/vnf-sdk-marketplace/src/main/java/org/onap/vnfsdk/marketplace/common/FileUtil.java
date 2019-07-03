@@ -87,13 +87,13 @@ public final class FileUtil {
 		boolean isFileExist = file.exists();
 		if (!isFileExist) {
 			if (isFileDeleted) {
-				logger.info("delete " + hintInfo + file.getAbsolutePath());
+				logger.info("delete {} {}" ,hintInfo, file.getAbsolutePath());
 			} else {
 				isFileDeleted = true;
-				logger.info("file not exist. no need delete " + hintInfo + file.getAbsolutePath());
+				logger.info("file not exist. no need delete {} {}" ,hintInfo , file.getAbsolutePath());
 			}
 		} else {
-			logger.info("fail to delete " + hintInfo + file.getAbsolutePath());
+			logger.info("fail to delete {} {} " , hintInfo , file.getAbsolutePath());
 		}
 		return isFileDeleted;
 	}
@@ -151,7 +151,7 @@ public final class FileUtil {
 	}
 
 	public static boolean writeJsonDatatoFile(String fileAbsPath, Object obj) {
-		logger.info("Write JsonData to file :" + fileAbsPath);
+		logger.info("Write JsonData to file : {} " , fileAbsPath);
 
 		boolean bResult = false;
 		if (checkFileExists(fileAbsPath)) {
@@ -174,11 +174,11 @@ public final class FileUtil {
 
 	public static <T> Object readJsonDatafFromFile(String fileAbsPath, Class<T> clazz) {
 		if (!checkFileExists(fileAbsPath)) {
-			logger.info("read JsonData from file , file not found :" + fileAbsPath);
+			logger.info("read JsonData from file , file not found : {}" ,fileAbsPath);
 			return null;
 		}
 
-		logger.info("read JsonData from file :" + fileAbsPath);
+		logger.info("read JsonData from file : {}" , fileAbsPath);
 
 		T obj = null;
 		ObjectMapper mapper = new ObjectMapper();
@@ -246,7 +246,7 @@ public final class FileUtil {
 		}
 
 		if (MAX_PACKAGE_SIZE < fileData.length()) {
-			logger.error("File size is greater than 50 MB", fileData.length());
+			logger.error("File size is greater than 50 MB {}", fileData.length());
 			return false;
 		}
 
