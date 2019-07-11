@@ -23,10 +23,10 @@
     <parent>
         <groupId>org.onap.vnfsdk.refrepo</groupId>
         <artifactId>vnfmarket-deployment</artifactId>
-        <version>1.3.2</version>
+        <version>1.3.2-SNAPSHOT</version>
         <relativePath>../..</relativePath>
     </parent>
-    <version>1.2.1</version>
+    <version>1.2.1-SNAPSHOT</version>
     <artifactId>vnfmarket-docker-refrepo-postgres</artifactId>
     <name>vnfmarket/deployment/docker/postgres</name>
     <packaging>pom</packaging>
