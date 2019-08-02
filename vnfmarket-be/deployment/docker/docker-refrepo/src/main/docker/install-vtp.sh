@@ -38,8 +38,6 @@ cd $VTP_INSTALL_DIR
 
 wget -O $VTP_ZIP $VTP_LATEST_BINARY
 unzip $VTP_ZIP
-echo clean up the irrelevent products
-rm -rf ./lib/cli-products*.jar
 
 export OPEN_CLI_HOME=$VTP_INSTALL_DIR
 export OPEN_CLI_PRODUCT_IN_USE=onap-vtp
@@ -63,6 +61,7 @@ echo export OPEN_CLI_HOME=/opt/vtp > $OPEN_CLI_HOME/bin/vtp.sh
 echo  $OPEN_CLI_HOME/bin/oclip-grpc-server.sh>> $OPEN_CLI_HOME/bin/vtp.sh
 chmod +x $OPEN_CLI_HOME/bin/vtp.sh
 
+ln -sf $OPEN_CLI_HOME/bin/oclip.sh /usr/bin/oclip
 ln -sf $OPEN_CLI_HOME/bin/oclip-rcli.sh /usr/bin/vtp-cli
 ln -sf $OPEN_CLI_HOME/bin/oclip-grpc-server.sh /usr/bin/vtp-tc
 
