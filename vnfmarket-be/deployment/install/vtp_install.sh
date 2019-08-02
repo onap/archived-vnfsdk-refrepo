@@ -116,7 +116,6 @@ function vtp_backend_install() {
         mkdir -p $OPEN_CLI_HOME
         unzip $VTP_STAGE_DIR/CLI.zip -d $OPEN_CLI_HOME
         ln -s $OPEN_CLI_HOME/bin/oclip.sh $OPEN_CLI_HOME/bin/oclip
-        rm -rf $OPEN_CLI_HOME/lib/cli-products-*.jar
 
         echo $VTP_TRACK_MARK Configuring VTP Backend...
 
@@ -207,7 +206,7 @@ function vtp_purge() {
     rm -f /etc/systemd/system/oclip.service
     rm -f /etc/init.d/oclip
 
-    vtp_vvp_uninstall
+    #vtp_vvp_uninstall
 }
 
 function vtp_trace() {
@@ -255,7 +254,7 @@ function vtp_install() {
     vtp_backend_install
     vtp_controller_install
     vtp_csar_validation_install
-    vtp_vvp_install
+    #vtp_vvp_install
     vtp_sample_scenario_install
 }
 
