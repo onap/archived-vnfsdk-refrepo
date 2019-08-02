@@ -46,6 +46,7 @@ public class VTPResource {
     protected static int VTP_TEST_CENTER_PORT;  // NOSONAR
     protected static String VTP_ARTIFACT_STORE;  // NOSONAR
     protected static String VTP_EXECUTION_TEMP_STORE;  // NOSONAR
+    protected static int VTP_EXECUTION_GRPC_TIMEOUT;  // NOSONAR
 
     protected static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);  // NOSONAR
 
@@ -59,21 +60,28 @@ public class VTPResource {
             VTP_TEST_CENTER_PORT = Integer.parseInt(prp.getProperty("vtp.grpc.port"));
             VTP_ARTIFACT_STORE = prp.getProperty("vtp.artifact.store");
             VTP_EXECUTION_TEMP_STORE = prp.getProperty("vtp.file.store");
+            VTP_EXECUTION_GRPC_TIMEOUT = Integer.parseInt(prp.getProperty("vtp.grpc.timeout")) * 1000 ;
         } catch (Exception e) {  // NOSONAR
             LOG.error(e.getMessage());
         }
     }
 
     protected Result makeRpc(List <String> args) throws VTPException {
+        return this.makeRpc(args, VTP_EXECUTION_GRPC_TIMEOUT);
+    }
+
+    protected Result makeRpc(List <String> args, int timeout) throws VTPException {
         Result result = null;
         String requestId = UUID.randomUUID().toString();
         try {
-            result = OpenRemoteCli.run(
-                    VTP_TEST_CENTER_IP, VTP_TEST_CENTER_PORT, requestId,
-                    args);
+            result = new OpenRemoteCli(
+                    VTP_TEST_CENTER_IP,
+                    VTP_TEST_CENTER_PORT,
+                    timeout,
+                    requestId).run(args);
         } catch(OpenInterfaceGrpcClient.OpenInterfaceGrpcTimeoutExecption e) {
             throw new VTPException(
-                    new VTPError().setHttpStatus(HttpStatus.SC_GATEWAY_TIMEOUT).setMessage("Timeout.").setCode(VTPError.TIMEOUT));
+                  new VTPError().setHttpStatus(HttpStatus.SC_GATEWAY_TIMEOUT).setMessage("Timed out. Please use request-id to track the progress.").setCode(VTPError.TIMEOUT));
         } catch (Exception e) {
             throw new VTPException(new VTPError().setMessage(e.getMessage()));
         }
@@ -91,22 +99,33 @@ public class VTPResource {
     }
 
     protected JsonNode makeRpcAndGetJson(List<String> args) throws VTPException, IOException {
-        Result result = this.makeRpc(args);
+        return this.makeRpcAndGetJson(args, VTP_EXECUTION_GRPC_TIMEOUT);
+    }
+
+    protected JsonNode makeRpcAndGetJson(List<String> args, int timeout) throws VTPException, IOException {
+        Result result = this.makeRpc(args, timeout);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode resultJson = mapper.readTree(result.getOutput());
         return resultJson;
     }
 
-
     protected Output makeRpc(String scenario, String requestId, String profile, String testCase, JsonNode argsJsonNode) throws VTPException {
+        return this.makeRpc(scenario, requestId, profile, testCase, argsJsonNode, VTP_EXECUTION_GRPC_TIMEOUT);
+    }
+
+    protected Output makeRpc(String scenario, String requestId, String profile, String testCase, JsonNode argsJsonNode, int timeout) throws VTPException {
         Output output = null;
         ObjectMapper mapper = new ObjectMapper();
         Map <String, String> args = mapper.convertValue(argsJsonNode, Map.class);
         try {
-            output = OpenRemoteCli.invoke(VTP_TEST_CENTER_IP, VTP_TEST_CENTER_PORT, scenario, profile, testCase, requestId, args);
-        } catch(OpenInterfaceGrpcClient.OpenInterfaceGrpcTimeoutExecption e) {
-            throw new VTPException(
-                    new VTPError().setHttpStatus(HttpStatus.SC_GATEWAY_TIMEOUT).setMessage(e.getMessage()).setCode(VTPError.TIMEOUT));
+            output = new OpenRemoteCli(
+                    VTP_TEST_CENTER_IP,
+                    VTP_TEST_CENTER_PORT,
+                    timeout,
+                    requestId).invoke(scenario, profile, testCase, args);
+         } catch(OpenInterfaceGrpcClient.OpenInterfaceGrpcTimeoutExecption e) {
+             throw new VTPException(
+                  new VTPError().setHttpStatus(HttpStatus.SC_GATEWAY_TIMEOUT).setMessage("Timed out. Please use request-id to track the progress.").setCode(VTPError.TIMEOUT));
         } catch (Exception e) {
             throw new VTPException(
                     new VTPError().setMessage(e.getMessage()));
