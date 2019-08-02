@@ -370,4 +370,36 @@ public class VTPExecutionResource  extends VTPResource{
 
         return Response.ok(this.getTestExecutionHandler(executionId).toString(), MediaType.APPLICATION_JSON).build();
     }
+
+    public String getTestExecutionLogsHandler(
+            String executionId, String action) throws VTPException, IOException{
+        List<String> args = new ArrayList<>();
+        args.addAll(Arrays.asList(new String[] {
+                "--product", "open-cli", "execution-show-" + action, "--execution-id", executionId, "--format", "text"
+                }));
+
+
+        Result result = this.makeRpc(args);
+
+        return result.getOutput();
+    }
+
+    @Path("/executions/{executionId}/logs")
+    @GET
+    @ApiOperation(tags = "VTP Execution", value = "Retrieve test execution logs details", response = String.class)
+    @Produces(MediaType.TEXT_PLAIN)
+    @ApiResponses(value = {
+            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500,
+                    message = "Failed to perform the operation",
+                    response = VTPError.class) })
+    public Response getTestExecutionLogs(
+             @ApiParam("Test execution Id") @PathParam("executionId") String executionId,
+             @ApiParam("Test console reports, Options: out, err, debug") @DefaultValue("out")  @QueryParam("option") String option
+             ) throws VTPException, IOException {
+        if (!(option.equalsIgnoreCase("out") || option.equalsIgnoreCase("err") || option.equalsIgnoreCase("debug"))) {
+                option = "out";
+        }
+
+        return Response.ok(this.getTestExecutionLogsHandler(executionId, option), MediaType.TEXT_PLAIN).build();
+    }
 }
