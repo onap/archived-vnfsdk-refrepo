@@ -31,14 +31,15 @@
 #
 # Happy VTPing ...
 #
+
 export OCLIP_DOWNLOAD_URL="https://nexus.onap.org/service/local/artifact/maven/redirect?r=releases&g=org.onap.cli&a=cli-zip&e=zip&v=LATEST"
 export VTP_DOWNLOAD_URL="https://nexus.onap.org/service/local/artifact/maven/redirect?r=releases&g=org.onap.vnfsdk.refrepo&a=vnf-sdk-marketplace&e=war&v=LATEST"
 export CSAR_VALIDATE_DOWNLOAD_URL="https://nexus.onap.org/service/local/artifact/maven/redirect?r=releases&g=org.onap.vnfsdk.validation&a=csarvalidation-deployment&e=zip&v=LATEST"
-export CSAR_VALIDATE_JAR_DOWNLOAD_URL=https://nexus.onap.org/service/local/artifact/maven/redirect?r=releases&g=org.onap.vnfsdk.validation&a=validation-csar&e=jar&v=LATEST
+export CSAR_VALIDATE_JAR_DOWNLOAD_URL="https://nexus.onap.org/service/local/artifact/maven/redirect?r=releases&g=org.onap.vnfsdk.validation&a=validation-csar&e=jar&v=LATEST"
 export TOMCAT8_DOWNLOAD_URL="https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.30/bin/apache-tomcat-8.5.30.tar.gz"
 export SAMPLE_VTP_CSAR="https://github.com/onap/vnfsdk-validation/raw/master/csarvalidation/src/test/resources/VoLTE.csar"
-export VVP_GITHUB="https://github.com/onap/vvp-validation-scripts"
-export SAMPLE_VTP_HOT="https://git.openstack.org/cgit/openstack/heat-templates/plain/hot/hello_world.yaml"
+#export VVP_GITHUB="https://github.com/onap/vvp-validation-scripts"
+#export SAMPLE_VTP_HOT="https://git.openstack.org/cgit/openstack/heat-templates/plain/hot/hello_world.yaml"
 
 export VTP_STAGE_DIR=/opt/vtp_stage
 
@@ -55,8 +56,8 @@ export SERVICE_MODE=init.d
 function vtp_download() {
     echo $VTP_TRACK_MARK Downloading VTP binaries and setup the dependencies ...
 
-    apt-get install -y tar wget unzip git python3 python3-pip
-    pip3 install --upgrade pip
+    apt-get install -y tar wget unzip git python2.7 #python3 python3-pip
+    #pip3 install --upgrade pip
 
     mkdir -p $VTP_STAGE_DIR
 
@@ -90,15 +91,15 @@ function vtp_download() {
         echo $VTP_TRACK_MARK $VTP_DOWNLOAD_URL already downloded
     fi
 
-    if [ ! -d $VTP_STAGE_DIR/vvp-validation-scripts ]
-    then
-        git clone $VVP_GITHUB $VTP_STAGE_DIR/vvp-validation-scripts
-        git checkout casablanca
-        mkdir -p $VTP_STAGE_DIR/HOT
-        wget -O $VTP_STAGE_DIR/HOT/HOT.yaml $SAMPLE_VTP_HOT
-    else
-        echo $VTP_TRACK_MARK $VTP_DOWNLOAD_URL already cloned
-    fi
+#    if [ ! -d $VTP_STAGE_DIR/vvp-validation-scripts ]
+#    then
+#        git clone $VVP_GITHUB $VTP_STAGE_DIR/vvp-validation-scripts
+#        git checkout casablanca
+#        mkdir -p $VTP_STAGE_DIR/HOT
+#        wget -O $VTP_STAGE_DIR/HOT/HOT.yaml $SAMPLE_VTP_HOT
+#    else
+#        echo $VTP_TRACK_MARK $VTP_DOWNLOAD_URL already cloned
+#    fi
 
     if [ ! -d $JAVA_HOME ]
     then
@@ -116,7 +117,6 @@ function vtp_backend_install() {
         mkdir -p $OPEN_CLI_HOME
         unzip $VTP_STAGE_DIR/CLI.zip -d $OPEN_CLI_HOME
         ln -s $OPEN_CLI_HOME/bin/oclip.sh $OPEN_CLI_HOME/bin/oclip
-        rm -rf $OPEN_CLI_HOME/lib/cli-products-*.jar
 
         echo $VTP_TRACK_MARK Configuring VTP Backend...
 
@@ -189,6 +189,8 @@ function vtp_stop() {
         service oclip-grpc stop
     fi
 
+    for pid in `ps -aef | grep java | awk '{print $2}'`; do  kill -9 $pid; done
+
     echo $VTP_TRACK_MARK Stoping VTP Controller...
     $CATALINA_HOME/bin/shutdown.sh
 }
@@ -207,7 +209,7 @@ function vtp_purge() {
     rm -f /etc/systemd/system/oclip.service
     rm -f /etc/init.d/oclip
 
-    vtp_vvp_uninstall
+    #vtp_vvp_uninstall
 }
 
 function vtp_trace() {
@@ -240,9 +242,10 @@ function vtp_sample_scenario_install() {
 function vtp_test() {
     echo $VTP_TRACK_MARK Check the CSAR validation
     oclip --product onap-vtp csar-validate --csar $VTP_STAGE_DIR/CSAR.csar
+    oclip --product onap-dublin tosca-vnf-provision --help
 
-    echo $VTP_TRACK_MARK Check the HOT validation
-    oclip --product onap-vtp hot-validate --hot-folder $VTP_STAGE_DIR/HOT --format json
+    #echo $VTP_TRACK_MARK Check the HOT validation
+    #oclip --product onap-vtp hot-validate --hot-folder $VTP_STAGE_DIR/HOT --format json
 
     echo $VTP_TRACK_MARK Check the VTP Controller
     curl -X GET http://localhost:8080/onapapi/vnfsdk-marketplace/v1/vtp/scenarios
@@ -255,7 +258,7 @@ function vtp_install() {
     vtp_backend_install
     vtp_controller_install
     vtp_csar_validation_install
-    vtp_vvp_install
+    #vtp_vvp_install
     vtp_sample_scenario_install
 }
 
@@ -268,6 +271,9 @@ function vtp_setup() {
 if [[ $1 == '--install' ]]
 then
     vtp_install
+elif [[ $1 == '--download' ]]
+then
+    vtp_download
 elif [[ $1 == '--setup' ]]
 then
     vtp_setup
@@ -280,9 +286,12 @@ then
 elif [[ $1 == '--start' ]]
 then
     vtp_start
+elif [[ $1 == '--clean' ]]
+then
+    rm -rf $VTP_STAGE_DIR
 elif [[ $1 == '--verify' ]]
 then
     vtp_test
 else
-    echo "$0 [ --install | --uninstall | --start | --stop | --verify]"
+    echo "$0 [ --install | --uninstall | --start | --stop | --verify | --download | --clean]"
 fi
