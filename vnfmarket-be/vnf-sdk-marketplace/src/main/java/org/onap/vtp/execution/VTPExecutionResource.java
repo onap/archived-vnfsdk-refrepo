@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -51,6 +52,7 @@ import org.onap.vtp.error.VTPError.VTPException;
 import org.onap.vtp.execution.model.VTPTestExecution;
 import org.onap.vtp.execution.model.VTPTestExecution.VTPTestExecutionList;
 import org.open.infc.grpc.Output;
+import org.open.infc.grpc.Result;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
