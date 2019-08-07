@@ -116,7 +116,7 @@ function vtp_backend_install() {
 
         mkdir -p $OPEN_CLI_HOME
         unzip $VTP_STAGE_DIR/CLI.zip -d $OPEN_CLI_HOME
-        ln -s $OPEN_CLI_HOME/bin/oclip.sh $OPEN_CLI_HOME/bin/oclip
+        ln -s $OPEN_CLI_HOME/bin/oclip.sh /usr/bin/oclip
 
         echo $VTP_TRACK_MARK Configuring VTP Backend...
 
