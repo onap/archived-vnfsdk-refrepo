@@ -15,8 +15,16 @@
  */
 package org.onap.vtp.scenario;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import mockit.Mock;
+import mockit.MockUp;
 import org.junit.Before;
 import org.junit.Test;
+import org.onap.vtp.VTPResource;
+
+import java.io.IOException;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -27,13 +35,31 @@ public class VTPScenarioResourceTest {
     public void setUp() throws Exception {
         vtpScenarioResource=new VTPScenarioResource();
     }
-    @Test(expected = Exception.class)
+    @Test
     public void testListTestScenariosHandler() throws Exception{
-        vtpScenarioResource.listTestScenariosHandler();
+        new MockUp<VTPResource>() {
+            @Mock
+            public JsonNode makeRpcAndGetJson(List<String> args) throws IOException {
+                ObjectMapper mapper = new ObjectMapper();
+                String jsonvalue = "[{\"product\":\"onap-dublin\",\"description\":\"its 4th release\"}]";
+                JsonNode jsonNode = mapper.readTree(jsonvalue);
+                return jsonNode;
+            }
+        };
+        assertNotNull(vtpScenarioResource.listTestScenariosHandler());
     }
-    @Test(expected = Exception.class)
+    @Test
     public void testListTestSutiesHandler() throws Exception{
-        vtpScenarioResource.listTestSutiesHandler("open-cli");
+        new MockUp<VTPResource>() {
+            @Mock
+            public JsonNode makeRpcAndGetJson(List<String> args) throws IOException {
+                ObjectMapper mapper = new ObjectMapper();
+                String jsonvalue = "[{\"product\":\"onap-dublin\",\"service\":\"test\",\"description\":\"its 4th release\"}]";
+                JsonNode jsonNode = mapper.readTree(jsonvalue);
+                return jsonNode;
+            }
+        };
+        assertNotNull(vtpScenarioResource.listTestSutiesHandler("open-cli"));
     }
     @Test(expected = Exception.class)
     public void testListTestcasesHandler() throws Exception
@@ -50,9 +76,23 @@ public class VTPScenarioResourceTest {
     {
         vtpScenarioResource.getTestcase("open-cli","testsuit","testcase");
     }
-    @Test(expected = Exception.class)
+    @Test
     public void testGetTestcaseHandler() throws Exception
     {
-        vtpScenarioResource.getTestcaseHandler("open-cli","testsuit","testcase");
+         new MockUp<VTPResource>() {
+            @Mock
+            public JsonNode makeRpcAndGetJson(List<String> args) throws IOException {
+                ObjectMapper mapper = new ObjectMapper();
+
+                String jsonvalue = "{\"schema\":{\"name\":\"cli\",\"product\":\"onap-dublin\",\"description\":\"its 4th release\"," +
+                        "\"service\":\"test\",\"author\":\"jitendra\",\"inputs\":[{\"name\":\"abc\",\"description\":\"abc\"," +
+                        "\"type\":\"abc\",\"is_optional\":\"yes\",\"default_value\":\"abc\",\"metadata\":\"abc\"}]," +
+                        "\"outputs\":[{\"name\":\"abc\",\"description\":\"abc\",\"type\":\"abc\"}]}}";
+                JsonNode jsonNode = mapper.readTree(jsonvalue);
+                return jsonNode;
+            }
+        };
+        assertNotNull(vtpScenarioResource.getTestcaseHandler("open-cli", "testsuit", "testcase"));
+
     }
 }
