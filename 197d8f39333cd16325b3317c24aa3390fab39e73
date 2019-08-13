@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "830191fe_168d5674",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/test/java/org/onap/vtp/scenario/VTPScenarioResourceTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2019-08-13T11:00:19Z",
+      "side": 1,
+      "message": "check the return value as expected.",
+      "range": {
+        "startLine": 49,
+        "startChar": 7,
+        "endLine": 49,
+        "endChar": 70
+      },
+      "revId": "197d8f39333cd16325b3317c24aa3390fab39e73",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6eaf9de0_e999e154",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/test/java/org/onap/vtp/scenario/VTPScenarioResourceTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2019-08-13T11:00:19Z",
+      "side": 1,
+      "message": "same here",
+      "range": {
+        "startLine": 62,
+        "startChar": 7,
+        "endLine": 64,
+        "endChar": 20
+      },
+      "revId": "197d8f39333cd16325b3317c24aa3390fab39e73",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
