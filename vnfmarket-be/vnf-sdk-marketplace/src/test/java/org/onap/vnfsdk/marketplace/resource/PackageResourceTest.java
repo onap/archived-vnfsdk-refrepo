@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
@@ -63,6 +64,7 @@ import org.onap.vnfsdk.marketplace.entity.response.PackageMeta;
 import org.onap.vnfsdk.marketplace.entity.response.PackageResponse;
 import org.onap.vnfsdk.marketplace.filemanage.http.HttpFileManagerImpl;
 import org.onap.vnfsdk.marketplace.msb.MsbDetailsHolder;
+import org.onap.vnfsdk.marketplace.msb.MsbServer;
 import org.onap.vnfsdk.marketplace.onboarding.entity.OnBoardingResult;
 import org.onap.vnfsdk.marketplace.onboarding.entity.OnBoradingRequest;
 import org.onap.vnfsdk.marketplace.onboarding.entity.ResultKey;
@@ -1073,7 +1075,25 @@ public class PackageResourceTest {
 
     @Test
     public void testRestGetClient() {
-        FunctionTestExceutor.getTestResultsByFuncTestKey("GET");
+        new MockUp<RestfulClient>() {
+            @Mock
+            RestResponse get(String ip, int port, String url) {
+                RestResponse restResponse = new RestResponse();
+                restResponse.setStatusCode(200);
+                restResponse.setResult("success");
+                return restResponse;
+            }
+        };
+        String dirPath = "etc//conf//restclient.json";
+       FileUtil.createDirectory(dirPath);
+        MsbServer msbServer = new MsbServer();
+        msbServer.setHost("localhost");
+        msbServer.setPort("8080");
+        Map<String, MsbServer> map = new HashMap<>();
+        map.put("defaultServer", msbServer);
+        FileUtil.writeJsonDatatoFile(dirPath, map);
+        assertNotNull(FunctionTestExceutor.getTestResultsByFuncTestKey("GET"));
+        FileUtil.deleteDirectory("etc");
 
     }
 

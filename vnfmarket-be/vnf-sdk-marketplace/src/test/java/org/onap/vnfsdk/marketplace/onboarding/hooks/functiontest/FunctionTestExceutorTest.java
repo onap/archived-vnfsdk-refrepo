@@ -50,7 +50,7 @@ public class FunctionTestExceutorTest {
 
     }
 
-    @Test
+
     public void testExecFunctionTest2() {
         new MockUp<MsbDetailsHolder>() {
             @Mock
