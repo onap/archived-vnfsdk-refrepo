@@ -1,12 +1,12 @@
 /**
  * Copyright 2019 Huawei Technologies Co., Ltd.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,12 +31,14 @@ import static org.junit.Assert.*;
 public class VTPScenarioResourceTest {
 
     VTPScenarioResource vtpScenarioResource;
+
     @Before
     public void setUp() throws Exception {
-        vtpScenarioResource=new VTPScenarioResource();
+        vtpScenarioResource = new VTPScenarioResource();
     }
+
     @Test
-    public void testListTestScenariosHandler() throws Exception{
+    public void testListTestScenariosHandler() throws Exception {
         new MockUp<VTPResource>() {
             @Mock
             public JsonNode makeRpcAndGetJson(List<String> args) throws IOException {
@@ -46,40 +48,42 @@ public class VTPScenarioResourceTest {
                 return jsonNode;
             }
         };
-        assertNotNull(vtpScenarioResource.listTestScenariosHandler());
+        assertEquals("{\"scenarios\":[{\"name\":\"onap-dublin\",\"description\":\"its 4th release\"}]}", vtpScenarioResource.listTestScenariosHandler().toJsonString());
+
     }
+
     @Test
-    public void testListTestSutiesHandler() throws Exception{
+    public void testListTestSutiesHandler() throws Exception {
         new MockUp<VTPResource>() {
             @Mock
             public JsonNode makeRpcAndGetJson(List<String> args) throws IOException {
                 ObjectMapper mapper = new ObjectMapper();
-                String jsonvalue = "[{\"product\":\"onap-dublin\",\"service\":\"test\",\"description\":\"its 4th release\"}]";
+                String jsonvalue = "[{\"product\":\"open-cli\",\"service\":\"test\",\"description\":\"its 4th release\"}]";
                 JsonNode jsonNode = mapper.readTree(jsonvalue);
                 return jsonNode;
             }
         };
-        assertNotNull(vtpScenarioResource.listTestSutiesHandler("open-cli"));
+        assertEquals("{\"suites\":[{\"name\":\"test\",\"description\":\"its 4th release\"}]}", vtpScenarioResource.listTestSutiesHandler("open-cli").toJsonString());
     }
+
     @Test(expected = Exception.class)
-    public void testListTestcasesHandler() throws Exception
-    {
-        vtpScenarioResource.listTestcasesHandler("testsuite","open-cli");
+    public void testListTestcasesHandler() throws Exception {
+        vtpScenarioResource.listTestcasesHandler("testsuite", "open-cli");
     }
+
     @Test(expected = Exception.class)
-    public void testListTestcases() throws Exception
-    {
-        vtpScenarioResource.listTestcases("open-cli","testsuite");
+    public void testListTestcases() throws Exception {
+        vtpScenarioResource.listTestcases("open-cli", "testsuite");
     }
+
     @Test(expected = Exception.class)
-    public void testGetTestcase() throws Exception
-    {
-        vtpScenarioResource.getTestcase("open-cli","testsuit","testcase");
+    public void testGetTestcase() throws Exception {
+        vtpScenarioResource.getTestcase("open-cli", "testsuit", "testcase");
     }
+
     @Test
-    public void testGetTestcaseHandler() throws Exception
-    {
-         new MockUp<VTPResource>() {
+    public void testGetTestcaseHandler() throws Exception {
+        new MockUp<VTPResource>() {
             @Mock
             public JsonNode makeRpcAndGetJson(List<String> args) throws IOException {
                 ObjectMapper mapper = new ObjectMapper();
@@ -92,7 +96,12 @@ public class VTPScenarioResourceTest {
                 return jsonNode;
             }
         };
-        assertNotNull(vtpScenarioResource.getTestcaseHandler("open-cli", "testsuit", "testcase"));
+        assertEquals("{\"testCaseName\":\"cli\",\"testSuiteName\":\"test\",\"description\":\"its 4th release\"," +
+                "\"author\":\"jitendra\",\"inputs\":[{\"name\":\"abc\",\"description\":\"abc\",\"type\":\"abc\"," +
+                "\"defaultValue\":\"abc\",\"isOptional\":false,\"metadata\":\"abc\"}],\"outputs\":[{\"name\":\"abc\"," +
+                "\"description\":\"abc\",\"type\":\"abc\"}]}", vtpScenarioResource.getTestcaseHandler
+                ("onap-dublin", "test", "cli").toJsonString());
+
 
     }
 }
