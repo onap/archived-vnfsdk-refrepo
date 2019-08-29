@@ -15,21 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #*******************************************************************************
-# VTP Installation script supported Ubuntu 16.04 64 bit
-#
-# Following the guidelines given below:
-# source < this file >
-#
-# Install:
-#    vtp_setup
-# Start:
-#    vtp_start
-# Stop:
-#    vtp_stop
-# Uninstall
-#    vtp_purge
-#
-# Happy VTPing ...
+# VTP Installation script supported on Ubuntu 16.04 64 bit
 #
 
 export OCLIP_DOWNLOAD_URL="https://nexus.onap.org/service/local/artifact/maven/redirect?r=releases&g=org.onap.cli&a=cli-zip&e=zip&v=LATEST"
@@ -241,8 +227,9 @@ function vtp_sample_scenario_install() {
 
 function vtp_test() {
     echo $VTP_TRACK_MARK Check the CSAR validation
-    oclip --product onap-vtp csar-validate --csar $VTP_STAGE_DIR/CSAR.csar
-    oclip --product onap-dublin tosca-vnf-provision --help
+    oclip --product onap-dublin csar-validate --csar $VTP_STAGE_DIR/CSAR.csar
+    oclip --product onap-dublin vnf-tosca-provision --help
+    oclip --product onap-dublin --request-id test vnf-tosca-provision --mode checkup --vsp $VTP_STAGE_DIR/CSAR.csar --vnf-csar $VTP_STAGE_DIR/CSAR.csar --ns-csar $VTP_STAGE_DIR/CSAR.csar --vnfm-driver hwvnfmdriver --vnf-name test --vnf-vendor-name test
 
     #echo $VTP_TRACK_MARK Check the HOT validation
     #oclip --product onap-vtp hot-validate --hot-folder $VTP_STAGE_DIR/HOT --format json
