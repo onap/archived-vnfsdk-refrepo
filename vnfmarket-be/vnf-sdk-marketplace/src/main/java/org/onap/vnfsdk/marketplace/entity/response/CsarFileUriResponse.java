@@ -18,6 +18,10 @@ package org.onap.vnfsdk.marketplace.entity.response;
 
 public class CsarFileUriResponse {
 
+    private String downloadUri;
+
+    private String localPath;
+
     public String getDownloadUri() {
         return downloadUri;
     }
@@ -34,7 +38,4 @@ public class CsarFileUriResponse {
         this.localPath = localPath;
     }
 
-    private String downloadUri;
-
-    private String localPath;
 }

@@ -16,5 +16,5 @@
 package org.onap.vnfsdk.marketplace.entity;
 
 public enum EnumOperationalState {
-  Enabled, Disabled
+  ENABLED, DISABLED
 }

@@ -18,7 +18,7 @@ package org.onap.vnfsdk.marketplace.msb;
 public class MsbDetails 
 {
     private MsbServer defaultServer;
-    private String ConnectTimeout;
+    private String connectTimeout;
     private String thread;
     private String idletimeout;
     private String timeout;

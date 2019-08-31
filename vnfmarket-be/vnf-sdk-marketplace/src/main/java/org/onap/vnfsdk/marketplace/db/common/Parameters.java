@@ -16,7 +16,7 @@
 package org.onap.vnfsdk.marketplace.db.common;
 
 public enum Parameters {
-  oid, name, provider, version, deletionPending, 
-  type, status, csarId, vendor, serviceTemplateId, 
-  nodeTemplateId, mappingId, nodeType;
+  OID, NAME, PROVIDER, VERSION, DELETIONPENDING,
+  TYPE, STATUS, CSARID, VENDOR, SERVICETEMPLATEID,
+  NODETEMPLATEID, MAPPINGID, NODETYPE;
 }

@@ -21,8 +21,8 @@ public class VnfPackage {
   private String version;
   private String provider;
   private String vnfd;
-  private EnumOperationalState operationalState = EnumOperationalState.Disabled;
-  private EnumUsageState usageState = EnumUsageState.InUse;
+  private EnumOperationalState operationalState = EnumOperationalState.DISABLED;
+  private EnumUsageState usageState = EnumUsageState.INUSE;
   private String deletionPending;
   private String vnfPackageUrl;
 

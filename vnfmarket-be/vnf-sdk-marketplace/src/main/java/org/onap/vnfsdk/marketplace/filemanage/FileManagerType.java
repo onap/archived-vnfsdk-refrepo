@@ -16,7 +16,7 @@
 package org.onap.vnfsdk.marketplace.filemanage;
 
 public enum FileManagerType {
-  ftp, http;
+  FTP, HTTP;
   public static FileManagerType getType(String type) {
     return valueOf(type);
   }

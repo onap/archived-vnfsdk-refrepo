@@ -39,7 +39,7 @@ public class FileManageTest {
         new MockUp<FileManagerFactory>() {
             @Mock
             private FileManagerType getType()  {
-                return FileManagerType.ftp;
+                return FileManagerType.FTP;
             }
         };
         FileManager manager = FileManagerFactory.createFileManager();
@@ -76,7 +76,7 @@ public class FileManageTest {
         new MockUp<FileManagerFactory>() {
             @Mock
             private FileManagerType getType()  {
-                return FileManagerType.http;
+                return FileManagerType.HTTP;
             }
         };
         new MockUp<ToolUtil>() {
@@ -97,7 +97,7 @@ public class FileManageTest {
         new MockUp<FileManagerFactory>() {
             @Mock
             private FileManagerType getType()  {
-                return FileManagerType.http;
+                return FileManagerType.HTTP;
             }
         };
         new MockUp<ToolUtil>() {

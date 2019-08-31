@@ -64,13 +64,13 @@ public class FunctionTestHook {
 					+ onBoradingReq.getCsarId());
 			oFuncTestResult.setOperFinished(true);
 			oFuncTestResult.setOperStatus(EnumResult.FAIL.getIndex());
-			buildFuncTestResponse(oFuncTestResult, CommonConstant.functionTest.FUNCTEST_PACKAGE_EXISTS,
+			buildFuncTestResponse(oFuncTestResult, CommonConstant.FunctionTest.FUNCTEST_PACKAGE_EXISTS,
 					EnumOperationStatus.FAILED.getIndex());
 			updateResult(oFuncTestResult);
 			return EnumResult.FAIL.getIndex();
 		}
 
-		buildFuncTestResponse(oFuncTestResult, CommonConstant.functionTest.FUNCTEST_PACKAGE_EXISTS,
+		buildFuncTestResponse(oFuncTestResult, CommonConstant.FunctionTest.FUNCTEST_PACKAGE_EXISTS,
 				EnumOperationStatus.SUCCESS.getIndex());
 		updateResult(oFuncTestResult);
 
@@ -80,7 +80,7 @@ public class FunctionTestHook {
 		if (null == functestResultKey) {
 			oFuncTestResult.setOperFinished(true);
 			oFuncTestResult.setOperStatus(EnumResult.FAIL.getIndex());
-			buildFuncTestResponse(oFuncTestResult, CommonConstant.functionTest.FUNCTEST_EXEC,
+			buildFuncTestResponse(oFuncTestResult, CommonConstant.FunctionTest.FUNCTEST_EXEC,
 					EnumOperationStatus.FAILED.getIndex());
 			updateResult(oFuncTestResult);
 			return EnumResult.FAIL.getIndex();
@@ -88,7 +88,7 @@ public class FunctionTestHook {
 
 		oFuncTestResult.setOperFinished(true);
 		oFuncTestResult.setOperStatus(EnumResult.SUCCESS.getIndex());
-		buildFuncTestResponse(oFuncTestResult, CommonConstant.functionTest.FUNCTEST_EXEC,
+		buildFuncTestResponse(oFuncTestResult, CommonConstant.FunctionTest.FUNCTEST_EXEC,
 				EnumOperationStatus.SUCCESS.getIndex());
 		updateResult(oFuncTestResult);
 
@@ -152,7 +152,7 @@ public class FunctionTestHook {
 
 		ResultKey oResultKey = new ResultKey();
 		oResultKey.setCsarId(onBoradingReq.getCsarId());
-		oResultKey.setOperTypeId(CommonConstant.functionTest.FUNCTEST_OPERTYPE_ID);
+		oResultKey.setOperTypeId(CommonConstant.FunctionTest.FUNCTEST_OPERTYPE_ID);
 		oResultKey.setKey(resultKey);
 
 		FileUtil.writeJsonDatatoFile(filePath.toString(), oResultKey);
@@ -188,14 +188,14 @@ public class FunctionTestHook {
 	private void buildFunctResponse(OnBoradingRequest onBoradingReq, OnBoardingResult oFuncTestResult) {
 		oFuncTestResult.setOperFinished(false);
 		oFuncTestResult.setCsarId(onBoradingReq.getCsarId());
-		oFuncTestResult.setOperTypeId(CommonConstant.functionTest.FUNCTEST_OPERTYPE_ID);
+		oFuncTestResult.setOperTypeId(CommonConstant.FunctionTest.FUNCTEST_OPERTYPE_ID);
 
 		OnBoardingOperResult oPackageExists = new OnBoardingOperResult();
-		oPackageExists.setOperId(CommonConstant.functionTest.FUNCTEST_PACKAGE_EXISTS);
+		oPackageExists.setOperId(CommonConstant.FunctionTest.FUNCTEST_PACKAGE_EXISTS);
 		oPackageExists.setStatus(EnumOperationStatus.NOTSTARTED.getIndex());
 
 		OnBoardingOperResult functTesExec = new OnBoardingOperResult();
-		functTesExec.setOperId(CommonConstant.functionTest.FUNCTEST_EXEC);
+		functTesExec.setOperId(CommonConstant.FunctionTest.FUNCTEST_EXEC);
 		functTesExec.setStatus(EnumOperationStatus.NOTSTARTED.getIndex());
 
 		List<OnBoardingOperResult> operResult = new ArrayList<>();

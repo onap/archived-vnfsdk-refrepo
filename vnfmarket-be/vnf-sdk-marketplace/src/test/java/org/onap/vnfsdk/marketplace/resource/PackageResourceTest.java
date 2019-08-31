@@ -1389,9 +1389,9 @@ public class PackageResourceTest {
         vnfPackageObj.setVnfPackageUrl("vnfPackageUrl");
         vnfPackageObj.setVnfd("vnfd");
         vnfPackageObj.setVersion("1");
-        vnfPackageObj.setUsageState(EnumUsageState.NotInUse);
+        vnfPackageObj.setUsageState(EnumUsageState.NOTINUSE);
         vnfPackageObj.setProvider("huawei");
-        vnfPackageObj.setOperationalState(EnumOperationalState.Enabled);
+        vnfPackageObj.setOperationalState(EnumOperationalState.ENABLED);
         vnfPackageObj.setName("vnf");
         vnfPackageObj.setDeletionPending("pending");
 
@@ -1404,11 +1404,11 @@ public class PackageResourceTest {
         res = vnfPackageObj.getVersion();
         assertEquals(res, "1");
         EnumUsageState state = vnfPackageObj.getUsageState();
-        assertEquals(state, EnumUsageState.NotInUse);
+        assertEquals(state, EnumUsageState.NOTINUSE);
         res = vnfPackageObj.getProvider();
         assertEquals(res, "huawei");
         EnumOperationalState operState = vnfPackageObj.getOperationalState();
-        assertEquals(operState, EnumOperationalState.Enabled);
+        assertEquals(operState, EnumOperationalState.ENABLED);
         res = vnfPackageObj.getName();
         assertEquals(res, "vnf");
         res = vnfPackageObj.getDeletionPending();

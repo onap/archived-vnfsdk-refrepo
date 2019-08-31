@@ -608,7 +608,7 @@ public class PackageWrapper {
     }
 
     private void handleDelayExec(String operId) {
-        if(0 == operId.compareToIgnoreCase(CommonConstant.functionTest.FUNCTEST_EXEC)) {
+        if(0 == operId.compareToIgnoreCase(CommonConstant.FunctionTest.FUNCTEST_EXEC)) {
             try {
                 Thread.sleep(8000);
             } catch(InterruptedException e) {

@@ -16,5 +16,5 @@
 package org.onap.vnfsdk.marketplace.entity;
 
 public enum EnumUsageState {
-  InUse, NotInUse
+  INUSE, NOTINUSE
 }

@@ -29,7 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
+
 
 /**
  * common utility class.
@@ -180,10 +180,7 @@ public class ToolUtil {
      * @return boolean
      */
     public static boolean isYamlFile(File file) {
-        if(!file.isDirectory() && file.getName().indexOf(".yaml") != -1) {
-            return true;
-        }
-        return false;
+        return !file.isDirectory() && file.getName().indexOf(".yaml") != -1;
     }
 
     /**

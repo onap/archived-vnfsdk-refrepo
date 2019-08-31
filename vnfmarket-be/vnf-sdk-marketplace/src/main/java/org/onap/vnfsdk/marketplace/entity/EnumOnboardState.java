@@ -16,7 +16,7 @@
 package org.onap.vnfsdk.marketplace.entity;
 
 public enum EnumOnboardState {
-  onBoarded("onBoarded"), nonOnBoarded("non-onBoarded");
+  ONBOARDED("onBoarded"), NONONBOARDED("non-onBoarded");
 
   String value;
 

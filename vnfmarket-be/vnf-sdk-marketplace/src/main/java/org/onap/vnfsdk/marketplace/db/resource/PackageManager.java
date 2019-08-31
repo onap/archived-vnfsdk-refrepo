@@ -15,7 +15,7 @@
  */
 package org.onap.vnfsdk.marketplace.db.resource;
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,9 +44,9 @@ public class PackageManager {
         return manager;
     }
 
-    private PackageManager() {}
-
     /**
+     * private PackageManager() {}
+
      * add package.
      * @param packageData package data
      * @return PackageData
@@ -90,19 +90,19 @@ public class PackageManager {
                 + version + " type:" + type);
         Map<String, String> queryParam = new HashMap<>();
         if (MarketplaceDbUtil.isNotEmpty(name)) {
-            queryParam.put(Parameters.name.name(), name);
+            queryParam.put(Parameters.NAME.name(), name);
         }
         if (MarketplaceDbUtil.isNotEmpty(version)) {
-            queryParam.put(Parameters.version.name(), version);
+            queryParam.put(Parameters.VERSION.name(), version);
         }
         if (MarketplaceDbUtil.isNotEmpty(deletionPending)) {
-            queryParam.put(Parameters.deletionPending.name(), deletionPending);
+            queryParam.put(Parameters.DELETIONPENDING.name(), deletionPending);
         }
         if (MarketplaceDbUtil.isNotEmpty(type)) {
-            queryParam.put(Parameters.type.name(), type);
+            queryParam.put(Parameters.TYPE.name(), type);
         }
         if (MarketplaceDbUtil.isNotEmpty(provider)) {
-            queryParam.put(Parameters.provider.name(), provider);
+            queryParam.put(Parameters.PROVIDER.name(), provider);
         }
         List<PackageData> data = handler.query(queryParam);
         LOGGER.info("query package info end.size:" + data.size() + "detail:"

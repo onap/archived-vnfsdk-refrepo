@@ -43,6 +43,8 @@ public class MarketplaceDaoImpl implements IMarketplaceDao {
 
     private SqlSessionFactory sqlSessionFactory = null;
 
+    private static final String EXCEPTION = "Exception caught {}";
+
     /**
      *
      * Constructor<br/>
@@ -71,7 +73,7 @@ public class MarketplaceDaoImpl implements IMarketplaceDao {
             csars = mapper.getAllPackageData();
             session.commit();
         } catch(PersistenceException e) {
-            LOGGER.error("Exception caught {}", e);
+            LOGGER.error(EXCEPTION, e);
         } finally {
             session.close();
         }
@@ -87,7 +89,7 @@ public class MarketplaceDaoImpl implements IMarketplaceDao {
             csars = mapper.getPackageDataSubset(paramsMap);
             session.commit();
         } catch(PersistenceException e) {
-            LOGGER.error("Exception caught {}", e);
+            LOGGER.error(EXCEPTION, e);
         } finally {
             session.close();
         }
@@ -109,7 +111,7 @@ public class MarketplaceDaoImpl implements IMarketplaceDao {
             mapper.savePackageData(lPackageData);
             session.commit();
         } catch(PersistenceException e) {
-            LOGGER.error("Exception caught {}", e);
+            LOGGER.error(EXCEPTION, e);
         } finally {
             session.close();
         }
@@ -125,7 +127,7 @@ public class MarketplaceDaoImpl implements IMarketplaceDao {
             csars = mapper.getPackageData(csarId);
             session.commit();
         } catch(PersistenceException e) {
-            LOGGER.error("Exception caught {}", e);
+            LOGGER.error(EXCEPTION, e);
         } finally {
             session.close();
         }
@@ -140,7 +142,7 @@ public class MarketplaceDaoImpl implements IMarketplaceDao {
             mapper.deletePackageData(csarId);
             session.commit();
         } catch(PersistenceException e) {
-            LOGGER.error("Exception caught {}", e);;
+            LOGGER.error(EXCEPTION, e);;
         } finally {
             session.close();
         }
@@ -155,7 +157,7 @@ public class MarketplaceDaoImpl implements IMarketplaceDao {
             mapper.updatePackageData(oPackageData);
             session.commit();
         } catch(PersistenceException e) {
-            LOGGER.error("Exception caught {}", e);
+            LOGGER.error(EXCEPTION, e);
         } finally {
             session.close();
         }

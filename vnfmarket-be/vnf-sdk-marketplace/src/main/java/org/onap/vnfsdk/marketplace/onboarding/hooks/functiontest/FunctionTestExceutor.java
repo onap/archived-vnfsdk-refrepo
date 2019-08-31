@@ -57,7 +57,7 @@ public class FunctionTestExceutor {
 		logger.info("Package file path Function test:" + packagePath);
 
 		// Validate package path
-		if (false == FileUtil.validatePath(packagePath)) {
+		if (!FileUtil.validatePath(packagePath)) {
 			logger.error("Failed to validate  path");
 			return funcTestId;
 		}
@@ -72,7 +72,7 @@ public class FunctionTestExceutor {
 				InputStream inStream = new BufferedInputStream(ifs);) {
 
 			// Validate input stream
-			if (false == FileUtil.validateStream(ifs)) {
+			if (!FileUtil.validateStream(ifs)) {
 				logger.error("Failed to validate file stream");
 				return funcTestId;
 			}
@@ -80,7 +80,7 @@ public class FunctionTestExceutor {
 			// IP and Port needs to be configured !!!
 			RestResponse rsp = RestfulClient.post(oMsbDetails.getDefaultServer().getHost(),
 					Integer.parseInt(oMsbDetails.getDefaultServer().getPort()),
-					CommonConstant.functionTest.FUNCTEST_URL, buildRequest(inStream));
+					CommonConstant.FunctionTest.FUNCTEST_URL, buildRequest(inStream));
 			if (!checkValidResponse(rsp)) {
 				logger.error("Failed to validate response");
 				return funcTestId;
@@ -122,8 +122,8 @@ public class FunctionTestExceutor {
 		logger.info("GetTestResultsByFuncTestKey for Function Test Results for :" + key);
 		RestResponse rspGet = RestfulClient.get(oMsbDetails.getDefaultServer().getHost(),
 				Integer.parseInt(oMsbDetails.getDefaultServer().getPort()),
-				CommonConstant.functionTest.FUNCTEST_RESULT_URL + key);
-		if (false == checkValidResponse(rspGet)) {
+				CommonConstant.FunctionTest.FUNCTEST_RESULT_URL + key);
+		if (!checkValidResponse(rspGet)) {
 			logger.error("Failed to convert String Json Response to TestResults list:" + rspGet.getResult());
 			return result;
 		}
@@ -157,9 +157,9 @@ public class FunctionTestExceutor {
 
 		logger.info("GetTestResultsByFuncTestKey for Function Test Results for :" + strJsonRequest);
 		RestResponse rspGet = RestfulClient.sendPostRequest(oMsbDetails.getDefaultServer().getHost(),
-				oMsbDetails.getDefaultServer().getPort(), CommonConstant.functionTest.FUNCTEST_RESULT_URL,
+				oMsbDetails.getDefaultServer().getPort(), CommonConstant.FunctionTest.FUNCTEST_RESULT_URL,
 				strJsonRequest);
-		if (false == checkValidResponse(rspGet)) {
+		if (!checkValidResponse(rspGet)) {
 			logger.error("Failed to convert String Json Response to TestResults list:" + rspGet.getResult());
 			return result;
 		}
@@ -184,7 +184,7 @@ public class FunctionTestExceutor {
 		return true;
 	}
 
-	private static HttpEntity buildRequest(InputStream inputStream) throws FileNotFoundException {
+	private static HttpEntity buildRequest(InputStream inputStream) {
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		builder.addBinaryBody("file", inputStream);
 		return builder.build();

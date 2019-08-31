@@ -62,7 +62,7 @@ public class LifecycleTestExceutor {
 		String catalougeCsarId = null;
 
 		// Validate package path
-		if (false == FileUtil.validatePath(packagePath)) {
+		if (!FileUtil.validatePath(packagePath)) {
 			logger.error("Failed to validate  package path");
 			return catalougeCsarId;
 		}
@@ -76,7 +76,7 @@ public class LifecycleTestExceutor {
 		File fileData = new File(packagePath);
 
 		// Validate file
-		if (false == FileUtil.validateFile(fileData)) {
+		if (!FileUtil.validateFile(fileData)) {
 			logger.error("Failed to validate file information");
 			return catalougeCsarId;
 		}
@@ -88,7 +88,7 @@ public class LifecycleTestExceutor {
 		RestResponse rsp = RestfulClient.post(oMsbDetails.getDefaultServer().getHost(),
 				Integer.parseInt(oMsbDetails.getDefaultServer().getPort()), CommonConstant.CATALOUGE_UPLOAD_URL,
 				builder.build());
-		if (false == checkValidResponse(rsp)) {
+		if (!checkValidResponse(rsp)) {
 			logger.error("Failed to upload package to catalouge:" + rsp.getStatusCode());
 			return catalougeCsarId;
 		}
@@ -119,7 +119,7 @@ public class LifecycleTestExceutor {
 		logger.info("Package file path Function test:" + packagePath);
 
 		// Validate package path
-		if (false == FileUtil.validatePath(packagePath)) {
+		if (!FileUtil.validatePath(packagePath)) {
 			logger.error("Failed to validate  path");
 			return result;
 		}
@@ -139,7 +139,7 @@ public class LifecycleTestExceutor {
 		RestResponse oResponse = RestfulClient.sendPostRequest(oMsbDetails.getDefaultServer().getHost(),
 				oMsbDetails.getDefaultServer().getPort(), CommonConstant.LifeCycleTest.LIFECYCLE_TEST_URL, rawDataJson);
 
-		if (false == checkValidResponse(oResponse)) {
+		if (!checkValidResponse(oResponse)) {
 			logger.error("execlifecycleTest response is faliure :" + oResponse.getStatusCode());
 			return result;
 		}

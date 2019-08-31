@@ -16,5 +16,5 @@
 package org.onap.vnfsdk.marketplace.entity;
 
 public enum EnumProcessState {
-  normal, onBoarding, onBoardFailed, deleting, deleteFailed
+  NORMAL, ONBOARDING, ONBOARDFAILED, DELETING, DELETEFAILED
 }

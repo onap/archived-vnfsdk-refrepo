@@ -220,7 +220,7 @@ public final class FileUtil {
 		}
 
 		try {
-			if (false == ifs.getFD().valid()) {
+			if (!ifs.getFD().valid()) {
 				logger.error("File descriptor is not valid");
 				return false;
 			}

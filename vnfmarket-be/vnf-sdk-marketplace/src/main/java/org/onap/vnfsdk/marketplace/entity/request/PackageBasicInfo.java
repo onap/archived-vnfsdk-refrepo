@@ -20,6 +20,14 @@ import org.onap.vnfsdk.marketplace.entity.EnumType;
 
 public class PackageBasicInfo {
 
+    private String provider;
+
+    private EnumType type;
+
+    private String version;
+
+    private String format;
+
     public String getProvider() {
         return provider;
     }
@@ -52,12 +60,6 @@ public class PackageBasicInfo {
         this.format = format;
     }
 
-    private String provider;
 
-    private EnumType type;
-
-    private String version;
-
-    private String format;
 
 }

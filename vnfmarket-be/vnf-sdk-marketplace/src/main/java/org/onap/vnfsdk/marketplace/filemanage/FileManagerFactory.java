@@ -21,10 +21,10 @@ import org.slf4j.LoggerFactory;
 
 public class FileManagerFactory {
 
+  private static final Logger logger = LoggerFactory.getLogger(FileManagerFactory.class);
+
   private FileManagerFactory() {
   }
-
-  private static final Logger logger = LoggerFactory.getLogger(FileManagerFactory.class);
 
   private static FileManager getHttpFileManager() {
     return new HttpFileManagerImpl();
@@ -36,9 +36,9 @@ public class FileManagerFactory {
    */
   public static FileManager createFileManager() {
     switch (getType()) {
-      case http:
+      case HTTP:
         return getHttpFileManager();
-      case ftp:
+      case FTP:
         return null;
       default:
         return getHttpFileManager();
@@ -49,9 +49,9 @@ public class FileManagerFactory {
     String type = System.getenv("useFtp");
     logger.info("read environment varibale uesFtp:" + type);
     if ((type != null) && "true".equals(type)) {
-      return FileManagerType.ftp;
+      return FileManagerType.FTP;
     } else {
-      return FileManagerType.http;
+      return FileManagerType.HTTP;
     }
   }
 }

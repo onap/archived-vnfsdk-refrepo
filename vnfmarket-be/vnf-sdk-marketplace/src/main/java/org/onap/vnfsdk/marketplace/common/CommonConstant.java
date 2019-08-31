@@ -81,7 +81,7 @@ public class CommonConstant {
         // Cannot create instance of the class
     }
 
-    public static class functionTest {
+    public static class FunctionTest {
 
         public static final String FUNCTEST_URL = "/onapapi/vnfsdk/v1/functest/";
 
@@ -93,7 +93,7 @@ public class CommonConstant {
 
         public static final String FUNCTEST_EXEC = "functestexec";
 
-        private functionTest() {
+        private FunctionTest() {
         }
     }
 
