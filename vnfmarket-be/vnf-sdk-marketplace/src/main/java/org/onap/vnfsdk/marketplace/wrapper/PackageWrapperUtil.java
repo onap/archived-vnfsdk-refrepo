@@ -95,10 +95,7 @@ public class PackageWrapperUtil {
         int fileSize = Integer.parseInt(size);
         String[] ranges = range.split("-");
         int endPosition = Integer.parseInt(ranges[1]) + 1;
-        if(endPosition >= fileSize) {
-            return true;
-        }
-        return false;
+        return endPosition >= fileSize;
     }
 
     /**

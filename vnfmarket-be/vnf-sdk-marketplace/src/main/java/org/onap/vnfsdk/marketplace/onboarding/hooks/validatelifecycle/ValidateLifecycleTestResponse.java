@@ -21,10 +21,10 @@ public class ValidateLifecycleTestResponse {
 	private String jobId;
 	
 	// Status of the validation
-	private String validate_status;
+	private String validateStatus;
 	
 	// Status of lifecycle test
-	private String lifecycle_status;
+	private String lifecycleStatus;
 	
 	// Vnf and VM information where the Vnfs are located
 
@@ -37,20 +37,20 @@ public class ValidateLifecycleTestResponse {
 		this.jobId = jobId;
 	}
 
-	public String getValidate_status() {
-		return validate_status;
+	public String getValidateStatus() {
+		return validateStatus;
 	}
 
-	public void setValidate_status(String validate_status) {
-		this.validate_status = validate_status;
+	public void setValidateStatus(String validateStatus) {
+		this.validateStatus = validateStatus;
 	}
 
-	public String getLifecycle_status() {
-		return lifecycle_status;
+	public String getLifecycleStatus() {
+		return lifecycleStatus;
 	}
 
-	public void setLifecycle_status(String lifecycle_status) {
-		this.lifecycle_status = lifecycle_status;
+	public void setLifecycleStatus(String lifecycleStatus) {
+		this.lifecycleStatus = lifecycleStatus;
 	}
 
 	

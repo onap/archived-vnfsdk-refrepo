@@ -70,7 +70,9 @@ public class PackageWrapper {
 
     private static final Logger LOG = LoggerFactory.getLogger(PackageWrapper.class);
 
-    private static final boolean disableValidation = true;
+    private static final boolean DISABLE_VALIDATION = true;
+
+    private static final String fileFormat = ".csar";
 
     /**
      * get PackageWrapper instance.
@@ -92,9 +94,9 @@ public class PackageWrapper {
             return Response.status(Status.EXPECTATION_FAILED).build();
         }
 
-        ValidateLifecycleTestResponse lyfValidateResp = null; // TBD - Use Gson - jackson has
-                                                              // security issue/
-        // JsonUtil.fromJson(reqParam, ValidateLifecycleTestResponse.class);
+        ValidateLifecycleTestResponse lyfValidateResp = null;
+        // TBD - Use Gson - jackson has security issue/
+
         if(!checkOperationSucess(lyfValidateResp)) {
             return Response.status(Status.EXPECTATION_FAILED).build();
         }
@@ -117,10 +119,10 @@ public class PackageWrapper {
             LOG.error("ValidateLifecycleTestResponse  is NUll !!!");
             return bOperStatus;
         }
-        if(lyfValidateResp.getLifecycle_status().equalsIgnoreCase(CommonConstant.SUCCESS_STR)
-                && lyfValidateResp.getValidate_status().equalsIgnoreCase(CommonConstant.SUCCESS_STR)) {
-            LOG.error("Lifecycle/Validation Response failed :" + lyfValidateResp.getLifecycle_status() + File.separator
-                    + lyfValidateResp.getValidate_status());
+        if(lyfValidateResp.getLifecycleStatus().equalsIgnoreCase(CommonConstant.SUCCESS_STR)
+                && lyfValidateResp.getValidateStatus().equalsIgnoreCase(CommonConstant.SUCCESS_STR)) {
+            LOG.error("Lifecycle/Validation Response failed :" + lyfValidateResp.getLifecycleStatus() + File.separator
+                    + lyfValidateResp.getValidateStatus());
             bOperStatus = true;
         }
         return bOperStatus;
@@ -186,7 +188,7 @@ public class PackageWrapper {
     }
 
     private UploadPackageResponse manageUpload(String packageId, String fileName, String fileLocation, String details,
-            String contentRange) throws IOException, ErrorCodeException {
+            String contentRange) throws ErrorCodeException {
         String localDirName = ToolUtil.getTempDir(CommonConstant.CATALOG_CSAR_DIR_NAME, fileName);
         PackageBasicInfo basicInfo = PackageWrapperUtil.getPacageBasicInfo(fileLocation);
         UploadPackageResponse result = new UploadPackageResponse();
@@ -196,7 +198,7 @@ public class PackageWrapper {
                     PackageWrapperUtil.getPackageMeta(packageId, fileName, fileLocation, basicInfo, details);
             try {
                 String path = basicInfo.getType().toString() + File.separator + basicInfo.getProvider() + File.separator
-                        + packageMeta.getCsarId() + File.separator + fileName.replace(".csar", "") + File.separator
+                        + packageMeta.getCsarId() + File.separator + fileName.replace(fileFormat, "") + File.separator
                         + basicInfo.getVersion();
 
                 String dowloadUri = File.separator + path + File.separator;
@@ -266,7 +268,7 @@ public class PackageWrapper {
                     .build();
         }
 
-        String fileName = "temp_" + packageId + ".csar";
+        String fileName = "temp_" + packageId + fileFormat;
         if(null != fileDetail) {
             LOG.info("the fileDetail = " + ToolUtil.objectToString(fileDetail));
 
@@ -290,7 +292,7 @@ public class PackageWrapper {
 
         uploadedInputStream.close();
 
-        if (!disableValidation) {
+        if (!DISABLE_VALIDATION) {
             try {
                 Result result = OpenRemoteCli.run("localhost", 50051, null, Arrays.asList(new String[] { "--product", "onap-vtp", "csar-validate", "--csar", fileLocation, "--format", "json" }));
                 LOG.info("CSAR validation is successful" + result.getOutput());
@@ -392,7 +394,7 @@ public class PackageWrapper {
         String path = org.onap.vnfsdk.marketplace.filemanage.http.ToolUtil.getHttpServerAbsolutePath()
                 + File.separatorChar + packageData.getType() + File.separatorChar + packageData.getProvider()
                 + File.separatorChar + packageData.getCsarId() + File.separator + packageName + File.separatorChar
-                + packageData.getVersion() + File.separator + packageName + ".csar";
+                + packageData.getVersion() + File.separator + packageName + fileFormat;
 
         LOG.info("downloadCsarPackagesById path is :  " + path);
 
@@ -465,7 +467,7 @@ public class PackageWrapper {
      */
     public Response reUploadPackage(String csarId, InputStream uploadedInputStream,
             FormDataContentDisposition fileDetail, String details, HttpHeaders head)
-            throws MarketplaceResourceException {
+            {
         LOG.info("Reupload request Received !!!!");
 
         // STEP 1: Validate Input Data

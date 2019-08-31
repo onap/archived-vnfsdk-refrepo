@@ -32,9 +32,9 @@ public class ValidateLifecycleTestResponseTest {
     {
         validateLifecycleTestResponse.setJobId("huawei");
         assertEquals(validateLifecycleTestResponse.getJobId(),"huawei");
-        validateLifecycleTestResponse.setLifecycle_status("huawei");
-        assertEquals(validateLifecycleTestResponse.getLifecycle_status(),"huawei");
-        validateLifecycleTestResponse.setValidate_status("huawei");
-        assertEquals(validateLifecycleTestResponse.getValidate_status(),"huawei");
+        validateLifecycleTestResponse.setLifecycleStatus("huawei");
+        assertEquals(validateLifecycleTestResponse.getLifecycleStatus(),"huawei");
+        validateLifecycleTestResponse.setValidateStatus("huawei");
+        assertEquals(validateLifecycleTestResponse.getValidateStatus(),"huawei");
     }
 }

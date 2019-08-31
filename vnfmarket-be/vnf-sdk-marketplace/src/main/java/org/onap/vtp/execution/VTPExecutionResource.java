@@ -70,6 +70,7 @@ import io.swagger.annotations.ApiResponses;
 @Path("/vtp")
 @Api(tags = {"VTP Execution"})
 public class VTPExecutionResource  extends VTPResource{
+    private static final String EXECUTION_ID = "exection-id";
     public VTPTestExecutionList executeHandler(VTPTestExecutionList executions, String requestId) throws VTPException, IOException {
         if (requestId == null) {
             requestId = UUID.randomUUID().toString();
@@ -89,7 +90,7 @@ public class VTPExecutionResource  extends VTPResource{
                     );
             String endTime = dateFormatter.format(new Date());
             execution.setEndTime(endTime);
-            execution.setExecutionId(output.getAddonsMap().get("execution-id"));
+            execution.setExecutionId(output.getAddonsMap().get(EXECUTION_ID));
 
             // set execution status based on success from test.
             if (output.getSuccess()) {
@@ -248,8 +249,8 @@ public class VTPExecutionResource  extends VTPResource{
                         if (n.get("end-time") != null)
                             exec.setEndTime(n.get("end-time").asText());
 
-                        if (n.get("execution-id") != null)
-                            exec.setExecutionId(n.get("execution-id").asText());
+                        if (n.get(EXECUTION_ID) != null)
+                            exec.setExecutionId(n.get(EXECUTION_ID).asText());
                         if (n.get("request-id") != null)
                             exec.setRequestId(n.get("request-id").asText());
 
@@ -315,8 +316,8 @@ public class VTPExecutionResource  extends VTPResource{
             if (result.get("end-time") != null)
                 exec.setEndTime(result.get("end-time").asText());
 
-            if (result.get("execution-id") != null)
-                exec.setExecutionId(result.get("execution-id").asText());
+            if (result.get(EXECUTION_ID) != null)
+                exec.setExecutionId(result.get(EXECUTION_ID).asText());
             if (result.get("request-id") != null)
                 exec.setExecutionId(result.get("request-id").asText());
 

@@ -22,6 +22,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RestResponse {
 
+    private Integer statusCode;
+
+    private String result;
+
     public Integer getStatusCode() {
         return statusCode;
     }
@@ -38,7 +42,4 @@ public class RestResponse {
         this.result = result;
     }
 
-    private Integer statusCode;
-
-    private String result;
 }
