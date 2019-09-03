@@ -70,7 +70,19 @@ import io.swagger.annotations.ApiResponses;
 @Path("/vtp")
 @Api(tags = {"VTP Execution"})
 public class VTPExecutionResource  extends VTPResource{
-    private static final String EXECUTION_ID = "exection-id";
+    private static final String EXECUTION_ID = "execution-id";
+    private static final String START_TIME = "start-time";
+    private static final String END_TIME = "end-time";
+    private static final String REQUEST_ID = "request-id";
+    private static final String PRODUCT = "product";
+    private static final String SERVICE = "service";
+    private static final String COMMAND = "command";
+    private static final String PROFILE = "profile";
+    private static final String STATUS = "status";
+    private static final String OUTPUT = "output";
+    private static final String INPUT = "input";
+
+
     public VTPTestExecutionList executeHandler(VTPTestExecutionList executions, String requestId) throws VTPException, IOException {
         if (requestId == null) {
             requestId = UUID.randomUUID().toString();
@@ -243,27 +255,32 @@ public class VTPExecutionResource  extends VTPResource{
                     JsonNode n = it.next();
                     if (n.elements().hasNext()) {
                         VTPTestExecution exec = new VTPTestExecution();
-                        if (n.get("start-time") != null)
-                            exec.setStartTime(n.get("start-time").asText());
+                        if (n.get(START_TIME) != null)
+                            exec.setStartTime(n.get(START_TIME).asText());
 
-                        if (n.get("end-time") != null)
-                            exec.setEndTime(n.get("end-time").asText());
+                        if (n.get(END_TIME) != null)
+                            exec.setEndTime(n.get(END_TIME).asText());
 
                         if (n.get(EXECUTION_ID) != null)
                             exec.setExecutionId(n.get(EXECUTION_ID).asText());
-                        if (n.get("request-id") != null)
-                            exec.setRequestId(n.get("request-id").asText());
 
-                        if (n.get("product") != null)
-                            exec.setScenario(n.get("product").asText());
-                        if (n.get("service") != null)
-                            exec.setTestSuiteName(n.get("service").asText());
-                        if (n.get("command") != null)
-                            exec.setTestCaseName(n.get("command").asText());
-                        if (n.get("profile") != null)
-                            exec.setExecutionId(n.get("profile").asText());
-                        if (n.get("status") != null)
-                            exec.setStatus(n.get("status").asText());
+                        if (n.get(REQUEST_ID) != null)
+                            exec.setRequestId(n.get(REQUEST_ID).asText());
+
+                        if (n.get(PRODUCT) != null)
+                            exec.setScenario(n.get(PRODUCT).asText());
+
+                        if (n.get(SERVICE) != null)
+                            exec.setTestSuiteName(n.get(SERVICE).asText());
+
+                        if (n.get(COMMAND) != null)
+                            exec.setTestCaseName(n.get(COMMAND).asText());
+
+                        if (n.get(PROFILE) != null)
+                            exec.setExecutionId(n.get(PROFILE).asText());
+
+                        if (n.get(STATUS) != null)
+                            exec.setStatus(n.get(STATUS).asText());
 
                         list.getExecutions().add(exec);
                     }
@@ -310,43 +327,43 @@ public class VTPExecutionResource  extends VTPResource{
         VTPTestExecution exec = new VTPTestExecution();
 
         if (result != null && result.elements().hasNext()) {
-            if (result.get("start-time") != null)
-                exec.setStartTime(result.get("start-time").asText());
+            if (result.get(START_TIME) != null)
+                exec.setStartTime(result.get(START_TIME).asText());
 
-            if (result.get("end-time") != null)
-                exec.setEndTime(result.get("end-time").asText());
+            if (result.get(END_TIME) != null)
+                exec.setEndTime(result.get(END_TIME).asText());
 
             if (result.get(EXECUTION_ID) != null)
                 exec.setExecutionId(result.get(EXECUTION_ID).asText());
-            if (result.get("request-id") != null)
-                exec.setExecutionId(result.get("request-id").asText());
+            if (result.get(REQUEST_ID) != null)
+                exec.setExecutionId(result.get(REQUEST_ID).asText());
 
-            if (result.get("product") != null)
-                exec.setScenario(result.get("product").asText());
-            if (result.get("service") != null)
-                exec.setTestSuiteName(result.get("service").asText());
-            if (result.get("command") != null)
-                exec.setTestCaseName(result.get("command").asText());
-            if (result.get("profile") != null)
-                exec.setExecutionId(result.get("profile").asText());
-            if (result.get("status") != null)
-                exec.setStatus(result.get("status").asText());
-            if (result.get("input") != null) {
-                exec.setParameters(result.get("input"));
+            if (result.get(PRODUCT) != null)
+                exec.setScenario(result.get(PRODUCT).asText());
+            if (result.get(SERVICE) != null)
+                exec.setTestSuiteName(result.get(SERVICE).asText());
+            if (result.get(COMMAND) != null)
+                exec.setTestCaseName(result.get(COMMAND).asText());
+            if (result.get(PROFILE) != null)
+                exec.setExecutionId(result.get(PROFILE).asText());
+            if (result.get(STATUS) != null)
+                exec.setStatus(result.get(STATUS).asText());
+            if (result.get(INPUT) != null) {
+                exec.setParameters(result.get(INPUT));
             }
-            if (result.get("output") != null) {
+            if (result.get(OUTPUT) != null) {
                 ObjectMapper mapper = new ObjectMapper();
                 JsonNode resultJson = null;
                 try {
-                    resultJson = mapper.readTree(result.get("output").asText());
+                    resultJson = mapper.readTree(result.get(OUTPUT).asText());
 
                     //workarround, sometimes its null.
                     if (resultJson == null) {
-                        resultJson = mapper.readTree(result.get("output").toString());
+                        resultJson = mapper.readTree(result.get(OUTPUT).toString());
                     }
                 } catch (Exception e) {
                     ObjectNode node = JsonNodeFactory.instance.objectNode();
-                    node.put("error", result.get("output").asText());
+                    node.put("error", result.get(OUTPUT).asText());
                     resultJson = node;
                 }
 
@@ -373,7 +390,7 @@ public class VTPExecutionResource  extends VTPResource{
     }
 
     public String getTestExecutionLogsHandler(
-            String executionId, String action) throws VTPException, IOException{
+            String executionId, String action) throws VTPException {
         List<String> args = new ArrayList<>();
         args.addAll(Arrays.asList(new String[] {
                 "--product", "open-cli", "execution-show-" + action, "--execution-id", executionId, "--format", "text"
@@ -397,7 +414,7 @@ public class VTPExecutionResource  extends VTPResource{
              @ApiParam("Test execution Id") @PathParam("executionId") String executionId,
              @ApiParam("Test console reports, Options: out, err, debug") @DefaultValue("out")  @QueryParam("option") String option
              ) throws VTPException, IOException {
-        if (!(option.equalsIgnoreCase("out") || option.equalsIgnoreCase("err") || option.equalsIgnoreCase("debug"))) {
+        if (!("out".equalsIgnoreCase(option) || "err".equalsIgnoreCase(option) || "debug".equalsIgnoreCase(option))) {
                 option = "out";
         }
 

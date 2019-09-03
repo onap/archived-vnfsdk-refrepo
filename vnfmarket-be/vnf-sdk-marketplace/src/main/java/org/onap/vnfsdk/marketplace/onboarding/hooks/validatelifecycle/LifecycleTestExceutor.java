@@ -130,11 +130,8 @@ public class LifecycleTestExceutor {
 			return result;
 		}
 
-		String rawDataJson = ""; //TBD - Use Gson - jackson has security issue//JsonUtil.toJson(oLifeCycleTestReq);
-//		if (null == rawDataJson) {
-//			logger.error("Failed to convert LifeCycleTestReq object to Json String !!!");
-//			return result;
-//		}
+		String rawDataJson = "";
+		//TBD - Use Gson - jackson has security issue//JsonUtil.toJson(oLifeCycleTestReq);
 
 		RestResponse oResponse = RestfulClient.sendPostRequest(oMsbDetails.getDefaultServer().getHost(),
 				oMsbDetails.getDefaultServer().getPort(), CommonConstant.LifeCycleTest.LIFECYCLE_TEST_URL, rawDataJson);
@@ -156,12 +153,9 @@ public class LifecycleTestExceutor {
 	 * @return valid(true) or invalid(false)
 	 */
 	private static boolean checkValidResponse(RestResponse rsp) {
-		if ((null == rsp.getStatusCode()) || (null == rsp.getResult())
-				|| (RestConstant.RESPONSE_CODE_200 != rsp.getStatusCode()
-						&& RestConstant.RESPONSE_CODE_201 != rsp.getStatusCode())) {
-			return false;
-		}
-		return true;
+		return ((null != rsp.getStatusCode()) && (null != rsp.getResult())
+				&& (RestConstant.RESPONSE_CODE_200 == rsp.getStatusCode()
+				|| RestConstant.RESPONSE_CODE_201 == rsp.getStatusCode()));
 	}
 
 	/**

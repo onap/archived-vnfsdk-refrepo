@@ -55,6 +55,7 @@ import io.swagger.annotations.ApiResponses;
 @Path("/vtp")
 @Api(tags = {"VTP Scenario"})
 public class VTPScenarioResource extends VTPResource{
+    private static final String DESCRIPTION = "description";
     public VTPTestScenarioList listTestScenariosHandler() throws VTPException, IOException{
         List<String> args = new ArrayList<>();
 
@@ -74,10 +75,11 @@ public class VTPScenarioResource extends VTPResource{
                     if (n.elements().hasNext()) {
                         String name = n.get("product").asText();
 
-                        if (name.equalsIgnoreCase("open-cli")) continue;
+                        if ("open-cli".equalsIgnoreCase(name))
+                            continue;
 
                         list.getScenarios().add(new VTPTestScenario().setName(name).setDescription(
-                                n.get("description").asText()));
+                                n.get(DESCRIPTION).asText()));
                     }
                 }
             }
@@ -116,7 +118,7 @@ public class VTPScenarioResource extends VTPResource{
                     JsonNode n = it.next();
                     if (n.elements().hasNext()) {
                         list.getSuites().add(new VTPTestSuite().setName(n.get("service").asText()).setDescription(
-                                n.get("description").asText()));
+                                n.get(DESCRIPTION).asText()));
                     }
                 }
             }
@@ -198,7 +200,7 @@ public class VTPScenarioResource extends VTPResource{
 
         VTPTestCase tc = new VTPTestCase();
         tc.setTestCaseName(schema.get("name").asText());
-        tc.setDescription(schema.get("description").asText());
+        tc.setDescription(schema.get(DESCRIPTION).asText());
         tc.setTestSuiteName(schema.get("service").asText());
         tc.setAuthor(schema.get("author").asText());
         JsonNode inputsJson = schema.get("inputs");
@@ -207,7 +209,7 @@ public class VTPScenarioResource extends VTPResource{
                 VTPTestCaseInput input = new VTPTestCaseInput();
 
                 input.setName(inputJson.get("name").asText());
-                input.setDescription(inputJson.get("description").asText());
+                input.setDescription(inputJson.get(DESCRIPTION).asText());
                 input.setType(inputJson.get("type").asText());
 
                 if (inputJson.get("is_optional") != null)
@@ -228,7 +230,7 @@ public class VTPScenarioResource extends VTPResource{
             for (final JsonNode outputJson: outputsJson) {
                 VTPTestCaseOutput output = new VTPTestCaseOutput();
                 output.setName(outputJson.get("name").asText());
-                output.setDescription(outputJson.get("description").asText());
+                output.setDescription(outputJson.get(DESCRIPTION).asText());
                 output.setType(outputJson.get("type").asText());
 
                 tc.getOutputs().add(output);

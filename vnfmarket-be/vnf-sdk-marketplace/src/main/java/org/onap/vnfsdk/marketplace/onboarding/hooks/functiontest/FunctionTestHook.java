@@ -141,7 +141,7 @@ public class FunctionTestHook {
 	private void storeFuncTestResultKey(OnBoradingRequest onBoradingReq, String resultKey) {
 		// Currently we will make JSON and Store JSON to Package Path)
 		// -------------------------------------------------------------------------------
-		StringBuffer filePath = new StringBuffer(getResultStorePath());
+		StringBuilder filePath = new StringBuilder(getResultStorePath());
 		filePath.append(File.separator);
 		filePath.append(onBoradingReq.getCsarId());
 		filePath.append(File.separator);
@@ -170,7 +170,7 @@ public class FunctionTestHook {
 		logger.debug("Function test Status for Package Id:" + oFuncTestResult.getCsarId() + ", Result:"
 				+ ToolUtil.objectToString(oFuncTestResult));
 		
-		StringBuffer filePath = new StringBuffer(getResultStorePath());
+		StringBuilder filePath = new StringBuilder(getResultStorePath());
 		filePath.append(File.separator);
 		filePath.append(oFuncTestResult.getCsarId());
 		filePath.append(File.separator);
@@ -212,7 +212,7 @@ public class FunctionTestHook {
 			return null;
 		}
 
-		StringBuffer filePath = new StringBuffer(getResultStorePath());
+		StringBuilder filePath = new StringBuilder(getResultStorePath());
 		filePath.append(File.separator);
 		filePath.append(packageData.getCsarId());
 		filePath.append(File.separator);
@@ -224,7 +224,7 @@ public class FunctionTestHook {
 	}
 
 	private static ResultKey getFuncTestResultKey(PackageData packageData) {
-		StringBuffer fileName = new StringBuffer(getResultStorePath());
+		StringBuilder fileName = new StringBuilder(getResultStorePath());
 		fileName.append(File.separator);
 		fileName.append(packageData.getCsarId());
 		fileName.append(File.separator);

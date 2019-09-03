@@ -176,12 +176,9 @@ public class FunctionTestExceutor {
 	 * @return valid or invalid
 	 */
 	private static boolean checkValidResponse(RestResponse rsp) {
-		if ((null == rsp.getStatusCode()) || (null == rsp.getResult())
-				|| (RestConstant.RESPONSE_CODE_200 != rsp.getStatusCode()
-						&& RestConstant.RESPONSE_CODE_201 != rsp.getStatusCode())) {
-			return false;
-		}
-		return true;
+		return ((null != rsp.getStatusCode()) && (null != rsp.getResult())
+				&& (RestConstant.RESPONSE_CODE_200 == rsp.getStatusCode()
+				|| RestConstant.RESPONSE_CODE_201 == rsp.getStatusCode()));
 	}
 
 	private static HttpEntity buildRequest(InputStream inputStream) {

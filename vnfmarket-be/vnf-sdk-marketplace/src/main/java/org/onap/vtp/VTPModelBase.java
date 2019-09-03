@@ -36,7 +36,6 @@ public class VTPModelBase {
             objectMapper.setSerializationInclusion(Include.NON_EMPTY);
             return objectMapper.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
-            logger.error("Exception while processing json {}", e.getMessage());
             return "{}";
         }
     }

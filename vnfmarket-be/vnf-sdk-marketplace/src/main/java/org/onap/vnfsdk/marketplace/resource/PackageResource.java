@@ -161,7 +161,7 @@ public class PackageResource {
             @FormDataParam("params") String details,
             @ApiParam(value = "file detail", required = false) @FormDataParam("file") FormDataContentDisposition fileDetail,
             @ApiParam(value = "http header") @Context HttpHeaders head)
-            throws MarketplaceResourceException {
+    {
         return PackageWrapper.getInstance().reUploadPackage(csarId, uploadedInputStream, fileDetail, details, head);
     }
 

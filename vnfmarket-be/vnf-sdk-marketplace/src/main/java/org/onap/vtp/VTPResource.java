@@ -105,8 +105,7 @@ public class VTPResource {
     protected JsonNode makeRpcAndGetJson(List<String> args, int timeout) throws VTPException, IOException {
         Result result = this.makeRpc(args, timeout);
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode resultJson = mapper.readTree(result.getOutput());
-        return resultJson;
+        return mapper.readTree(result.getOutput());
     }
 
     protected Output makeRpc(String scenario, String requestId, String profile, String testCase, JsonNode argsJsonNode) throws VTPException {

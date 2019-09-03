@@ -17,13 +17,13 @@
 package org.onap.vtp.execution.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
 
 import org.onap.vtp.VTPModelBase;
 
 import com.fasterxml.jackson.databind.JsonNode;
+
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 
 public class VTPTestExecution extends VTPModelBase{
@@ -35,7 +35,7 @@ public class VTPTestExecution extends VTPModelBase{
     private String profile;
     private JsonNode parameters = JsonNodeFactory.instance.objectNode();
     private JsonNode results = JsonNodeFactory.instance.objectNode();
-    public static enum Status {
+    public enum Status {
         IN_PROGRESS, COMPLETED, FAILED;
     }
 
