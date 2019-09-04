@@ -18,26 +18,44 @@
 # VTP Installation script supported on Ubuntu 16.04 64 bit
 #
 
-export OCLIP_DOWNLOAD_URL="https://nexus.onap.org/service/local/artifact/maven/redirect?r=releases&g=org.onap.cli&a=cli-zip&e=zip&v=LATEST"
-export VTP_DOWNLOAD_URL="https://nexus.onap.org/service/local/artifact/maven/redirect?r=releases&g=org.onap.vnfsdk.refrepo&a=vnf-sdk-marketplace&e=war&v=LATEST"
-export CSAR_VALIDATE_DOWNLOAD_URL="https://nexus.onap.org/service/local/artifact/maven/redirect?r=releases&g=org.onap.vnfsdk.validation&a=csarvalidation-deployment&e=zip&v=LATEST"
-export CSAR_VALIDATE_JAR_DOWNLOAD_URL="https://nexus.onap.org/service/local/artifact/maven/redirect?r=releases&g=org.onap.vnfsdk.validation&a=validation-csar&e=jar&v=LATEST"
+if [ -z "$OCLIP_DOWNLOAD_URL" ]
+then
+    export OCLIP_DOWNLOAD_URL="https://nexus.onap.org/service/local/artifact/maven/redirect?r=releases&g=org.onap.cli&a=cli-zip&e=zip&v=LATEST"
+fi
+
+if [ -z "$VTP_DOWNLOAD_URL" ]
+then
+    export VTP_DOWNLOAD_URL="https://nexus.onap.org/service/local/artifact/maven/redirect?r=releases&g=org.onap.vnfsdk.refrepo&a=vnf-sdk-marketplace&e=war&v=LATEST"
+fi
+
+if [ -z "$CSAR_VALIDATE_DOWNLOAD_URL" ]
+then
+    export CSAR_VALIDATE_DOWNLOAD_URL="https://nexus.onap.org/service/local/artifact/maven/redirect?r=releases&g=org.onap.vnfsdk.validation&a=csarvalidation-deployment&e=zip&v=LATEST"
+fi
+
+if [ -z "$CSAR_VALIDATE_JAR_DOWNLOAD_URL" ]
+then
+    export CSAR_VALIDATE_JAR_DOWNLOAD_URL="https://nexus.onap.org/service/local/artifact/maven/redirect?r=releases&g=org.onap.vnfsdk.validation&a=validation-csar&e=jar&v=LATEST"
+fi
+
 export TOMCAT8_DOWNLOAD_URL="https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.30/bin/apache-tomcat-8.5.30.tar.gz"
 export SAMPLE_VTP_CSAR="https://github.com/onap/vnfsdk-validation/raw/master/csarvalidation/src/test/resources/VoLTE.csar"
 #export VVP_GITHUB="https://github.com/onap/vvp-validation-scripts"
 #export SAMPLE_VTP_HOT="https://git.openstack.org/cgit/openstack/heat-templates/plain/hot/hello_world.yaml"
 
 export VTP_STAGE_DIR=/opt/vtp_stage
-
 export OPEN_CLI_HOME=/opt/oclip
 export PATH=$OPEN_CLI_HOME/bin:$PATH
 export CATALINA_HOME=/opt/controller
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
-export ONAP_VVP_HOME=$VTP_STAGE_DIR/vvp-validation-scripts/ice_validator
-export VTP_TRACK_MARK=++++++++++++++++++++++++
-#init.d or systemd
-export SERVICE_MODE=init.d
+#export ONAP_VVP_HOME=$VTP_STAGE_DIR/vvp-validation-scripts/ice_validator
+export VTP_TRACK_MARK=+++++++++++++++++++++++++++++++++++
 
+#init.d or systemd
+if [ -z "$SERVICE_MODE" ]
+then
+    export SERVICE_MODE=init.d
+fi
 
 function vtp_download() {
     echo $VTP_TRACK_MARK Downloading VTP binaries and setup the dependencies ...
@@ -127,8 +145,13 @@ function vtp_csar_validation_install() {
     if [ ! -f $OPEN_CLI_HOME/lib/csar-validate.jar ]
     then
         echo "$VTP_TRACK_MARK Installing CSAR Validation Test cases (TOSCA & HEAT)"
-        mkdir -p $OPEN_CLI_HOME/CSAR-VALIDATE
+        mkdir -p $VTP_STAGE_DIR/CSAR-VALIDATE
+        unzip $VTP_STAGE_DIR/CSAR-VALIDATE.zip -d $VTP_STAGE_DIR/CSAR-VALIDATE
         cp $VTP_STAGE_DIR/csar-validate.jar $OPEN_CLI_HOME/lib
+        cp $VTP_STAGE_DIR/CSAR-VALIDATE/commons-lang3*.jar $OPEN_CLI_HOME/lib
+        cp $VTP_STAGE_DIR/CSAR-VALIDATE/validation-csar*.jar $OPEN_CLI_HOME/lib
+        cp $VTP_STAGE_DIR/CSAR-VALIDATE/bcpkix-jdk15on-1.61.jar $OPEN_CLI_HOME/lib
+        cp $VTP_STAGE_DIR/CSAR-VALIDATE/bcprov-jdk15on-1.61.jar $OPEN_CLI_HOME/lib
     else
         echo "CSAR Validation Test cases (TOSCA & HEAT) already installed"
     fi
@@ -169,7 +192,7 @@ function vtp_stop() {
     echo $VTP_TRACK_MARK Stoping VTP Backend...
     if [[ $SERVICE_MODE == 'systemd' ]]
     then
-       systemctl stop oclip
+       systemctl stop oclip | cat
        systemctl status oclip | cat
     else
         service oclip-grpc stop
@@ -191,9 +214,11 @@ function vtp_purge() {
     echo $VTP_TRACK_MARK Purging VTP...
     rm -rf $OPEN_CLI_HOME
     rm -rf $CATALINA_HOME
+    rm -rf $VTP_STAGE_DIR/CSAR-VALIDATE
 
     rm -f /etc/systemd/system/oclip.service
-    rm -f /etc/init.d/oclip
+    systemctl daemon-reload | cat
+    rm -f /etc/init.d/oclip-grpc
 
     #vtp_vvp_uninstall
 }
@@ -236,7 +261,7 @@ function vtp_test() {
 
     echo $VTP_TRACK_MARK Check the VTP Controller
     curl -X GET http://localhost:8080/onapapi/vnfsdk-marketplace/v1/vtp/scenarios
-    curl -X GET http://localhost:8080/onapapi/vnfsdk-marketplace/v1/vtp/scenarios/onap-vtp/testcases
+    curl -X GET http://localhost:8080/onapapi/vnfsdk-marketplace/v1/vtp/scenarios/onap-dublin/testsuites
     echo ..... Happy VTPing ......
 }
 
