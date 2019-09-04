@@ -17,6 +17,18 @@
 #*******************************************************************************
 # VTP Installation script supported on Ubuntu 16.04 64 bit
 #
+#./vtp_install.sh --download      : It will download all required artifacts into /opt/vtp_stage
+#./vtp_install.sh --install       : It will install VTP (/opt/controller) and CLI (/opt/oclip)
+#./vtp_install.sh --start         : It will start VTP controller as tomcat service and CLI as oclip service
+#./vtp_install.sh --verify        : It will verify the setup is done properly by running some test cases.
+#./vtp_install.sh --uninstall     : It will stop and uninstall the VTP
+#./vtp_install.sh --clean         : It will remove the downloaded artifacts
+
+#Customize the download URL as below
+#export OCLIP_DOWNLOAD_URL="https://nexus.onap.org/content/repositories/snapshots/org/onap/cli/cli-zip/4.0.0-SNAPSHOT/cli-zip-4.0.0-20190904.095516-170.zip"
+#export VTP_DOWNLOAD_URL="https://nexus.onap.org/content/repositories/snapshots/org/onap/vnfsdk/refrepo/vnf-sdk-marketplace/1.3.3-SNAPSHOT/vnf-sdk-marketplace-1.3.3-20190903.092849-18.war"
+#export CSAR_VALIDATE_DOWNLOAD_URL="https://nexus.onap.org/content/repositories/snapshots/org/onap/vnfsdk/validation/csarvalidation-deployment/1.2.2-SNAPSHOT/csarvalidation-deployment-1.2.2-20190904.082836-6.zip"
+#export CSAR_VALIDATE_JAR_DOWNLOAD_URL="https://nexus.onap.org/content/repositories/snapshots/org/onap/vnfsdk/validation/validation-csar/1.2.2-SNAPSHOT/validation-csar-1.2.2-20190904.082829-6.jar"
 
 if [ -z "$OCLIP_DOWNLOAD_URL" ]
 then
@@ -54,7 +66,7 @@ export VTP_TRACK_MARK=+++++++++++++++++++++++++++++++++++
 #init.d or systemd
 if [ -z "$SERVICE_MODE" ]
 then
-    export SERVICE_MODE=init.d
+    export SERVICE_MODE=systemd
 fi
 
 function vtp_download() {
@@ -306,4 +318,16 @@ then
     vtp_test
 else
     echo "$0 [ --install | --uninstall | --start | --stop | --verify | --download | --clean]"
+    echo "--download      : It will download all required artifacts into /opt/vtp_stage"
+    echo "--install       : It will install VTP (/opt/controller) and CLI (/opt/oclip)"
+    echo "--start         : It will start VTP controller as tomcat service and CLI as oclip service"
+    echo "--verify        : It will verify the setup is done properly by running some test cases"
+    echo "--uninstall     : It will stop and uninstall the VTP"
+    echo "--clean         : It will remove the downloaded artifacts"
+    echo
+    echo "Customize the download URL as below from latest snapshot or release onap repository"
+    echo "export OCLIP_DOWNLOAD_URL=\"https://nexus.onap.org/content/repositories/snapshots/org/onap/cli/cli-zip/4.0.0-SNAPSHOT/cli-zip-4.0.0-20190904.095516-170.zip\""
+    echo "export VTP_DOWNLOAD_URL=\"https://nexus.onap.org/content/repositories/snapshots/org/onap/vnfsdk/refrepo/vnf-sdk-marketplace/1.3.3-SNAPSHOT/vnf-sdk-marketplace-1.3.3-20190903.092849-18.war\""
+    echo "export CSAR_VALIDATE_DOWNLOAD_URL=\"https://nexus.onap.org/content/repositories/snapshots/org/onap/vnfsdk/validation/csarvalidation-deployment/1.2.2-SNAPSHOT/csarvalidation-deployment-1.2.2-20190904.082836-6.zip\""
+    echo "export CSAR_VALIDATE_JAR_DOWNLOAD_URL=\"https://nexus.onap.org/content/repositories/snapshots/org/onap/vnfsdk/validation/validation-csar/1.2.2-SNAPSHOT/validation-csar-1.2.2-20190904.082829-6.jar\""
 fi
