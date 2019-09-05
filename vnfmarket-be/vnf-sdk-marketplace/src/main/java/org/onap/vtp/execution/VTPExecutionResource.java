@@ -260,7 +260,7 @@ public class VTPExecutionResource  extends VTPResource{
                         if (n.get("command") != null)
                             exec.setTestCaseName(n.get("command").asText());
                         if (n.get("profile") != null)
-                            exec.setExecutionId(n.get("profile").asText());
+                            exec.setProfile(n.get("profile").asText());
                         if (n.get("status") != null)
                             exec.setStatus(n.get("status").asText());
 
