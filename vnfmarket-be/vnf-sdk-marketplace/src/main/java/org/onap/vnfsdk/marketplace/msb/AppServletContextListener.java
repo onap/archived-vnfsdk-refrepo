@@ -25,12 +25,14 @@ public class AppServletContextListener implements ServletContextListener
     @Override
     public void contextInitialized(ServletContextEvent eventData)
     {
+        //Do nothing
 
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent eventData)
     {
+        //Do nothing
 
     }
 }

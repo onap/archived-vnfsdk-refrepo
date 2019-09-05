@@ -22,7 +22,7 @@ public class ErrorCodeException extends Exception {
 
     private final int errorCode;
 
-    public ErrorCodeException(Throwable source, int category, int code, String debugMessage, String[] arguments) {
+    public ErrorCodeException(Throwable source, int code, String debugMessage) {
         super(debugMessage, source);
         this.errorCode = code;
     }

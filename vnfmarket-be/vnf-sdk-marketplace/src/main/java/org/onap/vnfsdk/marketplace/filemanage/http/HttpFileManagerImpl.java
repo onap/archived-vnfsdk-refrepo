@@ -49,7 +49,7 @@ public class HttpFileManagerImpl implements FileManager {
 
   @Override
   public boolean download(String srcPath, String dstPath) {
-    // TODO Auto-generated method stub
+
     return false;
   }
 

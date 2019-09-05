@@ -94,7 +94,7 @@ public abstract class BaseHandler<T extends BaseData> {
 
 
   @SuppressWarnings({"rawtypes", "unchecked"})
-  public void update(T data) throws MarketplaceResourceException {
+  public void update(T data) {
     logger.info("BaseHandler:start update data.info:" + MarketplaceDbUtil.objectToString(data));
     IMarketplaceDao dao = new MarketplaceDaoImpl();
     dao.updatePackageData((PackageData)data);
