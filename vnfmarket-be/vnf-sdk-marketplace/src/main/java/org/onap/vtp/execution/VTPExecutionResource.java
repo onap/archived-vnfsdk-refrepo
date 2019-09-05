@@ -16,6 +16,7 @@
 
 package org.onap.vtp.execution;
 
+import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.StandardCopyOption;
@@ -27,6 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -81,9 +83,11 @@ public class VTPExecutionResource  extends VTPResource{
     private static final String STATUS = "status";
     private static final String OUTPUT = "output";
     private static final String INPUT = "input";
+    private static final String ERROR = "error";
+    private static final String FILE = "file://";
 
 
-    public VTPTestExecutionList executeHandler(VTPTestExecutionList executions, String requestId) throws VTPException, IOException {
+    public VTPTestExecutionList executeHandler(VTPTestExecutionList executions, String requestId) throws Exception {
         if (requestId == null) {
             requestId = UUID.randomUUID().toString();
         }
@@ -116,8 +120,8 @@ public class VTPExecutionResource  extends VTPResource{
             // tests can fail but still produce results.
             ObjectMapper mapper = new ObjectMapper();
             Map<String,String> m = output.getAttrsMap();
-            if ((m.containsKey("error")) && (!StringUtils.equals(m.get("error"), "{}"))) {
-              execution.setResults(mapper.readTree(m.get("error")));
+            if ((m.containsKey(ERROR)) && (!StringUtils.equals(m.get(ERROR), "{}"))) {
+              execution.setResults(mapper.readTree(m.get(ERROR)));
             }
             else if (m.containsKey("results")) {
               execution.setResults(mapper.readTree(m.get("results")));
@@ -170,18 +174,18 @@ public class VTPExecutionResource  extends VTPResource{
     public Response executeTestcases(
              @ApiParam(value = "Request Id") @QueryParam("requestId") String requestId,
              @ApiParam(value = "Testcase File arguments", required = false) @FormDataParam("file") List<FormDataBodyPart> bodyParts,
-             @FormDataParam("executions") String executionsJson) throws VTPException, IOException {
+             @FormDataParam("executions") String executionsJson) throws Exception {
 
         VTPTestExecutionList executions = new VTPTestExecution.VTPTestExecutionList();
         Map<String, String> map = this.storeTestCaseInputFiles(bodyParts);
 
         for (Map.Entry<String, String> entry: map.entrySet()) {
-            if (executionsJson.contains("file://" + entry.getKey())) {
-                executionsJson = executionsJson.replaceAll("file://" + entry.getKey(), entry.getValue());
+            if (executionsJson.contains(FILE + entry.getKey())) {
+                executionsJson = executionsJson.replaceAll(FILE + entry.getKey(), entry.getValue());
             }
         }
 
-        if (executionsJson.contains("file://")) {
+        if (executionsJson.contains(FILE)) {
             VTPError err = new VTPError()
                     .setMessage("Some file form-data is missing as executions has input parameter tagged with file://")
                     .setHttpStatus(HttpStatus.BAD_REQUEST_400);
@@ -208,7 +212,7 @@ public class VTPExecutionResource  extends VTPResource{
             String testCaseName,
             String profile,
             String startTime,
-            String endTime) throws VTPException, IOException{
+            String endTime) throws Exception{
         List<String> args = new ArrayList<>();
         args.addAll(Arrays.asList(new String[] {
                 "--product", "open-cli", "execution-list", "--format", "json"
@@ -308,14 +312,14 @@ public class VTPExecutionResource  extends VTPResource{
              @ApiParam("Test profile name") @QueryParam("profileName") String profileName,
              @ApiParam("Test execution start time") @QueryParam("startTime") String startTime,
              @ApiParam("Test execution end time") @QueryParam("endTime") String endTime
-             ) throws VTPException, IOException {
+             ) throws Exception {
 
         return Response.ok(this.listTestExecutionsHandler(
                 requestId, scenario, testsuiteName, testcaseName, profileName, startTime, endTime).getExecutions().toString(), MediaType.APPLICATION_JSON).build();
     }
 
     public VTPTestExecution getTestExecutionHandler(
-            String executionId) throws VTPException, IOException{
+            String executionId) throws Exception{
         List<String> args = new ArrayList<>();
         args.addAll(Arrays.asList(new String[] {
                 "--product", "open-cli", "execution-show", "--execution-id", executionId, "--format", "json"
@@ -362,9 +366,11 @@ public class VTPExecutionResource  extends VTPResource{
                         resultJson = mapper.readTree(result.get(OUTPUT).toString());
                     }
                 } catch (Exception e) {
+                    LOG.error("Exception occirs", e);
                     ObjectNode node = JsonNodeFactory.instance.objectNode();
-                    node.put("error", result.get(OUTPUT).asText());
+                    node.put(ERROR, result.get(OUTPUT).asText());
                     resultJson = node;
+
                 }
 
                 exec.setResults(resultJson);
@@ -384,7 +390,7 @@ public class VTPExecutionResource  extends VTPResource{
                     response = VTPError.class) })
     public Response getTestExecution(
              @ApiParam("Test execution Id") @PathParam("executionId") String executionId
-             ) throws VTPException, IOException {
+             ) throws Exception {
 
         return Response.ok(this.getTestExecutionHandler(executionId).toString(), MediaType.APPLICATION_JSON).build();
     }
@@ -413,7 +419,7 @@ public class VTPExecutionResource  extends VTPResource{
     public Response getTestExecutionLogs(
              @ApiParam("Test execution Id") @PathParam("executionId") String executionId,
              @ApiParam("Test console reports, Options: out, err, debug") @DefaultValue("out")  @QueryParam("option") String option
-             ) throws VTPException, IOException {
+             ) throws VTPException {
         if (!("out".equalsIgnoreCase(option) || "err".equalsIgnoreCase(option) || "debug".equalsIgnoreCase(option))) {
                 option = "out";
         }

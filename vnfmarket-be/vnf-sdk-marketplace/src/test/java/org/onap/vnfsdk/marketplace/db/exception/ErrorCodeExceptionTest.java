@@ -25,7 +25,7 @@ public class ErrorCodeExceptionTest {
 
     @Before
     public void setUp() {
-        e1 = new ErrorCodeException(null, 0, 0, null, null);
+        e1 = new ErrorCodeException(null, 0, null);
     }
 
     @Test
