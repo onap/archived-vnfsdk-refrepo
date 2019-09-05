@@ -70,7 +70,6 @@ import org.onap.vnfsdk.marketplace.onboarding.entity.OnBoradingRequest;
 import org.onap.vnfsdk.marketplace.onboarding.entity.ResultKey;
 import org.onap.vnfsdk.marketplace.onboarding.hooks.functiontest.FunctionTestExceutor;
 import org.onap.vnfsdk.marketplace.onboarding.hooks.functiontest.FunctionTestHook;
-import org.onap.vnfsdk.marketplace.resource.PackageResource;
 import org.onap.vnfsdk.marketplace.rest.RestResponse;
 import org.onap.vnfsdk.marketplace.rest.RestfulClient;
 import org.onap.vnfsdk.marketplace.wrapper.PackageWrapper;

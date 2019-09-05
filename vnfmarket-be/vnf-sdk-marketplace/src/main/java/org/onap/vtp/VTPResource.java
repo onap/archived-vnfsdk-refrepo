@@ -80,9 +80,11 @@ public class VTPResource {
                     timeout,
                     requestId).run(args);
         } catch(OpenInterfaceGrpcClient.OpenInterfaceGrpcTimeoutExecption e) {
+            LOG.info("Timed out.", e);
             throw new VTPException(
                   new VTPError().setHttpStatus(HttpStatus.SC_GATEWAY_TIMEOUT).setMessage("Timed out. Please use request-id to track the progress.").setCode(VTPError.TIMEOUT));
         } catch (Exception e) {
+            LOG.info("Exception occurs.", e);
             throw new VTPException(new VTPError().setMessage(e.getMessage()));
         }
 
@@ -123,9 +125,11 @@ public class VTPResource {
                     timeout,
                     requestId).invoke(scenario, profile, testCase, args);
          } catch(OpenInterfaceGrpcClient.OpenInterfaceGrpcTimeoutExecption e) {
+            LOG.info("Timed out.", e);
              throw new VTPException(
                   new VTPError().setHttpStatus(HttpStatus.SC_GATEWAY_TIMEOUT).setMessage("Timed out. Please use request-id to track the progress.").setCode(VTPError.TIMEOUT));
         } catch (Exception e) {
+            LOG.info("Exception occurs", e);
             throw new VTPException(
                     new VTPError().setMessage(e.getMessage()));
         }

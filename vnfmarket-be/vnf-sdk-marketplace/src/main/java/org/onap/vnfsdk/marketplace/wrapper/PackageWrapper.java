@@ -72,7 +72,7 @@ public class PackageWrapper {
 
     private static final boolean DISABLE_VALIDATION = true;
 
-    private static final String fileFormat = ".csar";
+    private static final String FILE_FORMAT = ".csar";
 
     /**
      * get PackageWrapper instance.
@@ -198,7 +198,7 @@ public class PackageWrapper {
                     PackageWrapperUtil.getPackageMeta(packageId, fileName, fileLocation, basicInfo, details);
             try {
                 String path = basicInfo.getType().toString() + File.separator + basicInfo.getProvider() + File.separator
-                        + packageMeta.getCsarId() + File.separator + fileName.replace(fileFormat, "") + File.separator
+                        + packageMeta.getCsarId() + File.separator + fileName.replace(FILE_FORMAT, "") + File.separator
                         + basicInfo.getVersion();
 
                 String dowloadUri = File.separator + path + File.separator;
@@ -268,7 +268,7 @@ public class PackageWrapper {
                     .build();
         }
 
-        String fileName = "temp_" + packageId + fileFormat;
+        String fileName = "temp_" + packageId + FILE_FORMAT;
         if(null != fileDetail) {
             LOG.info("the fileDetail = " + ToolUtil.objectToString(fileDetail));
 
@@ -317,6 +317,7 @@ public class PackageWrapper {
         try {
             result = manageUpload(packageId, fileName, fileLocation, details, contentRange);
         } catch(ErrorCodeException e) {
+            LOG.error("ErrorCodeException occurs ",e);
             return Response.status(Status.EXPECTATION_FAILED)
                     .entity(new CommonErrorResponse("Package Name already exists")).build();
         }
@@ -394,7 +395,7 @@ public class PackageWrapper {
         String path = org.onap.vnfsdk.marketplace.filemanage.http.ToolUtil.getHttpServerAbsolutePath()
                 + File.separatorChar + packageData.getType() + File.separatorChar + packageData.getProvider()
                 + File.separatorChar + packageData.getCsarId() + File.separator + packageName + File.separatorChar
-                + packageData.getVersion() + File.separator + packageName + fileFormat;
+                + packageData.getVersion() + File.separator + packageName + FILE_FORMAT;
 
         LOG.info("downloadCsarPackagesById path is :  " + path);
 
