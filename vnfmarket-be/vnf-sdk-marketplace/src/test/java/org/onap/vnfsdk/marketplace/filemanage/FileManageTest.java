@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 
+import autovalue.shaded.org.apache.commons.lang.ObjectUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.onap.vnfsdk.marketplace.filemanage.http.ToolUtil;
