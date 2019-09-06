@@ -56,14 +56,19 @@ import io.swagger.annotations.ApiResponses;
 @Api(tags = {"VTP Scenario"})
 public class VTPScenarioResource extends VTPResource{
     private static final String DESCRIPTION = "description";
-    public VTPTestScenarioList listTestScenariosHandler() throws VTPException, IOException{
+    public VTPTestScenarioList listTestScenariosHandler() throws VTPException {
         List<String> args = new ArrayList<>();
 
         args.addAll(Arrays.asList(new String[] {
                 "--product", "open-cli", "product-list", "--format", "json"
                 }));
 
-        JsonNode results = this.makeRpcAndGetJson(args);
+        JsonNode results = null;
+        try {
+            results = this.makeRpcAndGetJson(args);
+        } catch (IOException e) {
+            LOG.error("IOException occurs",e);
+        }
 
         VTPTestScenarioList list = new VTPTestScenarioList();
 
@@ -96,18 +101,23 @@ public class VTPScenarioResource extends VTPResource{
             @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500,
                     message = "Failed to perform the operation",
                     response = VTPError.class) })
-    public Response listTestScenarios() throws VTPException, IOException {
+    public Response listTestScenarios() throws VTPException {
         return Response.ok(this.listTestScenariosHandler().getScenarios().toString(), MediaType.APPLICATION_JSON).build();
     }
 
-    public VTPTestSuiteList listTestSutiesHandler(String scenario) throws VTPException, IOException{
+    public VTPTestSuiteList listTestSutiesHandler(String scenario) throws VTPException {
         List<String> args = new ArrayList<>();
 
         args.addAll(Arrays.asList(new String[] {
                 "--product", "open-cli", "service-list", "--product", scenario, "--format", "json"
                 }));
 
-        JsonNode results = this.makeRpcAndGetJson(args);
+        JsonNode results = null;
+        try {
+            results = this.makeRpcAndGetJson(args);
+        } catch (IOException e) {
+            LOG.error("IOException occurs",e);
+        }
 
         VTPTestSuiteList list = new VTPTestSuiteList();
 
@@ -136,12 +146,12 @@ public class VTPScenarioResource extends VTPResource{
                     message = "Failed to perform the operation",
                     response = VTPError.class) })
     public Response listTestSuties(
-            @ApiParam("Test scenario name") @PathParam("scenario") String scenario) throws VTPException, IOException {
+            @ApiParam("Test scenario name") @PathParam("scenario") String scenario) throws VTPException {
 
         return Response.ok(this.listTestSutiesHandler(scenario).getSuites().toString(), MediaType.APPLICATION_JSON).build();
     }
 
-    public VTPTestCaseList listTestcasesHandler(String testSuiteName, String scenario) throws VTPException, IOException{
+    public VTPTestCaseList listTestcasesHandler(String testSuiteName, String scenario) throws VTPException {
         List<String> args = new ArrayList<>();
 
         args.addAll(Arrays.asList(new String[] {
@@ -152,7 +162,12 @@ public class VTPScenarioResource extends VTPResource{
             args.add(testSuiteName);
         }
 
-        JsonNode results = this.makeRpcAndGetJson(args);
+        JsonNode results = null;
+        try {
+            results = this.makeRpcAndGetJson(args);
+        } catch (IOException e) {
+            LOG.error("IOException occurs",e);
+        }
 
         VTPTestCaseList list = new VTPTestCaseList();
 
@@ -184,17 +199,22 @@ public class VTPScenarioResource extends VTPResource{
     public Response listTestcases(
              @ApiParam("Test scenario name") @PathParam("scenario") String scenario,
              @ApiParam("Test suite name") @QueryParam("testSuiteName") String testSuiteName
-             ) throws VTPException, IOException {
+             ) throws VTPException {
 
         return Response.ok(this.listTestcasesHandler(testSuiteName, scenario).getTestCases().toString(), MediaType.APPLICATION_JSON).build();
     }
 
-    public VTPTestCase getTestcaseHandler(String scenario, String testSuiteName, String testCaseName) throws VTPException, IOException {
+    public VTPTestCase getTestcaseHandler(String scenario, String testSuiteName, String testCaseName) throws VTPException {
         List<String> args = new ArrayList<>();
         args.addAll(Arrays.asList(new String[] {
                  "--product", "open-cli", "schema-show", "--product", scenario, "--service", testSuiteName, "--command", testCaseName , "--format", "json"
                 }));
-        JsonNode results = this.makeRpcAndGetJson(args);
+        JsonNode results = null;
+        try {
+            results = this.makeRpcAndGetJson(args);
+        } catch (IOException e) {
+            LOG.error("IOException occurs",e);
+        }
 
         JsonNode schema = results.get("schema");
 
@@ -253,7 +273,7 @@ public class VTPScenarioResource extends VTPResource{
             @ApiParam("Test scenario name") @PathParam("scenario") String scenario,
             @ApiParam(value = "Test case name") @PathParam("testSuiteName") String testSuiteName,
             @ApiParam(value = "Test case name") @PathParam("testCaseName") String testCaseName)
-                    throws IOException, VTPException {
+                    throws VTPException {
 
         return Response.ok(this.getTestcaseHandler(scenario, testSuiteName, testCaseName).toString(), MediaType.APPLICATION_JSON).build();
     }

@@ -86,8 +86,7 @@ public class VTPExecutionResource  extends VTPResource{
     private static final String ERROR = "error";
     private static final String FILE = "file://";
 
-
-    public VTPTestExecutionList executeHandler(VTPTestExecutionList executions, String requestId) throws Exception {
+    public VTPTestExecutionList executeHandler(VTPTestExecutionList executions, String requestId) throws VTPException {
         if (requestId == null) {
             requestId = UUID.randomUUID().toString();
         }
@@ -121,10 +120,18 @@ public class VTPExecutionResource  extends VTPResource{
             ObjectMapper mapper = new ObjectMapper();
             Map<String,String> m = output.getAttrsMap();
             if ((m.containsKey(ERROR)) && (!StringUtils.equals(m.get(ERROR), "{}"))) {
-              execution.setResults(mapper.readTree(m.get(ERROR)));
+                try {
+                    execution.setResults(mapper.readTree(m.get(ERROR)));
+                } catch (IOException e) {
+                    LOG.error("IOException occurs",e);
+                }
             }
             else if (m.containsKey("results")) {
-              execution.setResults(mapper.readTree(m.get("results")));
+                try {
+                    execution.setResults(mapper.readTree(m.get("results")));
+                } catch (IOException e) {
+                    LOG.error("IOException occurs",e);
+                }
             }
         }
 
@@ -174,10 +181,15 @@ public class VTPExecutionResource  extends VTPResource{
     public Response executeTestcases(
              @ApiParam(value = "Request Id") @QueryParam("requestId") String requestId,
              @ApiParam(value = "Testcase File arguments", required = false) @FormDataParam("file") List<FormDataBodyPart> bodyParts,
-             @FormDataParam("executions") String executionsJson) throws Exception {
+             @FormDataParam("executions") String executionsJson) throws VTPException {
 
         VTPTestExecutionList executions = new VTPTestExecution.VTPTestExecutionList();
-        Map<String, String> map = this.storeTestCaseInputFiles(bodyParts);
+        Map<String, String> map = null;
+        try {
+            map = this.storeTestCaseInputFiles(bodyParts);
+        } catch (IOException e) {
+            LOG.error("IOException occurs",e);
+        }
 
         for (Map.Entry<String, String> entry: map.entrySet()) {
             if (executionsJson.contains(FILE + entry.getKey())) {
@@ -193,13 +205,21 @@ public class VTPExecutionResource  extends VTPResource{
 
         }
 
-        executions.setExecutions(
-                    new ObjectMapper().readValue(executionsJson, new TypeReference<List<VTPTestExecution>>(){}));
+        try {
+            executions.setExecutions(
+                        new ObjectMapper().readValue(executionsJson, new TypeReference<List<VTPTestExecution>>(){}));
+        } catch (IOException e) {
+            LOG.error("IOException occurs",e);
+        }
 
         executions = this.executeHandler(executions, requestId);
 
         for (Map.Entry<String, String> entry: map.entrySet()) {
-            FileUtils.forceDelete(new File(entry.getValue()));
+            try {
+                FileUtils.forceDelete(new File(entry.getValue()));
+            } catch (IOException e) {
+                LOG.error("IOException occurs",e);
+            }
         }
 
         return Response.ok(executions.getExecutions().toString(), MediaType.APPLICATION_JSON).build();
@@ -366,7 +386,7 @@ public class VTPExecutionResource  extends VTPResource{
                         resultJson = mapper.readTree(result.get(OUTPUT).toString());
                     }
                 } catch (Exception e) {
-                    LOG.error("Exception occirs", e);
+                    LOG.error("Exception occurs", e);
                     ObjectNode node = JsonNodeFactory.instance.objectNode();
                     node.put(ERROR, result.get(OUTPUT).asText());
                     resultJson = node;
