@@ -37,7 +37,6 @@ import org.eclipse.jetty.http.HttpStatus;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.onap.vnfsdk.marketplace.db.connection.ConnectionUtil;
-import org.onap.vnfsdk.marketplace.db.exception.MarketplaceResourceException;
 import org.onap.vnfsdk.marketplace.entity.response.CsarFileUriResponse;
 import org.onap.vnfsdk.marketplace.entity.response.PackageMeta;
 import org.onap.vnfsdk.marketplace.entity.response.UploadPackageResponse;

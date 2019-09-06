@@ -1201,22 +1201,34 @@ public class PackageResourceTest {
     public void testisTrimedEmptyString() {
         boolean res = ToolUtil.isTrimedEmptyString(null);
         assertEquals(res, true);
-        res = ToolUtil.isTrimedEmptyString("    ");
+        res = ToolUtil.isTrimedEmptyString(" huawei ");
+        assertEquals(res, false);
+
+    }
+    @Test
+    public void testisTrimedEmptyArray() {
+        boolean res = ToolUtil.isTrimedEmptyArray(null);
         assertEquals(res, true);
+        String[] String1={"hua","wei"};
+        res = ToolUtil.isTrimedEmptyArray(String1);
+        assertEquals(res, false);
     }
 
     @Test
     public void testisEmptyCollection() {
-
-        boolean res = ToolUtil.isEmptyCollection(new ArrayList());
+        ArrayList arr1 = new ArrayList();
+        boolean res = ToolUtil.isEmptyCollection(arr1);
         assertEquals(res, true);
+        arr1.add("huawei");
+        res = ToolUtil.isEmptyCollection(arr1);
+        assertEquals(res, false);
     }
 
     @Test
     public void testisYamlFile() {
-        File fileObj = new File("test.txt");
+        File fileObj = new File("test.yaml");
         boolean res = ToolUtil.isYamlFile(fileObj);
-        assertEquals(res, false);
+        assertEquals(res, true);
     }
 
     @Test
@@ -1227,9 +1239,14 @@ public class PackageResourceTest {
 
     @Test
     public void testgetFormatFileSize() {
-        String res = ToolUtil.getFormatFileSize(10000000);
+        long fileSize = 1000*1000*1000*100;
+        String res = ToolUtil.getFormatFileSize(fileSize);
         assertNotNull(res);
-        res = ToolUtil.getFormatFileSize(10000);
+        res = ToolUtil.getFormatFileSize(1000000000);
+        assertNotNull(res);
+        res = ToolUtil.getFormatFileSize(200000);
+        assertNotNull(res);
+        res = ToolUtil.getFormatFileSize(100000);
         assertNotNull(res);
         res = ToolUtil.getFormatFileSize(100);
         assertNotNull(res);
@@ -1249,6 +1266,8 @@ public class PackageResourceTest {
         String res = ToolUtil.processFileName("abc.txt");
         assertNotNull(res);
         res = ToolUtil.processFileName("abc.zip");
+        assertNotNull(res);
+        res = ToolUtil.processFileName("abc");
         assertNotNull(res);
     }
 
@@ -1319,6 +1338,7 @@ public class PackageResourceTest {
 
     @Test
     public void testToolUtildeleteFile() {
+
         boolean res = ToolUtil.deleteFile("src/test/resources", "TestOut.txt");
         assertEquals(res, true);
     }

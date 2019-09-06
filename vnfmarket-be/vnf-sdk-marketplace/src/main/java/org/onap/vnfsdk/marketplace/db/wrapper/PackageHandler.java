@@ -91,7 +91,7 @@ public class PackageHandler extends BaseHandler<PackageData> {
     }
 
     @Override
-    public void check(PackageData packageData) throws MarketplaceResourceException {
+    public void check(PackageData packageData) {
         throw new UnsupportedOperationException();
     }
 }
