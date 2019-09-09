@@ -15,8 +15,8 @@
  */
 package org.onap.vtp.scenario.model;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,8 +33,8 @@ public class VTPTestCaseTest {
     }
     @Test
     public void testGetterSetter() throws Exception
-    {   ObjectMapper mapper = new ObjectMapper();
-        JsonNode actualObj = mapper.readTree("{\"k1\":\"v1\"}");
+    {   Gson mapper = new Gson();
+        JsonObject actualObj = mapper.fromJson("{\"k1\":\"v1\"}",JsonObject.class);
         List<VTPTestCase.VTPTestCaseInput> list= new ArrayList<>();
         List<VTPTestCase.VTPTestCaseOutput> list1=new ArrayList<>();
         vtpTestCase.setAuthor("abc");
