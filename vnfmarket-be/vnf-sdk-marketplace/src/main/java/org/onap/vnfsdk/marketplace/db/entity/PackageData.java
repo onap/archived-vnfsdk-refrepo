@@ -15,8 +15,6 @@
  */
 package org.onap.vnfsdk.marketplace.db.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -24,7 +22,6 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "catalog_package_table")
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class PackageData extends BaseData {
 
     @Id
