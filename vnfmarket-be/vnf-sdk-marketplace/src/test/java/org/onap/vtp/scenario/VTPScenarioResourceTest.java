@@ -15,13 +15,16 @@
  */
 package org.onap.vtp.scenario;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import mockit.Mock;
 import mockit.MockUp;
 import org.junit.Before;
 import org.junit.Test;
 import org.onap.vtp.VTPResource;
+import org.onap.vtp.error.VTPError;
 
 import java.io.IOException;
 import java.util.List;
@@ -41,10 +44,10 @@ public class VTPScenarioResourceTest {
     public void testListTestScenariosHandler() throws Exception {
         new MockUp<VTPResource>() {
             @Mock
-            public JsonNode makeRpcAndGetJson(List<String> args) throws IOException {
-                ObjectMapper mapper = new ObjectMapper();
+            public JsonElement makeRpcAndGetJson(List<String> args) throws IOException {
+                Gson mapper = new Gson();
                 String jsonvalue = "[{\"product\":\"onap-dublin\",\"description\":\"its 4th release\"}]";
-                JsonNode jsonNode = mapper.readTree(jsonvalue);
+                JsonElement jsonNode = mapper.fromJson(jsonvalue, JsonArray.class);
                 return jsonNode;
             }
         };
@@ -55,10 +58,10 @@ public class VTPScenarioResourceTest {
     public void testListTestSutiesHandler() throws Exception {
         new MockUp<VTPResource>() {
             @Mock
-            public JsonNode makeRpcAndGetJson(List<String> args) throws IOException {
-                ObjectMapper mapper = new ObjectMapper();
+            public JsonElement makeRpcAndGetJson(List<String> args) throws IOException {
+                Gson mapper = new Gson();
                 String jsonvalue = "[{\"product\":\"onap-dublin\",\"service\":\"test\",\"description\":\"its 4th release\"}]";
-                JsonNode jsonNode = mapper.readTree(jsonvalue);
+                JsonElement jsonNode = mapper.fromJson(jsonvalue, JsonArray.class);
                 return jsonNode;
             }
         };
@@ -84,17 +87,17 @@ public class VTPScenarioResourceTest {
     public void testGetTestcaseHandler() throws Exception {
         new MockUp<VTPResource>() {
             @Mock
-            public JsonNode makeRpcAndGetJson(List<String> args) throws IOException {
-                ObjectMapper mapper = new ObjectMapper();
-
+            public JsonElement makeRpcAndGetJson(List<String> args) throws IOException {
+                Gson mapper = new Gson();
                 String jsonvalue = "{\"schema\":{\"name\":\"cli\",\"product\":\"onap-dublin\",\"description\":\"its 4th release\"," +
                         "\"service\":\"test\",\"author\":\"jitendra\",\"inputs\":[{\"name\":\"abc\",\"description\":\"abc\"," +
-                        "\"type\":\"abc\",\"is_optional\":\"yes\",\"default_value\":\"abc\",\"metadata\":\"abc\"}]," +
+                        "\"type\":\"abc\",\"is_optional\":\"yes\",\"default_value\":\"abc\",\"metadata\":{\"abc\":\"abc\"}}]," +
                         "\"outputs\":[{\"name\":\"abc\",\"description\":\"abc\",\"type\":\"abc\"}]}}";
-                JsonNode jsonNode = mapper.readTree(jsonvalue);
+                JsonElement jsonNode = mapper.fromJson(jsonvalue, JsonObject.class);
                 return jsonNode;
             }
         };
         assertNotNull(vtpScenarioResource.getTestcaseHandler("open-cli", "testsuit", "testcase"));
     }
+
 }
