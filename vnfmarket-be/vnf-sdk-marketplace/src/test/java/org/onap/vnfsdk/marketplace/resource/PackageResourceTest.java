@@ -63,6 +63,7 @@ import org.onap.vnfsdk.marketplace.entity.response.CsarFileUriResponse;
 import org.onap.vnfsdk.marketplace.entity.response.PackageMeta;
 import org.onap.vnfsdk.marketplace.entity.response.PackageResponse;
 import org.onap.vnfsdk.marketplace.filemanage.http.HttpFileManagerImpl;
+import org.onap.vnfsdk.marketplace.msb.MsbDetails;
 import org.onap.vnfsdk.marketplace.msb.MsbDetailsHolder;
 import org.onap.vnfsdk.marketplace.msb.MsbServer;
 import org.onap.vnfsdk.marketplace.onboarding.entity.OnBoardingResult;
@@ -1082,6 +1083,29 @@ public class PackageResourceTest {
                 restResponse.setStatusCode(200);
                 restResponse.setResult("success");
                 return restResponse;
+            }
+        };
+
+        OnBoradingRequest onBoradingRequest = new OnBoradingRequest();
+        onBoradingRequest.setPackagePath(
+                "vnfmarket-be/deployment/zip/src/main/release/etc/conf");
+        onBoradingRequest.setPackageName("restclient.json");
+        new MockUp<FileUtil>() {
+            @Mock
+            public boolean validatePath(String path) {
+                return true;
+            }
+        };
+        new MockUp<MsbDetailsHolder>() {
+            @Mock
+            public synchronized MsbDetails getMsbDetails() {
+                String restClientPath = System.getProperty("user.dir");
+                MsbDetails msbDetails =
+                        (MsbDetails) FileUtil
+                                .readJsonDatafFromFile(restClientPath.substring(0, restClientPath.lastIndexOf("/") + 1) + File.separator + "/deployment/zip/src/main/release/etc/conf/restclient.json"
+                                        , MsbDetails.class);
+                return msbDetails;
+
             }
         };
         String dirPath = "etc//conf//restclient.json";

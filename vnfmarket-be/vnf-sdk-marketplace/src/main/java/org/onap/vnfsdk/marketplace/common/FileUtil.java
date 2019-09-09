@@ -15,27 +15,17 @@
  */
 package org.onap.vnfsdk.marketplace.common;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonParseException;
-/** note jackson has security vulnerabilities */
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 public final class FileUtil {
@@ -158,16 +148,17 @@ public final class FileUtil {
 			deleteFile(fileAbsPath);
 		}
 
-		ObjectMapper mapper = new ObjectMapper();
+		Gson gson = new Gson();
 		try {
-			mapper.writeValue(new File(fileAbsPath), obj);
+			String str = gson.toJson(obj);
+			gson.toJson(str, new FileWriter(new File(fileAbsPath)));
 			bResult = true;
-		} catch (JsonGenerationException e) {
-			logger.info("JsonGenerationException Exception: writeJsonDatatoFile-->" + fileAbsPath, e);
-		} catch (JsonMappingException e) {
-			logger.info("JsonMappingException Exception: writeJsonDatatoFile-->" + fileAbsPath, e);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
 			logger.info("IOException Exception: writeJsonDatatoFile-->" + fileAbsPath, e);
+		} catch (Exception e) {
+			logger.info("Json Exception: writeJsonDatatoFile-->" + fileAbsPath, e);
 		}
 		return bResult;
 	}
@@ -181,16 +172,14 @@ public final class FileUtil {
 		logger.info("read JsonData from file : {}" , fileAbsPath);
 
 		T obj = null;
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		Gson gson = new Gson();
 		try {
-			obj = mapper.readValue(new File(fileAbsPath), clazz);
-		} catch (JsonParseException e1) {
-			logger.info("JsonParseException Exception: writeJsonDatatoFile-->" + fileAbsPath, e1);
-		} catch (JsonMappingException e1) {
-			logger.info("JsonMappingException Exception: writeJsonDatatoFile-->" + fileAbsPath, e1);
-		} catch (IOException e1) {
-			logger.info("IOException Exception: writeJsonDatatoFile-->" + fileAbsPath, e1);
+			JsonReader jsonReader = new JsonReader(new FileReader(fileAbsPath));
+			obj = gson.fromJson(jsonReader, clazz);
+		}catch (IOException e) {
+			logger.info("IOException Exception: writeJsonDatatoFile-->" + fileAbsPath, e);
+		} catch (Exception e) {
+			logger.info("Json Exception: writeJsonDatatoFile-->" + fileAbsPath, e);
 		}
 		return obj;
 	}
