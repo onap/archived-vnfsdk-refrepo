@@ -1,12 +1,12 @@
 /**
  * Copyright 2018 Huawei Technologies Co., Ltd.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,6 +25,8 @@ import java.util.Properties;
 import java.util.TimeZone;
 import java.util.UUID;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import org.apache.http.HttpStatus;
 import org.onap.vtp.error.VTPError;
 import org.onap.vtp.error.VTPError.VTPException;
@@ -34,9 +36,6 @@ import org.open.infc.grpc.client.OpenInterfaceGrpcClient;
 import org.open.infc.grpc.client.OpenRemoteCli;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class VTPResource {
 
@@ -60,17 +59,17 @@ public class VTPResource {
             VTP_TEST_CENTER_PORT = Integer.parseInt(prp.getProperty("vtp.grpc.port"));
             VTP_ARTIFACT_STORE = prp.getProperty("vtp.artifact.store");
             VTP_EXECUTION_TEMP_STORE = prp.getProperty("vtp.file.store");
-            VTP_EXECUTION_GRPC_TIMEOUT = Integer.parseInt(prp.getProperty("vtp.grpc.timeout")) * 1000 ;
+            VTP_EXECUTION_GRPC_TIMEOUT = Integer.parseInt(prp.getProperty("vtp.grpc.timeout")) * 1000;
         } catch (Exception e) {  // NOSONAR
             LOG.error(e.getMessage());
         }
     }
 
-    protected Result makeRpc(List <String> args) throws VTPException {
+    protected Result makeRpc(List<String> args) throws VTPException {
         return this.makeRpc(args, VTP_EXECUTION_GRPC_TIMEOUT);
     }
 
-    protected Result makeRpc(List <String> args, int timeout) throws VTPException {
+    protected Result makeRpc(List<String> args, int timeout) throws VTPException {
         Result result = null;
         String requestId = UUID.randomUUID().toString();
         try {
@@ -79,9 +78,9 @@ public class VTPResource {
                     VTP_TEST_CENTER_PORT,
                     timeout,
                     requestId).run(args);
-        } catch(OpenInterfaceGrpcClient.OpenInterfaceGrpcTimeoutExecption e) {
+        } catch (OpenInterfaceGrpcClient.OpenInterfaceGrpcTimeoutExecption e) {
             throw new VTPException(
-                  new VTPError().setHttpStatus(HttpStatus.SC_GATEWAY_TIMEOUT).setMessage("Timed out. Please use request-id to track the progress.").setCode(VTPError.TIMEOUT));
+                    new VTPError().setHttpStatus(HttpStatus.SC_GATEWAY_TIMEOUT).setMessage("Timed out. Please use request-id to track the progress.").setCode(VTPError.TIMEOUT));
         } catch (Exception e) {
             throw new VTPException(new VTPError().setMessage(e.getMessage()));
         }
@@ -98,33 +97,33 @@ public class VTPResource {
         return VTP_ARTIFACT_STORE;
     }
 
-    protected JsonNode makeRpcAndGetJson(List<String> args) throws VTPException, IOException {
+    protected JsonElement makeRpcAndGetJson(List<String> args) throws VTPException, IOException {
         return this.makeRpcAndGetJson(args, VTP_EXECUTION_GRPC_TIMEOUT);
     }
 
-    protected JsonNode makeRpcAndGetJson(List<String> args, int timeout) throws VTPException, IOException {
+    protected JsonElement makeRpcAndGetJson(List<String> args, int timeout) throws VTPException, IOException {
         Result result = this.makeRpc(args, timeout);
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readTree(result.getOutput());
+        Gson mapper = new Gson();
+        return mapper.fromJson(result.getOutput(), JsonElement.class);
     }
 
-    protected Output makeRpc(String scenario, String requestId, String profile, String testCase, JsonNode argsJsonNode) throws VTPException {
+    protected Output makeRpc(String scenario, String requestId, String profile, String testCase, JsonElement argsJsonNode) throws VTPException {
         return this.makeRpc(scenario, requestId, profile, testCase, argsJsonNode, VTP_EXECUTION_GRPC_TIMEOUT);
     }
 
-    protected Output makeRpc(String scenario, String requestId, String profile, String testCase, JsonNode argsJsonNode, int timeout) throws VTPException {
+    protected Output makeRpc(String scenario, String requestId, String profile, String testCase, JsonElement argsJsonNode, int timeout) throws VTPException {
         Output output = null;
-        ObjectMapper mapper = new ObjectMapper();
-        Map <String, String> args = mapper.convertValue(argsJsonNode, Map.class);
+        Gson mapper = new Gson();
+        Map<String, String> args = mapper.fromJson(argsJsonNode, Map.class);
         try {
             output = new OpenRemoteCli(
                     VTP_TEST_CENTER_IP,
                     VTP_TEST_CENTER_PORT,
                     timeout,
                     requestId).invoke(scenario, profile, testCase, args);
-         } catch(OpenInterfaceGrpcClient.OpenInterfaceGrpcTimeoutExecption e) {
-             throw new VTPException(
-                  new VTPError().setHttpStatus(HttpStatus.SC_GATEWAY_TIMEOUT).setMessage("Timed out. Please use request-id to track the progress.").setCode(VTPError.TIMEOUT));
+        } catch (OpenInterfaceGrpcClient.OpenInterfaceGrpcTimeoutExecption e) {
+            throw new VTPException(
+                    new VTPError().setHttpStatus(HttpStatus.SC_GATEWAY_TIMEOUT).setMessage("Timed out. Please use request-id to track the progress.").setCode(VTPError.TIMEOUT));
         } catch (Exception e) {
             throw new VTPException(
                     new VTPError().setMessage(e.getMessage()));
