@@ -1146,6 +1146,9 @@ public class PackageResourceTest {
         onBoardResultObj.setOperStatus(1);
         boolean res = FileUtil.writeJsonDatatoFile(filePath, onBoardResultObj);
         assertEquals(res, true);
+        String filePath1 = "src//test//resources";
+        res = FileUtil.writeJsonDatatoFile(filePath1, onBoardResultObj);
+        assertEquals(res, false);
 
     }
 
@@ -1163,6 +1166,10 @@ public class PackageResourceTest {
         String dirPath = "src//test//resources//TestDirectory";
         boolean res = FileUtil.deleteFile(dirPath);
         assertEquals(res, true);
+        String dirPath1 = "src//test//resources11";
+        res = FileUtil.deleteFile(dirPath1);
+        assertEquals(res, true);
+
     }
 
     @Test
@@ -1362,6 +1369,13 @@ public class PackageResourceTest {
         Object obj =
                 FileUtil.readJsonDatafFromFile("src/main/resources/generalconfig/OnBoardingSteps.json", Object.class);
         assertNotNull(obj);
+    }
+
+    @Test
+    public void testvalidateFile() {
+        File fileData= null;
+        boolean res = FileUtil.validateFile(fileData);
+        assertEquals(res, false);
     }
 
     @Test
