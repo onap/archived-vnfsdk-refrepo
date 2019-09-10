@@ -46,8 +46,6 @@ public final class FileUtil {
 
 	private static final int MAX_PACKAGE_SIZE = 50 * 1024 * 1024;
 
-	private static final int TRY_COUNT = 3;
-
 	private FileUtil() {
 		//Empty constructor
 	}
@@ -61,17 +59,11 @@ public final class FileUtil {
 	 */
 	public static boolean createDirectory(String dir) {
 		File folder = new File(dir);
-		int tryCount = 0;
-		while (tryCount < TRY_COUNT) {
-			tryCount++;
 			if (!folder.exists() && !folder.mkdirs()) {
-				continue;
+				return false;
 			} else {
 				return true;
 			}
-		}
-
-		return folder.exists();
 	}
 
 	/**
@@ -128,7 +120,7 @@ public final class FileUtil {
 				}
 
 				try (InputStream input = zipFile.getInputStream(entry);
-						BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));) {
+					    BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));) {
 					int length = 0;
 					while ((length = input.read(buffer)) != -1) {
 						bos.write(buffer, 0, length);
