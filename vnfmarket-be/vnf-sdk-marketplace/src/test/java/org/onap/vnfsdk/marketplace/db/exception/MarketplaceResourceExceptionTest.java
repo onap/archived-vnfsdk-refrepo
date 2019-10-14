@@ -24,7 +24,7 @@ public class MarketplaceResourceExceptionTest {
     MarketplaceResourceException marketplaceResourceException;
     @Before
     public void setUp() throws Exception {
-        marketplaceResourceException= new MarketplaceResourceException(null,0,null);
+        marketplaceResourceException= new MarketplaceResourceException(null,0,0,null,null);
     }
     @Test
     public void testGetter()
