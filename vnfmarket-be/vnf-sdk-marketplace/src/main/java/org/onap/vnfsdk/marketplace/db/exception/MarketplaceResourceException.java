@@ -19,8 +19,8 @@ public class MarketplaceResourceException extends ErrorCodeException {
   private static final long serialVersionUID = 5699508780537383310L;
 
 
-  public MarketplaceResourceException(Throwable source, int code, String debugMessage) {
-    super(source, code, debugMessage);
+  public MarketplaceResourceException(Throwable source, int category, int code, String debugMessage, String[] arguments) {
+    super(source, category, code, debugMessage, arguments);
   }
 
   public int getErrcode() {
