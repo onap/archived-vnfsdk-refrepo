@@ -1,0 +1,10 @@
+distribution_type: 'maven'
+version: '1.4.0'
+project: 'vnfsdk'
+log_dir: 'vnfsdk-refrepo-maven-docker-stage-master/117/'
+ref: 0b46f943e2688261d9fa83bee5f979077cef4883
+containers:
+  - name: onap/refrepo
+    version: 1.4.0-SNAPSHOT
+  - name: onap/postgres
+    version: 1.4.0-SNAPSHOT
