@@ -1,0 +1,64 @@
+# Copyright 2019 Huawei Technologies Co., Ltd.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+open_cli_schema_version: 1.0
+name: vtp2ovp-result
+description: |
+  This command helps to produce VTP results in LFV OVP format.
+  Run this command from the server machine, where VTP is running
+
+  NOTE: Please install the script vtp2ovp-result.py under script
+  folder in OPEN_CLI_HOME before running this command.
+
+info:
+  product: LFN-OVP
+  service: vnf-test-result
+  author: ONAP VTP Team kanagaraj.manickam@huawei.com
+
+parameters:
+  - name: execution-id
+    description: VTP test case execution id
+    type: string
+    short_option: e
+    long_option: execution-id
+    is_optional: false
+  - name: tar-path
+    description: Location to OVP output tar file
+    type: string
+    short_option: p
+    long_option: tar-path
+    is_optional: false
+  - name: vtp-home
+    description: VTP installation home directory
+    type: string
+    short_option: H
+    long_option: vtp-home
+    is_optional: false
+    default_value: $s{env:OPEN_CLI_HOME}
+  - name: format
+    type: string
+    description: Output format
+    short_option: f
+    long_option: format
+    default_value: text
+    is_default_param: true
+
+cmd:
+  command:
+    - python $s{env:OPEN_CLI_HOME}/script/vtp2ovp-result.py --execution-id ${execution-id} --tar-path ${tar-path} --vtp-home ${vtp-home}
+  success_codes:
+    - 0
+  working_directory: .
+  output: $stdout
+
