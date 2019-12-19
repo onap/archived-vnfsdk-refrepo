@@ -1,12 +1,12 @@
 /**
  * Copyright 2017 Huawei Technologies Co., Ltd.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -111,6 +111,8 @@ public class PackageResourceTest {
 
     private CsarFileUriResponse csarFileUriResObj = null;
 
+    private Gson gson = null;
+
     @Before
     public void setUp() {
         packageResource = new PackageResource();
@@ -120,6 +122,7 @@ public class PackageResourceTest {
         pkgMetaObj = new PackageMeta();
         pkgResponseObj = new PackageResponse();
         csarFileUriResObj = new CsarFileUriResponse();
+        gson = new Gson();
     }
 
     @Before
@@ -131,13 +134,13 @@ public class PackageResourceTest {
             FileWriter writer = new FileWriter(file);
             writer.write("This is test file.");
             writer.close();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         filePath = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "testfolder";
         file = new File(filePath);
-        if(!file.exists()) {
+        if (!file.exists()) {
             file.mkdirs();
         }
 
@@ -154,7 +157,7 @@ public class PackageResourceTest {
             out.write(data, 0, data.length);
             out.closeEntry();
             out.close();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -170,7 +173,7 @@ public class PackageResourceTest {
         };
         try {
             response = PackageWrapper.getInstance().queryPackageListByCond(null, null, null, null, null);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -179,7 +182,7 @@ public class PackageResourceTest {
 
         try {
             response = packageResource.queryPackageListByCond(null, null, null, null, null);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         // assertNull(res5);
@@ -215,7 +218,7 @@ public class PackageResourceTest {
 
         try {
             response = PackageWrapper.getInstance().queryPackageById(csarID);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         assertNotNull(response);
@@ -223,7 +226,7 @@ public class PackageResourceTest {
 
         try {
             response = packageResource.queryPackageById(csarID);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -256,26 +259,26 @@ public class PackageResourceTest {
 
         try {
             response = PackageWrapper.getInstance().delPackage("");
-        } catch(Exception e5) {
+        } catch (Exception e5) {
             e5.printStackTrace();
         }
         assertEquals(500, response.getStatus());
 
         try {
             response = packageResource.delPackage("");
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         try {
             response = PackageWrapper.getInstance().delPackage(null);
-        } catch(Exception e5) {
+        } catch (Exception e5) {
             e5.printStackTrace();
         }
 
         try {
             response = packageResource.delPackage(null);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         assertEquals(500, response.getStatus());
@@ -335,7 +338,7 @@ public class PackageResourceTest {
 
         try {
             response = PackageWrapper.getInstance().delPackage("csarid");
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -344,7 +347,7 @@ public class PackageResourceTest {
 
         try {
             response = packageResource.delPackage("csarid");
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -384,7 +387,7 @@ public class PackageResourceTest {
 
         try {
             response = packageResource.getCsarFileUri("csarId");
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -413,7 +416,7 @@ public class PackageResourceTest {
         };
         try {
             response = PackageWrapper.getInstance().updateDwonloadCount(csarID);
-        } catch(Exception e5) {
+        } catch (Exception e5) {
             e5.printStackTrace();
         }
         assertNotNull(response);
@@ -421,7 +424,7 @@ public class PackageResourceTest {
 
         try {
             response = packageResource.updateDwonloadCount(csarID);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -530,14 +533,14 @@ public class PackageResourceTest {
 
         try {
             response = PackageWrapper.getInstance().reUploadPackage(null, null, null, null, null);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         assertEquals(417, response.getStatus());
 
         try {
             response = packageResource.reUploadPackage(null, null, null, null, null);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -548,13 +551,13 @@ public class PackageResourceTest {
             inputStream = new FileInputStream(fileName);
             response = PackageWrapper.getInstance().reUploadPackage("csarID", inputStream, fileDetail, null, null);
             // assertEquals( 200, response.getStatus() );
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         try {
             response = packageResource.reUploadPackage("csarID", inputStream, null, null, null);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -599,21 +602,21 @@ public class PackageResourceTest {
 
         try {
             response = PackageWrapper.getInstance().getOperResultByOperTypeId(csarID, operTypeId);
-        } catch(Exception e5) {
+        } catch (Exception e5) {
             e5.printStackTrace();
         }
         assertEquals(500, response.getStatus());
 
         try {
             response = PackageWrapper.getInstance().getOperResultByOperTypeId("", "");
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         assertEquals(400, response.getStatus());
 
         try {
             response = packageResource.getOnBoardingResult(null, null, null);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -678,7 +681,7 @@ public class PackageResourceTest {
 
         try {
             response = PackageWrapper.getInstance().getOperResultByOperTypeId(csarID, operTypeId);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -782,7 +785,7 @@ public class PackageResourceTest {
         new MockUp<OpenRemoteCli>() {
 
             @Mock
-            public Result run(String host, int port, String reqId, List <String> args) {
+            public Result run(String host, int port, String reqId, List<String> args) {
                 Result result = Result.newBuilder().
                         setExitCode(0).
                         setOutput("{\"error\":\"SUCCESS\"}").
@@ -801,14 +804,14 @@ public class PackageResourceTest {
 
         try {
             ins = new FileInputStream(packageFile);
-        } catch(FileNotFoundException e2) {
+        } catch (FileNotFoundException e2) {
             e2.printStackTrace();
         }
-        if(ins != null) {
+        if (ins != null) {
             try {
                 result = PackageWrapper.getInstance().uploadPackage(ins, fileDetail, null, null);
                 // PackageWrapper.getInstance().updateValidateStatus(ins);
-            } catch(Exception e3) {
+            } catch (Exception e3) {
                 e3.printStackTrace();
             }
         }
@@ -818,7 +821,7 @@ public class PackageResourceTest {
 
         try {
             result = PackageWrapper.getInstance().uploadPackage(null, null, null, null);
-        } catch(Exception e4) {
+        } catch (Exception e4) {
             e4.printStackTrace();
         }
 
@@ -826,7 +829,7 @@ public class PackageResourceTest {
 
         try {
             response = packageResource.uploadPackage(null, null, null, null);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -951,7 +954,7 @@ public class PackageResourceTest {
         new MockUp<OpenRemoteCli>() {
 
             @Mock
-            public Result run(String host, int port, String reqId, List <String> args) throws Exception {
+            public Result run(String host, int port, String reqId, List<String> args) throws Exception {
                 throw new Exception();
             }
         };
@@ -965,14 +968,14 @@ public class PackageResourceTest {
 
         try {
             ins = new FileInputStream(packageFile);
-        } catch(FileNotFoundException e2) {
+        } catch (FileNotFoundException e2) {
             e2.printStackTrace();
         }
-        if(ins != null) {
+        if (ins != null) {
             try {
                 result = PackageWrapper.getInstance().uploadPackage(ins, fileDetail, null, null);
                 // PackageWrapper.getInstance().updateValidateStatus(ins);
-            } catch(Exception e3) {
+            } catch (Exception e3) {
                 e3.printStackTrace();
             }
         }
@@ -993,7 +996,7 @@ public class PackageResourceTest {
 
         try {
             response = PackageWrapper.getInstance().getOnBoardingSteps();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -1001,7 +1004,7 @@ public class PackageResourceTest {
 
         try {
             response = packageResource.getOnBoardingSteps();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -1010,7 +1013,7 @@ public class PackageResourceTest {
     public void testGetOOprStatusSuccess() {
         try {
             response = packageResource.getOperStatus(null, null);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -1021,12 +1024,12 @@ public class PackageResourceTest {
 
             @Mock
             public ServletInputStream getInputStream() throws IOException {
-                  ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
-                          "{\"csar\"=\"VoLTE.csar\"}".getBytes());
+                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
+                        "{\"csar\"=\"VoLTE.csar\"}".getBytes());
 
-                  return new ServletInputStream(){
+                return new ServletInputStream() {
                     public int read() throws IOException {
-                      return byteArrayInputStream.read();
+                        return byteArrayInputStream.read();
                     }
 
                     @Override
@@ -1042,13 +1045,13 @@ public class PackageResourceTest {
                     @Override
                     public void setReadListener(ReadListener arg0) {
                     }
-                  };
-                }
+                };
+            }
 
         };
         try {
             response = packageResource.updateValidateStatus((HttpServletRequest) mockReq.getMockInstance(), null);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -1067,7 +1070,7 @@ public class PackageResourceTest {
 
         try {
             response = PackageWrapper.getInstance().getOnBoardingSteps();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         assertEquals(500, response.getStatus());
@@ -1085,7 +1088,7 @@ public class PackageResourceTest {
             }
         };
         String dirPath = "etc//conf//restclient.json";
-       FileUtil.createDirectory(dirPath);
+        FileUtil.createDirectory(dirPath);
         MsbServer msbServer = new MsbServer();
         msbServer.setHost("localhost");
         msbServer.setPort("8080");
@@ -1113,7 +1116,7 @@ public class PackageResourceTest {
     public void testRestDeleteClient() {
         RestResponse rsp = RestfulClient.delete("127.0.0.1", 8987, "TestURL");
         assertNotNull(rsp);
-        if(rsp.getStatusCode() != null)
+        if (rsp.getStatusCode() != null)
             assertEquals(200, rsp.getStatusCode().intValue());
 
     }
@@ -1213,11 +1216,12 @@ public class PackageResourceTest {
         assertEquals(res, false);
 
     }
+
     @Test
     public void testisTrimedEmptyArray() {
         boolean res = ToolUtil.isTrimedEmptyArray(null);
         assertEquals(res, true);
-        String[] String1={"hua","wei"};
+        String[] String1 = {"hua", "wei"};
         res = ToolUtil.isTrimedEmptyArray(String1);
         assertEquals(res, false);
     }
@@ -1247,7 +1251,7 @@ public class PackageResourceTest {
 
     @Test
     public void testgetFormatFileSize() {
-        long fileSize = 1000*1000*1000*100;
+        long fileSize = 1000 * 1000 * 1000 * 100;
         String res = ToolUtil.getFormatFileSize(fileSize);
         assertNotNull(res);
         res = ToolUtil.getFormatFileSize(1000000000);
@@ -1295,13 +1299,13 @@ public class PackageResourceTest {
     public void testformatFileSize() {
         String res = ToolUtil.formatFileSize(10000.0, 10);
         String expected = new DecimalFormat("#0.00").format(1000) + "M";// may
-                                                                        // be
-                                                                        // "1000.00"
-                                                                        // or
-                                                                        // "1000,00"
-                                                                        // depending
-                                                                        // on
-                                                                        // Locale
+        // be
+        // "1000.00"
+        // or
+        // "1000,00"
+        // depending
+        // on
+        // Locale
         assertEquals(res, expected);
     }
 
@@ -1339,7 +1343,7 @@ public class PackageResourceTest {
             String fileName = file.getName();
             assertEquals(fileName, "TestOut.txt");
 
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -1358,7 +1362,7 @@ public class PackageResourceTest {
         List<String> listObj = new ArrayList<String>();
         try {
             listObj = FileUtil.unzip("src/test/resources/temp.zip", "src/test/resources/testfolder");
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         assertNotNull(listObj);
@@ -1374,7 +1378,7 @@ public class PackageResourceTest {
 
     @Test
     public void testvalidateFile() {
-        File fileData= null;
+        File fileData = null;
         boolean res = FileUtil.validateFile(fileData);
         assertEquals(res, false);
     }
@@ -1411,7 +1415,7 @@ public class PackageResourceTest {
             dao.updatePackageData(packageData);
             dao.deletePackageData("21");
 
-        } catch(Exception e) {
+        } catch (Exception e) {
         }
 
     }
@@ -1569,12 +1573,18 @@ public class PackageResourceTest {
     }
 
     @Test
-    public void testPackageDataForUnknownFields(){
+    public void testPackageDataForUnknownFields() {
 
-        String jsonValue="{\"csarId\":\"123\",\"test\":\"unknown\"}";
-        Gson gson = new Gson();
-        PackageData packageData = gson.fromJson(jsonValue,PackageData.class);
-        assertEquals("123",packageData.getCsarId());
+        String jsonValue = "{\"csarId\":\"123\",\"test\":\"unknown\"}";
+        PackageData packageData = gson.fromJson(jsonValue, PackageData.class);
+        assertEquals("123", packageData.getCsarId());
 
+    }
+
+    @Test
+    public void testPackageResponseForUnknownFields() {
+        String jsonValue = "{\"reportPath\":\"src/test/resources/functionTest.json\",\"test\":\"unknown\"}";
+        PackageResponse packageResponse = gson.fromJson(jsonValue, PackageResponse.class);
+        assertEquals("src/test/resources/functionTest.json", packageResponse.getReportPath());
     }
 }
