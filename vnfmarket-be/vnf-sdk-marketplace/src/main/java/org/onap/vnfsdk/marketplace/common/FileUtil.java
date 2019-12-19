@@ -21,12 +21,18 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.FileWriter;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.stream.JsonReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -150,14 +156,14 @@ public final class FileUtil {
 			deleteFile(fileAbsPath);
 		}
 
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			mapper.writeValue(new File(fileAbsPath), obj);
+		Gson gson = new Gson();
+		try (FileWriter writer = new FileWriter(new File(fileAbsPath))){
+			JsonObject jobj = gson.fromJson(gson.toJson(obj), JsonObject.class);
+			gson.toJson(jobj, writer);
+
 			bResult = true;
-		} catch (JsonGenerationException e) {
-			logger.info("JsonGenerationException Exception: writeJsonDatatoFile-->" + fileAbsPath, e);
-		} catch (JsonMappingException e) {
-			logger.info("JsonMappingException Exception: writeJsonDatatoFile-->" + fileAbsPath, e);
+		} catch (JsonSyntaxException e) {
+			logger.info("JsonSyntaxException Exception: writeJsonDatatoFile-->" + fileAbsPath, e);
 		} catch (IOException e) {
 			logger.info("IOException Exception: writeJsonDatatoFile-->" + fileAbsPath, e);
 		}
@@ -173,16 +179,14 @@ public final class FileUtil {
 		logger.info("read JsonData from file : {}" , fileAbsPath);
 
 		T obj = null;
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		Gson gson = new Gson();
 		try {
-			obj = mapper.readValue(new File(fileAbsPath), clazz);
-		} catch (JsonParseException e1) {
-			logger.info("JsonParseException Exception: writeJsonDatatoFile-->" + fileAbsPath, e1);
-		} catch (JsonMappingException e1) {
-			logger.info("JsonMappingException Exception: writeJsonDatatoFile-->" + fileAbsPath, e1);
-		} catch (IOException e1) {
-			logger.info("IOException Exception: writeJsonDatatoFile-->" + fileAbsPath, e1);
+			JsonReader jsonReader = new JsonReader(new FileReader(fileAbsPath));
+			obj = gson.fromJson(jsonReader, clazz);
+		} catch (JsonSyntaxException e) {
+			logger.info("JsonSyntaxException Exception: readJsonDatafFromFile-->" + fileAbsPath, e);
+		} catch (IOException e) {
+			logger.info("IOException Exception: readJsonDatafFromFile-->" + fileAbsPath, e);
 		}
 		return obj;
 	}
