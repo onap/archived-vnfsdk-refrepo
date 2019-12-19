@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
+import com.google.gson.Gson;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.onap.vnfsdk.marketplace.common.CommonConstant;
@@ -31,12 +32,6 @@ import org.onap.vnfsdk.marketplace.rest.RestResponse;
 import org.onap.vnfsdk.marketplace.rest.RestfulClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.core.JsonParseException;
-/** note jackson has security vulnerabilities. use with care */
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 /** CALL Flow: onBoardingHandler --> LifecycleTestHook--> LifecycleTestExecutor */
@@ -165,19 +160,11 @@ public class LifecycleTestExceutor {
 	 * @return empty(failure), or csarId(success)
 	 */
 	private static String getCsarIdValue(String strJsonData) {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		Gson gson = new Gson();
 		Map<String, String> dataMap = null;
 
-		try {
-			dataMap = mapper.readValue(strJsonData, Map.class);
-		} catch (JsonParseException e) {
-			logger.error("JsonParseException:Failed to upload package to catalouge:", e);
-		} catch (JsonMappingException e) {
-			logger.error("JsonMappingException:Failed to upload package to catalouge:", e);
-		} catch (IOException e) {
-			logger.error("IOException:Failed to upload package to catalouge:", e);
-		}
+		dataMap = gson.fromJson(strJsonData, Map.class);
+
 		try {
 			if (null != dataMap) {
 				return dataMap.get("csarId");

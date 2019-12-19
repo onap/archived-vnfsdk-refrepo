@@ -15,10 +15,22 @@
  */
 package org.onap.vnfsdk.marketplace.onboarding.hooks.validatelifecycle;
 
+import mockit.Mock;
+import mockit.MockUp;
+import org.apache.http.HttpEntity;
 import org.junit.Before;
 import org.junit.Test;
+import org.onap.vnfsdk.marketplace.common.FileUtil;
+import org.onap.vnfsdk.marketplace.msb.MsbDetails;
+import org.onap.vnfsdk.marketplace.msb.MsbDetailsHolder;
 import org.onap.vnfsdk.marketplace.onboarding.entity.OnBoradingRequest;
+import org.onap.vnfsdk.marketplace.rest.RestConstant;
+import org.onap.vnfsdk.marketplace.rest.RestResponse;
+import org.onap.vnfsdk.marketplace.rest.RestfulClient;
 
+import java.io.File;
+
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 
 public class LifecycleTestExceutorTest {
@@ -45,5 +57,47 @@ public class LifecycleTestExceutorTest {
 
     }
 
+    @Test
+    public void testgetCsarIdValueForUnknownFields() {
+        OnBoradingRequest onBoradingRequest = new OnBoradingRequest();
+        onBoradingRequest
+                .setPackagePath(
+                        "/home/ubuntu/refrepo/vnfmarket-be/deployment/zip/src/main/release/etc/conf");
+        onBoradingRequest.setPackageName("restclient.json");
+        new MockUp<FileUtil>() {
+            @Mock
+            public boolean validatePath(String path) {
+                return true;
+            }
+        };
+        new MockUp<MsbDetailsHolder>() {
+
+            @Mock
+            public synchronized MsbDetails getMsbDetails() {
+                onBoradingRequest.setPackagePath(
+                        "vnfmarket-be/deployment/zip/src/main/release/etc/conf");
+                onBoradingRequest.setPackageName("restclient.json");
+                String restClientPath = System.getProperty("user.dir");
+                MsbDetails msbDetails =
+                        (MsbDetails) FileUtil
+                                .readJsonDatafFromFile(restClientPath.substring(0, restClientPath.lastIndexOf("/") + 1) + File.separator + "/deployment/zip/src/main/release/etc/conf/restclient.json"
+                                        , MsbDetails.class);
+                return msbDetails;
+
+            }
+        };
+        new MockUp<RestfulClient>() {
+            @Mock
+            public RestResponse post(String ip, int port, String url, HttpEntity requestBody) {
+                RestResponse rsp = new RestResponse();
+                rsp.setStatusCode(RestConstant.RESPONSE_CODE_200);
+                String result = "{\"csarId\":\"123\",\"testField\":\"Unknown\"}";
+                rsp.setResult(result);
+                return rsp;
+            }
+        };
+        String actual = LifecycleTestExceutor.uploadPackageToCatalouge(onBoradingRequest);
+        assertEquals("123",actual);
+    }
 
 }
