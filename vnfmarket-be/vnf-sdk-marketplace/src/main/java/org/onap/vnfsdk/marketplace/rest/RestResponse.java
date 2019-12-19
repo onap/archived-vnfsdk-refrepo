@@ -15,11 +15,8 @@
  */
 package org.onap.vnfsdk.marketplace.rest;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
-
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class RestResponse {
 
     private Integer statusCode;

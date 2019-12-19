@@ -42,6 +42,7 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 
+import com.google.gson.Gson;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.junit.Before;
 import org.junit.Test;
@@ -110,6 +111,8 @@ public class PackageResourceTest {
 
     private CsarFileUriResponse csarFileUriResObj = null;
 
+    private Gson gson=null;
+
     @Before
     public void setUp() {
         packageResource = new PackageResource();
@@ -119,6 +122,7 @@ public class PackageResourceTest {
         pkgMetaObj = new PackageMeta();
         pkgResponseObj = new PackageResponse();
         csarFileUriResObj = new CsarFileUriResponse();
+        gson = new Gson();
     }
 
     @Before
@@ -1566,4 +1570,32 @@ public class PackageResourceTest {
         assertEquals(res, "localpath");
 
     }
+
+    @Test
+    public void testPackageDataForUnknownFields() {
+
+        String jsonValue = "{\"csarId\":\"123\",\"test\":\"test\"}";
+        PackageData packageData = gson.fromJson(jsonValue, PackageData.class);
+        assertEquals("123", packageData.getCsarId());
+
+    }
+
+    @Test
+    public void testPackageResponseForUnknownFields() {
+        String jsonValue = "{\"reportPath\":\"src/test/resources/functionTest.json\",\"test\":\"unknown\"}";
+        PackageResponse packageResponse = gson.fromJson(jsonValue, PackageResponse.class);
+        assertEquals("src/test/resources/functionTest.json", packageResponse.getReportPath());
+    }
+
+    @Test
+    public void testRestResponseForUnknownFields() {
+        String jsonValue = "{\"statusCode\":\"200\",\"testField\":\"Unknown\"}";
+        RestResponse restResponse = gson.fromJson(jsonValue, RestResponse.class);
+        assertEquals(200, restResponse.getStatusCode().intValue());
+
+    }
+
+
+
+
 }
