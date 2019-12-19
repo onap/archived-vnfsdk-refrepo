@@ -42,6 +42,7 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 
+import com.google.gson.Gson;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.junit.Before;
 import org.junit.Test;
@@ -1564,6 +1565,16 @@ public class PackageResourceTest {
         assertEquals(res, "downloaduri");
         res = csarFileUriResObj.getLocalPath();
         assertEquals(res, "localpath");
+
+    }
+
+    @Test
+    public void testPackageDataForUnknownFields(){
+
+        String jsonValue="{\"csarId\":\"123\",\"test\":\"unknown\"}";
+        Gson gson = new Gson();
+        PackageData packageData = gson.fromJson(jsonValue,PackageData.class);
+        assertEquals("123",packageData.getCsarId());
 
     }
 }
