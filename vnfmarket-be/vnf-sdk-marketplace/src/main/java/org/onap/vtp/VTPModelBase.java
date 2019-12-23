@@ -16,11 +16,22 @@
 
 package org.onap.vtp;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSerializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonArray;
+import com.google.gson.reflect.TypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.lang.reflect.Type;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
 
 public class VTPModelBase {
     public static final Logger logger = LoggerFactory.getLogger(VTPModelBase.class);
@@ -31,12 +42,29 @@ public class VTPModelBase {
 
     public static String toJsonString(Object obj) {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.setSerializationInclusion(Include.NON_NULL);
-            objectMapper.setSerializationInclusion(Include.NON_EMPTY);
-            return objectMapper.writeValueAsString(obj);
-        } catch (JsonProcessingException e) {
-            logger.error("JsonProcessingException occurs ",e);
+            Gson gson = new GsonBuilder()
+                    .registerTypeHierarchyAdapter(Collection.class, new CollectionAdapter())
+                    .create();
+            String jsonString = gson.toJson(obj);
+            Map<String, Object> mapData = gson.fromJson(jsonString, new TypeToken<Map<String, Object>>() {
+            }.getType());
+
+            for (Iterator<Map.Entry<String, Object>> itr = mapData.entrySet().iterator(); itr.hasNext(); ) {
+                Map.Entry<String, Object> entry = itr.next();
+                if (entry.getValue() == null
+                        || entry.getValue().toString().isEmpty()
+                        || entry.getValue().toString().equals("{}")) {
+                    itr.remove();
+                }
+                if (entry.getValue().toString().startsWith("{")) {
+                    JsonObject jobj = gson.fromJson(gson.toJson(entry.getValue()), JsonObject.class);
+                    if (jobj.size() > 0) {
+                        entry.setValue(cleanObject(jobj));
+                    }
+                }
+            }
+            return gson.toJson(mapData);
+        } catch (JsonParseException e) {
             return "{}";
         }
     }
@@ -44,4 +72,53 @@ public class VTPModelBase {
     public String toString() {
         return this.toJsonString();
     }
+
+    static JsonObject cleanObject(Object obj) {
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(obj);
+        Map<String, Object> mapData = gson.fromJson(jsonString, new TypeToken<Map<String, Object>>() {
+        }.getType());
+
+        for (Iterator<Map.Entry<String, Object>> itr = mapData.entrySet().iterator(); itr.hasNext(); ) {
+            Map.Entry<String, Object> entry = itr.next();
+            if (entry.getValue() == null
+                    || entry.getValue().toString().isEmpty()
+                    || entry.getValue().toString().equals("{}")) {
+                itr.remove();
+            }
+            if (entry.getValue().toString().startsWith("{")) {
+
+                JsonObject jobj = gson.fromJson(gson.toJson(entry.getValue()), JsonObject.class);
+                if (jobj.size() > 0) {
+                    entry.setValue(cleanObject(jobj));
+                }
+            }
+        }
+
+        return gson.fromJson(gson.toJson(mapData), JsonObject.class);
+
+    }
+
+    static class CollectionAdapter implements JsonSerializer<Collection<?>> {
+        @Override
+        public JsonElement serialize(Collection<?> src, Type typeOfSrc,
+                                     JsonSerializationContext context) {
+            if (src == null || src.isEmpty())
+                return null;
+
+            JsonArray array = new JsonArray();
+            for (Object child : src) {
+
+                child = cleanObject(child);
+                JsonElement element = context.serialize(child);
+
+
+                array.add(element);
+            }
+
+            return array;
+        }
+    }
+
+
 }

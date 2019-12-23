@@ -75,4 +75,19 @@ public class VTPTestCaseTest {
         assertEquals(vtpTestCaseOutput.getType(),"abc");
 
     }
+
+    @Test
+    public void testToStringWithNullAndEmptyValues() {
+        vtpTestCase.setTestCaseName("TestCase1");
+        vtpTestCase.setTestSuiteName(null);
+        List<VTPTestCase.VTPTestCaseInput> listInput = new ArrayList<>();
+        VTPTestCase.VTPTestCaseInput input1 = new VTPTestCase.VTPTestCaseInput();
+        input1.setName("Input1");
+        input1.setDefaultValue("");
+        listInput.add(input1);
+        vtpTestCase.setInputs(listInput);
+
+        vtpTestCase.toString();
+        assertTrue(true);
+    }
 }

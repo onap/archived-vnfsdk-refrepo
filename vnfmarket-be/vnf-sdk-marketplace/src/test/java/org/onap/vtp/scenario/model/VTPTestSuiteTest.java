@@ -32,4 +32,12 @@ VTPTestSuite vtpTestSuite= new VTPTestSuite();
     vtpTestSuiteList.setSuites(null);
     assertNull(vtpTestSuiteList.getSuites());
 }
+
+@Test
+public void testToStringWithNullAndEmptyValues(){
+    vtpTestSuite.setDescription("abc");
+    vtpTestSuite.setName(null);
+    vtpTestSuite.toString();
+    assertTrue(true);
+}
 }

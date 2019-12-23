@@ -16,6 +16,7 @@
 package org.onap.vtp.scenario.model;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -33,4 +34,12 @@ public class VTPTestScenarioTest {
         assertEquals(vtpTestScenarioList.getScenarios(),null);
     }
 
-}
+    @Test
+    public void testToStringWithNullAndEmptyValues() {
+        vtpTestScenario.setDescription("abc");
+        vtpTestScenario.setName(null);
+        vtpTestScenario.toString();
+        assertTrue(true);
+    }
+
+    }

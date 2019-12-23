@@ -55,4 +55,13 @@ public class VTPErrorTest
         assertNotNull(vtpException.getVTPError());
     }
 
+    @Test
+    public void testToStringWithNullAndEmptyValues() {
+        vtpError.setCode("200");
+        vtpError.setHttpStatus(200);
+        vtpError.setMessage("");
+        vtpError.toString();
+        assertTrue(true);
+    }
+
 }
