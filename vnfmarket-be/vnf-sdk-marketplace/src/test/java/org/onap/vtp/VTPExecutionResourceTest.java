@@ -21,15 +21,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import org.glassfish.jersey.media.multipart.ContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.onap.vtp.error.VTPError;
 import org.onap.vtp.execution.VTPExecutionResource;
 import org.onap.vtp.execution.model.VTPTestExecution;
+import org.open.infc.grpc.Output;
 import org.open.infc.grpc.Result;
 
 import java.io.IOException;
@@ -57,9 +63,9 @@ public class VTPExecutionResourceTest {
     {
         VTPTestExecution.VTPTestExecutionList executions= new VTPTestExecution.VTPTestExecutionList();
         List<VTPTestExecution> list= new ArrayList<>();
-        ObjectMapper mapper = new ObjectMapper();
+        Gson mapper = new Gson();
         String jsonString = "{\"name\":\"Mahesh Kumar\", \"age\":\"nine\",\"verified\":\"false\"}";
-        JsonNode rootNode = mapper.readTree(jsonString);
+        JsonElement rootNode = mapper.fromJson(jsonString, JsonObject.class);
 
         VTPTestExecution vtp=new VTPTestExecution();
         vtp.setEndTime("2019-03-12T11:49:52.845");
@@ -125,8 +131,10 @@ public class VTPExecutionResourceTest {
         formDataBodyPart.setName("abc");
         formDataBodyPart.setValue("123");
         formDataBodyPart.setContentDisposition(contentDisposition);
-        formDataBodyPart.getContentDisposition().getFileName();
+//        formDataBodyPart.getContentDisposition().getFileName();
         bodyParts.add(formDataBodyPart);
       vtpExecutionResource.executeTestcases(requestId,bodyParts,"exeJson") ;
     }
+
+
 }

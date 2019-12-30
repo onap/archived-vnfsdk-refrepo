@@ -15,32 +15,24 @@
  */
 package org.onap.vtp.execution;
 
-import com.fasterxml.jackson.core.*;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
-import com.fasterxml.jackson.databind.node.JsonNodeType;
-import org.glassfish.jersey.media.multipart.ContentDisposition;
-import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import mockit.Mock;
+import mockit.MockUp;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.onap.vtp.execution.model.VTPTestExecution;
+import org.onap.vtp.VTPResource;
+import org.onap.vtp.error.VTPError;
+import org.open.infc.grpc.Result;
+import org.open.infc.grpc.client.OpenRemoteCli;
 
 import java.io.IOException;
 import java.util.*;
 
 import static org.junit.Assert.*;
-@RunWith(MockitoJUnitRunner.class)
 public class VTPExecutionResourceTest {
 
-    @Mock
-    FormDataBodyPart formDataBodyPart;
-    @Mock
-    ContentDisposition contentDisposition;
     String requestId;
     VTPExecutionResource vtpExecutionResource;
     @Before
@@ -48,69 +40,118 @@ public class VTPExecutionResourceTest {
         vtpExecutionResource= new VTPExecutionResource();
         requestId = UUID.randomUUID().toString();
     }
-    @Test(expected = Exception.class)
-    public void testExecuteHandler() throws Exception
-    {
-        VTPTestExecution.VTPTestExecutionList executions= new VTPTestExecution.VTPTestExecutionList();
-        List<VTPTestExecution> list= new ArrayList<>();
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonString = "{\"name\":\"Mahesh Kumar\", \"age\":\"nine\",\"verified\":\"false\"}";
-        JsonNode rootNode = mapper.readTree(jsonString);
 
-        VTPTestExecution vtp=new VTPTestExecution();
-        vtp.setEndTime("2019-03-12T11:49:52.845");
-        vtp.setProfile("abc");
-        vtp.setStatus("pass");
-        vtp.setRequestId(requestId);
-        vtp.setExecutionId("executionid");
-        vtp.setParameters(rootNode);
-        vtp.setResults(rootNode);
-        vtp.setScenario("open-cli");
-        vtp.setStartTime("2019-04-12T11:49:52.845");
-        vtp.setTestCaseName("testcase");
-        vtp.setTestSuiteName("testsuite");
-        list.add(vtp);
-        executions.setExecutions(list);
-        //System.out.println(executions.getExecutions());
-        assertNotNull(executions.getExecutions());
-       vtpExecutionResource.executeHandler(executions,null);
-       // vtpExecutionResource.executeHandler(executions,requestId);
+    @Test
+    public void testgetTestExecutionHandler() throws Exception {
+        new MockUp<OpenRemoteCli>() {
 
-    }
-    @Test(expected = Exception.class)
-    public void testListTestExecutionsHandler() throws Exception
-    {
-        vtpExecutionResource.listTestExecutionsHandler(requestId,"abc","abc","abc","abc","123","123");
-    }
+            @Mock
+            public Result run(List<String> args) throws Exception {
 
-    @Test(expected = Exception.class)
-    public void testListTestExecutions() throws Exception
-    {
-        vtpExecutionResource.listTestExecutions(requestId,"abc","abc","abc","abc","123","123");
-    }
-    @Test(expected = Exception.class)
-    public void testGetTestExecution() throws Exception
-    {
-        //assertNotNull(vtpExecutionResource.getTestExecution("abc"));
-        assertNotNull(vtpExecutionResource.getTestExecution("1234"));
-    }
-    @Test(expected = Exception.class)
-    public void testGetTestExecutionHandler() throws Exception
-    {
-        //assertNotNull(vtpExecutionResource.getTestExecution("abc"));
+                Result result = Result.newBuilder().build();
+                return result;
+            }
+        };
+        new MockUp<VTPResource>() {
+
+            @Mock
+            protected JsonElement makeRpcAndGetJson(List<String> args, int timeout) throws VTPError.VTPException, IOException {
+                JsonObject result = new JsonObject();
+                result.addProperty("execution-id","1222");
+                result.addProperty("start-time","12:00");
+                result.addProperty("end-time","12:02");
+                result.addProperty("request-id","1234");
+                result.addProperty("product","onap");
+                result.addProperty("service","vtp2ovp");
+                result.addProperty("command","vtp2ovp");
+                result.addProperty("profile","http");
+                result.addProperty("status","PASS");
+                result.addProperty("input","input");
+
+                JsonObject output = new JsonObject();
+                output.addProperty("test","test");
+                result.add("output",output);
+
+                return result;
+            }
+        };
+
         assertNotNull(vtpExecutionResource.getTestExecutionHandler("1234"));
+
     }
 
-    @Test(expected = NullPointerException.class)
-    public void testExecuteTestcases() throws Exception
-    {
+    @Test
+    public void testlistTestExecutionsHandlerForGson() throws Exception {
+        new MockUp<OpenRemoteCli>() {
 
-        List<FormDataBodyPart> bodyParts= new ArrayList<>();
-        formDataBodyPart.setName("abc");
-        formDataBodyPart.setValue("123");
-        formDataBodyPart.setContentDisposition(contentDisposition);
-        formDataBodyPart.getContentDisposition().getFileName();
-        bodyParts.add(formDataBodyPart);
-      vtpExecutionResource.executeTestcases(requestId,bodyParts,"exeJson") ;
+            @Mock
+            public Result run(List<String> args) throws Exception {
+
+                Result result = Result.newBuilder().build();
+                return result;
+            }
+        };
+        new MockUp<VTPResource>() {
+
+            @Mock
+            protected JsonElement makeRpcAndGetJson(List<String> args, int timeout) throws VTPError.VTPException, IOException {
+                JsonArray resultArray = new JsonArray();
+                JsonObject result = new JsonObject();
+                result.addProperty("execution-id","1222");
+                result.addProperty("start-time","12:00");
+                result.addProperty("end-time","12:02");
+                result.addProperty("request-id","1234");
+                result.addProperty("product","onap");
+                result.addProperty("service","vtp2ovp");
+                result.addProperty("command","vtp2ovp");
+                result.addProperty("profile","http");
+                result.addProperty("status","PASS");
+                result.addProperty("input","input");
+
+                JsonObject output = new JsonObject();
+                output.addProperty("test","test");
+                result.add("output",output);
+
+                resultArray.add(result);
+                return resultArray;
+            }
+        };
+        assertNotNull(vtpExecutionResource.listTestExecutionsHandler(requestId,"VTP Scenario 1","testsuite-1","s1.ts1.testcase-1","open-cli-schema","2019-03-12T11:49:52.845","2020-03-12T11:49:52.845"));
+
+    }
+
+    class TestClass extends VTPResource{
+        @Override
+        public JsonElement makeRpcAndGetJson(List<String> args, int timeout) throws VTPError.VTPException, IOException {
+            return super.makeRpcAndGetJson(args, timeout);
+        }
+    }
+    @Test
+    public void testmakeRpcAndGetJson() throws IOException, VTPError.VTPException {
+
+        new MockUp<OpenRemoteCli>() {
+
+            @Mock
+            public Result run(List<String> args) throws Exception {
+
+                Result result = Result.newBuilder().build();
+
+                return result;
+            }
+        };
+        new MockUp<Result>() {
+
+            @Mock
+            public String getOutput() {
+
+                String str = "{\"product\":\"onap-dublin\"}";
+
+                return str;
+            }
+        };
+        TestClass testClass = new TestClass();
+        List<String> list = new ArrayList<>();
+        list.add("abc");
+        testClass.makeRpcAndGetJson(list,1000);
     }
 }

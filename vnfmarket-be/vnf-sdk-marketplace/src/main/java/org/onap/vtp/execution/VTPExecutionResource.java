@@ -41,6 +41,11 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -55,13 +60,6 @@ import org.onap.vtp.execution.model.VTPTestExecution;
 import org.onap.vtp.execution.model.VTPTestExecution.VTPTestExecutionList;
 import org.open.infc.grpc.Output;
 import org.open.infc.grpc.Result;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -117,19 +115,19 @@ public class VTPExecutionResource  extends VTPResource{
 
             // set the results from what is available in the output independent of status.
             // tests can fail but still produce results.
-            ObjectMapper mapper = new ObjectMapper();
+            Gson mapper = new Gson();
             Map<String,String> m = output.getAttrsMap();
             if ((m.containsKey(ERROR)) && (!StringUtils.equals(m.get(ERROR), "{}"))) {
                 try {
-                    execution.setResults(mapper.readTree(m.get(ERROR)));
-                } catch (IOException e) {
+                    execution.setResults(mapper.fromJson(m.get(ERROR), JsonElement.class));
+                } catch (Exception e) {
                     LOG.error("IOException occurs",e);
                 }
             }
             else if (m.containsKey("results")) {
                 try {
-                    execution.setResults(mapper.readTree(m.get("results")));
-                } catch (IOException e) {
+                    execution.setResults(mapper.fromJson(m.get("results"),JsonElement.class));
+                } catch (Exception e) {
                     LOG.error("IOException occurs",e);
                 }
             }
@@ -207,8 +205,8 @@ public class VTPExecutionResource  extends VTPResource{
 
         try {
             executions.setExecutions(
-                        new ObjectMapper().readValue(executionsJson, new TypeReference<List<VTPTestExecution>>(){}));
-        } catch (IOException e) {
+                        new Gson().fromJson(executionsJson, new TypeToken<List<VTPTestExecution>>(){}.getType()));
+        } catch (Exception e) {
             LOG.error("IOException occurs",e);
         }
 
@@ -268,43 +266,43 @@ public class VTPExecutionResource  extends VTPResource{
             args.add(testCaseName);
         }
 
-        JsonNode results = this.makeRpcAndGetJson(args);
+        JsonElement results = this.makeRpcAndGetJson(args);
 
         VTPTestExecutionList list = new VTPTestExecutionList();
 
-        if (results != null && results.isArray()) {
-            ArrayNode resultsArray = (ArrayNode)results;
+        if (results != null && results.isJsonArray()) {
+            JsonArray resultsArray = results.getAsJsonArray();
             if (resultsArray.size() >= 0) {
-                for (Iterator<JsonNode> it = resultsArray.iterator(); it.hasNext();) {
-                    JsonNode n = it.next();
-                    if (n.elements().hasNext()) {
+                for (Iterator<JsonElement> it = resultsArray.iterator(); it.hasNext();) {
+                    JsonElement n = it.next();
+                    if (n.getAsJsonObject().entrySet().iterator().hasNext()) {
                         VTPTestExecution exec = new VTPTestExecution();
-                        if (n.get(START_TIME) != null)
-                            exec.setStartTime(n.get(START_TIME).asText());
+                        if (n.getAsJsonObject().get(START_TIME) != null)
+                            exec.setStartTime(n.getAsJsonObject().get(START_TIME).getAsString());
 
-                        if (n.get(END_TIME) != null)
-                            exec.setEndTime(n.get(END_TIME).asText());
+                        if (n.getAsJsonObject().get(END_TIME) != null)
+                            exec.setEndTime(n.getAsJsonObject().get(END_TIME).getAsString());
 
-                        if (n.get(EXECUTION_ID) != null)
-                            exec.setExecutionId(n.get(EXECUTION_ID).asText());
+                        if (n.getAsJsonObject().get(EXECUTION_ID) != null)
+                            exec.setExecutionId(n.getAsJsonObject().get(EXECUTION_ID).getAsString());
 
-                        if (n.get(REQUEST_ID) != null)
-                            exec.setRequestId(n.get(REQUEST_ID).asText());
+                        if (n.getAsJsonObject().get(REQUEST_ID) != null)
+                            exec.setRequestId(n.getAsJsonObject().get(REQUEST_ID).getAsString());
 
-                        if (n.get(PRODUCT) != null)
-                            exec.setScenario(n.get(PRODUCT).asText());
+                        if (n.getAsJsonObject().get(PRODUCT) != null)
+                            exec.setScenario(n.getAsJsonObject().get(PRODUCT).getAsString());
 
-                        if (n.get(SERVICE) != null)
-                            exec.setTestSuiteName(n.get(SERVICE).asText());
+                        if (n.getAsJsonObject().get(SERVICE) != null)
+                            exec.setTestSuiteName(n.getAsJsonObject().get(SERVICE).getAsString());
 
-                        if (n.get(COMMAND) != null)
-                            exec.setTestCaseName(n.get(COMMAND).asText());
+                        if (n.getAsJsonObject().get(COMMAND) != null)
+                            exec.setTestCaseName(n.getAsJsonObject().get(COMMAND).getAsString());
 
-                        if (n.get(PROFILE) != null)
-                            exec.setProfile(n.get(PROFILE).asText());
+                        if (n.getAsJsonObject().get(PROFILE) != null)
+                            exec.setProfile(n.getAsJsonObject().get(PROFILE).getAsString());
 
-                        if (n.get(STATUS) != null)
-                            exec.setStatus(n.get(STATUS).asText());
+                        if (n.getAsJsonObject().get(STATUS) != null)
+                            exec.setStatus(n.getAsJsonObject().get(STATUS).getAsString());
 
                         list.getExecutions().add(exec);
                     }
@@ -346,49 +344,49 @@ public class VTPExecutionResource  extends VTPResource{
                 }));
 
 
-        JsonNode result = this.makeRpcAndGetJson(args);
+        JsonElement result = this.makeRpcAndGetJson(args);
 
         VTPTestExecution exec = new VTPTestExecution();
 
-        if (result != null && result.elements().hasNext()) {
-            if (result.get(START_TIME) != null)
-                exec.setStartTime(result.get(START_TIME).asText());
+        if (result != null && result.getAsJsonObject().entrySet().iterator().hasNext()) {
+            if (result.getAsJsonObject().get(START_TIME) != null)
+                exec.setStartTime(result.getAsJsonObject().get(START_TIME).getAsString());
 
-            if (result.get(END_TIME) != null)
-                exec.setEndTime(result.get(END_TIME).asText());
+            if (result.getAsJsonObject().get(END_TIME) != null)
+                exec.setEndTime(result.getAsJsonObject().get(END_TIME).getAsString());
 
-            if (result.get(EXECUTION_ID) != null)
-                exec.setExecutionId(result.get(EXECUTION_ID).asText());
-            if (result.get(REQUEST_ID) != null)
-                exec.setExecutionId(result.get(REQUEST_ID).asText());
+            if (result.getAsJsonObject().get(EXECUTION_ID) != null)
+                exec.setExecutionId(result.getAsJsonObject().get(EXECUTION_ID).getAsString());
+            if (result.getAsJsonObject().get(REQUEST_ID) != null)
+                exec.setExecutionId(result.getAsJsonObject().get(REQUEST_ID).getAsString());
 
-            if (result.get(PRODUCT) != null)
-                exec.setScenario(result.get(PRODUCT).asText());
-            if (result.get(SERVICE) != null)
-                exec.setTestSuiteName(result.get(SERVICE).asText());
-            if (result.get(COMMAND) != null)
-                exec.setTestCaseName(result.get(COMMAND).asText());
-            if (result.get(PROFILE) != null)
-                exec.setExecutionId(result.get(PROFILE).asText());
-            if (result.get(STATUS) != null)
-                exec.setStatus(result.get(STATUS).asText());
-            if (result.get(INPUT) != null) {
-                exec.setParameters(result.get(INPUT));
+            if (result.getAsJsonObject().get(PRODUCT) != null)
+                exec.setScenario(result.getAsJsonObject().get(PRODUCT).getAsString());
+            if (result.getAsJsonObject().get(SERVICE) != null)
+                exec.setTestSuiteName(result.getAsJsonObject().get(SERVICE).getAsString());
+            if (result.getAsJsonObject().get(COMMAND) != null)
+                exec.setTestCaseName(result.getAsJsonObject().get(COMMAND).getAsString());
+            if (result.getAsJsonObject().get(PROFILE) != null)
+                exec.setExecutionId(result.getAsJsonObject().get(PROFILE).getAsString());
+            if (result.getAsJsonObject().get(STATUS) != null)
+                exec.setStatus(result.getAsJsonObject().get(STATUS).getAsString());
+            if (result.getAsJsonObject().get(INPUT) != null) {
+                exec.setParameters(result.getAsJsonObject().get(INPUT));
             }
-            if (result.get(OUTPUT) != null) {
-                ObjectMapper mapper = new ObjectMapper();
-                JsonNode resultJson = null;
+            if (result.getAsJsonObject().get(OUTPUT) != null) {
+                Gson mapper = new Gson();
+                JsonElement resultJson = null;
                 try {
-                    resultJson = mapper.readTree(result.get(OUTPUT).asText());
+                    resultJson = mapper.fromJson(result.getAsJsonObject().get(OUTPUT),JsonElement.class);
 
                     //workarround, sometimes its null.
                     if (resultJson == null) {
-                        resultJson = mapper.readTree(result.get(OUTPUT).toString());
+                        resultJson = mapper.fromJson(result.getAsJsonObject().get(OUTPUT),JsonElement.class);
                     }
                 } catch (Exception e) {
                     LOG.error("Exception occurs", e);
-                    ObjectNode node = JsonNodeFactory.instance.objectNode();
-                    node.put(ERROR, result.get(OUTPUT).asText());
+                    JsonObject node = new JsonObject();
+                    node.addProperty(ERROR, result.getAsJsonObject().get(OUTPUT).getAsString());
                     resultJson = node;
 
                 }
