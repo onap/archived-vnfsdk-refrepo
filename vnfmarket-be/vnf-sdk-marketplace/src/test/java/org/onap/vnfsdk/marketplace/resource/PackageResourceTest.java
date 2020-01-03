@@ -113,8 +113,6 @@ public class PackageResourceTest {
 
     private CsarFileUriResponse csarFileUriResObj = null;
 
-    private Gson gson = null;
-
     @Before
     public void setUp() {
         packageResource = new PackageResource();
@@ -124,7 +122,6 @@ public class PackageResourceTest {
         pkgMetaObj = new PackageMeta();
         pkgResponseObj = new PackageResponse();
         csarFileUriResObj = new CsarFileUriResponse();
-        gson = JsonUtil.getGsonInstance();
     }
 
     @Before
