@@ -42,10 +42,12 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 
+import com.google.gson.Gson;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.junit.Before;
 import org.junit.Test;
 import org.onap.vnfsdk.marketplace.common.FileUtil;
+import org.onap.vnfsdk.marketplace.common.JsonUtil;
 import org.onap.vnfsdk.marketplace.common.ToolUtil;
 import org.onap.vnfsdk.marketplace.db.entity.PackageData;
 import org.onap.vnfsdk.marketplace.db.impl.MarketplaceDaoImpl;
@@ -63,6 +65,7 @@ import org.onap.vnfsdk.marketplace.entity.response.CsarFileUriResponse;
 import org.onap.vnfsdk.marketplace.entity.response.PackageMeta;
 import org.onap.vnfsdk.marketplace.entity.response.PackageResponse;
 import org.onap.vnfsdk.marketplace.filemanage.http.HttpFileManagerImpl;
+import org.onap.vnfsdk.marketplace.msb.MsbDetails;
 import org.onap.vnfsdk.marketplace.msb.MsbDetailsHolder;
 import org.onap.vnfsdk.marketplace.msb.MsbServer;
 import org.onap.vnfsdk.marketplace.onboarding.entity.OnBoardingResult;
@@ -110,6 +113,8 @@ public class PackageResourceTest {
 
     private CsarFileUriResponse csarFileUriResObj = null;
 
+    private Gson gson = null;
+
     @Before
     public void setUp() {
         packageResource = new PackageResource();
@@ -119,6 +124,7 @@ public class PackageResourceTest {
         pkgMetaObj = new PackageMeta();
         pkgResponseObj = new PackageResponse();
         csarFileUriResObj = new CsarFileUriResponse();
+        gson = JsonUtil.getGsonInstance();
     }
 
     @Before
@@ -1566,4 +1572,68 @@ public class PackageResourceTest {
         assertEquals(res, "localpath");
 
     }
+
+    @Test
+    public void testwriteJsonDatatoFileForGson() {
+
+        String filePath = "/home/ubuntu/functionTest.json";
+        OnBoardingResult onBoardResultObj = new OnBoardingResult();
+        onBoardResultObj.setCsarId("csrId");
+        onBoardResultObj.setOperStatus(1);
+        boolean res = FileUtil.writeJsonDatatoFile(filePath, onBoardResultObj);
+        assertEquals(res, true);
+
+
+    }
+
+    @Test
+    public void testreadJsonDatafFromFileForGson() {
+
+        String fileAbsPath = "/home/ubuntu/functionTest.json";
+        Object obj =
+                FileUtil.readJsonDatafFromFile(fileAbsPath, Object.class);
+        System.out.println(JsonUtil.convertObjectToJsonString(obj));
+        assertNotNull(obj);
+        fileAbsPath = "//home//ubuntu//fuctionTest.json";
+        obj =
+                FileUtil.readJsonDatafFromFile(fileAbsPath, Object.class);
+        assertNull(obj);
+    }
+
+    @Test
+    public void testreadJsonDatafFromFileForUnknownFields() {
+
+        MsbDetails msbDetails = (MsbDetails)FileUtil.readJsonDatafFromFile("/home/ubuntu/All_about_refrepo/refrepoPulled03Jan/refrepo/vnfmarket-be/deployment/zip/src/main/release/etc/conf/restclientTest.json", MsbDetails.class);
+        System.out.println(JsonUtil.convertObjectToJsonString(msbDetails));
+        assertNotNull(msbDetails);
+
+    }
+
+    @Test
+    public void testPackageDataForUnknownFields() {
+
+        String jsonValue = "{\"csarId\":\"123\",\"test\":\"test\"}";
+        PackageData packageData = (PackageData) JsonUtil.convertJsonStringToClassType(jsonValue, PackageData.class);
+        System.out.println(JsonUtil.convertObjectToJsonString(packageData));
+        assertEquals("123", packageData.getCsarId());
+
+    }
+
+    @Test
+    public void testPackageResponseForUnknownFields() {
+        String jsonValue = "{\"reportPath\":\"src/test/resources/functionTest.json\",\"test\":\"unknown\"}";
+        PackageResponse packageResponse = (PackageResponse) JsonUtil.convertJsonStringToClassType(jsonValue, PackageResponse.class);
+        System.out.println(JsonUtil.convertObjectToJsonString(packageResponse));
+        assertEquals("src/test/resources/functionTest.json", packageResponse.getReportPath());
+    }
+
+    @Test
+    public void testRestResponseForUnknownFields() {
+        String jsonValue = "{\"statusCode\":\"200\",\"testField\":\"Unknown\"}";
+        RestResponse restResponse = (RestResponse) JsonUtil.convertJsonStringToClassType(jsonValue, RestResponse.class);
+        System.out.println(JsonUtil.convertObjectToJsonString(restResponse));
+        assertEquals(200, restResponse.getStatusCode().intValue());
+
+    }
+
 }

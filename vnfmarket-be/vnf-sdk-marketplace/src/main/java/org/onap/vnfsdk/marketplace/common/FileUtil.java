@@ -15,27 +15,17 @@
  */
 package org.onap.vnfsdk.marketplace.common;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonParseException;
-/** note jackson has security vulnerabilities */
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 public final class FileUtil {
@@ -46,6 +36,7 @@ public final class FileUtil {
 
 	private static final int MAX_PACKAGE_SIZE = 50 * 1024 * 1024;
 
+	private static Gson gson = JsonUtil.getGsonInstance();
 	private FileUtil() {
 		//Empty constructor
 	}
@@ -150,14 +141,9 @@ public final class FileUtil {
 			deleteFile(fileAbsPath);
 		}
 
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			mapper.writeValue(new File(fileAbsPath), obj);
+		try (FileWriter writer = new FileWriter(new File(fileAbsPath))){
+			gson.toJson(obj,writer);
 			bResult = true;
-		} catch (JsonGenerationException e) {
-			logger.info("JsonGenerationException Exception: writeJsonDatatoFile-->" + fileAbsPath, e);
-		} catch (JsonMappingException e) {
-			logger.info("JsonMappingException Exception: writeJsonDatatoFile-->" + fileAbsPath, e);
 		} catch (IOException e) {
 			logger.info("IOException Exception: writeJsonDatatoFile-->" + fileAbsPath, e);
 		}
@@ -173,14 +159,9 @@ public final class FileUtil {
 		logger.info("read JsonData from file : {}" , fileAbsPath);
 
 		T obj = null;
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		try {
-			obj = mapper.readValue(new File(fileAbsPath), clazz);
-		} catch (JsonParseException e1) {
-			logger.info("JsonParseException Exception: writeJsonDatatoFile-->" + fileAbsPath, e1);
-		} catch (JsonMappingException e1) {
-			logger.info("JsonMappingException Exception: writeJsonDatatoFile-->" + fileAbsPath, e1);
+			JsonReader jsonReader = new JsonReader(new FileReader(fileAbsPath));
+			obj = gson.fromJson(jsonReader, clazz);
 		} catch (IOException e1) {
 			logger.info("IOException Exception: writeJsonDatatoFile-->" + fileAbsPath, e1);
 		}

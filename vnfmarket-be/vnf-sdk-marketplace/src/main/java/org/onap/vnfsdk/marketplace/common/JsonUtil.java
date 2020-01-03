@@ -13,31 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.onap.vnfsdk.marketplace.rest;
+package org.onap.vnfsdk.marketplace.common;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import org.onap.vnfsdk.marketplace.db.entity.PackageData;
 
+public class JsonUtil {
+    private static Gson gson = getGsonInstance();
 
-
-public class RestResponse {
-
-    private Integer statusCode;
-
-    private String result;
-
-    public Integer getStatusCode() {
-        return statusCode;
+    public static Gson getGsonInstance() {
+        return new GsonBuilder().serializeNulls().create();
     }
 
-    public void setStatusCode(Integer statusCode) {
-        this.statusCode = statusCode;
+    public static String convertObjectToJsonString(Object obj) {
+        return gson.toJson(obj);
     }
 
-    public String getResult() {
-        return result;
+    public static <T>Object  convertJsonStringToClassType(String jsonValue, Class<T> clazz) {
+        return gson.fromJson(jsonValue,clazz);
     }
-
-    public void setResult(String result) {
-        this.result = result;
-    }
-
 }
