@@ -25,7 +25,10 @@ import java.util.Properties;
 import java.util.TimeZone;
 import java.util.UUID;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import org.apache.http.HttpStatus;
+import org.onap.vnfsdk.marketplace.common.JsonUtil;
 import org.onap.vtp.error.VTPError;
 import org.onap.vtp.error.VTPError.VTPException;
 import org.open.infc.grpc.Output;
@@ -35,8 +38,6 @@ import org.open.infc.grpc.client.OpenRemoteCli;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class VTPResource {
 
@@ -100,24 +101,23 @@ public class VTPResource {
         return VTP_ARTIFACT_STORE;
     }
 
-    protected JsonNode makeRpcAndGetJson(List<String> args) throws VTPException, IOException {
+    protected JsonElement makeRpcAndGetJson(List<String> args) throws VTPException, IOException {
         return this.makeRpcAndGetJson(args, VTP_EXECUTION_GRPC_TIMEOUT);
     }
 
-    protected JsonNode makeRpcAndGetJson(List<String> args, int timeout) throws VTPException, IOException {
+    protected JsonElement makeRpcAndGetJson(List<String> args, int timeout) throws VTPException, IOException {
         Result result = this.makeRpc(args, timeout);
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readTree(result.getOutput());
+        return (JsonElement) JsonUtil.convertJsonStringToClassType(result.getOutput(),JsonElement.class);
     }
 
-    protected Output makeRpc(String scenario, String requestId, String profile, String testCase, JsonNode argsJsonNode) throws VTPException {
+    protected Output makeRpc(String scenario, String requestId, String profile, String testCase, JsonElement argsJsonNode) throws VTPException {
         return this.makeRpc(scenario, requestId, profile, testCase, argsJsonNode, VTP_EXECUTION_GRPC_TIMEOUT);
     }
 
-    protected Output makeRpc(String scenario, String requestId, String profile, String testCase, JsonNode argsJsonNode, int timeout) throws VTPException {
+    protected Output makeRpc(String scenario, String requestId, String profile, String testCase, JsonElement argsJsonNode, int timeout) throws VTPException {
         Output output = null;
-        ObjectMapper mapper = new ObjectMapper();
-        Map <String, String> args = mapper.convertValue(argsJsonNode, Map.class);
+        Gson gson = JsonUtil.getGsonInstance();
+        Map <String, String> args = gson.fromJson(argsJsonNode, Map.class);
         try {
             output = new OpenRemoteCli(
                     VTP_TEST_CENTER_IP,

@@ -15,12 +15,8 @@
  */
 package org.onap.vtp;
 
-import com.fasterxml.jackson.core.*;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
-import com.fasterxml.jackson.databind.node.JsonNodeType;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import org.glassfish.jersey.media.multipart.ContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.junit.Before;
@@ -28,6 +24,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.onap.vnfsdk.marketplace.common.JsonUtil;
 import org.onap.vtp.execution.VTPExecutionResource;
 import org.onap.vtp.execution.model.VTPTestExecution;
 import org.open.infc.grpc.Result;
@@ -57,9 +54,8 @@ public class VTPExecutionResourceTest {
     {
         VTPTestExecution.VTPTestExecutionList executions= new VTPTestExecution.VTPTestExecutionList();
         List<VTPTestExecution> list= new ArrayList<>();
-        ObjectMapper mapper = new ObjectMapper();
         String jsonString = "{\"name\":\"Mahesh Kumar\", \"age\":\"nine\",\"verified\":\"false\"}";
-        JsonNode rootNode = mapper.readTree(jsonString);
+        JsonObject rootNode = (JsonObject) JsonUtil.convertJsonStringToClassType(jsonString,JsonObject.class);
 
         VTPTestExecution vtp=new VTPTestExecution();
         vtp.setEndTime("2019-03-12T11:49:52.845");

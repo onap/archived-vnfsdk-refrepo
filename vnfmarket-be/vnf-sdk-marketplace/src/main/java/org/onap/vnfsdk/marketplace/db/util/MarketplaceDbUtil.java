@@ -19,6 +19,7 @@ package org.onap.vnfsdk.marketplace.db.util;
 import java.util.UUID;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 
 public class MarketplaceDbUtil {
@@ -39,7 +40,7 @@ public class MarketplaceDbUtil {
    * @return string
    */
   public static String objectToString(Object obj) {
-    Gson gson = new Gson();
+    Gson gson = new GsonBuilder().serializeNulls().create();
     if (obj != null) {
       return gson.toJson(obj);
     } else {

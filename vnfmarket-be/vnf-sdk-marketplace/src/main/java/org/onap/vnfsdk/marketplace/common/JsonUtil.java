@@ -17,7 +17,6 @@ package org.onap.vnfsdk.marketplace.common;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.onap.vnfsdk.marketplace.db.entity.PackageData;
 
 public class JsonUtil {
     private static Gson gson = getGsonInstance();
