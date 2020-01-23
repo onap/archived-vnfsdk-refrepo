@@ -19,9 +19,9 @@ package org.onap.vtp.scenario.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.JsonElement;
 import org.onap.vtp.VTPModelBase;
 
-import com.fasterxml.jackson.databind.JsonNode;
 
 public class VTPTestCase extends VTPModelBase{
     private String scenario;
@@ -104,7 +104,7 @@ public class VTPTestCase extends VTPModelBase{
         private String type;
         private String defaultValue;
         private Boolean isOptional;
-        private JsonNode metadata;
+        private JsonElement metadata;
 
         public String getName() {
             return name;
@@ -136,10 +136,11 @@ public class VTPTestCase extends VTPModelBase{
         public void setIsOptional(Boolean isOptional) {
             this.isOptional = isOptional;
         }
-        public JsonNode getMetadata() {
+        public JsonElement getMetadata() {
+
             return metadata;
         }
-        public void setMetadata(JsonNode metadata) {
+        public void setMetadata(JsonElement metadata) {
             this.metadata = metadata;
         }
     }

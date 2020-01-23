@@ -20,11 +20,9 @@ import java.util.ArrayList;
 
 import java.util.List;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import org.onap.vtp.VTPModelBase;
-
-import com.fasterxml.jackson.databind.JsonNode;
-
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 
 public class VTPTestExecution extends VTPModelBase{
     private String scenario;
@@ -33,10 +31,13 @@ public class VTPTestExecution extends VTPModelBase{
     private String executionId;
     private String requestId;
     private String profile;
-    private JsonNode parameters = JsonNodeFactory.instance.objectNode();
-    private JsonNode results = JsonNodeFactory.instance.objectNode();
+    private JsonElement parameters = VTPTestExecution.getJsonObject();
+    private JsonElement results = VTPTestExecution.getJsonObject();
     public enum Status {
         IN_PROGRESS, COMPLETED, FAILED;
+    }
+    private static JsonObject getJsonObject(){
+        return new JsonObject();
     }
 
     private String status = Status.FAILED.name();
@@ -76,10 +77,10 @@ public class VTPTestExecution extends VTPModelBase{
         return this;
     }
 
-    public JsonNode getResults() {
+    public JsonElement getResults() {
         return results;
     }
-    public VTPTestExecution setResults(JsonNode results) {
+    public VTPTestExecution setResults(JsonElement results) {
         this.results = results;
         return this;
     }
@@ -125,10 +126,10 @@ public class VTPTestExecution extends VTPModelBase{
         this.requestId = requestId;
     }
 
-    public JsonNode getParameters() {
+    public JsonElement getParameters() {
         return parameters;
     }
-    public void setParameters(JsonNode parameters) {
+    public void setParameters(JsonElement parameters) {
         this.parameters = parameters;
     }
 

@@ -41,6 +41,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -48,6 +50,7 @@ import org.eclipse.jetty.http.HttpStatus;
 import org.glassfish.jersey.media.multipart.BodyPartEntity;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.onap.vnfsdk.marketplace.common.JsonUtil;
 import org.onap.vtp.VTPResource;
 import org.onap.vtp.error.VTPError;
 import org.onap.vtp.error.VTPError.VTPException;
@@ -55,13 +58,6 @@ import org.onap.vtp.execution.model.VTPTestExecution;
 import org.onap.vtp.execution.model.VTPTestExecution.VTPTestExecutionList;
 import org.open.infc.grpc.Output;
 import org.open.infc.grpc.Result;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -85,6 +81,8 @@ public class VTPExecutionResource  extends VTPResource{
     private static final String INPUT = "input";
     private static final String ERROR = "error";
     private static final String FILE = "file://";
+    private static Gson gson = JsonUtil.getGsonInstance();
+
 
     public VTPTestExecutionList executeHandler(VTPTestExecutionList executions, String requestId) throws VTPException {
         if (requestId == null) {
@@ -117,20 +115,22 @@ public class VTPExecutionResource  extends VTPResource{
 
             // set the results from what is available in the output independent of status.
             // tests can fail but still produce results.
-            ObjectMapper mapper = new ObjectMapper();
             Map<String,String> m = output.getAttrsMap();
             if ((m.containsKey(ERROR)) && (!StringUtils.equals(m.get(ERROR), "{}"))) {
                 try {
-                    execution.setResults(mapper.readTree(m.get(ERROR)));
-                } catch (IOException e) {
-                    LOG.error("IOException occurs",e);
+                    execution.setResults(gson.fromJson(m.get(ERROR), JsonElement.class));
+                } catch (JsonSyntaxException e) {
+                    LOG.error("JsonException: Failed to process json data format", e);
+
                 }
             }
             else if (m.containsKey("results")) {
                 try {
-                    execution.setResults(mapper.readTree(m.get("results")));
-                } catch (IOException e) {
-                    LOG.error("IOException occurs",e);
+                    execution.setResults(gson.fromJson(m.get("results"), JsonElement.class));
+
+                } catch (JsonSyntaxException e) {
+                    LOG.error("JsonException: Failed to process json data format", e);
+
                 }
             }
         }
@@ -205,12 +205,8 @@ public class VTPExecutionResource  extends VTPResource{
 
         }
 
-        try {
-            executions.setExecutions(
-                        new ObjectMapper().readValue(executionsJson, new TypeReference<List<VTPTestExecution>>(){}));
-        } catch (IOException e) {
-            LOG.error("IOException occurs",e);
-        }
+        executions.setExecutions(
+                new Gson().fromJson(executionsJson, new TypeToken<List<VTPTestExecution>>(){}.getType()));
 
         executions = this.executeHandler(executions, requestId);
 
@@ -268,43 +264,44 @@ public class VTPExecutionResource  extends VTPResource{
             args.add(testCaseName);
         }
 
-        JsonNode results = this.makeRpcAndGetJson(args);
+        JsonElement results = this.makeRpcAndGetJson(args);
 
         VTPTestExecutionList list = new VTPTestExecutionList();
 
-        if (results != null && results.isArray()) {
-            ArrayNode resultsArray = (ArrayNode)results;
+        if (results != null && results.isJsonArray()) {
+            JsonArray resultsArray = (JsonArray) results;
             if (resultsArray.size() >= 0) {
-                for (Iterator<JsonNode> it = resultsArray.iterator(); it.hasNext();) {
-                    JsonNode n = it.next();
-                    if (n.elements().hasNext()) {
+                for (Iterator<JsonElement> it = resultsArray.iterator(); it.hasNext();) {
+                    JsonElement jsonElement = it.next();
+                    JsonObject n = jsonElement.getAsJsonObject();
+                    if (n.entrySet().iterator().hasNext()) {
                         VTPTestExecution exec = new VTPTestExecution();
                         if (n.get(START_TIME) != null)
-                            exec.setStartTime(n.get(START_TIME).asText());
+                            exec.setStartTime(n.get(START_TIME).getAsString());
 
                         if (n.get(END_TIME) != null)
-                            exec.setEndTime(n.get(END_TIME).asText());
+                            exec.setEndTime(n.get(END_TIME).getAsString());
 
                         if (n.get(EXECUTION_ID) != null)
-                            exec.setExecutionId(n.get(EXECUTION_ID).asText());
+                            exec.setExecutionId(n.get(EXECUTION_ID).getAsString());
 
                         if (n.get(REQUEST_ID) != null)
-                            exec.setRequestId(n.get(REQUEST_ID).asText());
+                            exec.setRequestId(n.get(REQUEST_ID).getAsString());
 
                         if (n.get(PRODUCT) != null)
-                            exec.setScenario(n.get(PRODUCT).asText());
+                            exec.setScenario(n.get(PRODUCT).getAsString());
 
                         if (n.get(SERVICE) != null)
-                            exec.setTestSuiteName(n.get(SERVICE).asText());
+                            exec.setTestSuiteName(n.get(SERVICE).getAsString());
 
                         if (n.get(COMMAND) != null)
-                            exec.setTestCaseName(n.get(COMMAND).asText());
+                            exec.setTestCaseName(n.get(COMMAND).getAsString());
 
                         if (n.get(PROFILE) != null)
-                            exec.setProfile(n.get(PROFILE).asText());
+                            exec.setProfile(n.get(PROFILE).getAsString());
 
                         if (n.get(STATUS) != null)
-                            exec.setStatus(n.get(STATUS).asText());
+                            exec.setStatus(n.get(STATUS).getAsString());
 
                         list.getExecutions().add(exec);
                     }
@@ -346,49 +343,48 @@ public class VTPExecutionResource  extends VTPResource{
                 }));
 
 
-        JsonNode result = this.makeRpcAndGetJson(args);
+        JsonObject result = this.makeRpcAndGetJson(args).getAsJsonObject();
 
         VTPTestExecution exec = new VTPTestExecution();
 
-        if (result != null && result.elements().hasNext()) {
+        if (result != null && result.entrySet().iterator().hasNext()) {
             if (result.get(START_TIME) != null)
-                exec.setStartTime(result.get(START_TIME).asText());
+                exec.setStartTime(result.get(START_TIME).getAsString());
 
             if (result.get(END_TIME) != null)
-                exec.setEndTime(result.get(END_TIME).asText());
+                exec.setEndTime(result.get(END_TIME).getAsString());
 
             if (result.get(EXECUTION_ID) != null)
-                exec.setExecutionId(result.get(EXECUTION_ID).asText());
+                exec.setExecutionId(result.get(EXECUTION_ID).getAsString());
             if (result.get(REQUEST_ID) != null)
-                exec.setExecutionId(result.get(REQUEST_ID).asText());
-
+                exec.setExecutionId(result.get(REQUEST_ID).getAsString());
             if (result.get(PRODUCT) != null)
-                exec.setScenario(result.get(PRODUCT).asText());
+                exec.setScenario(result.get(PRODUCT).getAsString());
             if (result.get(SERVICE) != null)
-                exec.setTestSuiteName(result.get(SERVICE).asText());
+                exec.setTestSuiteName(result.get(SERVICE).getAsString());
             if (result.get(COMMAND) != null)
-                exec.setTestCaseName(result.get(COMMAND).asText());
+                exec.setTestCaseName(result.get(COMMAND).getAsString());
             if (result.get(PROFILE) != null)
-                exec.setExecutionId(result.get(PROFILE).asText());
+                exec.setExecutionId(result.get(PROFILE).getAsString());
             if (result.get(STATUS) != null)
-                exec.setStatus(result.get(STATUS).asText());
+                exec.setStatus(result.get(STATUS).getAsString());
             if (result.get(INPUT) != null) {
                 exec.setParameters(result.get(INPUT));
             }
             if (result.get(OUTPUT) != null) {
-                ObjectMapper mapper = new ObjectMapper();
-                JsonNode resultJson = null;
+                JsonElement resultJson = null;
+
                 try {
-                    resultJson = mapper.readTree(result.get(OUTPUT).asText());
+                    resultJson = gson.fromJson(result.get(OUTPUT),JsonElement.class);
 
                     //workarround, sometimes its null.
                     if (resultJson == null) {
-                        resultJson = mapper.readTree(result.get(OUTPUT).toString());
+                        resultJson = gson.fromJson(result.get(OUTPUT),JsonElement.class);
                     }
                 } catch (Exception e) {
                     LOG.error("Exception occurs", e);
-                    ObjectNode node = JsonNodeFactory.instance.objectNode();
-                    node.put(ERROR, result.get(OUTPUT).asText());
+                    JsonObject node = new JsonObject();
+                    node.addProperty(ERROR, result.get(OUTPUT).getAsString());
                     resultJson = node;
 
                 }

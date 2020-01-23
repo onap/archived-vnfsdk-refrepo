@@ -16,11 +16,9 @@
 
 package org.onap.vtp;
 
+import org.onap.vnfsdk.marketplace.common.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class VTPModelBase {
     public static final Logger logger = LoggerFactory.getLogger(VTPModelBase.class);
@@ -30,15 +28,7 @@ public class VTPModelBase {
     }
 
     public static String toJsonString(Object obj) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.setSerializationInclusion(Include.NON_NULL);
-            objectMapper.setSerializationInclusion(Include.NON_EMPTY);
-            return objectMapper.writeValueAsString(obj);
-        } catch (JsonProcessingException e) {
-            logger.error("JsonProcessingException occurs ",e);
-            return "{}";
-        }
+        return JsonUtil.convertObjectToJsonString(obj);
     }
 
     public String toString() {
