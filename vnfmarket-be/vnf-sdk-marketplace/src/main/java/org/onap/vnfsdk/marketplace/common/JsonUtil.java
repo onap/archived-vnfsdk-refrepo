@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 Huawei Technologies Co., Ltd.
+ * Copyright 2020 Huawei Technologies Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,31 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.onap.vnfsdk.marketplace.rest;
+package org.onap.vnfsdk.marketplace.common;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
+public class JsonUtil {
+    private static Gson gson = getGsonInstance();
 
-
-public class RestResponse {
-
-    private Integer statusCode;
-
-    private String result;
-
-    public Integer getStatusCode() {
-        return statusCode;
+    public static Gson getGsonInstance() {
+        return new Gson();
     }
 
-    public void setStatusCode(Integer statusCode) {
-        this.statusCode = statusCode;
+    public static String convertObjectToJsonString(Object obj) {
+        return gson.toJson(obj);
     }
 
-    public String getResult() {
-        return result;
+    public static <T>Object  convertJsonStringToClassType(String jsonValue, Class<T> clazz) throws JsonSyntaxException {
+        return gson.fromJson(jsonValue,clazz);
     }
-
-    public void setResult(String result) {
-        this.result = result;
-    }
-
 }
