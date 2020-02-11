@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b6bbe5d3_f7e61d11",
+        "filename": "vnfmarket-be/deployment/zip/src/main/release/bin/start.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2020-02-11T06:31:45Z",
+      "side": 0,
+      "message": "please remow only jpda i think. as it will not allow to start",
+      "revId": "9482397f16858a05a6e8c03f65990549fd23714c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
