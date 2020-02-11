@@ -1,0 +1,176 @@
+{
+    "build_tag": "1234567890-156713978895",
+    "version": "2019.01",
+    "test_date": "2019-11-26 05:4103",
+    "duration": 0,
+    "vnf_type": "TOSCA",
+    "vnf_checksum": "",
+    "testcases_list": [
+        {
+            "mandatory": "true",
+            "name": "onap-dublin__vnf-validation__vnf-tosca-provision__onap-dublin",
+            "result": "PASS",
+            "objective": "onap-dublin__vnf-validation__vnf-tosca-provision__onap-dublin",
+            "sub_testcase": [
+                {
+                    "name": "onap-dublin__sdc.onboarding__vsp-add-artifact__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__aai__cloud-list__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__aai__cloud-create__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__vnf-validation__vnf-tosca-provision__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__sdc.onboarding__vsp-package__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__sdc.onboarding__vsp-create__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__sdc.catalog__service-model-test-accept__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__aai__service-type-list__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__aai__vnfm-list__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__aai__complex-create__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__sdc.catalog__service-model-test-request__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__aai__vnfm-create__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__aai__subscription-list__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__sdc.catalog__service-model-distribute__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__sdc.catalog__service-model-test-start__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__sdc.catalog__vf-model-certify__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__sdc.onboarding__vlm-key-group-create__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__sdc.onboarding__vlm-entitlement-pool-create__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__sdc.catalog__vf-model-create__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__sdc.onboarding__vlm-aggreement-create__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__sdc.catalog__service-model-set-property__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__aai__complex-list__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__aai__customer-list__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__aai__tenant-list__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__sdc.onboarding__vlm-feature-group-create__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__aai__subscription-create__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__sdc.catalog__service-model-create__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__sdc.catalog__service-model-add-artifact__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__sdc.onboarding__vsp-validate__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__sdc.onboarding__vlm-create__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__sdc.onboarding__vlm-submit__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__aai__complex-associate__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__aai__tenant-create__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__sdc.catalog__service-model-approve__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__aai__service-type-create__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__aai__customer-create__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__sdc.onboarding__vsp-submit__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__sdc.catalog__service-model-add-vf__onap-dublin",
+                    "result": "PASS"
+                },
+                {
+                    "name": "onap-dublin__sdc.catalog__vf-model-add-artifact__onap-dublin",
+                    "result": "PASS"
+                }
+            ],
+            "portal_key_file": "./data/executions/1234567890-1567139788955__onap-dublin__vnf-validation__vnf-tosca-provision__onap-dublin/output"
+        }
+    ],
+    "validation": "enabled"
+}

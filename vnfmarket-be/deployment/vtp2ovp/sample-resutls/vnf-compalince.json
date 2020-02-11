@@ -1,0 +1,21 @@
+{
+    "build_tag": "1234567890-1567139793554",
+    "version": "2019.01",
+    "test_date": "2019-11-26 05:4103",
+    "duration": 0,
+    "vnf_type": "TOSCA",
+    "vnf_checksum": "",
+    "testcases_list": [
+        {
+            "mandatory": "true",
+            "name": "onap-dublin__vnf-compliance__csar-validate__onap-dublin",
+            "result": "PASS",
+            "objective": "onap-dublin__vnf-compliance__csar-validate__onap-dublin",
+            "sub_testcase": [
+
+            ],
+            "portal_key_file": "./data/executions/1234567890-1567139793554__onap-dublin__vnf-compliance__csar-validate__onap-dublin/output"
+        }
+    ],
+    "validation": "enabled"
+}
