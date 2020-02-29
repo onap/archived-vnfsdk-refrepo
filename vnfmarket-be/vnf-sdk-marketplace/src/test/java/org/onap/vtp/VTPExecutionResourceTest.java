@@ -15,12 +15,9 @@
  */
 package org.onap.vtp;
 
-import com.fasterxml.jackson.core.*;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
-import com.fasterxml.jackson.databind.node.JsonNodeType;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import org.glassfish.jersey.media.multipart.ContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.junit.Before;
@@ -47,6 +44,8 @@ public class VTPExecutionResourceTest {
     ContentDisposition contentDisposition;
     String requestId;
     VTPExecutionResource vtpExecutionResource;
+    private static Gson gson = new Gson();
+
     @Before
     public void setUp() throws Exception {
         vtpExecutionResource= new VTPExecutionResource();
@@ -57,9 +56,8 @@ public class VTPExecutionResourceTest {
     {
         VTPTestExecution.VTPTestExecutionList executions= new VTPTestExecution.VTPTestExecutionList();
         List<VTPTestExecution> list= new ArrayList<>();
-        ObjectMapper mapper = new ObjectMapper();
         String jsonString = "{\"name\":\"Mahesh Kumar\", \"age\":\"nine\",\"verified\":\"false\"}";
-        JsonNode rootNode = mapper.readTree(jsonString);
+        JsonElement rootNode = gson.fromJson(jsonString, JsonElement.class);
 
         VTPTestExecution vtp=new VTPTestExecution();
         vtp.setEndTime("2019-03-12T11:49:52.845");

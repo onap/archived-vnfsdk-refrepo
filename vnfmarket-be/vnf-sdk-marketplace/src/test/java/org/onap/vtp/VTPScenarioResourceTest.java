@@ -15,8 +15,9 @@
  */
 package org.onap.vtp;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,6 +37,7 @@ import static org.mockito.Mockito.*;
 public class VTPScenarioResourceTest {
 
     VTPScenarioResource vtpScenarioResource;
+    private static Gson gson = new Gson();
 
     @Before
     public void setUp() throws Exception {
@@ -54,8 +56,7 @@ public class VTPScenarioResourceTest {
         VTPScenarioResource vtpScenarioResource2=mock(VTPScenarioResource.class);
         List<String> args = new ArrayList<>();
         args.add("abc");
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode actualObj = mapper.readTree("{\"k1\":\"v1\"}");
+        JsonElement actualObj = gson.fromJson("{\"k1\":\"v1\"}", JsonElement.class);
         vtpScenarioResource.listTestSutiesHandler("abc");
       // when(vtpScenarioResource2.makeRpcAndGetJson(args)).thenReturn(actualObj);
         //vtpScenarioResource.listTestSutiesHandler("VTP Scenario 1");
