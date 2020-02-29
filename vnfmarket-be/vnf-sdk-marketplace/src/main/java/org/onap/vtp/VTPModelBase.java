@@ -18,12 +18,11 @@ package org.onap.vtp;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 
 public class VTPModelBase {
     public static final Logger logger = LoggerFactory.getLogger(VTPModelBase.class);
+    private static Gson gson = new Gson();
 
     public String toJsonString() {
         return toJsonString(this);
@@ -31,12 +30,16 @@ public class VTPModelBase {
 
     public static String toJsonString(Object obj) {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.setSerializationInclusion(Include.NON_NULL);
-            objectMapper.setSerializationInclusion(Include.NON_EMPTY);
-            return objectMapper.writeValueAsString(obj);
-        } catch (JsonProcessingException e) {
-            logger.error("JsonProcessingException occurs ",e);
+            /*
+            The default behaviour implemented in Gson is that null object fields are ignored.
+            Means Gson object does not serialize fields with null values to JSON.
+            If a field in a Java object is null, Gson excludes it.
+            ref: http://tutorialtous.com/gson/serializingNullFields.php
+            ref: https://howtodoinjava.com/gson/serialize-null-values/
+            */
+            return gson.toJson(obj);
+        } catch (Exception e) { //NOSONAR
+            logger.error("Exception occurs ",e);
             return "{}";
         }
     }

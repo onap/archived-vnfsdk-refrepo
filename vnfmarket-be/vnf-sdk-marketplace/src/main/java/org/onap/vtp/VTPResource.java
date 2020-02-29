@@ -35,11 +35,13 @@ import org.open.infc.grpc.client.OpenRemoteCli;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 public class VTPResource {
 
+    private static Gson gson = new Gson();
     protected static final Logger LOG = LoggerFactory.getLogger(VTPResource.class);
 
     protected static String VTP_TEST_CENTER_IP;  // NOSONAR
@@ -100,25 +102,24 @@ public class VTPResource {
         return VTP_ARTIFACT_STORE;
     }
 
-    protected JsonNode makeRpcAndGetJson(List<String> args) throws VTPException, IOException {
+    protected JsonElement makeRpcAndGetJson(List<String> args) throws VTPException, IOException {
         return this.makeRpcAndGetJson(args, VTP_EXECUTION_GRPC_TIMEOUT);
     }
 
-    protected JsonNode makeRpcAndGetJson(List<String> args, int timeout) throws VTPException, IOException {
+    protected JsonElement makeRpcAndGetJson(List<String> args, int timeout) throws VTPException, IOException {
         Result result = this.makeRpc(args, timeout);
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readTree(result.getOutput());
+        JsonParser jsonParser = new JsonParser();
+        return jsonParser.parse(result.getOutput());
     }
 
-    protected Output makeRpc(String scenario, String requestId, String profile, String testCase, JsonNode argsJsonNode) throws VTPException {
+    protected Output makeRpc(String scenario, String requestId, String profile, String testCase, JsonElement argsJsonNode) throws VTPException {
         return this.makeRpc(scenario, requestId, profile, testCase, argsJsonNode, VTP_EXECUTION_GRPC_TIMEOUT);
     }
 
-    protected Output makeRpc(String scenario, String requestId, String profile, String testCase, JsonNode argsJsonNode, int timeout) throws VTPException {
+    protected Output makeRpc(String scenario, String requestId, String profile, String testCase, JsonElement argsJsonNode, int timeout) throws VTPException {
         Output output = null;
-        ObjectMapper mapper = new ObjectMapper();
-        Map <String, String> args = mapper.convertValue(argsJsonNode, Map.class);
         try {
+            Map <String, String> args = gson.fromJson(argsJsonNode, Map.class);
             output = new OpenRemoteCli(
                     VTP_TEST_CENTER_IP,
                     VTP_TEST_CENTER_PORT,
@@ -128,7 +129,7 @@ public class VTPResource {
             LOG.info("Timed out.", e);
              throw new VTPException(
                   new VTPError().setHttpStatus(HttpStatus.SC_GATEWAY_TIMEOUT).setMessage("Timed out. Please use request-id to track the progress.").setCode(VTPError.TIMEOUT));
-        } catch (Exception e) {
+        } catch (Exception e) { //NOSONAR
             LOG.info("Exception occurs", e);
             throw new VTPException(
                     new VTPError().setMessage(e.getMessage()));
