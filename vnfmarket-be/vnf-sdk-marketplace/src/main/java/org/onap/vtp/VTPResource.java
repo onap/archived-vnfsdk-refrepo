@@ -35,8 +35,10 @@ import org.open.infc.grpc.client.OpenRemoteCli;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 
 public class VTPResource {
 
@@ -100,24 +102,24 @@ public class VTPResource {
         return VTP_ARTIFACT_STORE;
     }
 
-    protected JsonNode makeRpcAndGetJson(List<String> args) throws VTPException, IOException {
+    protected JsonElement makeRpcAndGetJson(List<String> args) throws VTPException, IOException {
         return this.makeRpcAndGetJson(args, VTP_EXECUTION_GRPC_TIMEOUT);
     }
 
-    protected JsonNode makeRpcAndGetJson(List<String> args, int timeout) throws VTPException, IOException {
+    protected JsonElement makeRpcAndGetJson(List<String> args, int timeout) throws VTPException, IOException {
         Result result = this.makeRpc(args, timeout);
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readTree(result.getOutput());
+        JsonParser jsonParser = new JsonParser();
+        return jsonParser.parse(result.getOutput());
     }
 
-    protected Output makeRpc(String scenario, String requestId, String profile, String testCase, JsonNode argsJsonNode) throws VTPException {
+    protected Output makeRpc(String scenario, String requestId, String profile, String testCase, JsonElement argsJsonNode) throws VTPException {
         return this.makeRpc(scenario, requestId, profile, testCase, argsJsonNode, VTP_EXECUTION_GRPC_TIMEOUT);
     }
 
-    protected Output makeRpc(String scenario, String requestId, String profile, String testCase, JsonNode argsJsonNode, int timeout) throws VTPException {
+    protected Output makeRpc(String scenario, String requestId, String profile, String testCase, JsonElement argsJsonNode, int timeout) throws VTPException {
         Output output = null;
-        ObjectMapper mapper = new ObjectMapper();
-        Map <String, String> args = mapper.convertValue(argsJsonNode, Map.class);
+        Gson gson = new Gson();
+        Map <String, String> args = gson.fromJson(argsJsonNode, new TypeToken<Map<String,String>>(){}.getType());
         try {
             output = new OpenRemoteCli(
                     VTP_TEST_CENTER_IP,
