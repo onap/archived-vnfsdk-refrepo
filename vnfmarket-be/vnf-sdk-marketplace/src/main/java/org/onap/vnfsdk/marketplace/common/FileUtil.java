@@ -30,13 +30,10 @@ import java.util.zip.ZipFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonParseException;
-/** note jackson has security vulnerabilities */
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
+import java.io.FileWriter;
+import java.io.FileReader;
 
 public final class FileUtil {
 
@@ -45,6 +42,7 @@ public final class FileUtil {
 	private static final int BUFFER_SIZE = 2 * 1024 * 1024;
 
 	private static final int MAX_PACKAGE_SIZE = 50 * 1024 * 1024;
+	private static Gson gson = new Gson();
 
 	private FileUtil() {
 		//Empty constructor
@@ -150,16 +148,11 @@ public final class FileUtil {
 			deleteFile(fileAbsPath);
 		}
 
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			mapper.writeValue(new File(fileAbsPath), obj);
+		try(FileWriter writer = new FileWriter(new File(fileAbsPath))) {
+			gson.toJson(obj, writer);
 			bResult = true;
-		} catch (JsonGenerationException e) {
-			logger.info("JsonGenerationException Exception: writeJsonDatatoFile-->" + fileAbsPath, e);
-		} catch (JsonMappingException e) {
-			logger.info("JsonMappingException Exception: writeJsonDatatoFile-->" + fileAbsPath, e);
-		} catch (IOException e) {
-			logger.info("IOException Exception: writeJsonDatatoFile-->" + fileAbsPath, e);
+		} catch (Exception e) { //NOSONAR
+			logger.info("Exception: writeJsonDatatoFile-->" + fileAbsPath, e);
 		}
 		return bResult;
 	}
@@ -173,15 +166,16 @@ public final class FileUtil {
 		logger.info("read JsonData from file : {}" , fileAbsPath);
 
 		T obj = null;
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		try {
-			obj = mapper.readValue(new File(fileAbsPath), clazz);
-		} catch (JsonParseException e1) {
-			logger.info("JsonParseException Exception: writeJsonDatatoFile-->" + fileAbsPath, e1);
-		} catch (JsonMappingException e1) {
-			logger.info("JsonMappingException Exception: writeJsonDatatoFile-->" + fileAbsPath, e1);
-		} catch (IOException e1) {
+		/*
+           Gson will ignore the unknown fields and simply match the fields that it's able to.
+           ref: https://www.baeldung.com/gson-deserialization-guide
+
+           By default, Gson just ignores extra JSON elements that do not have matching Java fields.
+           ref: https://programmerbruce.blogspot.com/2011/06/gson-v-jackson.html
+        */
+		try(JsonReader jsonReader = new JsonReader(new FileReader(fileAbsPath))) {
+			obj = gson.fromJson(jsonReader, clazz);
+		} catch (Exception e1) { //NOSONAR
 			logger.info("IOException Exception: writeJsonDatatoFile-->" + fileAbsPath, e1);
 		}
 		return obj;
