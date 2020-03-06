@@ -15,9 +15,18 @@
  */
 package org.onap.vnfsdk.marketplace.onboarding.hooks.validatelifecycle;
 
+import mockit.Mock;
+import mockit.MockUp;
+import org.apache.http.HttpEntity;
 import org.junit.Before;
 import org.junit.Test;
+import org.onap.vnfsdk.marketplace.common.FileUtil;
+import org.onap.vnfsdk.marketplace.msb.MsbDetails;
+import org.onap.vnfsdk.marketplace.msb.MsbDetailsHolder;
+import org.onap.vnfsdk.marketplace.msb.MsbServer;
 import org.onap.vnfsdk.marketplace.onboarding.entity.OnBoradingRequest;
+import org.onap.vnfsdk.marketplace.rest.RestResponse;
+import org.onap.vnfsdk.marketplace.rest.RestfulClient;
 
 import static org.mockito.Mockito.mock;
 
@@ -29,21 +38,78 @@ public class LifecycleTestExceutorTest {
     public void setUp()
     {
        // lifecycleTestExceutor = new LifecycleTestExceutor();
-        onBoradingRequest  = mock(OnBoradingRequest.class);
         lifeCycleTestReq = mock(LifeCycleTestReq.class);
     }
 
     @Test
-    public void testupLoadPackageToCatalouge()
+    public void testupLoadPackageToCatalougeForGson()
     {
-       // LifecycleTestExceutor.uploadPackageToCatalouge(onBoradingRequest);
+        new MockUp<FileUtil>(){
+            @Mock
+            public boolean validatePath(String path) {
+                return true;
+            }
+        };
+        new MockUp<LifecycleTestExceutor>(){
+            @Mock
+            private boolean checkValidResponse(RestResponse rsp) {
+                return true;
+            }
+        };
+        new MockUp<RestResponse>(){
+            @Mock
+            public String getResult() {
+                return "{\"csarId\":\"huawei\"}";
+            }
+        };
+        new MockUp<MsbDetails>(){
+            @Mock
+            public MsbServer getDefaultServer() {
+                MsbServer msbServer = new MsbServer();
+                msbServer.setHost("0.0.0.0");
+                msbServer.setPort("5005");
+                return msbServer;
+            }
+        };
+        new MockUp<RestfulClient>(){
+            @Mock
+            public RestResponse post(String ip, int port, String url, HttpEntity requestBody) {
+                RestResponse rsp = new RestResponse();
+                rsp.setStatusCode(200);
+                rsp.setResult("OK");
+                return rsp;
+            }
+        };
+        new MockUp<MsbServer>(){
+            @Mock
+            public String getHost() {
+                return "0.0.0.0";
+            }
+            @Mock
+            public String getPort() {
+                return "5005";
+            }
+        };
+        new MockUp<MsbDetailsHolder>(){
+            @Mock
+            public synchronized MsbDetails getMsbDetails(){
+                MsbDetails msbDetails = new MsbDetails();
+                return msbDetails;
+            }
+        };
+        onBoradingRequest = new OnBoradingRequest();
+        onBoradingRequest.setCsarId("huawei");
+        onBoradingRequest.setPackagePath("");
+        onBoradingRequest.setPackageName("huawei");
+        onBoradingRequest.setCsarIdCatalouge("catalog");
+        LifecycleTestExceutor.uploadPackageToCatalouge(onBoradingRequest);
     }
-    @Test
     public void testExeclifecycleTest()
     {
         LifecycleTestExceutor.execlifecycleTest(onBoradingRequest,lifeCycleTestReq);
 
     }
+
 
 
 }
