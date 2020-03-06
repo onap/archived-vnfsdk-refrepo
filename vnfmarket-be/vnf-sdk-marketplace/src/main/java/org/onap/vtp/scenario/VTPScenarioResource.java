@@ -43,8 +43,9 @@ import org.onap.vtp.scenario.model.VTPTestCase.VTPTestCaseOutput;
 import org.onap.vtp.scenario.model.VTPTestScenario.VTPTestScenarioList;
 import org.onap.vtp.scenario.model.VTPTestSuite.VTPTestSuiteList;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -63,7 +64,7 @@ public class VTPScenarioResource extends VTPResource{
                 "--product", "open-cli", "product-list", "--format", "json"
                 }));
 
-        JsonNode results = null;
+        JsonElement results = null;
         try {
             results = this.makeRpcAndGetJson(args);
         } catch (IOException e) {
@@ -72,19 +73,20 @@ public class VTPScenarioResource extends VTPResource{
 
         VTPTestScenarioList list = new VTPTestScenarioList();
 
-        if (results != null && results.isArray()) {
-            ArrayNode resultsArray = (ArrayNode)results;
+        if (results != null && results.isJsonArray()) {
+            JsonArray resultsArray = results.getAsJsonArray();
             if (resultsArray.size() >= 0) {
-                for (Iterator<JsonNode> it = resultsArray.iterator(); it.hasNext();) {
-                    JsonNode n = it.next();
-                    if (n.elements().hasNext()) {
-                        String name = n.get("product").asText();
+                for (Iterator<JsonElement> it = resultsArray.iterator(); it.hasNext();) {
+                    JsonElement jsonElement = it.next();
+                    JsonObject n = jsonElement.getAsJsonObject();
+                    if (n.entrySet().iterator().hasNext()) {
+                        String name = n.get("product").getAsString();
 
                         if ("open-cli".equalsIgnoreCase(name))
                             continue;
 
                         list.getScenarios().add(new VTPTestScenario().setName(name).setDescription(
-                                n.get(DESCRIPTION).asText()));
+                                n.get(DESCRIPTION).getAsString()));
                     }
                 }
             }
@@ -112,7 +114,7 @@ public class VTPScenarioResource extends VTPResource{
                 "--product", "open-cli", "service-list", "--product", scenario, "--format", "json"
                 }));
 
-        JsonNode results = null;
+        JsonElement results = null;
         try {
             results = this.makeRpcAndGetJson(args);
         } catch (IOException e) {
@@ -121,14 +123,15 @@ public class VTPScenarioResource extends VTPResource{
 
         VTPTestSuiteList list = new VTPTestSuiteList();
 
-        if (results != null && results.isArray()) {
-            ArrayNode resultsArray = (ArrayNode)results;
+        if (results != null && results.isJsonArray()) {
+            JsonArray resultsArray = results.getAsJsonArray();
             if (resultsArray.size() >= 0) {
-                for (Iterator<JsonNode> it = resultsArray.iterator(); it.hasNext();) {
-                    JsonNode n = it.next();
-                    if (n.elements().hasNext()) {
-                        list.getSuites().add(new VTPTestSuite().setName(n.get("service").asText()).setDescription(
-                                n.get(DESCRIPTION).asText()));
+                for (Iterator<JsonElement> it = resultsArray.iterator(); it.hasNext();) {
+                    JsonElement jsonElement = it.next();
+                    JsonObject n = jsonElement.getAsJsonObject();
+                    if (n.entrySet().iterator().hasNext()) {
+                        list.getSuites().add(new VTPTestSuite().setName(n.get("service").getAsString()).setDescription(
+                                n.get(DESCRIPTION).getAsString()));
                     }
                 }
             }
@@ -162,7 +165,7 @@ public class VTPScenarioResource extends VTPResource{
             args.add(testSuiteName);
         }
 
-        JsonNode results = null;
+        JsonElement results = null;
         try {
             results = this.makeRpcAndGetJson(args);
         } catch (IOException e) {
@@ -171,16 +174,17 @@ public class VTPScenarioResource extends VTPResource{
 
         VTPTestCaseList list = new VTPTestCaseList();
 
-        if (results != null && results.isArray()) {
-            ArrayNode resultsArray = (ArrayNode)results;
+        if (results != null && results.isJsonArray()) {
+            JsonArray resultsArray = results.getAsJsonArray();
             if (resultsArray.size() >= 0) {
-                for (Iterator<JsonNode> it = resultsArray.iterator(); it.hasNext();) {
-                    JsonNode n = it.next();
-                    if (n.elements().hasNext())
+                for (Iterator<JsonElement> it = resultsArray.iterator(); it.hasNext();) {
+                    JsonElement jsonElement = it.next();
+                    JsonObject n = jsonElement.getAsJsonObject();
+                    if (n.entrySet().iterator().hasNext())
                         list.getTestCases().add(
                                 new VTPTestCase().setTestCaseName(
-                                        n.get("command").asText()).setTestSuiteName(
-                                                n.get("service").asText()));
+                                        n.get("command").getAsString()).setTestSuiteName(
+                                                n.get("service").getAsString()));
                 }
             }
         }
@@ -209,34 +213,35 @@ public class VTPScenarioResource extends VTPResource{
         args.addAll(Arrays.asList(new String[] {
                  "--product", "open-cli", "schema-show", "--product", scenario, "--service", testSuiteName, "--command", testCaseName , "--format", "json"
                 }));
-        JsonNode results = null;
+        JsonElement results = null;
         try {
             results = this.makeRpcAndGetJson(args);
         } catch (IOException e) {
             LOG.error("IOException occurs",e);
         }
 
-        JsonNode schema = results.get("schema");
+        JsonObject schema = results.getAsJsonObject().getAsJsonObject("schema");
 
         VTPTestCase tc = new VTPTestCase();
-        tc.setTestCaseName(schema.get("name").asText());
-        tc.setDescription(schema.get(DESCRIPTION).asText());
-        tc.setTestSuiteName(schema.get("service").asText());
-        tc.setAuthor(schema.get("author").asText());
-        JsonNode inputsJson = schema.get("inputs");
-        if (inputsJson != null && inputsJson.isArray()) {
-            for (final JsonNode inputJson: inputsJson) {
+        tc.setTestCaseName(schema.get("name").getAsString());
+        tc.setDescription(schema.get(DESCRIPTION).getAsString());
+        tc.setTestSuiteName(schema.get("service").getAsString());
+        tc.setAuthor(schema.get("author").getAsString());
+        JsonElement inputsJson = schema.get("inputs");
+        if (inputsJson != null && inputsJson.isJsonArray()) {
+            for (final JsonElement jsonElement: inputsJson.getAsJsonArray()) {
+                JsonObject inputJson  = jsonElement.getAsJsonObject();
                 VTPTestCaseInput input = new VTPTestCaseInput();
 
-                input.setName(inputJson.get("name").asText());
-                input.setDescription(inputJson.get(DESCRIPTION).asText());
-                input.setType(inputJson.get("type").asText());
+                input.setName(inputJson.get("name").getAsString());
+                input.setDescription(inputJson.get(DESCRIPTION).getAsString());
+                input.setType(inputJson.get("type").getAsString());
 
                 if (inputJson.get("is_optional") != null)
-                    input.setIsOptional(inputJson.get("is_optional").asBoolean());
+                    input.setIsOptional(inputJson.get("is_optional").getAsBoolean());
 
                 if (inputJson.get("default_value") != null)
-                    input.setDefaultValue(inputJson.get("default_value").asText());
+                    input.setDefaultValue(inputJson.get("default_value").getAsString());
 
                 if (inputJson.get("metadata") != null)
                     input.setMetadata(inputJson.get("metadata"));
@@ -245,13 +250,14 @@ public class VTPScenarioResource extends VTPResource{
             }
         }
 
-        JsonNode outputsJson = schema.get("outputs");
-        if (outputsJson != null && outputsJson.isArray()) {
-            for (final JsonNode outputJson: outputsJson) {
+        JsonElement outputsJson = schema.get("outputs");
+        if (outputsJson != null && outputsJson.isJsonArray()) {
+            for (final JsonElement jsonElement: outputsJson.getAsJsonArray()) {
+                JsonObject outputJson = jsonElement.getAsJsonObject();
                 VTPTestCaseOutput output = new VTPTestCaseOutput();
-                output.setName(outputJson.get("name").asText());
-                output.setDescription(outputJson.get(DESCRIPTION).asText());
-                output.setType(outputJson.get("type").asText());
+                output.setName(outputJson.get("name").getAsString());
+                output.setDescription(outputJson.get(DESCRIPTION).getAsString());
+                output.setType(outputJson.get("type").getAsString());
 
                 tc.getOutputs().add(output);
             }

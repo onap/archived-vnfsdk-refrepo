@@ -32,16 +32,15 @@ import org.onap.vnfsdk.marketplace.rest.RestfulClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.core.JsonParseException;
-/** note jackson has security vulnerabilities. use with care */
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 
 /** CALL Flow: onBoardingHandler --> LifecycleTestHook--> LifecycleTestExecutor */
 public class LifecycleTestExceutor {
 	private static final Logger logger = LoggerFactory.getLogger(LifecycleTestExceutor.class);
+	private static Gson gson = new Gson();
+
 	public static final String CATALOUGE_UPLOAD_URL_IN = "{0}:{1}/onapapi/catalog/v1/csars";
 
 	private LifecycleTestExceutor() {
@@ -165,18 +164,18 @@ public class LifecycleTestExceutor {
 	 * @return empty(failure), or csarId(success)
 	 */
 	private static String getCsarIdValue(String strJsonData) {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		/*
+           Gson will ignore the unknown fields and simply match the fields that it's able to.
+           ref: https://www.baeldung.com/gson-deserialization-guide
+           By default, Gson just ignores extra JSON elements that do not have matching Java fields.
+           ref: https://programmerbruce.blogspot.com/2011/06/gson-v-jackson.html
+        */
 		Map<String, String> dataMap = null;
 
 		try {
-			dataMap = mapper.readValue(strJsonData, Map.class);
-		} catch (JsonParseException e) {
-			logger.error("JsonParseException:Failed to upload package to catalouge:", e);
-		} catch (JsonMappingException e) {
-			logger.error("JsonMappingException:Failed to upload package to catalouge:", e);
-		} catch (IOException e) {
-			logger.error("IOException:Failed to upload package to catalouge:", e);
+			dataMap = gson.fromJson(strJsonData, new TypeToken<Map<String,String>>(){}.getType());
+		} catch (Exception e) { //NOSONAR
+			logger.error("Exception:Failed to upload package to catalouge:", e);
 		}
 		try {
 			if (null != dataMap) {
