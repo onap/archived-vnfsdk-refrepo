@@ -39,11 +39,14 @@ import org.onap.vnfsdk.marketplace.model.parser.EnumPackageFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 
 public class PackageWrapperUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(PackageWrapperUtil.class);
+    private static Gson gson = new Gson();
 
     private PackageWrapperUtil() {
     }
@@ -150,7 +153,7 @@ public class PackageWrapperUtil {
         packageMeta.setCreateTime(currentTime);
         packageMeta.setModifyTime(currentTime);
         if(null != details) {
-            LinkedTreeMap<String, String> csarDetails = ToolUtil.fromJson(details, LinkedTreeMap.class);
+            LinkedTreeMap<String, String> csarDetails = gson.fromJson(details, LinkedTreeMap.class);
             packageMeta.setDetails(csarDetails.get("details"));
             packageMeta.setShortDesc(csarDetails.get("shortDesc"));
             packageMeta.setRemarks(csarDetails.get("remarks"));
