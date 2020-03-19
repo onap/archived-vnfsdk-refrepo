@@ -26,13 +26,12 @@
 
 dir="/opt"
 cmd="/opt/vtp/bin/vtp.sh"
-user="root"
 
 name=`basename $0`
-pid_file="/var/run/$name.pid"
+pid_file="/var/log/$name.pid"
 stdout_log="/var/log/$name.log"
 stderr_log="/var/log/$name.err"
-
+export JAVA_HOME=/usr/lib/jvm/default-jvm
 get_pid() {
     cat "$pid_file"
 }
@@ -48,11 +47,7 @@ case "$1" in
     else
         echo "Starting $name"
         cd "$dir"
-        if [ -z "$user" ]; then
-            sudo $cmd >> "$stdout_log" 2>> "$stderr_log" &
-        else
-            sudo -u "$user" $cmd >> "$stdout_log" 2>> "$stderr_log" &
-        fi
+        $cmd >> "$stdout_log" 2>> "$stderr_log" &
         echo $! > "$pid_file"
         if ! is_running; then
             echo "Unable to start, see $stdout_log and $stderr_log"
@@ -63,7 +58,7 @@ case "$1" in
     stop)
     if is_running; then
         echo -n "Stopping $name.."
-        kill `get_pid`
+        sudo kill `get_pid`
         for i in {1..10}
         do
             if ! is_running; then
