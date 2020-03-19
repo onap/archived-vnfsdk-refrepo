@@ -20,6 +20,8 @@
 # vnf-sdk-marketplace/target/docker-entrypoint.sh
 #
 
+umask 000 && sudo chmod +x /service/bin/*.sh /service/*.sh && mkdir -p /service/logs && mkdir -p /var/log/nginx/ && sudo chown -R vnfadmin:vnfadmin /var/log/nginx/ /service/ /opt/vtp /var/log && sudo chmod -R +w /service/ /opt/vtp /var/log && sudo touch /run/nginx.pid && sudo chown -R vnfadmin:vnfadmin /run/nginx.pid && chmod +w /run/nginx.pid  && sudo chown -R vnfadmin:vnfadmin /var/log/nginx/ && sudo usermod -aG www-data vnfadmin && sudo chmod -R a+w /var/lib/nginx
+
 if [ -z "$SERVICE_IP" ]; then
     export SERVICE_IP=`hostname -i`
 fi
@@ -44,7 +46,7 @@ if [ ! -e init.log ]; then
     # Perform workarounds due to defects in release binary
     ./instance-workaround.sh
 
-  
+
 
     # microservice-specific one-time initialization
     ./instance-init.sh
@@ -54,4 +56,3 @@ fi
 
 # Start the microservice
 ./instance-run.sh
-
