@@ -26,25 +26,18 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y install python-software-properties
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install software-properties-common sudo
 
 RUN add-apt-repository ppa:openjdk-r/ppa -y && \
-
     # update data from repositories
     apt-get update --fix-missing -y && \
-
     # upgrade OS
     apt-get -y dist-upgrade && \
-
     # Make info file about this build
     printf "Build of java:openjdk-8-jre-headless, date: %s\n"  `date -u +"%Y-%m-%dT%H:%M:%SZ"` > /service/java && \
-
     # install application
     apt-get install -y --no-install-recommends openjdk-8-jre-headless && \
-
     # fix default setting
     ln -s java-8-openjdk-amd64  /usr/lib/jvm/default-jvm && \
-
     # remove apt cache from image
     apt-get clean all
-
 
 # Set up tomcat
 RUN wget -q https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.30/bin/apache-tomcat-8.5.30.tar.gz && tar --strip-components=1 -xf apache-tomcat-8.5.30.tar.gz && rm -f apache-tomcat-8.5.30.tar.gz && rm -rf webapps && mkdir -p webapps/ROOT
@@ -122,8 +115,23 @@ RUN chmod a+x /service/vtp-tc.sh
 RUN /service/install-vtp.sh
 EXPOSE 50051
 
-ENTRYPOINT /service/docker-entrypoint.sh
-RUN chmod a+x /service/docker-entrypoint.sh
+RUN groupadd -r vnfadmin && useradd -m --no-log-init -r -g vnfadmin vnfadmin && \
+    usermod -aG sudo vnfadmin && echo "vnfadmin ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+    chmod -R 777 /usr/local/
+
+USER vnfadmin
+
+RUN RUN umask 000 && sudo chmod +x /service/bin/*.sh /service/*.sh && \
+    mkdir -p /service/logs && mkdir -p /var/log/nginx/ && \
+    sudo chown -R vnfadmin:vnfadmin /var/log/nginx/ && \
+    sudo chown -R vnfadmin:vnfadmin /service/ /opt/vtp /var/log && \
+    sudo chmod -R +w /service/ /opt/vtp /var/log && \
+    sudo touch /run/nginx.pid && sudo chown -R vnfadmin:vnfadmin /run/nginx.pid && \
+    chmod +w /run/nginx.pid  && sudo chown -R vnfadmin:vnfadmin /var/log/nginx/ && \
+    sudo usermod -aG www-data vnfadmin && sudo chmod -R a+w /var/lib/nginx
+
+
+#ENTRYPOINT /service/docker-entrypoint.sh
 ENTRYPOINT ["/service/docker-entrypoint.sh"]
 
 

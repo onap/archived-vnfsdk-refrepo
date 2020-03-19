@@ -16,11 +16,10 @@
 #
 
 #Start VTP service
-service vtp-tc start
+./vtp-tc.sh start
 
 # Start tomcat service
 ./bin/start.sh
-
 
 service nginx start
 # Show log files
@@ -30,5 +29,3 @@ while [ ! -f /service/logs/* ]; do
 done
 echo /service/logs/*
 tail -F /service/logs/*
-
-

@@ -18,13 +18,13 @@
 export _PWD=`pwd`
 
 echo ################ Check for java
-apt-get install -y wget unzip
+sudo apt-get install -y wget unzip
 
 #check for java
 java -version
 if [ $? == 127 ]
 then
-    apt-get install -y openjdk-8-jre
+    sudo apt-get install -y openjdk-8-jre
 fi
 
 echo ################ Install OCLIP
@@ -53,17 +53,17 @@ do
    mv ${cmd}_ ${cmd}
 done
 
-chmod +x ./bin/oclip.sh
-chmod +x ./bin/oclip-rcli.sh
-chmod +x ./bin/oclip-grpc-server.sh
+sudo chmod +x ./bin/oclip.sh
+sudo chmod +x ./bin/oclip-rcli.sh
+sudo chmod +x ./bin/oclip-grpc-server.sh
 
 echo export OPEN_CLI_HOME=/opt/vtp > $OPEN_CLI_HOME/bin/vtp.sh
 echo  $OPEN_CLI_HOME/bin/oclip-grpc-server.sh>> $OPEN_CLI_HOME/bin/vtp.sh
-chmod +x $OPEN_CLI_HOME/bin/vtp.sh
+sudo chmod +x $OPEN_CLI_HOME/bin/vtp.sh
 
-ln -sf $OPEN_CLI_HOME/bin/oclip.sh /usr/bin/oclip
-ln -sf $OPEN_CLI_HOME/bin/oclip-rcli.sh /usr/bin/vtp-cli
-ln -sf $OPEN_CLI_HOME/bin/oclip-grpc-server.sh /usr/bin/vtp-tc
+ln -sf $OPEN_CLI_HOME/bin/oclip.sh /usr/local/bin/oclip
+ln -sf $OPEN_CLI_HOME/bin/oclip-rcli.sh /usr/local/bin/vtp-cli
+ln -sf $OPEN_CLI_HOME/bin/oclip-grpc-server.sh /usr/local/bin/vtp-tc
 
 echo ################ Deploy sample csar validation test case
 CSARVALIDATOR_LATEST_BINARY="https://nexus.onap.org/service/local/artifact/maven/redirect?r=releases&g=org.onap.vnfsdk.validation&a=csarvalidation-deployment&e=zip&v=LATEST"
