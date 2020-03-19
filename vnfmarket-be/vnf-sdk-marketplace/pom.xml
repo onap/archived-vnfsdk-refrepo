@@ -82,10 +82,18 @@
             <version>2.1.0</version>
         </dependency>
 
+        <!--excluded com.fasterxml.jackson.core:jackson-databind:jar:2.9.5
+            CVE-2018-11307-->
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-jersey2-jaxrs</artifactId>
             <version>1.5.19</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-databind</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- jersey -->
 <!-- excluded jetty-util and added invulnerable version -->

@@ -26,8 +26,7 @@ import org.onap.vtp.error.VTPError.VTPException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.gson.JsonObject;
 
 @Provider
 @Singleton
@@ -41,9 +40,9 @@ public class VTPExceptionMapper implements ExceptionMapper<Exception> {
              VTPException ex = (VTPException) e;
              return Response.status(ex.getVTPError().getHttpStatus()).entity(ex.getVTPError().toString()).build();
          } else {
-             ObjectNode node = JsonNodeFactory.instance.objectNode();
-             node.put("message", e.getMessage());
-             node.put("code", "UNKNOWN");
+             JsonObject node = new JsonObject();
+             node.addProperty("message", e.getMessage());
+             node.addProperty("code", "UNKNOWN");
              return Response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR).entity(node.toString()).build();
          }
 
