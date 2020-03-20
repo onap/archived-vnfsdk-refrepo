@@ -7,7 +7,6 @@
   },
   "author": "ONAP",
   "license": "Apache-2.0",
-
   "dependencies": {
     "package.json": "^2.0.1",
     "phantomjs-prebuilt": "^2.1.14"

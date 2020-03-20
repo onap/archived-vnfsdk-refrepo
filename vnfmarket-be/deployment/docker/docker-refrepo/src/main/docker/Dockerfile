@@ -121,7 +121,7 @@ RUN groupadd -r vnfadmin && useradd -m --no-log-init -r -g vnfadmin vnfadmin && 
 
 USER vnfadmin
 
-RUN RUN umask 000 && sudo chmod +x /service/bin/*.sh /service/*.sh && \
+RUN umask 000 && sudo chmod +x /service/bin/*.sh /service/*.sh && \
     mkdir -p /service/logs && mkdir -p /var/log/nginx/ && \
     sudo chown -R vnfadmin:vnfadmin /var/log/nginx/ && \
     sudo chown -R vnfadmin:vnfadmin /service/ /opt/vtp /var/log && \
