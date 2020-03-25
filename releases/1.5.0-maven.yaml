@@ -1,0 +1,5 @@
+---
+distribution_type: maven
+version: '1.5.0'
+project: 'vnfsdk-refrepo'
+log_dir: 'vnfsdk-refrepo-maven-stage-master/282'
