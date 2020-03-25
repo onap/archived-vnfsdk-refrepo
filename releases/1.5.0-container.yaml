@@ -1,0 +1,9 @@
+---
+distribution_type: container
+container_release_tag: '1.5.0'
+project: 'vnfsdk-refrepo'
+log_dir: 'vnfsdk-refrepo-maven-docker-stage-master/283'
+ref: df4512adb59b437c70a7da4bf3378cb727da8b1e
+containers:
+  - name: vnfsdk/refrepo
+    version: 1.5-STAGING-latest
