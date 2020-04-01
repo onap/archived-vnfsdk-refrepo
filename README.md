@@ -33,6 +33,10 @@ A platform to automate and manage different kind of VNF test cases for given VNF
 - Provide integration with OPNFV dovetail to run test cases across dovetail and ONAP VNFSDK.
 - Uses Open CLI Platform (OCLIP) for developing, testing, deploying and executing test cases
 - Available as docker container.
+- More details at <https://onap.readthedocs.io/en/latest/submodules/vnfsdk/model.git/docs/index.html>`
 
-
-- `More details <https://onap.readthedocs.io/en/latest/submodules/vnfsdk/model.git/docs/index.html>`_
+Docker image building
+=====================
+```
+    mvn clean package -Pdocker
+```

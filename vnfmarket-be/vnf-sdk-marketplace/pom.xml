@@ -247,6 +247,12 @@ due to Security Issues:- CVE-2019-10241,CVE-2019-10247,CVE-2019-10246
                 <skip.unit.tests>false</skip.unit.tests>
             </properties>
         </profile>
+        <profile>
+            <id>docker</id>
+            <properties>
+                <maven.test.skip>true</maven.test.skip>
+            </properties>
+        </profile>
     </profiles>
     <build>
         <finalName>ROOT</finalName>
