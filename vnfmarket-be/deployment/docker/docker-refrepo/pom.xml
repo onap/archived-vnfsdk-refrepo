@@ -34,112 +34,84 @@
 
   <properties>
         <maven.build.timestamp.format>yyyyMMdd'T'HHmmss'Z'</maven.build.timestamp.format>
-        <docker.push.registry></docker.push.registry>
-        <skip.docker.build>true</skip.docker.build>
-        <skip.docker.tag>true</skip.docker.tag>
-        <skip.docker.push>true</skip.docker.push>
+        <docker.push.registry>nexus3.onap.org:10003</docker.push.registry>
+        <skip.docker.build>false</skip.docker.build>
+        <skip.docker.tag>false</skip.docker.tag>
+        <skip.docker.push>false</skip.docker.push>
         <docker.skip>false</docker.skip>
         <docker.noCache>true</docker.noCache>
         <docker.skip.build>false</docker.skip.build>
         <onap.nexus.dockerregistry.daily>nexus3.onap.org:10003</onap.nexus.dockerregistry.daily>
   </properties>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>1.0.0</version>
-                <configuration>
-                    <verbose>true</verbose>
-                    <imageName>onap/vnfsdk/refrepo</imageName>
-                    <imageTags>
-                        <imageTag>${project.version}-${maven.build.timestamp}Z</imageTag>
-                        <imageTag>${project.version}</imageTag>
-                        <imageTag>latest</imageTag>
-                    </imageTags>
-                    <noCache>${docker.noCache}</noCache>
-                    <serverId>${onap.nexus.dockerregistry.daily}</serverId>
-                    <dockerDirectory>${basedir}/src/main/docker</dockerDirectory>
-                    <resources>
-                        <resource>
-                            <targetPath>/STAGE</targetPath>
-                            <directory>${basedir}/../../zip/target/deployunzip</directory>
-                            <includes>
-                                <include>**/*</include>
-                            </includes>
-                        </resource>
-                    </resources>
-                </configuration>
 
-                <executions>
-                    <execution>
-                        <id>build-image</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
-                        <configuration>
-                            <skipDockerBuild>${skip.docker.build}</skipDockerBuild>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>tag-image-timestamped-version</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>tag</goal>
-                        </goals>
-                        <configuration>
-                            <image>onap/vnfsdk/refrepo</image>
-                            <newName>${docker.push.registry}/onap/vnfsdk/refrepo:${project.version}-${maven.build.timestamp}</newName>
-                            <pushImage>${skip.docker.push}</pushImage>
-                            <skipDockerTag>${skip.docker.tag}</skipDockerTag>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>tag-image-latest-version</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>tag</goal>
-                        </goals>
-                        <configuration>
-                            <image>onap/vnfsdk/refrepo</image>
-                            <newName>${docker.push.registry}/onap/vnfsdk/refrepo:latest</newName>
-                            <pushImage>${skip.docker.push}</pushImage>
-                            <skipDockerTag>${skip.docker.tag}</skipDockerTag>
-                        </configuration>
-                    </execution>
-
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
     <profiles>
         <profile>
             <id>docker</id>
             <build>
-                    <defaultGoal>package</defaultGoal>
-                    <plugins>
-                        <plugin>
-                            <groupId>org.codehaus.mojo</groupId>
-                            <artifactId>exec-maven-plugin</artifactId>
-                            <executions>
-                                <execution>
-                                    <phase>package</phase>
-                                    <goals>
-                                        <goal>exec</goal>
-                                    </goals>
-                                    <configuration>
-                                        <executable>mvn</executable>
-                                        <arguments>
-                                            <argument>package</argument>
-                                            <argument>docker:build</argument>
-                                        </arguments>
-                                    </configuration>
-                                </execution>
-                            </executions>
-                        </plugin>
-                    </plugins>
+                <plugins>
+                    <plugin>
+                        <groupId>com.spotify</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>1.0.0</version>
+                        <configuration>
+                            <verbose>true</verbose>
+                            <imageName>onap/vnfsdk/refrepo</imageName>
+                            <noCache>${docker.noCache}</noCache>
+                            <serverId>${onap.nexus.dockerregistry.daily}</serverId>
+                            <dockerDirectory>${basedir}/src/main/docker</dockerDirectory>
+                            <resources>
+                                <resource>
+                                    <targetPath>/STAGE</targetPath>
+                                    <directory>${basedir}/../../zip/target/deployunzip</directory>
+                                    <includes>
+                                        <include>**/*</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+
+                        <executions>
+                            <execution>
+                                <id>build-image</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                                <configuration>
+                                    <skipDockerBuild>${skip.docker.build}</skipDockerBuild>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>tag-image-timestamped-version</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>tag</goal>
+                                </goals>
+                                <configuration>
+                                    <image>onap/vnfsdk/refrepo</image>
+                                    <newName>${docker.push.registry}/onap/vnfsdk/refrepo:${project.version}-${maven.build.timestamp}</newName>
+                                    <pushImage>${skip.docker.push}</pushImage>
+                                    <skipDockerTag>${skip.docker.tag}</skipDockerTag>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>tag-image-latest-version</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>tag</goal>
+                                </goals>
+                                <configuration>
+                                    <image>onap/vnfsdk/refrepo</image>
+                                    <newName>${docker.push.registry}/onap/vnfsdk/refrepo:latest</newName>
+                                    <pushImage>${skip.docker.push}</pushImage>
+                                    <skipDockerTag>${skip.docker.tag}</skipDockerTag>
+                                </configuration>
+                            </execution>
+
+                        </executions>
+                    </plugin>
+                </plugins>
             </build>
         </profile>
     </profiles>
