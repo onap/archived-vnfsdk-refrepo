@@ -38,5 +38,5 @@ A platform to automate and manage different kind of VNF test cases for given VNF
 Docker image building
 =====================
 ```
-    mvn clean package -Pdocker
+    mvn clean package -Pdocker -Dskip.docker.push=false
 ```
