@@ -35,6 +35,7 @@
   <properties>
         <maven.build.timestamp.format>yyyyMMdd'T'HHmmss'Z'</maven.build.timestamp.format>
         <docker.push.registry>nexus3.onap.org:10003</docker.push.registry>
+        <push.docker.image>true</push.docker.image>
         <docker.skip>false</docker.skip>
         <docker.noCache>true</docker.noCache>
         <docker.skip.build>false</docker.skip.build>
@@ -88,7 +89,7 @@
                                 <configuration>
                                     <image>onap/vnfsdk/refrepo</image>
                                     <newName>${docker.push.registry}/onap/vnfsdk/refrepo:${project.version}-${maven.build.timestamp}</newName>
-                                    <pushImage>true</pushImage>
+                                    <pushImage>${push.docker.image}</pushImage>
                                     <skipDockerTag>false</skipDockerTag>
                                 </configuration>
                             </execution>
@@ -101,7 +102,7 @@
                                 <configuration>
                                     <image>onap/vnfsdk/refrepo</image>
                                     <newName>${docker.push.registry}/onap/vnfsdk/refrepo:latest</newName>
-                                    <pushImage>true</pushImage>
+                                    <pushImage>${push.docker.image}</pushImage>
                                     <skipDockerTag>false</skipDockerTag>
                                 </configuration>
                             </execution>
