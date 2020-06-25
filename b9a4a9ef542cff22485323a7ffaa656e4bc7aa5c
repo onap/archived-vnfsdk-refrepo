@@ -46,6 +46,30 @@
       "revId": "b9a4a9ef542cff22485323a7ffaa656e4bc7aa5c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f662e8f1_4fa889c2",
+        "filename": "vnfmarket-be/deployment/docker/docker-refrepo/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 6100
+      },
+      "writtenOn": "2020-06-25T12:07:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1d79bf8_0e4d0e3d",
+      "range": {
+        "startLine": 38,
+        "startChar": 8,
+        "endLine": 38,
+        "endChar": 49
+      },
+      "revId": "b9a4a9ef542cff22485323a7ffaa656e4bc7aa5c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
