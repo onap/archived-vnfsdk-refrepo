@@ -74,7 +74,9 @@ public class ToolUtil {
   {
     File destDir = new File(destDirName);
     if (destDir.exists() && overlay) {
-        new File(destDirName).delete();
+        if(!new File(destDirName).delete()){
+          LOGGER.error("failed to delete file in createDestDir()");
+        }
     } else if (destDir.exists() && !overlay) {
         return false;
     }
@@ -154,7 +156,8 @@ public class ToolUtil {
 
     File destFile = new File(destFileName);
     if (destFile.exists() && overlay) {
-        new File(destFileName).delete();
+        if(!new File(destFileName).delete())
+          LOGGER.error("failed to delete file in copyFile()");
     } else if (!destFile.exists() && !destFile.getParentFile().exists() && !destFile.getParentFile().mkdirs()) {
         return false;
     }
@@ -174,7 +177,8 @@ public class ToolUtil {
     }
     File dir = new File(useDestDirName);
     if (dir.exists()) {
-      dir.delete();
+      if(!dir.delete())
+        LOGGER.error("failed to delete file in createDir()");
     }
 
     return dir.mkdirs();

@@ -33,19 +33,19 @@ public class VTPErrorTest
     public void testCode()
     {
         vtpError.setCode("0xc002");
-        assertEquals(vtpError.getCode(),"0xc002");
+        assertEquals("0xc002",vtpError.getCode());
     }
     @Test
     public void testmessage()
     {
         vtpError.setMessage("0xc002 ::error found");
-        assertEquals(vtpError.getMessage(),"error found");
+        assertEquals("error found",vtpError.getMessage());
     }
     @Test
     public void testHttpStatus()
     {
         vtpError.setHttpStatus(200);
-        assertEquals(vtpError.getHttpStatus(),200);
+        assertEquals(200,vtpError.getHttpStatus());
     }
     @Test
     public void testInnerClassMethods()

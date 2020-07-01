@@ -19,7 +19,8 @@ package org.onap.vnfsdk.marketplace.resource;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -1145,10 +1146,10 @@ public class PackageResourceTest {
         onBoardResultObj.setCsarId("csrId");
         onBoardResultObj.setOperStatus(1);
         boolean res = FileUtil.writeJsonDatatoFile(filePath, onBoardResultObj);
-        assertEquals(res, true);
+        assertTrue(res);
         String filePath1 = "src//test//resources";
         res = FileUtil.writeJsonDatatoFile(filePath1, onBoardResultObj);
-        assertEquals(res, false);
+        assertFalse(res);
 
     }
 
@@ -1157,7 +1158,7 @@ public class PackageResourceTest {
     public void testCreateDirectory() {
         String dirPath = "src//test//resources//TestDirectory";
         boolean res = FileUtil.createDirectory(dirPath);
-        assertEquals(res, true);
+        assertTrue(res);
     }
 
     @Test
@@ -1165,10 +1166,10 @@ public class PackageResourceTest {
     public void testDeleteDirectory() {
         String dirPath = "src//test//resources//TestDirectory";
         boolean res = FileUtil.deleteFile(dirPath);
-        assertEquals(res, true);
+        assertTrue(res);
         String dirPath1 = "src//test//resources11";
         res = FileUtil.deleteFile(dirPath1);
-        assertEquals(res, true);
+        assertTrue(res);
 
     }
 
@@ -1182,9 +1183,9 @@ public class PackageResourceTest {
     @Test
     public void testisNotEmpty() {
         boolean res = MarketplaceDbUtil.isNotEmpty(null);
-        assertEquals(res, false);
+        assertFalse(res);
         res = MarketplaceDbUtil.isNotEmpty("test");
-        assertEquals(res, true);
+        assertTrue(res);
     }
 
     @Test
@@ -1199,43 +1200,43 @@ public class PackageResourceTest {
     @Test
     public void testisEmptyString() {
         boolean res = ToolUtil.isEmptyString(null);
-        assertEquals(res, true);
+        assertTrue(res);
         res = ToolUtil.isEmptyString("huawei");
-        assertEquals(res, false);
+        assertFalse(res);
     }
 
     @Test
     public void testisTrimedEmptyString() {
         boolean res = ToolUtil.isTrimedEmptyString(null);
-        assertEquals(res, true);
+        assertTrue(res);
         res = ToolUtil.isTrimedEmptyString(" huawei ");
-        assertEquals(res, false);
+        assertFalse(res);
 
     }
     @Test
     public void testisTrimedEmptyArray() {
         boolean res = ToolUtil.isTrimedEmptyArray(null);
-        assertEquals(res, true);
+        assertTrue(res);
         String[] String1={"hua","wei"};
         res = ToolUtil.isTrimedEmptyArray(String1);
-        assertEquals(res, false);
+        assertFalse(res);
     }
 
     @Test
     public void testisEmptyCollection() {
         ArrayList arr1 = new ArrayList();
         boolean res = ToolUtil.isEmptyCollection(arr1);
-        assertEquals(res, true);
+        assertTrue(res);
         arr1.add("huawei");
         res = ToolUtil.isEmptyCollection(arr1);
-        assertEquals(res, false);
+        assertFalse(res);
     }
 
     @Test
     public void testisYamlFile() {
         File fileObj = new File("test.yaml");
         boolean res = ToolUtil.isYamlFile(fileObj);
-        assertEquals(res, true);
+        assertTrue(res);
     }
 
     @Test
@@ -1281,13 +1282,13 @@ public class PackageResourceTest {
     @Test
     public void testremoveCsarSuffix() {
         String res = ToolUtil.removeCsarSuffix("abc.csar");
-        assertEquals(res, "abc");
+        assertEquals("abc",res );
     }
 
     @Test
     public void testformatCsar() {
         String res = ToolUtil.formatCsar("abc");
-        assertEquals(res, "abc.csar");
+        assertEquals("abc.csar",res);
     }
 
     @Test
@@ -1301,7 +1302,7 @@ public class PackageResourceTest {
                                                                         // depending
                                                                         // on
                                                                         // Locale
-        assertEquals(res, expected);
+        assertEquals(expected,res );
     }
 
     @Test
@@ -1314,19 +1315,19 @@ public class PackageResourceTest {
     @Test
     public void testgetCatalogueCsarPath() {
         String res = ToolUtil.getCatalogueCsarPath();
-        assertEquals(res, File.separator + "csar");
+        assertEquals(File.separator + "csar",res );
     }
 
     @Test
     public void testgetCatalogueImagePath() {
         String res = ToolUtil.getCatalogueImagePath();
-        assertEquals(res, File.separator + "image");
+        assertEquals(File.separator + "image",res);
     }
 
     @Test
     public void testdeleteFile() {
         boolean res = ToolUtil.deleteFile("src//test//resources", "test1.txt");
-        assertEquals(res, true);
+        assertTrue(res);
     }
 
     @Test
@@ -1336,7 +1337,7 @@ public class PackageResourceTest {
             String res = ToolUtil.storeChunkFileInLocal("src//test//resources", "TestOut.txt", inputStream);
             File file = new File(res);
             String fileName = file.getName();
-            assertEquals(fileName, "TestOut.txt");
+            assertEquals("TestOut.txt",fileName);
 
         } catch(Exception ex) {
             ex.printStackTrace();
@@ -1347,7 +1348,7 @@ public class PackageResourceTest {
     public void testToolUtildeleteFile() {
 
         boolean res = ToolUtil.deleteFile("src/test/resources", "TestOut.txt");
-        assertEquals(res, true);
+        assertTrue(res);
     }
 
 
@@ -1375,13 +1376,13 @@ public class PackageResourceTest {
     public void testvalidateFile() {
         File fileData= null;
         boolean res = FileUtil.validateFile(fileData);
-        assertEquals(res, false);
+        assertFalse(res);
     }
 
     @Test
     public void testGetPkgSize() {
         long pkgSize = PackageWrapperUtil.getPacakgeSize("src/test/resources/Test.txt");
-        assertNotNull(pkgSize);
+        assertTrue(pkgSize>1);
     }
 
     @Test
@@ -1429,23 +1430,23 @@ public class PackageResourceTest {
         vnfPackageObj.setDeletionPending("pending");
 
         String res = vnfPackageObj.getVnfPackageId();
-        assertEquals(res, "vnfpackageId");
+        assertEquals("vnfpackageId",res);
         res = vnfPackageObj.getVnfPackageUrl();
-        assertEquals(res, "vnfPackageUrl");
+        assertEquals("vnfPackageUrl",res);
         res = vnfPackageObj.getVnfd();
-        assertEquals(res, "vnfd");
+        assertEquals("vnfd",res);
         res = vnfPackageObj.getVersion();
-        assertEquals(res, "1");
+        assertEquals("1",res);
         EnumUsageState state = vnfPackageObj.getUsageState();
-        assertEquals(state, EnumUsageState.NOTINUSE);
+        assertEquals( EnumUsageState.NOTINUSE,state);
         res = vnfPackageObj.getProvider();
-        assertEquals(res, "huawei");
+        assertEquals("huawei",res);
         EnumOperationalState operState = vnfPackageObj.getOperationalState();
-        assertEquals(operState, EnumOperationalState.ENABLED);
+        assertEquals(EnumOperationalState.ENABLED,operState);
         res = vnfPackageObj.getName();
-        assertEquals(res, "vnf");
+        assertEquals("vnf",res);
         res = vnfPackageObj.getDeletionPending();
-        assertEquals(res, "pending");
+        assertEquals("pending",res);
     }
 
     @Test
@@ -1461,23 +1462,23 @@ public class PackageResourceTest {
         csarPackageObj.setUrl("//network");
 
         String res = csarPackageObj.getCreateTime();
-        assertEquals(res, "04052017");
+        assertEquals("04052017",res);
         res = csarPackageObj.getDeletionPending();
-        assertEquals(res, "pending");
+        assertEquals("pending",res);
         res = csarPackageObj.getFormat();
-        assertEquals(res, "format");
+        assertEquals("format",res);
         res = csarPackageObj.getId();
-        assertEquals(res, "12");
+        assertEquals("12",res);
         res = csarPackageObj.getName();
-        assertEquals(res, "csartest");
+        assertEquals("csartest",res);
         res = csarPackageObj.getSize();
-        assertEquals(res, "10");
+        assertEquals("10",res);
         res = csarPackageObj.getStatus();
-        assertEquals(res, "done");
+        assertEquals("done",res);
         res = csarPackageObj.getType();
-        assertEquals(res, "type");
+        assertEquals("type",res);
         res = csarPackageObj.getUrl();
-        assertEquals(res, "//network");
+        assertEquals("//network",res);
 
     }
 
@@ -1488,13 +1489,13 @@ public class PackageResourceTest {
         pkgBasicInfoObj.setType(EnumType.GSAR);
         pkgBasicInfoObj.setVersion("1");
         String res = pkgBasicInfoObj.getFormat();
-        assertEquals(res, "pdf");
+        assertEquals("pdf",res);
         res = pkgBasicInfoObj.getProvider();
-        assertEquals(res, "huawei");
+        assertEquals("huawei",res);
         EnumType type = pkgBasicInfoObj.getType();
-        assertEquals(type, EnumType.GSAR);
+        assertEquals(EnumType.GSAR,type);
         res = pkgBasicInfoObj.getVersion();
-        assertEquals(res, "1");
+        assertEquals("1",res);
     }
 
     @Test
@@ -1517,42 +1518,42 @@ public class PackageResourceTest {
         pkgMetaObj.setVersion("1");
 
         String res = pkgMetaObj.getCreateTime();
-        assertEquals(res, "05042017");
+        assertEquals("05042017",res);
         res = pkgMetaObj.getCsarId();
-        assertEquals(res, "csarid");
+        assertEquals("csarid",res);
         res = pkgMetaObj.getDetails();
-        assertEquals(res, "details");
+        assertEquals("details",res);
         res = pkgMetaObj.getDownloadCount() + "";
-        assertEquals(res, "10");
+        assertEquals("10",res);
         res = pkgMetaObj.getDownloadUri();
-        assertEquals(res, "//network");
+        assertEquals("//network",res);
         res = pkgMetaObj.getFormat();
-        assertEquals(res, "pdf");
+        assertEquals("pdf",res);
         res = pkgMetaObj.getModifyTime();
-        assertEquals(res, "05042017");
+        assertEquals("05042017",res);
         res = pkgMetaObj.getName();
-        assertEquals(res, "huawei");
+        assertEquals("huawei",res);
         res = pkgMetaObj.getProvider();
-        assertEquals(res, "huawei");
+        assertEquals("huawei",res);
         res = pkgMetaObj.getRemarks();
-        assertEquals(res, "tested");
+        assertEquals("tested",res);
         res = pkgMetaObj.getReport();
-        assertEquals(res, "done");
+        assertEquals("done",res);
         res = pkgMetaObj.getShortDesc();
-        assertEquals(res, "done");
+        assertEquals("done",res);
         res = pkgMetaObj.getSize();
-        assertEquals(res, "1000");
+        assertEquals("1000",res);
         res = pkgMetaObj.getType();
-        assertEquals(res, "type");
+        assertEquals("type",res);
         res = pkgMetaObj.getVersion();
-        assertEquals(res, "1");
+        assertEquals("1",res);
     }
 
     @Test
     public void testPackageResponseSetter() {
         pkgResponseObj.setReportPath("localpath");
         String res = pkgResponseObj.getReportPath();
-        assertEquals(res, "localpath");
+        assertEquals("localpath",res);
 
     }
 
@@ -1561,9 +1562,14 @@ public class PackageResourceTest {
         csarFileUriResObj.setDownloadUri("downloaduri");
         csarFileUriResObj.setLocalPath("localpath");
         String res = csarFileUriResObj.getDownloadUri();
-        assertEquals(res, "downloaduri");
+        assertEquals("downloaduri",res);
         res = csarFileUriResObj.getLocalPath();
-        assertEquals(res, "localpath");
+        assertEquals("localpath",res);
 
+    }
+    @Test
+    public void testGetPackageName() {
+         String packageName= PackageWrapperUtil.getPackageName("ftpUrl/abc");
+         assertEquals("/abc",packageName);
     }
 }

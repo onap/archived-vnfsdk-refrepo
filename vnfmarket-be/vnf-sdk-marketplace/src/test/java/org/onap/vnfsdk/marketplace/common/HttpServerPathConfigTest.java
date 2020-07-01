@@ -30,6 +30,6 @@ public class HttpServerPathConfigTest {
     public void testGetterSetter()
     {
         HttpServerPathConfig.setHttpServerPath("csi");
-        assertEquals(HttpServerPathConfig.getHttpServerPath(),"csi");
+        assertEquals("csi",HttpServerPathConfig.getHttpServerPath());
     }
 }

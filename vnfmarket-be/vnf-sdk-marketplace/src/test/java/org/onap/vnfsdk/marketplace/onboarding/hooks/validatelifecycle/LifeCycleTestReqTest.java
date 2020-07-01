@@ -31,10 +31,10 @@ public class LifeCycleTestReqTest {
     public void testEstterGetter()
     {
         lifeCycleTestReq.setCsarId("csi");
-        assertEquals(lifeCycleTestReq.getCsarId(),"csi");
+        assertEquals("csi",lifeCycleTestReq.getCsarId());
         lifeCycleTestReq.setLabVimId("csi");
-        assertEquals(lifeCycleTestReq.getLabVimId(),"csi");
+        assertEquals("csi",lifeCycleTestReq.getLabVimId());
         lifeCycleTestReq.setVimIds(null);
-        assertEquals(lifeCycleTestReq.getVimIds(),null);
+        assertEquals(null,lifeCycleTestReq.getVimIds());
     }
 }
