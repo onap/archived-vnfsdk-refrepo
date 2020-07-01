@@ -93,8 +93,8 @@ public class PackageWrapperUtil {
     public static boolean isUploadEnd(String contentRange) {
         String range = contentRange;
         range = range.replace("bytes", "").trim();
-        range = range.substring(0, range.indexOf("/"));
-        String size = contentRange.substring(contentRange.indexOf("/") + 1, contentRange.length()).trim();
+        range = range.substring(0, range.indexOf('/'));
+        String size = contentRange.substring(contentRange.indexOf('/') + 1, contentRange.length()).trim();
         int fileSize = Integer.parseInt(size);
         String[] ranges = range.split("-");
         int endPosition = Integer.parseInt(ranges[1]) + 1;
@@ -186,7 +186,7 @@ public class PackageWrapperUtil {
      * @return package name
      */
     public static String getPackageName(String ftpUrl) {
-        int index = ftpUrl.lastIndexOf("/");
+        int index = ftpUrl.lastIndexOf('/');
 
         return ftpUrl.substring(index);
     }
@@ -325,18 +325,18 @@ public class PackageWrapperUtil {
                     continue;
                 }
 
-                int count1 = tempString.indexOf(":");
+                int count1 = tempString.indexOf(':');
                 String meta = tempString.substring(0, count1).trim();
 
                 // Check for the package provider name
                 if(meta.equalsIgnoreCase(CommonConstant.CSAR_PROVIDER_META)) {
-                    int count = tempString.indexOf(":") + 1;
+                    int count = tempString.indexOf(':') + 1;
                     basicInfo.setProvider(tempString.substring(count).trim());
                 }
 
                 // Check for package version
                 if(meta.equalsIgnoreCase(CommonConstant.CSAR_VERSION_META)) {
-                    int count = tempString.indexOf(":") + 1;
+                    int count = tempString.indexOf(':') + 1;
                     basicInfo.setVersion(tempString.substring(count).trim());
                 }
 
@@ -358,23 +358,23 @@ public class PackageWrapperUtil {
 
     private static EnumType getEnumType(String type) {
         EnumType vnfType = EnumType.CSAR;
-        if(type == "CSAR") {
+        if("CSAR".equals(type)) {
             vnfType = EnumType.CSAR;
         }
 
-        if(type == "GSAR") {
+        if("GSAR".equals(type)) {
             vnfType = EnumType.GSAR;
         }
 
-        if(type == "NSAR") {
+        if("NSAR".equals(type)) {
             vnfType = EnumType.NSAR;
         }
 
-        if(type == "SSAR") {
+        if("SSAR".equals(type)) {
             vnfType = EnumType.SSAR;
         }
 
-        if(type == "NFAR") {
+        if("NFAR".equals(type)) {
             vnfType = EnumType.NFAR;
         }
 
@@ -396,18 +396,18 @@ public class PackageWrapperUtil {
                     continue;
                 }
 
-                int count1 = tempString.indexOf(":");
+                int count1 = tempString.indexOf(':');
                 String meta = tempString.substring(0, count1).trim();
 
                 // Check for the package provider name
                 if(meta.equalsIgnoreCase(CommonConstant.MF_PROVIDER_META)) {
-                    int count = tempString.indexOf(":") + 1;
+                    int count = tempString.indexOf(':') + 1;
                     basicInfo.setProvider(tempString.substring(count).trim());
                 }
 
                 // Check for package version
                 if(meta.equalsIgnoreCase(CommonConstant.MF_VERSION_META)) {
-                    int count = tempString.indexOf(":") + 1;
+                    int count = tempString.indexOf(':') + 1;
                     basicInfo.setVersion(tempString.substring(count).trim());
                 }
             }

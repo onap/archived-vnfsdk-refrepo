@@ -16,8 +16,8 @@
 package org.onap.vtp.scenario.model;
 
 import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
+import static org.junit.Assert.assertNull;
 
 public class VTPTestScenarioTest {
     VTPTestScenario vtpTestScenario= new VTPTestScenario();
@@ -26,11 +26,11 @@ public class VTPTestScenarioTest {
     {
         vtpTestScenario.setDescription("abc");
         vtpTestScenario.setName("abc");
-        assertEquals(vtpTestScenario.getDescription(),"abc");
-       assertEquals(vtpTestScenario.getName(),"abc");
+        assertEquals("abc", vtpTestScenario.getDescription());
+        assertEquals("abc", vtpTestScenario.getName());
         VTPTestScenario.VTPTestScenarioList vtpTestScenarioList= new VTPTestScenario.VTPTestScenarioList();
         vtpTestScenarioList.setScenarios(null);
-        assertEquals(vtpTestScenarioList.getScenarios(),null);
+        assertNull(vtpTestScenarioList.getScenarios());
     }
 
 }

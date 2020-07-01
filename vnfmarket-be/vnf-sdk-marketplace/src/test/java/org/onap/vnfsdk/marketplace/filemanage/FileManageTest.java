@@ -90,7 +90,7 @@ public class FileManageTest {
         FileManager ManagerImpl = FileManagerFactory.createFileManager();
         String dstPath = "./dstPathForTest";
 
-        assertEquals(ManagerImpl.delete(dstPath), true);
+        assertEquals(true,ManagerImpl.delete(dstPath));
     }
 
     @Test
@@ -112,7 +112,7 @@ public class FileManageTest {
         String srcPath = "./srcPathForTest";
         String dstPath = "./dstPathForTest";
 
-        assertEquals(ManagerImpl.upload(srcPath, dstPath), true);
+        assertEquals(true,ManagerImpl.upload(srcPath, dstPath) );
 
         File srcDir = new File(srcPath);
         if (srcDir.exists())
@@ -120,7 +120,7 @@ public class FileManageTest {
             ManagerImpl.delete(srcPath);
         }
 
-        assertEquals(ManagerImpl.upload(srcPath, dstPath), false);
+        assertEquals(false,ManagerImpl.upload(srcPath, dstPath) );
     }
 
 }
