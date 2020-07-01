@@ -30,11 +30,11 @@ public class ValidateLifecycleTestResponseTest {
     @Test
     public void testSetterGetter()
     {
-        validateLifecycleTestResponse.setJobId("huawei");
-        assertEquals(validateLifecycleTestResponse.getJobId(),"huawei");
-        validateLifecycleTestResponse.setLifecycleStatus("huawei");
-        assertEquals(validateLifecycleTestResponse.getLifecycleStatus(),"huawei");
-        validateLifecycleTestResponse.setValidateStatus("huawei");
-        assertEquals(validateLifecycleTestResponse.getValidateStatus(),"huawei");
+        validateLifecycleTestResponse.setJobId("abc");
+        assertEquals("abc",validateLifecycleTestResponse.getJobId());
+        validateLifecycleTestResponse.setLifecycleStatus("abc");
+        assertEquals("abc",validateLifecycleTestResponse.getLifecycleStatus());
+        validateLifecycleTestResponse.setValidateStatus("abc");
+        assertEquals("abc",validateLifecycleTestResponse.getValidateStatus());
     }
 }

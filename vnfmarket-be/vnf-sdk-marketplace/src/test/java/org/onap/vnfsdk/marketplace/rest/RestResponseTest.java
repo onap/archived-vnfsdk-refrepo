@@ -34,7 +34,7 @@ public class RestResponseTest {
     @Test
     public void testSetterGetter() {
         restResponse.setResult("{\"csarId\":\"huawei\"}");
-        assertEquals(restResponse.getResult(), "{\"csarId\":\"huawei\"}");
+        assertEquals("{\"csarId\":\"huawei\"}",restResponse.getResult());
         restResponse.setStatusCode(200);
         assertThat(restResponse.getStatusCode(),is(200));
     }
