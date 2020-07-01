@@ -26,8 +26,8 @@ VTPTestSuite vtpTestSuite= new VTPTestSuite();
 {
     vtpTestSuite.setDescription("abc");
     vtpTestSuite.setName("abc");
-    assertEquals(vtpTestSuite.getDescription(),"abc");
-    assertEquals(vtpTestSuite.getName(),"abc");
+    assertEquals("abc",vtpTestSuite.getDescription());
+    assertEquals("abc",vtpTestSuite.getName());
     VTPTestSuite.VTPTestSuiteList vtpTestSuiteList=new VTPTestSuite.VTPTestSuiteList();
     vtpTestSuiteList.setSuites(null);
     assertNull(vtpTestSuiteList.getSuites());
