@@ -21,6 +21,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.UUID;
@@ -125,7 +127,14 @@ public class ToolUtil {
         }
         File file = new File(tmpDir.getAbsolutePath() + File.separator + fileName);
         if(file.exists()) {
-            return file.delete();
+            boolean isFileDeleted=false;
+            try {
+                Files.delete(Paths.get(file.getPath()));
+                isFileDeleted=true;
+            } catch (IOException e) {
+                LOG.error("fail to delete {} {} "  , file.getAbsolutePath(),", exception :: "+e);
+            }
+            return isFileDeleted;
         }
         return true;
     }

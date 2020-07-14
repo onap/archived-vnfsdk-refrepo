@@ -21,6 +21,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import org.onap.vnfsdk.marketplace.common.HttpServerPathConfig;
 import org.slf4j.Logger;
@@ -74,7 +76,11 @@ public class ToolUtil {
   {
     File destDir = new File(destDirName);
     if (destDir.exists() && overlay) {
-        new File(destDirName).delete();
+      try {
+        Files.delete(Paths.get(destDirName));
+      } catch (IOException e) {
+        LOGGER.error("fail to delete {} {} " , destDir.getAbsolutePath(),", exception :: "+e);
+      }
     } else if (destDir.exists() && !overlay) {
         return false;
     }
@@ -154,7 +160,11 @@ public class ToolUtil {
 
     File destFile = new File(destFileName);
     if (destFile.exists() && overlay) {
-        new File(destFileName).delete();
+      try {
+        Files.delete(Paths.get(destFileName));
+      } catch (IOException e) {
+        LOGGER.error("fail to delete {} {} " , destFile.getAbsolutePath(),", exception :: "+e);
+      }
     } else if (!destFile.exists() && !destFile.getParentFile().exists() && !destFile.getParentFile().mkdirs()) {
         return false;
     }
@@ -174,7 +184,11 @@ public class ToolUtil {
     }
     File dir = new File(useDestDirName);
     if (dir.exists()) {
-      dir.delete();
+      try {
+        Files.delete(Paths.get(useDestDirName));
+      } catch (IOException e) {
+        LOGGER.error("fail to delete {} {} " , dir.getAbsolutePath(),", exception :: "+  e);
+      }
     }
 
     return dir.mkdirs();
@@ -199,7 +213,14 @@ public class ToolUtil {
         }
       }
     }
-    return dir.delete();
+    boolean isFileDeleted=false;
+    try {
+      Files.delete(Paths.get(dir.getPath()));
+      isFileDeleted=true;
+    } catch (IOException e) {
+      LOGGER.error("fail to delete {} {} " , dir.getAbsolutePath(),", exception :: "+e);
+    }
+    return isFileDeleted;
   }
 
   public static String getAppDeployPath()

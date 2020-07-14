@@ -21,6 +21,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -73,17 +75,19 @@ public final class FileUtil {
 	 */
 	public static boolean deleteFile(File file) {
 		String hintInfo = file.isDirectory() ? "dir " : "file ";
-		boolean isFileDeleted = file.delete();
-		boolean isFileExist = file.exists();
-		if (!isFileExist) {
-			if (isFileDeleted) {
-				logger.info("delete {} {}" ,hintInfo, file.getAbsolutePath());
-			} else {
-				isFileDeleted = true;
+		boolean isFileDeleted=false;
+		try {
+			if (file.exists()){
+			Files.delete(Paths.get(file.getPath()));
+			logger.info("delete {} {}" ,hintInfo, file.getAbsolutePath());
+			}
+			else{
 				logger.info("file not exist. no need delete {} {}" ,hintInfo , file.getAbsolutePath());
 			}
-		} else {
-			logger.info("fail to delete {} {} " , hintInfo , file.getAbsolutePath());
+			isFileDeleted=true;
+
+		} catch (IOException e) {
+			logger.error("fail to delete {} {} " , hintInfo , file.getAbsolutePath(),", exception :: "+e);
 		}
 		return isFileDeleted;
 	}
@@ -195,7 +199,14 @@ public final class FileUtil {
 				deleteDirectory(f);
 			}
 		}
-		return file.delete();
+		boolean isFileDeleted=false;
+		try {
+			Files.delete(Paths.get(file.getPath()));
+			isFileDeleted=true;
+		} catch (IOException e) {
+			logger.error("fail to delete {} {} "  , file.getAbsolutePath(),", exception :: "+e);
+		}
+		return isFileDeleted;
 	}
 
 	public static boolean validateStream(FileInputStream ifs) {
