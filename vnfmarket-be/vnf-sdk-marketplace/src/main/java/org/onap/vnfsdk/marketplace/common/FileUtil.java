@@ -26,14 +26,14 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import java.io.FileWriter;
 import java.io.FileReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public final class FileUtil {
 
@@ -73,17 +73,19 @@ public final class FileUtil {
 	 */
 	public static boolean deleteFile(File file) {
 		String hintInfo = file.isDirectory() ? "dir " : "file ";
-		boolean isFileDeleted = file.delete();
-		boolean isFileExist = file.exists();
-		if (!isFileExist) {
-			if (isFileDeleted) {
-				logger.info("delete {} {}" ,hintInfo, file.getAbsolutePath());
-			} else {
-				isFileDeleted = true;
+		boolean isFileDeleted=false;
+		try {
+			if (file.exists()){
+			Files.delete(Paths.get(file.getPath()));
+			logger.info("delete {} {}" ,hintInfo, file.getAbsolutePath());
+			}
+			else{
 				logger.info("file not exist. no need delete {} {}" ,hintInfo , file.getAbsolutePath());
 			}
-		} else {
-			logger.info("fail to delete {} {} " , hintInfo , file.getAbsolutePath());
+			isFileDeleted=true;
+
+		} catch (IOException e) {
+			logger.error("fail to delete {} {} ", hintInfo, file.getAbsolutePath(), ", exception :: ", e);
 		}
 		return isFileDeleted;
 	}
@@ -195,7 +197,14 @@ public final class FileUtil {
 				deleteDirectory(f);
 			}
 		}
-		return file.delete();
+		boolean isFileDeleted=false;
+		try {
+			Files.delete(Paths.get(file.getPath()));
+			isFileDeleted=true;
+		} catch (IOException e) {
+			logger.error("fail to delete {} {} ", file.getAbsolutePath(), ", exception :: ", e);
+		}
+		return isFileDeleted;
 	}
 
 	public static boolean validateStream(FileInputStream ifs) {
