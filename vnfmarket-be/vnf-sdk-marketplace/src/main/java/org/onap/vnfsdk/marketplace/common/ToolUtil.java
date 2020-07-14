@@ -24,12 +24,11 @@ import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.UUID;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.google.gson.Gson;
-
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * common utility class.
@@ -125,7 +124,15 @@ public class ToolUtil {
         }
         File file = new File(tmpDir.getAbsolutePath() + File.separator + fileName);
         if(file.exists()) {
-            return file.delete();
+            boolean isFileDeleted=false;
+            String fileAbsPath = file.getAbsolutePath();
+            try {
+                Files.delete(Paths.get(file.getPath()));
+                isFileDeleted=true;
+            } catch (IOException e) {
+                LOG.error("fail to delete {} {} ", fileAbsPath, e);
+            }
+            return isFileDeleted;
         }
         return true;
     }
