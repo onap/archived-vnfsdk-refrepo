@@ -123,4 +123,14 @@ public class FileManageTest {
         assertEquals(false,ManagerImpl.upload(srcPath, dstPath) );
     }
 
+    @Test
+    public void testCreateDir(){
+        String dstPath = "./dstPathForTest1";
+        File dst = new File(dstPath);
+        dst.mkdir();
+        assertTrue(ToolUtil.createDir(dstPath));
+        if (dst.exists())
+            dst.delete();
+    }
+
 }

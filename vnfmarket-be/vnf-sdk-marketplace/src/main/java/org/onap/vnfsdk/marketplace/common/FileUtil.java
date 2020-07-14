@@ -26,216 +26,228 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import java.io.FileWriter;
 import java.io.FileReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public final class FileUtil {
 
-	public static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
+    public static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
 
-	private static final int BUFFER_SIZE = 2 * 1024 * 1024;
+    private static final int BUFFER_SIZE = 2 * 1024 * 1024;
 
-	private static final int MAX_PACKAGE_SIZE = 50 * 1024 * 1024;
-	private static Gson gson = new Gson();
+    private static final int MAX_PACKAGE_SIZE = 50 * 1024 * 1024;
+    private static Gson gson = new Gson();
 
-	private FileUtil() {
-		//Empty constructor
-	}
+    private FileUtil() {
+        //Empty constructor
+    }
 
-	/**
-	 * create dir.
-	 * 
-	 * @param dir
-	 *            dir to create
-	 * @return boolean
-	 */
-	public static boolean createDirectory(String dir) {
-		File folder = new File(dir);
-			if (!folder.exists() && !folder.mkdirs()) {
-				return false;
-			} else {
-				return true;
-			}
-	}
+    /**
+     * create dir.
+     *
+     * @param dir
+     *            dir to create
+     * @return boolean
+     */
+    public static boolean createDirectory(String dir) {
+        File folder = new File(dir);
+            if (!folder.exists() && !folder.mkdirs()) {
+                return false;
+            } else {
+                return true;
+            }
+    }
 
-	/**
-	 * delete file.
-	 * 
-	 * @param file
-	 *            the file to delete
-	 * @return boolean
-	 */
-	public static boolean deleteFile(File file) {
-		String hintInfo = file.isDirectory() ? "dir " : "file ";
-		boolean isFileDeleted = file.delete();
-		boolean isFileExist = file.exists();
-		if (!isFileExist) {
-			if (isFileDeleted) {
-				logger.info("delete {} {}" ,hintInfo, file.getAbsolutePath());
-			} else {
-				isFileDeleted = true;
-				logger.info("file not exist. no need delete {} {}" ,hintInfo , file.getAbsolutePath());
-			}
-		} else {
-			logger.info("fail to delete {} {} " , hintInfo , file.getAbsolutePath());
-		}
-		return isFileDeleted;
-	}
+    /**
+     * delete file.
+     *
+     * @param file
+     *            the file to delete
+     * @return boolean
+     */
+    public static boolean deleteFile(File file) {
+        String hintInfo = file.isDirectory() ? "dir " : "file ";
+        String fileAbsPath = "";
+        boolean isFileDeleted=false;
+        try {
+            if (file.exists()){
+            Files.delete(Paths.get(file.getPath()));
+            fileAbsPath = file.getAbsolutePath();
+            logger.info("delete {} {}" ,hintInfo, fileAbsPath);
+            }
+            else{
+                 logger.info("file not exist. no need delete {} {}" ,hintInfo , fileAbsPath);
+            }
+            isFileDeleted=true;
 
-	/**
-	 * unzip zip file.
-	 * 
-	 * @param zipFileName
-	 *            file name to zip
-	 * @param extPlace
-	 *            extPlace
-	 * @return unzip file name
-	 * @throws IOException
-	 *             e1
-	 */
-	public static List<String> unzip(String zipFileName, String extPlace) throws IOException {
-		List<String> unzipFileNams = new ArrayList<>();
+        } catch (IOException e) {
+            logger.error("fail to delete {} {} ", hintInfo, fileAbsPath, e);
+        }
+        return isFileDeleted;
+    }
 
-		try (ZipFile zipFile = new ZipFile(zipFileName);) {
-			Enumeration<?> fileEn = zipFile.entries();
-			byte[] buffer = new byte[BUFFER_SIZE];
+    /**
+     * unzip zip file.
+     *
+     * @param zipFileName
+     *            file name to zip
+     * @param extPlace
+     *            extPlace
+     * @return unzip file name
+     * @throws IOException
+     *             e1
+     */
+    public static List<String> unzip(String zipFileName, String extPlace) throws IOException {
+        List<String> unzipFileNams = new ArrayList<>();
 
-			while (fileEn.hasMoreElements()) {
-				ZipEntry entry = (ZipEntry) fileEn.nextElement();
-				if (entry.isDirectory()) {
-					continue;
-				}
+        try (ZipFile zipFile = new ZipFile(zipFileName);) {
+            Enumeration<?> fileEn = zipFile.entries();
+            byte[] buffer = new byte[BUFFER_SIZE];
 
-				File file = new File(extPlace, entry.getName());
-				if (!file.getParentFile().exists()) {
-					createDirectory(file.getParentFile().getAbsolutePath());
-				}
+            while (fileEn.hasMoreElements()) {
+                ZipEntry entry = (ZipEntry) fileEn.nextElement();
+                if (entry.isDirectory()) {
+                    continue;
+                }
 
-				try (InputStream input = zipFile.getInputStream(entry);
-					    BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));) {
-					int length = 0;
-					while ((length = input.read(buffer)) != -1) {
-						bos.write(buffer, 0, length);
-					}
-					unzipFileNams.add(file.getAbsolutePath());
-				}
-			}
-		}
-		return unzipFileNams;
-	}
+                File file = new File(extPlace, entry.getName());
+                if (!file.getParentFile().exists()) {
+                    createDirectory(file.getParentFile().getAbsolutePath());
+                }
 
-	public static boolean checkFileExists(String filePath) {
-		File file = new File(filePath);
-		return file.exists();
-	}
+                try (InputStream input = zipFile.getInputStream(entry);
+                        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));) {
+                    int length = 0;
+                    while ((length = input.read(buffer)) != -1) {
+                        bos.write(buffer, 0, length);
+                    }
+                    unzipFileNams.add(file.getAbsolutePath());
+                }
+            }
+        }
+        return unzipFileNams;
+    }
 
-	public static boolean deleteFile(String filePath) {
-		File file = new File(filePath);
-		return deleteFile(file);
-	}
+    public static boolean checkFileExists(String filePath) {
+        File file = new File(filePath);
+        return file.exists();
+    }
 
-	public static boolean writeJsonDatatoFile(String fileAbsPath, Object obj) {
-		logger.info("Write JsonData to file : {} " , fileAbsPath);
+    public static boolean deleteFile(String filePath) {
+        File file = new File(filePath);
+        return deleteFile(file);
+    }
 
-		boolean bResult = false;
-		if (checkFileExists(fileAbsPath)) {
-			deleteFile(fileAbsPath);
-		}
+    public static boolean writeJsonDatatoFile(String fileAbsPath, Object obj) {
+        logger.info("Write JsonData to file : {} " , fileAbsPath);
 
-		try(FileWriter writer = new FileWriter(new File(fileAbsPath))) {
-			gson.toJson(obj, writer);
-			bResult = true;
-		} catch (Exception e) { //NOSONAR
-			logger.info("Exception: writeJsonDatatoFile-->" + fileAbsPath, e);
-		}
-		return bResult;
-	}
+        boolean bResult = false;
+        if (checkFileExists(fileAbsPath)) {
+            deleteFile(fileAbsPath);
+        }
 
-	public static <T> Object readJsonDatafFromFile(String fileAbsPath, Class<T> clazz) {
-		if (!checkFileExists(fileAbsPath)) {
-			logger.info("read JsonData from file , file not found : {}" ,fileAbsPath);
-			return null;
-		}
+        try(FileWriter writer = new FileWriter(new File(fileAbsPath))) {
+            gson.toJson(obj, writer);
+            bResult = true;
+        } catch (Exception e) { //NOSONAR
+            logger.info("Exception: writeJsonDatatoFile-->" + fileAbsPath, e);
+        }
+        return bResult;
+    }
 
-		logger.info("read JsonData from file : {}" , fileAbsPath);
+    public static <T> Object readJsonDatafFromFile(String fileAbsPath, Class<T> clazz) {
+        if (!checkFileExists(fileAbsPath)) {
+            logger.info("read JsonData from file , file not found : {}" ,fileAbsPath);
+            return null;
+        }
 
-		T obj = null;
-		/*
+        logger.info("read JsonData from file : {}" , fileAbsPath);
+
+        T obj = null;
+        /*
            Gson will ignore the unknown fields and simply match the fields that it's able to.
            ref: https://www.baeldung.com/gson-deserialization-guide
 
            By default, Gson just ignores extra JSON elements that do not have matching Java fields.
            ref: https://programmerbruce.blogspot.com/2011/06/gson-v-jackson.html
         */
-		try(JsonReader jsonReader = new JsonReader(new FileReader(fileAbsPath))) {
-			obj = gson.fromJson(jsonReader, clazz);
-		} catch (Exception e1) { //NOSONAR
-			logger.info("IOException Exception: writeJsonDatatoFile-->" + fileAbsPath, e1);
-		}
-		return obj;
-	}
+        try(JsonReader jsonReader = new JsonReader(new FileReader(fileAbsPath))) {
+            obj = gson.fromJson(jsonReader, clazz);
+        } catch (Exception e1) { //NOSONAR
+            logger.info("IOException Exception: writeJsonDatatoFile-->" + fileAbsPath, e1);
+        }
+        return obj;
+    }
 
-	public static boolean deleteDirectory(String path) {
-		File file = new File(path);
-		return deleteDirectory(file);
-	}
+    public static boolean deleteDirectory(String path) {
+        File file = new File(path);
+        return deleteDirectory(file);
+    }
 
-	public static boolean deleteDirectory(File file) {
-		if (!file.exists()) {
-			return true;
-		}
-		if (file.isDirectory()) {
-			for (File f : file.listFiles()) {
-				deleteDirectory(f);
-			}
-		}
-		return file.delete();
-	}
+    public static boolean deleteDirectory(File file) {
+        if (!file.exists()) {
+             return true;
+        }
+        if (file.isDirectory()) {
+            for (File f : file.listFiles()) {
+                deleteDirectory(f);
+            }
+        }
+        boolean isFileDeleted=false;
+        String fileAbsPath = file.getAbsolutePath();
+        try {
+            Files.delete(Paths.get(file.getPath()));
+            isFileDeleted=true;
+        } catch (IOException e) {
+            logger.error("fail to delete {} {} ", fileAbsPath, e);
+        }
+        return isFileDeleted;
+    }
 
-	public static boolean validateStream(FileInputStream ifs) {
+    public static boolean validateStream(FileInputStream ifs) {
 
-		if (null == ifs) {
-			logger.error("File stream is null");
-			return false;
-		}
+        if (null == ifs) {
+            logger.error("File stream is null");
+            return false;
+        }
 
-		try {
-			if (!ifs.getFD().valid()) {
-				logger.error("File descriptor is not valid");
-				return false;
-			}
-		} catch (IOException e) {
-			logger.error("Exception while getting File descriptor", e);
-		}
+        try {
+            if (!ifs.getFD().valid()) {
+                logger.error("File descriptor is not valid");
+                return false;
+            }
+        } catch (IOException e) {
+            logger.error("Exception while getting File descriptor", e);
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	public static boolean validatePath(String path) {
-		if (!new File(path).isDirectory()) {
-			logger.error("File is not a directory");
-			return false;
-		}
-		return true;
-	}
+    public static boolean validatePath(String path) {
+        if (!new File(path).isDirectory()) {
+            logger.error("File is not a directory");
+            return false;
+        }
+        return true;
+    }
 
-	public static boolean validateFile(File fileData) {
-		if (null == fileData) {
-			logger.error("File data is null");
-			return false;
-		}
+    public static boolean validateFile(File fileData) {
+        if (null == fileData) {
+            logger.error("File data is null");
+            return false;
+        }
 
-		if (MAX_PACKAGE_SIZE < fileData.length()) {
-			logger.error("File size is greater than 50 MB {}", fileData.length());
-			return false;
-		}
+        if (MAX_PACKAGE_SIZE < fileData.length()) {
+            logger.error("File size is greater than 50 MB {}", fileData.length());
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 }

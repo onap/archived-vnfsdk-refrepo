@@ -21,11 +21,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import org.onap.vnfsdk.marketplace.common.HttpServerPathConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class ToolUtil {
   private static final Logger LOGGER = LoggerFactory.getLogger(ToolUtil.class);
@@ -74,8 +74,11 @@ public class ToolUtil {
   {
     File destDir = new File(destDirName);
     if (destDir.exists() && overlay) {
-      if (!new File(destDirName).delete()) {
-        LOGGER.error("failed to delete file in createDestDir()");
+      String fileAbsPath = destDir.getAbsolutePath();
+      try {
+        Files.delete(Paths.get(destDirName));
+      } catch (IOException e) {
+        LOGGER.error("fail to delete {} {} " , fileAbsPath, e);
       }
     } else if (destDir.exists() && !overlay) {
         return false;
@@ -156,8 +159,12 @@ public class ToolUtil {
 
     File destFile = new File(destFileName);
     if (destFile.exists() && overlay) {
-        if(!new File(destFileName).delete())
-          LOGGER.error("failed to delete file in copyFile()");
+      String fileAbsPath = destFile.getAbsolutePath();
+      try {
+        Files.delete(Paths.get(destFileName));
+      } catch (IOException e) {
+        LOGGER.error("fail to delete {} {} ", fileAbsPath, e);
+      }
     } else if (!destFile.exists() && !destFile.getParentFile().exists() && !destFile.getParentFile().mkdirs()) {
         return false;
     }
@@ -177,8 +184,12 @@ public class ToolUtil {
     }
     File dir = new File(useDestDirName);
     if (dir.exists()) {
-      if(!dir.delete())
-        LOGGER.error("failed to delete file in createDir()");
+      String fileAbsPath = dir.getAbsolutePath();
+      try {
+        Files.delete(Paths.get(useDestDirName));
+      } catch (IOException e) {
+        LOGGER.error("fail to delete {} {} ", fileAbsPath, e);
+      }
     }
 
     return dir.mkdirs();
@@ -203,7 +214,15 @@ public class ToolUtil {
         }
       }
     }
-    return dir.delete();
+    boolean isFileDeleted=false;
+    String fileAbsPath = dir.getAbsolutePath();
+    try {
+      Files.delete(Paths.get(dir.getPath()));
+      isFileDeleted=true;
+    } catch (IOException e) {
+      LOGGER.error("fail to delete {} {} ", fileAbsPath, e);
+    }
+    return isFileDeleted;
   }
 
   public static String getAppDeployPath()
