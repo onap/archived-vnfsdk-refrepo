@@ -193,7 +193,7 @@ public class PackageWrapper {
         PackageBasicInfo basicInfo = PackageWrapperUtil.getPacageBasicInfo(fileLocation);
         UploadPackageResponse result = new UploadPackageResponse();
         Boolean isEnd = PackageWrapperUtil.isUploadEnd(contentRange);
-        if(isEnd) {
+        if(Boolean.TRUE.equals(isEnd)) {
             PackageMeta packageMeta =
                     PackageWrapperUtil.getPackageMeta(packageId, fileName, fileLocation, basicInfo, details);
             try {
