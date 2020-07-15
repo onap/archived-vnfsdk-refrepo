@@ -347,7 +347,6 @@ public class PackageWrapperUtil {
                 }
             }
 
-            reader.close();
         } catch(IOException e) {
             LOG.error("Exception while parsing manifest file" + e, e);
         }
@@ -411,7 +410,6 @@ public class PackageWrapperUtil {
                 }
             }
 
-            reader.close();
         } catch(IOException e) {
             LOG.error("Exception while parsing manifest file" + e, e);
         }
