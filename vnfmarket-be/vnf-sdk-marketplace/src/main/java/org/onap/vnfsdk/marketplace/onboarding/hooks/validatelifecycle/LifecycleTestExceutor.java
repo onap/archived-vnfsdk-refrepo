@@ -16,7 +16,6 @@
 package org.onap.vnfsdk.marketplace.onboarding.hooks.validatelifecycle;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Map;
 
 import org.apache.http.entity.ContentType;

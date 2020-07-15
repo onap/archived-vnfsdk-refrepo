@@ -16,7 +16,6 @@
 
 package org.onap.vtp.execution;
 
-import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.StandardCopyOption;
@@ -28,7 +27,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
