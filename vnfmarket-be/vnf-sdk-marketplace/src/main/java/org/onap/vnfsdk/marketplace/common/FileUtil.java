@@ -57,11 +57,7 @@ public final class FileUtil {
 	 */
 	public static boolean createDirectory(String dir) {
 		File folder = new File(dir);
-			if (!folder.exists() && !folder.mkdirs()) {
-				return false;
-			} else {
-				return true;
-			}
+		return !(!folder.exists() && !folder.mkdirs());
 	}
 
 	/**
