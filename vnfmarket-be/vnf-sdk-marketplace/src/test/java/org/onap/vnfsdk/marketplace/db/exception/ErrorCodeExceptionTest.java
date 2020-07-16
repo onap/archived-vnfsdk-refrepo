@@ -32,11 +32,12 @@ public class ErrorCodeExceptionTest {
     public void testConstructor() {
 
         ErrorCodeException e2 = new ErrorCodeException(0, null);
+        assertNotNull(e2);
 
     }
 
     @Test
     public void testGet() {
-        e1.getErrorCode();
+    	assertEquals(0, e1.getErrorCode());
     }
 }

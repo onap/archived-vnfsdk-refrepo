@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
 public class MarketplaceResourceTypeTest {
     @Test
     public void testEnum() {
-        MarketplaceResourceType.getType("SERVICETEMPLATE");
+    	assertNotNull(MarketplaceResourceType.getType("SERVICETEMPLATE"));
     }
 
 }
