@@ -29,6 +29,6 @@ public class MarketplaceResourceExceptionTest {
     @Test
     public void testGetter()
     {
-        marketplaceResourceException.getErrcode();
+    	assertEquals(0, marketplaceResourceException.getErrcode());
     }
 }

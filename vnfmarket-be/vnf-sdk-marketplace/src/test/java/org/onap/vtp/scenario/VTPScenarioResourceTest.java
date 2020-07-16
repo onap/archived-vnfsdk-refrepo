@@ -78,7 +78,7 @@ public class VTPScenarioResourceTest {
             }
         };
 
-        vtpScenarioResource.listTestcasesHandler("testsuite", "open-cli");
+        assertNotNull(vtpScenarioResource.listTestcasesHandler("testsuite", "open-cli"));
     }
 
     public void testListTestcases() throws Exception {

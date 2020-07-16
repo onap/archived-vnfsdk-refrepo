@@ -24,7 +24,7 @@ public class MsbDetailsTest {
     @Test
     public void testGetDefaultServer()
     {
-        msbDetails.getDefaultServer();
+    	assertNull(msbDetails.getDefaultServer());
     }
 
 }

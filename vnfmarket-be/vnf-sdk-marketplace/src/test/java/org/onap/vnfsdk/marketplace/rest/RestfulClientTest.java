@@ -44,17 +44,17 @@ public class RestfulClientTest {
 
     @Test
     public void testGet() {
-        RestfulClient.get("172.11.10.22,1212", 1211, "http://localhost");
+    	assertNotNull(RestfulClient.get("172.11.10.22,1212", 1211, "http://localhost"));
     }
 
     @Test
     public void testPost() {
-        RestfulClient.post("172.11.10.22,1212", 1211, "http://localhost", null);
+    	assertNotNull(RestfulClient.post("172.11.10.22,1212", 1211, "http://localhost", null));
     }
 
     @Test
     public void testDelete() {
-        RestfulClient.delete("172.11.10.22,1212", 1211, "http://localhost");
+    	assertNotNull(RestfulClient.delete("172.11.10.22,1212", 1211, "http://localhost"));
     }
 
     @Test
@@ -69,7 +69,7 @@ public class RestfulClientTest {
 
     @Test
     public void testExecuteHttp() throws  Exception{
-        RestfulClient.executeHttp(PUT, "172.11.10.22,1212", 1211, "http://localhost", null);
+    	assertNotNull(RestfulClient.executeHttp(PUT, "172.11.10.22,1212", 1211, "http://localhost", null));
         /*HttpResponse httpResponse = mock(HttpResponse.class);
         CloseableHttpClient httpclient= mock(CloseableHttpClient.class);
         HttpEntity httpEntity= mock(HttpEntity.class);

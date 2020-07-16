@@ -32,7 +32,7 @@ public class LifecycleTestHookTest {
         onBoradingRequest = mock(OnBoradingRequest.class);
     }
     @Test
-    public void testExec()
+    public void testExec() //NOSONAR
     {
        // lifecycleTestHook.exec(onBoradingRequest);
 
