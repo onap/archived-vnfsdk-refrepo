@@ -231,7 +231,7 @@ public class VTPExecutionResource  extends VTPResource{
             String testCaseName,
             String profile,
             String startTime,
-            String endTime) throws Exception{
+            String endTime) throws VTPException, IOException {
         List<String> args = new ArrayList<>();
         args.addAll(Arrays.asList(
                 "--product", "open-cli", "execution-list", "--format", "json"
@@ -330,14 +330,14 @@ public class VTPExecutionResource  extends VTPResource{
              @ApiParam("Test profile name") @QueryParam("profileName") String profileName,
              @ApiParam("Test execution start time") @QueryParam("startTime") String startTime,
              @ApiParam("Test execution end time") @QueryParam("endTime") String endTime
-             ) throws Exception {
+             ) throws VTPException, IOException  {
 
         return Response.ok(this.listTestExecutionsHandler(
                 requestId, scenario, testsuiteName, testcaseName, profileName, startTime, endTime).getExecutions().toString(), MediaType.APPLICATION_JSON).build();
     }
 
     public VTPTestExecution getTestExecutionHandler(
-            String executionId) throws Exception{
+            String executionId) throws VTPException, IOException {
         List<String> args = new ArrayList<>();
         args.addAll(Arrays.asList(
                 "--product", "open-cli", "execution-show", "--execution-id", executionId, "--format", "json"
@@ -411,7 +411,7 @@ public class VTPExecutionResource  extends VTPResource{
                     response = VTPError.class) })
     public Response getTestExecution(
              @ApiParam("Test execution Id") @PathParam("executionId") String executionId
-             ) throws Exception {
+             ) throws VTPException, IOException  {
 
         return Response.ok(this.getTestExecutionHandler(executionId).toString(), MediaType.APPLICATION_JSON).build();
     }
