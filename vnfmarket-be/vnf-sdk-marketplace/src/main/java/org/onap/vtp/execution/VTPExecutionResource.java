@@ -139,26 +139,28 @@ public class VTPExecutionResource  extends VTPResource{
 
     private Map<String, String> storeTestCaseInputFiles(List<FormDataBodyPart> bodyParts) throws IOException {
         Map<String, String> map = new HashMap<>();
-        if (bodyParts != null)
-        for (FormDataBodyPart part: bodyParts) {
-            String name = part.getContentDisposition().getFileName();
-            String path = VTP_EXECUTION_TEMP_STORE + "/" + name; //NOSONAR
+        if (bodyParts != null) {
+        	for (FormDataBodyPart part: bodyParts) {
+                String name = part.getContentDisposition().getFileName();
+                String path = VTP_EXECUTION_TEMP_STORE + "/" + name; //NOSONAR
 
-            File f = new File(path);
-            if (f.exists()) {
-                FileUtils.forceDelete(f);
+                File f = new File(path);
+                if (f.exists()) {
+                    FileUtils.forceDelete(f);
+                }
+                FileUtils.forceMkdir(f.getParentFile());
+
+                BodyPartEntity fileEntity = (BodyPartEntity) part.getEntity();
+                java.nio.file.Files.copy(
+                        fileEntity.getInputStream(),
+                        f.toPath(),
+                        StandardCopyOption.REPLACE_EXISTING);
+
+                IOUtils.closeQuietly(fileEntity.getInputStream());
+
+                map.put(name, path);
             }
-            FileUtils.forceMkdir(f.getParentFile());
-
-            BodyPartEntity fileEntity = (BodyPartEntity) part.getEntity();
-            java.nio.file.Files.copy(
-                    fileEntity.getInputStream(),
-                    f.toPath(),
-                    StandardCopyOption.REPLACE_EXISTING);
-
-            IOUtils.closeQuietly(fileEntity.getInputStream());
-
-            map.put(name, path);
+        	
         }
 
         return map;
