@@ -142,7 +142,7 @@ public class VTPExecutionResource  extends VTPResource{
         if (bodyParts != null)
         for (FormDataBodyPart part: bodyParts) {
             String name = part.getContentDisposition().getFileName();
-            String path = VTP_EXECUTION_TEMP_STORE + "/" + name;
+            String path = VTP_EXECUTION_TEMP_STORE + "/" + name; //NOSONAR
 
             File f = new File(path);
             if (f.exists()) {
