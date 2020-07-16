@@ -294,7 +294,7 @@ public class PackageWrapper {
 
         if (!DISABLE_VALIDATION) {
             try {
-                Result result = OpenRemoteCli.run("localhost", 50051, null, Arrays.asList(new String[] { "--product", "onap-vtp", "csar-validate", "--csar", fileLocation, "--format", "json" }));
+                Result result = OpenRemoteCli.run("localhost", 50051, null, Arrays.asList( "--product", "onap-vtp", "csar-validate", "--csar", fileLocation, "--format", "json" ));
                 LOG.info("CSAR validation is successful" + result.getOutput());
 
                 int exitCode = result.getExitCode();

@@ -233,9 +233,9 @@ public class VTPExecutionResource  extends VTPResource{
             String startTime,
             String endTime) throws Exception{
         List<String> args = new ArrayList<>();
-        args.addAll(Arrays.asList(new String[] {
+        args.addAll(Arrays.asList(
                 "--product", "open-cli", "execution-list", "--format", "json"
-                }));
+                ));
 
         if (startTime != null && !startTime.isEmpty()) {
             args.add("--start-time");
@@ -339,9 +339,9 @@ public class VTPExecutionResource  extends VTPResource{
     public VTPTestExecution getTestExecutionHandler(
             String executionId) throws Exception{
         List<String> args = new ArrayList<>();
-        args.addAll(Arrays.asList(new String[] {
+        args.addAll(Arrays.asList(
                 "--product", "open-cli", "execution-show", "--execution-id", executionId, "--format", "json"
-                }));
+                ));
 
 
         JsonElement result = this.makeRpcAndGetJson(args);
@@ -419,9 +419,9 @@ public class VTPExecutionResource  extends VTPResource{
     public String getTestExecutionLogsHandler(
             String executionId, String action) throws VTPException {
         List<String> args = new ArrayList<>();
-        args.addAll(Arrays.asList(new String[] {
+        args.addAll(Arrays.asList(
                 "--product", "open-cli", "execution-show-" + action, "--execution-id", executionId, "--format", "text"
-                }));
+                ));
 
 
         Result result = this.makeRpc(args);
