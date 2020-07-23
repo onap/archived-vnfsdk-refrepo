@@ -140,6 +140,11 @@ public class PackageWrapper {
      */
     public Response queryPackageListByCond(String name, String provider, String version, String deletionPending,
             String type) {
+        name = ToolUtil.sanitizeInput(name);
+        provider = ToolUtil.sanitizeInput(provider);
+        version = ToolUtil.sanitizeInput(version);
+        deletionPending = ToolUtil.sanitizeInput(deletionPending);
+        type = ToolUtil.sanitizeInput(type);
         List<PackageData> dbresult = new ArrayList<>();
         List<PackageMeta> result = new ArrayList<>();
         LOG.info("query package info.name:{} provider:{} version{} deletionPending{} type:{}" , name , provider , version
@@ -204,6 +209,7 @@ public class PackageWrapper {
                 String dowloadUri = File.separator + path + File.separator;
                 packageMeta.setDownloadUri(dowloadUri);
 
+                path = ToolUtil.sanitizeInput(path);
                 String jsonPackageMeta = ToolUtil.objectToString(packageMeta);
                 LOG.info("dest path is : {}" , path);
                 LOG.info("packageMeta = {}" , jsonPackageMeta);
@@ -286,6 +292,8 @@ public class PackageWrapper {
         if(head != null) {
             contentRange = head.getHeaderString(CommonConstant.HTTP_HEADER_CONTENT_RANGE);
         }
+        fileName = ToolUtil.sanitizeInput(fileName);
+        contentRange = ToolUtil.sanitizeInput(contentRange);
         LOG.info("store package chunk file, fileName:{} contentRange:{}", fileName , contentRange);
         if(ToolUtil.isEmptyString(contentRange)) {
             int fileSize = uploadedInputStream.available();
@@ -293,6 +301,7 @@ public class PackageWrapper {
         }
 
         String fileLocation = ToolUtil.storeChunkFileInLocal(localDirName, fileName, uploadedInputStream);
+        fileLocation = ToolUtil.sanitizeInput(fileLocation);
         LOG.info("the fileLocation when upload package is :{}" , fileLocation);
 
         uploadedInputStream.close();
@@ -354,6 +363,7 @@ public class PackageWrapper {
      * @return Response
      */
     public Response delPackage(String csarId) {
+        csarId = ToolUtil.sanitizeInput(csarId);
         LOG.info("delete package  info.csarId:{}" , csarId);
         if(ToolUtil.isEmptyString(csarId)) {
             LOG.error("delete package  fail, csarid is null");
@@ -508,6 +518,9 @@ public class PackageWrapper {
      * @return
      */
     public Response getOnBoardingResult(String csarId, String operTypeId, String operId) {
+        csarId = ToolUtil.sanitizeInput(csarId);
+        operTypeId = ToolUtil.sanitizeInput(operTypeId);
+        operId = ToolUtil.sanitizeInput(operId);
         LOG.info("getOnBoardingResult request csarId:{} operTypeId:{} operId:{}", csarId , operTypeId , operId);
         try {
             PackageData packageData = PackageWrapperUtil.getPackageInfoById(csarId);
@@ -563,6 +576,8 @@ public class PackageWrapper {
      * @return
      */
     public Response getOperResultByOperTypeId(String csarId, String operTypeId) {
+        csarId = ToolUtil.sanitizeInput(csarId);
+        operTypeId = ToolUtil.sanitizeInput(operTypeId);
         LOG.error("getOnBoardingResult request : csarId:{} operTypeId:{}" , csarId , operTypeId);
         if(null == csarId || null == operTypeId || csarId.isEmpty() || operTypeId.isEmpty()) {
             return Response.status(Status.BAD_REQUEST).build();
