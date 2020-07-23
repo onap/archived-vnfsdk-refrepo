@@ -27,6 +27,7 @@ import org.onap.vnfsdk.marketplace.db.util.MarketplaceDbUtil;
 import org.onap.vnfsdk.marketplace.db.wrapper.PackageHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.onap.vnfsdk.marketplace.common.ToolUtil;
 
 public class PackageManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(PackageManager.class);
@@ -69,6 +70,7 @@ public class PackageManager {
      */
     public List<PackageData> queryPackageByCsarId(String csarId)
             throws MarketplaceResourceException {
+        csarId = ToolUtil.sanitizeInput(csarId);
         LOGGER.info("start query package info by csarid.{}" , csarId);
         List<PackageData> data = handler.queryByID(csarId);
         String jsonData = MarketplaceDbUtil.objectToString(data);
@@ -88,6 +90,10 @@ public class PackageManager {
      */
     public List<PackageData> queryPackage(String name, String provider, String version,
             String deletionPending, String type) throws MarketplaceResourceException {
+        name = ToolUtil.sanitizeInput(name);
+        provider = ToolUtil.sanitizeInput(provider);
+        version = ToolUtil.sanitizeInput(version);
+        type = ToolUtil.sanitizeInput(type);
         LOGGER.info("start query package info.name:{} provider:{} version:{} type:{}", name , provider , version, type);
         Map<String, String> queryParam = new HashMap<>();
         if (MarketplaceDbUtil.isNotEmpty(name)) {
@@ -117,6 +123,7 @@ public class PackageManager {
      * @throws MarketplaceResourceException e
      */
     public void deletePackage(String packageId) throws MarketplaceResourceException {
+        packageId = ToolUtil.sanitizeInput(packageId);
         LOGGER.info("start delete package info by id.{}" , packageId);
         handler.delete(packageId);
         LOGGER.info(" delete package info end id.{}" , packageId);
@@ -129,6 +136,7 @@ public class PackageManager {
      */
     public void updateDownloadCount(String packageId) throws MarketplaceResourceException
     {
+        packageId = ToolUtil.sanitizeInput(packageId);
         LOGGER.info("Request received for Updating down load count for ID:{}" , packageId);
 
         //STEP 1: Get the Existing download  count from DB
