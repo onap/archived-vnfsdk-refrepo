@@ -83,6 +83,8 @@ import mockit.MockUp;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.onap.vnfsdk.marketplace.db.exception.MarketplaceResourceException;
+
 public class PackageResourceTest {
 
     private PackageResource packageResource = null;
@@ -1576,5 +1578,28 @@ public class PackageResourceTest {
     public void testGetPackageName() {
         String packageName = PackageWrapperUtil.getPackageName("ftpUrl/abc");
         assertEquals("/abc", packageName);
+    }
+
+    @Test
+    public void testSanitizeInput(){
+        String input = null;
+        assertTrue(null == ToolUtil.sanitizeInput(input));
+        input = "";
+        assertTrue("".equals(ToolUtil.sanitizeInput(input)));
+        input = "input\tto\nbe\rtested";
+        assertEquals("input_to_be_tested", ToolUtil.sanitizeInput(input));
+    }
+
+    @Test
+    public void testGetExistingDownloadCountFromDB() throws MarketplaceResourceException {
+
+        new MockUp<PackageHandler>(){
+            @Mock
+            public List<PackageData> queryByID(String csarID){
+                return new ArrayList<PackageData>();
+            }
+        };
+        PackageManager packageManager = PackageManager.getInstance();
+        packageManager.getExistingDownloadCountFromDB(csarID);
     }
 }

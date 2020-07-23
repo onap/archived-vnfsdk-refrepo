@@ -27,6 +27,7 @@ import org.onap.vnfsdk.marketplace.db.util.MarketplaceDbUtil;
 import org.onap.vnfsdk.marketplace.db.wrapper.PackageHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.onap.vnfsdk.marketplace.common.ToolUtil;
 
 public class PackageManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(PackageManager.class);
@@ -69,8 +70,9 @@ public class PackageManager {
      */
     public List<PackageData> queryPackageByCsarId(String csarId)
             throws MarketplaceResourceException {
-        LOGGER.info("start query package info by csarid.{}" , csarId);
-        List<PackageData> data = handler.queryByID(csarId);
+        String sanitisedCsarId = ToolUtil.sanitizeInput(csarId);
+        LOGGER.info("start query package info by csarid.{}" , sanitisedCsarId);
+        List<PackageData> data = handler.queryByID(sanitisedCsarId);
         String jsonData = MarketplaceDbUtil.objectToString(data);
         LOGGER.info("query package info end.size:{} detail:{}", data.size(), jsonData);
         return data;
@@ -88,22 +90,26 @@ public class PackageManager {
      */
     public List<PackageData> queryPackage(String name, String provider, String version,
             String deletionPending, String type) throws MarketplaceResourceException {
-        LOGGER.info("start query package info.name:{} provider:{} version:{} type:{}", name , provider , version, type);
+        String sanitisedName = ToolUtil.sanitizeInput(name);
+        String sanitisedProvider = ToolUtil.sanitizeInput(provider);
+        String sanitisedVersion = ToolUtil.sanitizeInput(version);
+        String sanitisedType = ToolUtil.sanitizeInput(type);
+        LOGGER.info("start query package info.name:{} provider:{} version:{} type:{}", sanitisedName , sanitisedProvider , sanitisedVersion, sanitisedType);
         Map<String, String> queryParam = new HashMap<>();
-        if (MarketplaceDbUtil.isNotEmpty(name)) {
-            queryParam.put(Parameters.NAME.name(), name);
+        if (MarketplaceDbUtil.isNotEmpty(sanitisedName)) {
+            queryParam.put(Parameters.NAME.name(), sanitisedName);
         }
-        if (MarketplaceDbUtil.isNotEmpty(version)) {
-            queryParam.put(Parameters.VERSION.name(), version);
+        if (MarketplaceDbUtil.isNotEmpty(sanitisedVersion)) {
+            queryParam.put(Parameters.VERSION.name(), sanitisedVersion);
         }
         if (MarketplaceDbUtil.isNotEmpty(deletionPending)) {
             queryParam.put(Parameters.DELETIONPENDING.name(), deletionPending);
         }
-        if (MarketplaceDbUtil.isNotEmpty(type)) {
-            queryParam.put(Parameters.TYPE.name(), type);
+        if (MarketplaceDbUtil.isNotEmpty(sanitisedType)) {
+            queryParam.put(Parameters.TYPE.name(), sanitisedType);
         }
-        if (MarketplaceDbUtil.isNotEmpty(provider)) {
-            queryParam.put(Parameters.PROVIDER.name(), provider);
+        if (MarketplaceDbUtil.isNotEmpty(sanitisedProvider)) {
+            queryParam.put(Parameters.PROVIDER.name(), sanitisedProvider);
         }
         List<PackageData> data = handler.query(queryParam);
         String jsonData = MarketplaceDbUtil.objectToString(data);
@@ -117,9 +123,10 @@ public class PackageManager {
      * @throws MarketplaceResourceException e
      */
     public void deletePackage(String packageId) throws MarketplaceResourceException {
-        LOGGER.info("start delete package info by id.{}" , packageId);
-        handler.delete(packageId);
-        LOGGER.info(" delete package info end id.{}" , packageId);
+        String sanitisedPackageId = ToolUtil.sanitizeInput(packageId);
+        LOGGER.info("start delete package info by id.{}" , sanitisedPackageId);
+        handler.delete(sanitisedPackageId);
+        LOGGER.info(" delete package info end id.{}" , sanitisedPackageId);
     }
 
     /**
@@ -129,19 +136,37 @@ public class PackageManager {
      */
     public void updateDownloadCount(String packageId) throws MarketplaceResourceException
     {
-        LOGGER.info("Request received for Updating down load count for ID:{}" , packageId);
+        String sanitisedPackageId = ToolUtil.sanitizeInput(packageId);
+        LOGGER.info("Request received for Updating down load count for ID:{}" , sanitisedPackageId);
 
-        //STEP 1: Get the Existing download  count from DB
-        //-------------------------------------------------
-        List<PackageData> data = handler.queryByID(packageId);
+        //Get the Existing download  count from DB and Increment in DB
+        getExistingDownloadCountFromDB(sanitisedPackageId);
+
+    }
+
+    /**
+     * Get the Existing download count from DB
+     * @param sanitisedPackageId
+     * @throws MarketplaceResourceException
+     */
+    public void getExistingDownloadCountFromDB(String sanitisedPackageId) throws MarketplaceResourceException {
+
+        List<PackageData> data = handler.queryByID(sanitisedPackageId);
         if(data.isEmpty())
         {
-            LOGGER.info("Package Info not foun for ID:{}" , packageId);
+            LOGGER.info("Package Info not found for ID:{}" , sanitisedPackageId);
             return;
         }
 
-        //STEP 2: Increment download Count in DB
-        //--------------------------------------
+        //Increment download Count in DB
+        incrementDownloadCountInDB(data);
+    }
+
+    /**
+     * Increment download Count in DB
+     * @param data
+     */
+    public void incrementDownloadCountInDB(List<PackageData> data){
         PackageData oPackageData = data.get(0);
         int idownloadcount = oPackageData.getDownloadCount();
         oPackageData.setDownloadCount(++idownloadcount);
