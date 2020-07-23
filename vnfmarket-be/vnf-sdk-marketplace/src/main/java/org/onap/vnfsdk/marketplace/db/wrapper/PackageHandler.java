@@ -26,6 +26,7 @@ import org.onap.vnfsdk.marketplace.db.inf.IMarketplaceDao;
 import org.onap.vnfsdk.marketplace.db.util.MarketplaceDbUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.onap.vnfsdk.marketplace.common.ToolUtil;
 
 public class PackageHandler extends BaseHandler<PackageData> {
     private static final Logger logger = LoggerFactory.getLogger(PackageHandler.class);
@@ -76,6 +77,7 @@ public class PackageHandler extends BaseHandler<PackageData> {
      */
     public List<PackageData> queryByID(String csarID)
             throws MarketplaceResourceException {
+    	csarID = ToolUtil.sanitizeInput(csarID);
         logger.info("packageHandler:start query package info.");
         List<PackageData> data = new ArrayList<>();
         logger.info("packageHandler:start query data .info:" + csarID);

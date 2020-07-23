@@ -22,6 +22,7 @@ import org.onap.vnfsdk.marketplace.filemanage.FileManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static org.onap.vnfsdk.marketplace.common.ToolUtil.sanitizeInput;
 
 public class HttpFileManagerImpl implements FileManager {
   private static final Logger LOGGER = LoggerFactory.getLogger(HttpFileManagerImpl.class);
@@ -55,6 +56,7 @@ public class HttpFileManagerImpl implements FileManager {
 
   @Override
   public boolean delete(String srcPath) {
+	srcPath = sanitizeInput(srcPath);
     LOGGER.info("start delete file from http server.srcPath:" + srcPath);
     boolean flag = ToolUtil.deleteDir(new File(ToolUtil.getHttpServerAbsolutePath() + srcPath));
     LOGGER.info("delete file from http server end.flag:" + flag);
