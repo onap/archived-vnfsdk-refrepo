@@ -284,4 +284,16 @@ public class ToolUtil {
         return gson.fromJson(jsonString, templateClass);
     }
 
+    
+    /**
+     * Sanitizes input data.
+     * @param input
+     * @return sanitized input data
+     */
+    public static String sanitizeInput(String input) {
+       if(input != null) {
+           input = input.replaceAll("[\n|\r|\t]", "_");
+       }
+       return input;
+    }
 }

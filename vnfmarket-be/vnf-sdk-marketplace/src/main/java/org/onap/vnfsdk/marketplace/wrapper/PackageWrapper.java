@@ -140,12 +140,17 @@ public class PackageWrapper {
      */
     public Response queryPackageListByCond(String name, String provider, String version, String deletionPending,
             String type) {
+        String sanitisedName = ToolUtil.sanitizeInput(name);
+        String sanitisedProvider = ToolUtil.sanitizeInput(provider);
+        String sanitisedVersion = ToolUtil.sanitizeInput(version);
+        String sanitisedDeletionPending = ToolUtil.sanitizeInput(deletionPending);
+        String sanitisedType = ToolUtil.sanitizeInput(type);
         List<PackageData> dbresult = new ArrayList<>();
         List<PackageMeta> result = new ArrayList<>();
-        LOG.info("query package info.name:{} provider:{} version{} deletionPending{} type:{}" , name , provider , version
-                , deletionPending , type);
+        LOG.info("query package info.name:{} provider:{} version{} deletionPending{} type:{}" , sanitisedName , sanitisedProvider , sanitisedVersion
+                , sanitisedDeletionPending , sanitisedType);
         try {
-            dbresult = PackageManager.getInstance().queryPackage(name, provider, version, deletionPending, type);
+            dbresult = PackageManager.getInstance().queryPackage(sanitisedName, sanitisedProvider, sanitisedVersion, sanitisedDeletionPending, sanitisedType);
             result = PackageWrapperUtil.packageDataList2PackageMetaList(dbresult);
             return Response.ok(ToolUtil.objectToString(result)).build();
         } catch(MarketplaceResourceException e1) {
@@ -204,8 +209,9 @@ public class PackageWrapper {
                 String dowloadUri = File.separator + path + File.separator;
                 packageMeta.setDownloadUri(dowloadUri);
 
+                String sanitisedPath = ToolUtil.sanitizeInput(path);
                 String jsonPackageMeta = ToolUtil.objectToString(packageMeta);
-                LOG.info("dest path is : {}" , path);
+                LOG.info("dest path is : {}" , sanitisedPath);
                 LOG.info("packageMeta = {}" , jsonPackageMeta);
 
                 PackageData packageData = PackageWrapperUtil.getPackageData(packageMeta);
@@ -217,7 +223,7 @@ public class PackageWrapper {
                     throw new ErrorCodeException(HttpStatus.INTERNAL_SERVER_ERROR_500, "Package name already exists");
                 }
 
-                String destPath = File.separator + path + File.separator + File.separator;
+                String destPath = File.separator + sanitisedPath + File.separator + File.separator;
                 boolean uploadResult = FileManagerFactory.createFileManager().upload(localDirName, destPath);
                 if(uploadResult) {
                     OnBoradingRequest oOnboradingRequest = new OnBoradingRequest();
@@ -286,20 +292,23 @@ public class PackageWrapper {
         if(head != null) {
             contentRange = head.getHeaderString(CommonConstant.HTTP_HEADER_CONTENT_RANGE);
         }
-        LOG.info("store package chunk file, fileName:{} contentRange:{}", fileName , contentRange);
-        if(ToolUtil.isEmptyString(contentRange)) {
+        String sanitisedFileName = ToolUtil.sanitizeInput(fileName);
+        String sanitisedContentRange = ToolUtil.sanitizeInput(contentRange);
+        LOG.info("store package chunk file, fileName:{} contentRange:{}", sanitisedFileName , sanitisedContentRange);
+        if(ToolUtil.isEmptyString(sanitisedContentRange)) {
             int fileSize = uploadedInputStream.available();
-            contentRange = "0-" + fileSize + "/" + fileSize;
+            sanitisedContentRange = "0-" + fileSize + "/" + fileSize;
         }
 
-        String fileLocation = ToolUtil.storeChunkFileInLocal(localDirName, fileName, uploadedInputStream);
-        LOG.info("the fileLocation when upload package is :{}" , fileLocation);
+        String fileLocation = ToolUtil.storeChunkFileInLocal(localDirName, sanitisedFileName, uploadedInputStream);
+        String sanitisedFileLocation = ToolUtil.sanitizeInput(fileLocation);
+        LOG.info("the fileLocation when upload package is :{}" , sanitisedFileLocation);
 
         uploadedInputStream.close();
 
         if (!DISABLE_VALIDATION) {
             try {
-                Result result = OpenRemoteCli.run("localhost", 50051, null, Arrays.asList( "--product", "onap-vtp", "csar-validate", "--csar", fileLocation, "--format", "json" ));
+                Result result = OpenRemoteCli.run("localhost", 50051, null, Arrays.asList( "--product", "onap-vtp", "csar-validate", "--csar", sanitisedFileLocation, "--format", "json" ));
                 LOG.info("CSAR validation is successful{}" , result.getOutput());
 
                 int exitCode = result.getExitCode();
@@ -320,7 +329,7 @@ public class PackageWrapper {
 
         UploadPackageResponse result = null;
         try {
-            result = manageUpload(packageId, fileName, fileLocation, details, contentRange);
+            result = manageUpload(packageId, sanitisedFileName, sanitisedFileLocation, details, sanitisedContentRange);
         } catch(ErrorCodeException e) {
             LOG.error("ErrorCodeException occurs ",e);
             return Response.status(Status.EXPECTATION_FAILED)
@@ -354,12 +363,13 @@ public class PackageWrapper {
      * @return Response
      */
     public Response delPackage(String csarId) {
-        LOG.info("delete package  info.csarId:{}" , csarId);
-        if(ToolUtil.isEmptyString(csarId)) {
+        String sanitisedCsarId = ToolUtil.sanitizeInput(csarId);
+        LOG.info("delete package  info.csarId:{}" , sanitisedCsarId);
+        if(ToolUtil.isEmptyString(sanitisedCsarId)) {
             LOG.error("delete package  fail, csarid is null");
             return Response.serverError().build();
         }
-        deletePackageDataById(csarId);
+        deletePackageDataById(sanitisedCsarId);
         return Response.ok().build();
     }
 
@@ -508,20 +518,23 @@ public class PackageWrapper {
      * @return
      */
     public Response getOnBoardingResult(String csarId, String operTypeId, String operId) {
-        LOG.info("getOnBoardingResult request csarId:{} operTypeId:{} operId:{}", csarId , operTypeId , operId);
+        String sanitisedCsarId = ToolUtil.sanitizeInput(csarId);
+        String sanitisedOperTypeId = ToolUtil.sanitizeInput(operTypeId);
+        String sanitisedOperId = ToolUtil.sanitizeInput(operId);
+        LOG.info("getOnBoardingResult request csarId:{} operTypeId:{} operId:{}", sanitisedCsarId , sanitisedOperTypeId , sanitisedOperId);
         try {
-            PackageData packageData = PackageWrapperUtil.getPackageInfoById(csarId);
+            PackageData packageData = PackageWrapperUtil.getPackageInfoById(sanitisedCsarId);
             if(null == packageData) {
                 return Response.status(Response.Status.PRECONDITION_FAILED).build();
             }
 
-            handleDelayExec(operId);
+            handleDelayExec(sanitisedOperId);
 
             OnBoardingResult oOnBoardingResult = FunctionTestHook.getOnBoardingResult(packageData);
             if(null == oOnBoardingResult) {
                 return Response.status(Response.Status.PRECONDITION_FAILED).build();
             }
-            filterOnBoardingResultByOperId(oOnBoardingResult, operId);
+            filterOnBoardingResultByOperId(oOnBoardingResult, sanitisedOperId);
 
             String strResult = ToolUtil.objectToString(oOnBoardingResult);
             LOG.info("getOnBoardingResult response : {}" , strResult);
@@ -563,14 +576,16 @@ public class PackageWrapper {
      * @return
      */
     public Response getOperResultByOperTypeId(String csarId, String operTypeId) {
-        LOG.error("getOnBoardingResult request : csarId:{} operTypeId:{}" , csarId , operTypeId);
-        if(null == csarId || null == operTypeId || csarId.isEmpty() || operTypeId.isEmpty()) {
+        String sanitisedCsarId = ToolUtil.sanitizeInput(csarId);
+        String sanitisedOperTypeId = ToolUtil.sanitizeInput(operTypeId);
+        LOG.error("getOnBoardingResult request : csarId:{} operTypeId:{}" , sanitisedCsarId , sanitisedOperTypeId);
+        if(null == sanitisedCsarId || null == sanitisedOperTypeId || sanitisedCsarId.isEmpty() || sanitisedOperTypeId.isEmpty()) {
             return Response.status(Status.BAD_REQUEST).build();
         }
 
-        PackageData packageData = PackageWrapperUtil.getPackageInfoById(csarId);
+        PackageData packageData = PackageWrapperUtil.getPackageInfoById(sanitisedCsarId);
         if(null == packageData) {
-            LOG.error("Failed to find package for PackageID:{}" , csarId);
+            LOG.error("Failed to find package for PackageID:{}" , sanitisedCsarId);
             return Response.status(Status.PRECONDITION_FAILED).build();
         }
 
