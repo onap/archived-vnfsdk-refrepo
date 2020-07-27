@@ -77,7 +77,8 @@ public class ToolUtil {
     public static String storeChunkFileInLocal(String dirName, String fileName, InputStream uploadedInputStream)
             throws IOException {
         File tmpDir = new File(dirName);
-        LOG.info("tmpdir = " + File.separator + dirName);
+        dirName = File.separator + dirName;
+        LOG.info("tmpdir = {}" , dirName);
         if(!tmpDir.exists()) {
             tmpDir.mkdirs();
         }

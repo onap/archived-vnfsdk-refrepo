@@ -54,7 +54,7 @@ public class LifecycleTestExceutor {
 	@SuppressWarnings("unchecked")
 	public static String uploadPackageToCatalouge(OnBoradingRequest onBoradFuncTestReq) {
 		String packagePath = onBoradFuncTestReq.getPackagePath() + File.separator + onBoradFuncTestReq.getPackageName();
-		logger.info("Package file path uploadPackageToCatalouge:" + packagePath);
+		logger.info("Package file path uploadPackageToCatalouge:{}" , packagePath);
 
 		String catalougeCsarId = null;
 
@@ -86,14 +86,14 @@ public class LifecycleTestExceutor {
 				Integer.parseInt(oMsbDetails.getDefaultServer().getPort()), CommonConstant.CATALOUGE_UPLOAD_URL,
 				builder.build());
 		if (!checkValidResponse(rsp)) {
-			logger.error("Failed to upload package to catalouge:" + rsp.getStatusCode());
+			logger.error("Failed to upload package to catalouge:{}" , rsp.getStatusCode());
 			return catalougeCsarId;
 		}
 
-		logger.info("Response for uploadPackageToCatalouge :" + rsp.getResult());
+		logger.info("Response for uploadPackageToCatalouge :{}" , rsp.getResult());
 		catalougeCsarId = getCsarIdValue(rsp.getResult());
 
-		logger.info("CSARID for uploadPackageToCatalouge :" + catalougeCsarId);
+		logger.info("CSARID for uploadPackageToCatalouge :{}" , catalougeCsarId);
 		return catalougeCsarId;
 	}
 
@@ -113,7 +113,7 @@ public class LifecycleTestExceutor {
 		}
 
 		String packagePath = onBoradFuncTestReq.getPackagePath() + File.separator + onBoradFuncTestReq.getPackageName();
-		logger.info("Package file path Function test:" + packagePath);
+		logger.info("Package file path Function test:{}" , packagePath);
 
 		// Validate package path
 		if (!FileUtil.validatePath(packagePath)) {
@@ -134,12 +134,12 @@ public class LifecycleTestExceutor {
 				oMsbDetails.getDefaultServer().getPort(), CommonConstant.LifeCycleTest.LIFECYCLE_TEST_URL, rawDataJson);
 
 		if (!checkValidResponse(oResponse)) {
-			logger.error("execlifecycleTest response is faliure :" + oResponse.getStatusCode());
+			logger.error("execlifecycleTest response is faliure :{}" , oResponse.getStatusCode());
 			return result;
 		}
 
 		result = oResponse.getResult();
-		logger.info("Response execlifecycleTest :" + oResponse.getResult());
+		logger.info("Response execlifecycleTest :{}" , oResponse.getResult());
 		return result;
 	}
 

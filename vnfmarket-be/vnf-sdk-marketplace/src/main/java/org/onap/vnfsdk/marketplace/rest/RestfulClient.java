@@ -115,8 +115,8 @@ public class RestfulClient {
         try
         {
             String urlPost =  "http://" + ip + ":" + port + url;
-            logger.info("URL formed for Post, URL :" + urlPost);
-            logger.info("URL formed for Post, JSON :" + strJson);
+            logger.info("URL formed for Post, URL :{}" , urlPost);
+            logger.info("URL formed for Post, JSON :{}" , strJson);
 
             HttpPost request = new HttpPost(urlPost);
 
