@@ -88,7 +88,7 @@ public class PackageWrapper {
 
     public Response updateValidateStatus(InputStream inputStream) throws IOException {
         String reqParam = IOUtils.toString(inputStream);
-        LOG.info("updateValidateStatus request param:" + reqParam);
+        LOG.info("updateValidateStatus request param:{}" , reqParam);
         if(StringUtils.isBlank(reqParam)) {
             LOG.error("The updateValidateStatus request params can't be null");
             return Response.status(Status.EXPECTATION_FAILED).build();
@@ -121,8 +121,8 @@ public class PackageWrapper {
         }
         if(lyfValidateResp.getLifecycleStatus().equalsIgnoreCase(CommonConstant.SUCCESS_STR)
                 && lyfValidateResp.getValidateStatus().equalsIgnoreCase(CommonConstant.SUCCESS_STR)) {
-            LOG.error("Lifecycle/Validation Response failed :" + lyfValidateResp.getLifecycleStatus() + File.separator
-                    + lyfValidateResp.getValidateStatus());
+            String lyfValidateResponse = lyfValidateResp.getLifecycleStatus() + File.separator+lyfValidateResp.getValidateStatus();
+            LOG.error("Lifecycle/Validation Response failed :{}" , lyfValidateResponse);
             bOperStatus = true;
         }
         return bOperStatus;
@@ -142,8 +142,8 @@ public class PackageWrapper {
             String type) {
         List<PackageData> dbresult = new ArrayList<>();
         List<PackageMeta> result = new ArrayList<>();
-        LOG.info("query package info.name:" + name + " provider:" + provider + " version" + version + " deletionPending"
-                + deletionPending + " type:" + type);
+        LOG.info("query package info.name:{} provider:{} version{} deletionPending{} type:{}" , provider , version , deletionPending
+                , deletionPending , type);
         try {
             dbresult = PackageManager.getInstance().queryPackage(name, provider, version, deletionPending, type);
             result = PackageWrapperUtil.packageDataList2PackageMetaList(dbresult);
@@ -204,8 +204,9 @@ public class PackageWrapper {
                 String dowloadUri = File.separator + path + File.separator;
                 packageMeta.setDownloadUri(dowloadUri);
 
-                LOG.info("dest path is : " + path);
-                LOG.info("packageMeta = " + ToolUtil.objectToString(packageMeta));
+                String jsonPackageMeta = ToolUtil.objectToString(packageMeta);
+                LOG.info("dest path is : {}" , path);
+                LOG.info("packageMeta = {}" , jsonPackageMeta);
 
                 PackageData packageData = PackageWrapperUtil.getPackageData(packageMeta);
 
@@ -228,18 +229,21 @@ public class PackageWrapper {
                     packageData.setDownloadCount(-1);
                     PackageData packateDbData = PackageManager.getInstance().addPackage(packageData);
 
-                    LOG.info("Store package data to database succed ! packateDbData = "
-                            + ToolUtil.objectToString(packateDbData));
-                    LOG.info("upload package file end, fileName:" + fileName);
+                    String jsonPackageDbData = ToolUtil.objectToString(packateDbData);
+                    LOG.info("Store package data to database succed ! packateDbData = {}"
+                            , jsonPackageDbData);
+                    LOG.info("upload package file end, fileName:{}" , fileName);
 
                     result.setCsarId(packateDbData.getCsarId());
 
                     addOnBoardingRequest(oOnboradingRequest);
 
-                    LOG.info("OnboradingRequest Data : " + ToolUtil.objectToString(oOnboradingRequest));
+                    String jsonoOnboradingRequest = ToolUtil.objectToString(oOnboradingRequest);
+                    LOG.info("OnboradingRequest Data : {}" , jsonoOnboradingRequest);
                 }
             } catch(NullPointerException e) {
-                LOG.error("Package basicInfo is incorrect ! basicIonfo = " + ToolUtil.objectToString(basicInfo), e);
+                String jsonBasicInfo =  ToolUtil.objectToString(basicInfo);
+                LOG.error("Package basicInfo is incorrect ! basicIonfo = {} {}" , jsonBasicInfo, e);
                 return null;
             }
         }
@@ -270,7 +274,8 @@ public class PackageWrapper {
 
         String fileName = "temp_" + packageId + FILE_FORMAT;
         if(null != fileDetail) {
-            LOG.info("the fileDetail = " + ToolUtil.objectToString(fileDetail));
+            String jsonFileDetail = ToolUtil.objectToString(fileDetail);
+            LOG.info("the fileDetail = {}" , jsonFileDetail);
 
             fileName = ToolUtil.processFileName(fileDetail.getFileName());
         }
@@ -281,21 +286,21 @@ public class PackageWrapper {
         if(head != null) {
             contentRange = head.getHeaderString(CommonConstant.HTTP_HEADER_CONTENT_RANGE);
         }
-        LOG.info("store package chunk file, fileName:" + fileName + ",contentRange:" + contentRange);
+        LOG.info("store package chunk file, fileName:{} contentRange:{}", fileName , contentRange);
         if(ToolUtil.isEmptyString(contentRange)) {
             int fileSize = uploadedInputStream.available();
             contentRange = "0-" + fileSize + "/" + fileSize;
         }
 
         String fileLocation = ToolUtil.storeChunkFileInLocal(localDirName, fileName, uploadedInputStream);
-        LOG.info("the fileLocation when upload package is :" + fileLocation);
+        LOG.info("the fileLocation when upload package is :{}" , fileLocation);
 
         uploadedInputStream.close();
 
         if (!DISABLE_VALIDATION) {
             try {
                 Result result = OpenRemoteCli.run("localhost", 50051, null, Arrays.asList( "--product", "onap-vtp", "csar-validate", "--csar", fileLocation, "--format", "json" ));
-                LOG.info("CSAR validation is successful" + result.getOutput());
+                LOG.info("CSAR validation is successful{}" , result.getOutput());
 
                 int exitCode = result.getExitCode();
                 String output = result.getOutput();
@@ -349,7 +354,7 @@ public class PackageWrapper {
      * @return Response
      */
     public Response delPackage(String csarId) {
-        LOG.info("delete package  info.csarId:" + csarId);
+        LOG.info("delete package  info.csarId:{}" , csarId);
         if(ToolUtil.isEmptyString(csarId)) {
             LOG.error("delete package  fail, csarid is null");
             return Response.serverError().build();
@@ -378,7 +383,8 @@ public class PackageWrapper {
         try {
             PackageManager.getInstance().deletePackage(csarId);
         } catch(MarketplaceResourceException e1) {
-            LOG.error("delete package  by csarId from db error ! " + e1.getMessage(), e1);
+            String message = e1.getMessage();
+            LOG.error("delete package  by csarId from db error ! {} {}" , message, e1);
         }
     }
 
@@ -397,14 +403,14 @@ public class PackageWrapper {
                 + File.separatorChar + packageData.getCsarId() + File.separator + packageName + File.separatorChar
                 + packageData.getVersion() + File.separator + packageName + FILE_FORMAT;
 
-        LOG.info("downloadCsarPackagesById path is :  " + path);
+        LOG.info("downloadCsarPackagesById path is :  {}" , path);
 
         File csarFile = new File(path);
         if(!csarFile.exists()) {
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
 
-        LOG.info("downloadCsarPackagesById ABS path is :  " + csarFile.getAbsolutePath());
+        LOG.info("downloadCsarPackagesById ABS path is :  {}" , csarFile.getAbsolutePath());
 
         try {
             InputStream fis = new BufferedInputStream(new FileInputStream(csarFile.getAbsolutePath()));
@@ -450,7 +456,7 @@ public class PackageWrapper {
             PackageManager.getInstance().updateDownloadCount(csarId);
             bupdateSucess = true;
         } catch(Exception exp) {
-            LOG.error("Updating Donwload count failed for Package with ID !!! : " + exp.getMessage(), exp);
+            LOG.error("Updating Donwload count failed for Package with ID !!! : {} {}" , exp.getMessage(), exp);
         }
         return bupdateSucess;
     }
@@ -502,7 +508,7 @@ public class PackageWrapper {
      * @return
      */
     public Response getOnBoardingResult(String csarId, String operTypeId, String operId) {
-        LOG.info("getOnBoardingResult request : csarId:" + csarId + " operTypeId:" + operTypeId + " operId:" + operId);
+        LOG.info("getOnBoardingResult request csarId:{} operTypeId:{} operId:{}", csarId , operTypeId , operId);
         try {
             PackageData packageData = PackageWrapperUtil.getPackageInfoById(csarId);
             if(null == packageData) {
@@ -518,7 +524,7 @@ public class PackageWrapper {
             filterOnBoardingResultByOperId(oOnBoardingResult, operId);
 
             String strResult = ToolUtil.objectToString(oOnBoardingResult);
-            LOG.info("getOnBoardingResult response : " + strResult);
+            LOG.info("getOnBoardingResult response : {}" , strResult);
             return Response.ok(strResult, "application/json").build();
         } catch(NullPointerException e) {
             LOG.error("Null param in getOnBoardingResult", e);
@@ -557,14 +563,14 @@ public class PackageWrapper {
      * @return
      */
     public Response getOperResultByOperTypeId(String csarId, String operTypeId) {
-        LOG.error("getOnBoardingResult request : csarId:" + csarId + " operTypeId:" + operTypeId);
+        LOG.error("getOnBoardingResult request : csarId:{} operTypeId:{}" , csarId , operTypeId);
         if(null == csarId || null == operTypeId || csarId.isEmpty() || operTypeId.isEmpty()) {
             return Response.status(Status.BAD_REQUEST).build();
         }
 
         PackageData packageData = PackageWrapperUtil.getPackageInfoById(csarId);
         if(null == packageData) {
-            LOG.error("Failed to find package for PackageID:" + csarId);
+            LOG.error("Failed to find package for PackageID:{}" , csarId);
             return Response.status(Status.PRECONDITION_FAILED).build();
         }
 
@@ -572,10 +578,10 @@ public class PackageWrapper {
         // ---------------------------------------------
         String strResult = FunctionTestHook.getFuncTestResults(packageData);
         if(null == strResult) {
-            LOG.error("NULL reponse for getOperResultByOperTypeId response :" + strResult);
+            LOG.error("NULL reponse for getOperResultByOperTypeId response :{}" , strResult);
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
-        LOG.info("getOperResultByOperTypeId response :" + strResult);
+        LOG.info("getOperResultByOperTypeId response :{}" , strResult);
         return Response.ok(strResult, MediaType.APPLICATION_JSON).build();
     }
 
@@ -598,7 +604,7 @@ public class PackageWrapper {
 
         String filePath = org.onap.vnfsdk.marketplace.filemanage.http.ToolUtil.getAppDeployPath() + File.separator
                 + "generalconfig/OnBoardingSteps.json";
-        LOG.info("Onboarding Steps Json file Path  :" + filePath);
+        LOG.info("Onboarding Steps Json file Path  :{}" , filePath);
 
         OnBoardingSteps oOnBoardingSteps =
                 (OnBoardingSteps)FileUtil.readJsonDatafFromFile(filePath, OnBoardingSteps.class);
@@ -606,7 +612,7 @@ public class PackageWrapper {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
         String strResult = ToolUtil.objectToString(oOnBoardingSteps);
-        LOG.info("getOnBoardingSteps response :" + strResult);
+        LOG.info("getOnBoardingSteps response :{}" , strResult);
         return Response.ok(strResult, MediaType.APPLICATION_JSON).build();
     }
 

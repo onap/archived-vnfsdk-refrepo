@@ -53,9 +53,11 @@ public class PackageManager {
      * @throws MarketplaceResourceException e
      */
     public PackageData addPackage(PackageData packageData) throws MarketplaceResourceException {
-        LOGGER.info("start add package info  to db.info:" + MarketplaceDbUtil.objectToString(packageData));
+        String jsonPackageData = MarketplaceDbUtil.objectToString(packageData);
+        LOGGER.info("start add package info  to db.info:{}" , jsonPackageData);
         PackageData data = handler.create(packageData);
-        LOGGER.info(" package info  to db end.info:" + MarketplaceDbUtil.objectToString(data));
+        String jsonData = MarketplaceDbUtil.objectToString(data);
+        LOGGER.info(" package info  to db end.info:{}" , jsonData);
         return data;
     }
 
@@ -67,10 +69,10 @@ public class PackageManager {
      */
     public List<PackageData> queryPackageByCsarId(String csarId)
             throws MarketplaceResourceException {
-        LOGGER.info("start query package info by csarid." + csarId);
+        LOGGER.info("start query package info by csarid.{}" , csarId);
         List<PackageData> data = handler.queryByID(csarId);
-        LOGGER.info("query package info end.size:" + data.size() + "detail:"
-                + MarketplaceDbUtil.objectToString(data));
+        String jsonData = MarketplaceDbUtil.objectToString(data);
+        LOGGER.info("query package info end.size:{} detail:{}", data.size(), jsonData);
         return data;
     }
 
@@ -86,8 +88,7 @@ public class PackageManager {
      */
     public List<PackageData> queryPackage(String name, String provider, String version,
             String deletionPending, String type) throws MarketplaceResourceException {
-        LOGGER.info("start query package info.name:" + name + " provider:" + provider + " version:"
-                + version + " type:" + type);
+        LOGGER.info("start query package info.name:{} provider:{} version:{} type:{}", name , provider , version, type);
         Map<String, String> queryParam = new HashMap<>();
         if (MarketplaceDbUtil.isNotEmpty(name)) {
             queryParam.put(Parameters.NAME.name(), name);
@@ -105,8 +106,8 @@ public class PackageManager {
             queryParam.put(Parameters.PROVIDER.name(), provider);
         }
         List<PackageData> data = handler.query(queryParam);
-        LOGGER.info("query package info end.size:" + data.size() + "detail:"
-                + MarketplaceDbUtil.objectToString(data));
+        String jsonData = MarketplaceDbUtil.objectToString(data);
+        LOGGER.info("query package info end.size:{} detail:{}", data.size(), jsonData);
         return data;
     }
 
@@ -116,9 +117,9 @@ public class PackageManager {
      * @throws MarketplaceResourceException e
      */
     public void deletePackage(String packageId) throws MarketplaceResourceException {
-        LOGGER.info("start delete package info by id." + packageId);
+        LOGGER.info("start delete package info by id.{}" , packageId);
         handler.delete(packageId);
-        LOGGER.info(" delete package info end id." + packageId);
+        LOGGER.info(" delete package info end id.{}" , packageId);
     }
 
     /**
@@ -128,14 +129,14 @@ public class PackageManager {
      */
     public void updateDownloadCount(String packageId) throws MarketplaceResourceException
     {
-        LOGGER.info("Request received for Updating down load count for ID:" + packageId);
+        LOGGER.info("Request received for Updating down load count for ID:{}" , packageId);
 
         //STEP 1: Get the Existing download  count from DB
         //-------------------------------------------------
         List<PackageData> data = handler.queryByID(packageId);
         if(data.isEmpty())
         {
-            LOGGER.info("Package Info not foun for ID:" + packageId);
+            LOGGER.info("Package Info not foun for ID:{}" , packageId);
             return;
         }
 
@@ -147,7 +148,7 @@ public class PackageManager {
 
         handler.update(oPackageData);
 
-        LOGGER.info("Download count updated to :" + idownloadcount);
+        LOGGER.info("Download count updated to :{}" , idownloadcount);
     }
 }
 
