@@ -16,7 +16,6 @@
 
 package org.onap.vtp.execution;
 
-import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.StandardCopyOption;
@@ -28,7 +27,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -146,26 +144,28 @@ public class VTPExecutionResource  extends VTPResource{
 
     private Map<String, String> storeTestCaseInputFiles(List<FormDataBodyPart> bodyParts) throws IOException {
         Map<String, String> map = new HashMap<>();
-        if (bodyParts != null)
-        for (FormDataBodyPart part: bodyParts) {
-            String name = part.getContentDisposition().getFileName();
-            String path = VTP_EXECUTION_TEMP_STORE + "/" + name;
+        if (bodyParts != null) {
+            for (FormDataBodyPart part: bodyParts) {
+                String name = part.getContentDisposition().getFileName();
+                String path = VTP_EXECUTION_TEMP_STORE + "/" + name; //NOSONAR
 
-            File f = new File(path);
-            if (f.exists()) {
-                FileUtils.forceDelete(f);
+                File f = new File(path);
+                if (f.exists()) {
+                    FileUtils.forceDelete(f);
+                }
+                FileUtils.forceMkdir(f.getParentFile());
+
+                BodyPartEntity fileEntity = (BodyPartEntity) part.getEntity();
+                java.nio.file.Files.copy(
+                        fileEntity.getInputStream(),
+                        f.toPath(),
+                        StandardCopyOption.REPLACE_EXISTING);
+
+                IOUtils.closeQuietly(fileEntity.getInputStream());
+
+                map.put(name, path);
             }
-            FileUtils.forceMkdir(f.getParentFile());
 
-            BodyPartEntity fileEntity = (BodyPartEntity) part.getEntity();
-            java.nio.file.Files.copy(
-                    fileEntity.getInputStream(),
-                    f.toPath(),
-                    StandardCopyOption.REPLACE_EXISTING);
-
-            IOUtils.closeQuietly(fileEntity.getInputStream());
-
-            map.put(name, path);
         }
 
         return map;
@@ -197,9 +197,11 @@ public class VTPExecutionResource  extends VTPResource{
             LOG.error("IOException occurs",e);
         }
 
-        for (Map.Entry<String, String> entry: map.entrySet()) {
-            if (executionsJson.contains(FILE + entry.getKey())) {
-                executionsJson = executionsJson.replaceAll(FILE + entry.getKey(), entry.getValue());
+        if (map != null) {
+            for (Map.Entry<String, String> entry: map.entrySet()) {
+                if (executionsJson.contains(FILE + entry.getKey())) {
+                    executionsJson = executionsJson.replaceAll(FILE + entry.getKey(), entry.getValue());
+                }
             }
         }
 
@@ -220,11 +222,13 @@ public class VTPExecutionResource  extends VTPResource{
 
         executions = this.executeHandler(executions, requestId);
 
-        for (Map.Entry<String, String> entry: map.entrySet()) {
-            try {
-                FileUtils.forceDelete(new File(entry.getValue()));
-            } catch (IOException e) {
-                LOG.error("IOException occurs",e);
+        if (map != null) {
+            for (Map.Entry<String, String> entry: map.entrySet()) {
+                try {
+                    FileUtils.forceDelete(new File(entry.getValue()));
+                } catch (IOException e) {
+                    LOG.error("IOException occurs",e);
+                }
             }
         }
 
@@ -236,13 +240,13 @@ public class VTPExecutionResource  extends VTPResource{
             String scenario,
             String testSuiteName,
             String testCaseName,
-            String profile,
+            String profile, //NOSONAR
             String startTime,
-            String endTime) throws Exception{
+            String endTime) throws VTPException, IOException {
         List<String> args = new ArrayList<>();
-        args.addAll(Arrays.asList(new String[] {
+        args.addAll(Arrays.asList(
                 PRODUCT_ARG, OPEN_CLI, "execution-list", FORMAT, "json"
-                }));
+                ));
 
         if (startTime != null && !startTime.isEmpty()) {
             args.add("--start-time");
@@ -337,18 +341,18 @@ public class VTPExecutionResource  extends VTPResource{
              @ApiParam("Test profile name") @QueryParam("profileName") String profileName,
              @ApiParam("Test execution start time") @QueryParam("startTime") String startTime,
              @ApiParam("Test execution end time") @QueryParam("endTime") String endTime
-             ) throws Exception {
+             ) throws VTPException, IOException  {
 
         return Response.ok(this.listTestExecutionsHandler(
                 requestId, scenario, testsuiteName, testcaseName, profileName, startTime, endTime).getExecutions().toString(), MediaType.APPLICATION_JSON).build();
     }
 
     public VTPTestExecution getTestExecutionHandler(
-            String executionId) throws Exception{
+            String executionId) throws VTPException, IOException {
         List<String> args = new ArrayList<>();
-        args.addAll(Arrays.asList(new String[] {
+        args.addAll(Arrays.asList(
                 PRODUCT_ARG, OPEN_CLI, "execution-show", "--execution-id", executionId, FORMAT, "json"
-                }));
+                ));
 
 
         JsonElement result = this.makeRpcAndGetJson(args);
@@ -418,7 +422,7 @@ public class VTPExecutionResource  extends VTPResource{
                     response = VTPError.class) })
     public Response getTestExecution(
              @ApiParam("Test execution Id") @PathParam("executionId") String executionId
-             ) throws Exception {
+             ) throws VTPException, IOException  {
 
         return Response.ok(this.getTestExecutionHandler(executionId).toString(), MediaType.APPLICATION_JSON).build();
     }
@@ -426,9 +430,9 @@ public class VTPExecutionResource  extends VTPResource{
     public String getTestExecutionLogsHandler(
             String executionId, String action) throws VTPException {
         List<String> args = new ArrayList<>();
-        args.addAll(Arrays.asList(new String[] {
+        args.addAll(Arrays.asList(
                 PRODUCT_ARG, OPEN_CLI, "execution-show-" + action, "--execution-id", executionId, FORMAT, "text"
-                }));
+                ));
 
 
         Result result = this.makeRpc(args);

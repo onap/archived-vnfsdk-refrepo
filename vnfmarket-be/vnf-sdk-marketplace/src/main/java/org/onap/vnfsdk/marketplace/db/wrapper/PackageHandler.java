@@ -78,7 +78,7 @@ public class PackageHandler extends BaseHandler<PackageData> {
             throws MarketplaceResourceException {
         logger.info("packageHandler:start query package info.");
         List<PackageData> data = new ArrayList<>();
-        logger.info("packageHandler:start query data .info:" + csarID);
+        logger.info("packageHandler:start query data .info:{}" , csarID);
         IMarketplaceDao dao = new MarketplaceDaoImpl();
         Object result = dao.getPackageData(csarID);
         if (result != null) {
@@ -86,7 +86,8 @@ public class PackageHandler extends BaseHandler<PackageData> {
         } else {
             logger.info("packageHandler: query package info is null.");
         }
-        logger.info("packageHandler: query data end .info:" + MarketplaceDbUtil.objectToString(data));
+        String jsonData = MarketplaceDbUtil.objectToString(data);
+        logger.info("packageHandler: query data end .info:{}" , jsonData);
         return data;
     }
 
