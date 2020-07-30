@@ -46,6 +46,29 @@
       "revId": "6cf168075d8527489162d1201de8f0202c56c32e",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "40d7459c_7cdcd622",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/test/java/org/onap/vtp/scenario/VTPScenarioResourceTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5021
+      },
+      "writtenOn": "2020-07-30T07:07:28Z",
+      "side": 1,
+      "message": "use assertEquals(). thanks",
+      "range": {
+        "startLine": 81,
+        "startChar": 8,
+        "endLine": 81,
+        "endChar": 21
+      },
+      "revId": "6cf168075d8527489162d1201de8f0202c56c32e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
