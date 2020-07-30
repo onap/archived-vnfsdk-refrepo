@@ -29,6 +29,7 @@ import org.onap.vnfsdk.marketplace.rest.RestResponse;
 import org.onap.vnfsdk.marketplace.rest.RestfulClient;
 
 import static org.mockito.Mockito.mock;
+import static org.junit.Assert.assertNotNull;
 
 public class LifecycleTestExceutorTest {
    private LifecycleTestExceutor lifecycleTestExceutor;
@@ -102,7 +103,7 @@ public class LifecycleTestExceutorTest {
         onBoradingRequest.setPackagePath("");
         onBoradingRequest.setPackageName("huawei");
         onBoradingRequest.setCsarIdCatalouge("catalog");
-        LifecycleTestExceutor.uploadPackageToCatalouge(onBoradingRequest);
+        assertNotNull(LifecycleTestExceutor.uploadPackageToCatalouge(onBoradingRequest));
     }
     public void testExeclifecycleTest()
     {

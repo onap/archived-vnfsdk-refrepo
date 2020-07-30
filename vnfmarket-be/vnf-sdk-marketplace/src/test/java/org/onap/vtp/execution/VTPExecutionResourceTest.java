@@ -319,6 +319,6 @@ public class VTPExecutionResourceTest {
         vtpExecutionResource = new VTPExecutionResource();
         String execJson = "[{\"scenario\":\"tutorial\",\"testCaseName\":\"list-users\",\"testSuiteName\":\"ut\"," +
                 "\"requestId\":\"1234567890\",\"executionId\":\"123\",\"profile\":\"http\"}]";
-        vtpExecutionResource.executeTestcases(requestId,null,"exeJson") ;
+        assertEquals(200, vtpExecutionResource.executeTestcases(requestId,null,"exeJson").getStatus());
     }
 }

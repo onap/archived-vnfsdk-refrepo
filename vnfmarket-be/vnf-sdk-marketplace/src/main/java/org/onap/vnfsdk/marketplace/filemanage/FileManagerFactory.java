@@ -47,7 +47,7 @@ public class FileManagerFactory {
 
   private static FileManagerType getType() {
     String type = System.getenv("useFtp");
-    logger.info("read environment varibale uesFtp:" + type);
+    logger.info("read environment varibale uesFtp:{}" , type);
     if ((type != null) && "true".equals(type)) {
       return FileManagerType.FTP;
     } else {
