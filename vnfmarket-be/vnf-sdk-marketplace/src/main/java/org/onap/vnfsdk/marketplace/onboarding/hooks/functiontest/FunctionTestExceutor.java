@@ -54,7 +54,7 @@ public class FunctionTestExceutor {
 		String funcTestId = null;		
 
 		String packagePath = onBoradFuncTestReq.getPackagePath() + File.separator + onBoradFuncTestReq.getPackageName();
-		logger.info("Package file path Function test:" + packagePath);
+		logger.info("Package file path Function test:{}" , packagePath);
 
 		// Validate package path
 		if (!FileUtil.validatePath(packagePath)) {
@@ -87,13 +87,13 @@ public class FunctionTestExceutor {
 			}
 
 			funcTestId = rsp.getResult();
-			logger.info("Response for Function Test :", funcTestId);
+			logger.info("Response for Function Test :{}", funcTestId);
 
 			return funcTestId.replaceAll("\"", "");
 		} catch (NumberFormatException e) {
-			logger.error("Invalid port number :", oMsbDetails.getDefaultServer().getPort());
+			logger.error("Invalid port number :{}", oMsbDetails.getDefaultServer().getPort());
 		} catch (FileNotFoundException exp) {
-			logger.error("File not found Exception for file:", onBoradFuncTestReq.getPackagePath());
+			logger.error("File not found Exception for file:{}", onBoradFuncTestReq.getPackagePath());
 			logger.error("File not found Exception for :", exp);
 		} catch (IOException e) {
 			logger.error("IOException:", e);
@@ -119,17 +119,17 @@ public class FunctionTestExceutor {
 			return result;
 		}
 
-		logger.info("GetTestResultsByFuncTestKey for Function Test Results for :" + key);
+		logger.info("GetTestResultsByFuncTestKey for Function Test Results for :{}" , key);
 		RestResponse rspGet = RestfulClient.get(oMsbDetails.getDefaultServer().getHost(),
 				Integer.parseInt(oMsbDetails.getDefaultServer().getPort()),
 				CommonConstant.FunctionTest.FUNCTEST_RESULT_URL + key);
 		if (!checkValidResponse(rspGet)) {
-			logger.error("Failed to convert String Json Response to TestResults list:" + rspGet.getResult());
+			logger.error("Failed to convert String Json Response to TestResults list:{}" , rspGet.getResult());
 			return result;
 		}
 
 		result = rspGet.getResult();
-		logger.info("Function Test Results for Key:" + key + "Response:" + rspGet.getResult());
+		logger.info("Function Test Results for Key:{} Response:{}" , key , rspGet.getResult());
 		return result;
 	}
 
@@ -147,7 +147,7 @@ public class FunctionTestExceutor {
 			return result;
 		}
 
-		logger.info("ExecuteFunctionTest Test request Received:" + strJsonRequest);
+		logger.info("ExecuteFunctionTest Test request Received:{}" , strJsonRequest);
 
 		MsbDetails oMsbDetails = MsbDetailsHolder.getMsbDetails();
 		if (null == oMsbDetails) {
@@ -155,17 +155,17 @@ public class FunctionTestExceutor {
 			return result;
 		}
 
-		logger.info("GetTestResultsByFuncTestKey for Function Test Results for :" + strJsonRequest);
+		logger.info("GetTestResultsByFuncTestKey for Function Test Results for :{}" , strJsonRequest);
 		RestResponse rspGet = RestfulClient.sendPostRequest(oMsbDetails.getDefaultServer().getHost(),
 				oMsbDetails.getDefaultServer().getPort(), CommonConstant.FunctionTest.FUNCTEST_RESULT_URL,
 				strJsonRequest);
 		if (!checkValidResponse(rspGet)) {
-			logger.error("Failed to convert String Json Response to TestResults list:" + rspGet.getResult());
+			logger.error("Failed to convert String Json Response to TestResults list:{}" , rspGet.getResult());
 			return result;
 		}
 
 		result = rspGet.getResult();
-		logger.info("ExecuteFunctionTest Function Test Result: " + rspGet.getResult());
+		logger.info("ExecuteFunctionTest Function Test Result: {}" , rspGet.getResult());
 		return result;
 	}
 

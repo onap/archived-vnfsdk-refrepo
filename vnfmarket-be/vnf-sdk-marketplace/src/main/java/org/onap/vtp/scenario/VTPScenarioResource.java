@@ -65,9 +65,10 @@ public class VTPScenarioResource extends VTPResource{
     public VTPTestScenarioList listTestScenariosHandler() throws VTPException {
         List<String> args = new ArrayList<>();
 
-        args.addAll(Arrays.asList(new String[] {
+        args.addAll(Arrays.asList(
                 PRODUCT_ARG, OPEN_CLI, "product-list", FORMAT, "json"
-                }));
+                ));
+
 
         JsonElement results = null;
         try {
@@ -113,9 +114,9 @@ public class VTPScenarioResource extends VTPResource{
     public VTPTestSuiteList listTestSutiesHandler(String scenario) throws VTPException {
         List<String> args = new ArrayList<>();
 
-        args.addAll(Arrays.asList(new String[] {
+        args.addAll(Arrays.asList(
                 PRODUCT_ARG, OPEN_CLI, "service-list", PRODUCT_ARG, scenario, FORMAT, "json"
-                }));
+                ));
 
         JsonElement results = null;
         try {
@@ -158,9 +159,9 @@ public class VTPScenarioResource extends VTPResource{
     public VTPTestCaseList listTestcasesHandler(String testSuiteName, String scenario) throws VTPException {
         List<String> args = new ArrayList<>();
 
-        args.addAll(Arrays.asList(new String[] {
+        args.addAll(Arrays.asList(
                 PRODUCT_ARG, OPEN_CLI, "schema-list", PRODUCT_ARG, scenario, FORMAT, "json"
-                }));
+                ));
         if (testSuiteName != null) {
             args.add("--service");
             args.add(testSuiteName);
@@ -209,9 +210,9 @@ public class VTPScenarioResource extends VTPResource{
 
     public VTPTestCase getTestcaseHandler(String scenario, String testSuiteName, String testCaseName) throws VTPException {
         List<String> args = new ArrayList<>();
-        args.addAll(Arrays.asList(new String[] {
+        args.addAll(Arrays.asList(
                 PRODUCT_ARG, OPEN_CLI, "schema-show", PRODUCT_ARG, scenario, "--service", testSuiteName, "--command", testCaseName , FORMAT, "json"
-                }));
+                ));
         JsonElement results = null;
         try {
             results = this.makeRpcAndGetJson(args);

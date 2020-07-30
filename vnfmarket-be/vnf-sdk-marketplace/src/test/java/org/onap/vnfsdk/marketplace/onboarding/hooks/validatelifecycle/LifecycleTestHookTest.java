@@ -31,10 +31,11 @@ public class LifecycleTestHookTest {
         lifecycleTestHook= new LifecycleTestHook();
         onBoradingRequest = mock(OnBoradingRequest.class);
     }
-    @Test
+    
+    @Test(expected = NullPointerException.class)
     public void testExec()
     {
-       // lifecycleTestHook.exec(onBoradingRequest);
+        lifecycleTestHook.exec(onBoradingRequest);
 
     }
 }
