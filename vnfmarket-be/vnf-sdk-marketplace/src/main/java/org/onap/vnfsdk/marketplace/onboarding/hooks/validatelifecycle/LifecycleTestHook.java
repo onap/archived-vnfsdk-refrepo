@@ -46,8 +46,8 @@ public class LifecycleTestHook {
 	 * @return
 	 */
 	public int exec(OnBoradingRequest onBoradingReq) {
-		logger.info("OnboardingRequest Lifecycle Request received for Package:" + onBoradingReq.getCsarId() + " Path:"
-				+ onBoradingReq.getPackagePath());
+		logger.info("OnboardingRequest Lifecycle Request received for Package:{} Path:{}" , onBoradingReq.getCsarId()
+				, onBoradingReq.getPackagePath());
 
 		// STEP 1: Validate Input and Build result
 	    // ---------------------------------------------------------
@@ -126,8 +126,9 @@ public class LifecycleTestHook {
 		// STore Results to DB(Currently we will make JSON and Store JSON to
 		// Package Path)
 		// -------------------------------------------------------------------------------
-		logger.info("Lifecycle test Status for Package Id:" + oFuncTestResult.getCsarId() + ", Result:"
-				+ ToolUtil.objectToString(oFuncTestResult));
+		String jsonoFuncTestResult = ToolUtil.objectToString(oFuncTestResult);
+		logger.info("Lifecycle test Status for Package Id:{} Result:{}" , oFuncTestResult.getCsarId()
+				, jsonoFuncTestResult);
 		String filePath = getResultStorePath() + File.separator + oFuncTestResult.getCsarId() + File.separator
 				+ "lifecycleTest.json";
 		FileUtil.writeJsonDatatoFile(filePath, oFuncTestResult);
@@ -166,8 +167,8 @@ public class LifecycleTestHook {
 		String filePath = getResultStorePath() + File.separator + onBoradingReq.getCsarId() + File.separator
 				+ "lifecycleTestResultKey.json";
 
-		logger.debug("Function test Results Key for Package Id:" + onBoradingReq.getCsarId() + ", Key:" + resultKey
-				+ " Path" + filePath);
+		logger.debug("Function test Results Key for Package Id:{} Key:{} Path{}" , onBoradingReq.getCsarId(), resultKey
+				, filePath);
 
 		ResultKey oResultKey = new ResultKey();
 		oResultKey.setCsarId(onBoradingReq.getCsarId());

@@ -57,11 +57,7 @@ public final class FileUtil {
 	 */
 	public static boolean createDirectory(String dir) {
 		File folder = new File(dir);
-			if (!folder.exists() && !folder.mkdirs()) {
-				return false;
-			} else {
-				return true;
-			}
+		return folder.exists() || folder.mkdirs();
 	}
 
 	/**
@@ -152,7 +148,7 @@ public final class FileUtil {
 			gson.toJson(obj, writer);
 			bResult = true;
 		} catch (Exception e) { //NOSONAR
-			logger.info("Exception: writeJsonDatatoFile-->" + fileAbsPath, e);
+			logger.info("Exception: writeJsonDatatoFile-->{} {}" , fileAbsPath, e);
 		}
 		return bResult;
 	}
@@ -176,7 +172,7 @@ public final class FileUtil {
 		try(JsonReader jsonReader = new JsonReader(new FileReader(fileAbsPath))) {
 			obj = gson.fromJson(jsonReader, clazz);
 		} catch (Exception e1) { //NOSONAR
-			logger.info("IOException Exception: writeJsonDatatoFile-->" + fileAbsPath, e1);
+			logger.info("IOException Exception: writeJsonDatatoFile-->{} {}" , fileAbsPath, e1);
 		}
 		return obj;
 	}

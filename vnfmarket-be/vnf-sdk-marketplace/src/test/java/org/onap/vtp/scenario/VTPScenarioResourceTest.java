@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import org.onap.vtp.scenario.model.VTPTestCase;
 
 public class VTPScenarioResourceTest {
 
@@ -78,7 +79,8 @@ public class VTPScenarioResourceTest {
             }
         };
 
-        vtpScenarioResource.listTestcasesHandler("testsuite", "open-cli");
+        VTPTestCase vtpTestCases = vtpScenarioResource.listTestcasesHandler("testsuite", "open-cli").getTestCases().get(0);
+        assertEquals("list-users", vtpTestCases.getTestCaseName());
     }
 
     public void testListTestcases() throws Exception {

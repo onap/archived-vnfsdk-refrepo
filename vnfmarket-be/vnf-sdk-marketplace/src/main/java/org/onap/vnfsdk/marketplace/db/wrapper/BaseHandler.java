@@ -48,15 +48,16 @@ public abstract class BaseHandler<T extends BaseData> {
   @SuppressWarnings({"unchecked", "rawtypes"})
   public PackageData create(PackageData data, String resouceType) throws MarketplaceResourceException {
     PackageData rtnData = null;
-    logger.info("BaseHandler:start create data.info:" + MarketplaceDbUtil.objectToString(data));
+    String jsonData = MarketplaceDbUtil.objectToString(data);
+    logger.info("BaseHandler:start create data.info:{}" , jsonData);
     try {
       IMarketplaceDao dao = new MarketplaceDaoImpl();
       dao.savePackageData(data);
       rtnData = data;
     } catch (Exception e1) {
-      logger.error("BaseHandler:error while creating " + resouceType, e1);
+      logger.error("BaseHandler:error while creating {} {}" , resouceType, e1);
     }
-    logger.info("BaseHandler:create data end.info:" + MarketplaceDbUtil.objectToString(data));
+    logger.info("BaseHandler:create data end.info:{}" , jsonData);
     return rtnData;
   }
 
@@ -68,7 +69,8 @@ public abstract class BaseHandler<T extends BaseData> {
    */
   @SuppressWarnings({"rawtypes", "unchecked"})
   public void delete(T data) throws MarketplaceResourceException {
-    logger.info("BaseHandler:start delete data.info:" + MarketplaceDbUtil.objectToString(data));
+    String jsonData = MarketplaceDbUtil.objectToString(data);
+    logger.info("BaseHandler:start delete data.info:{}" , jsonData);
     IMarketplaceDao dao = new MarketplaceDaoImpl();
     dao.deletePackageData(((PackageData)data).getCsarId());
     logger.info("BaseHandler:delete data end");
@@ -84,18 +86,21 @@ public abstract class BaseHandler<T extends BaseData> {
   @SuppressWarnings({"rawtypes", "unchecked"})
   public List<PackageData> query(Map<String, String> queryParam)
       throws MarketplaceResourceException {
-    logger.info("BaseHandler:start query data .info:" + MarketplaceDbUtil.objectToString(queryParam));
+    String jsonQueryParam = MarketplaceDbUtil.objectToString(queryParam);
+    logger.info("BaseHandler:start query data .info:{}" , jsonQueryParam);
     IMarketplaceDao dao = new MarketplaceDaoImpl();
     List<PackageData> datas = dao.getPackageDataSubset(queryParam);
-    logger.info("BaseHandler: query data end .info:" + MarketplaceDbUtil.objectToString(datas));
+    String jsonData = MarketplaceDbUtil.objectToString(datas);
+    logger.info("BaseHandler: query data end .info:{}" , jsonData);
     return datas;
   }
 
 
 
   @SuppressWarnings({"rawtypes", "unchecked"})
-  public void update(T data) throws MarketplaceResourceException {
-    logger.info("BaseHandler:start update data.info:" + MarketplaceDbUtil.objectToString(data));
+  public void update(T data) {
+    String jsonData = MarketplaceDbUtil.objectToString(data);
+    logger.info("BaseHandler:start update data.info:{}" , jsonData);
     IMarketplaceDao dao = new MarketplaceDaoImpl();
     dao.updatePackageData((PackageData)data);
     logger.info("update data end");
