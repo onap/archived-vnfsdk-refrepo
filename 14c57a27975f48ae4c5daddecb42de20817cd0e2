@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "483f6ee4_3901bc03",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/test/java/org/onap/vnfsdk/marketplace/resource/PackageResourceTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5027
+      },
+      "writtenOn": "2020-07-30T11:33:27Z",
+      "side": 1,
+      "message": "new imports should be kept below existing imports. thanks.",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 6
+      },
+      "revId": "14c57a27975f48ae4c5daddecb42de20817cd0e2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "89bb7039_ebc99147",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/test/java/org/onap/vnfsdk/marketplace/resource/PackageResourceTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 1385,
+      "author": {
+        "id": 5027
+      },
+      "writtenOn": "2020-07-30T11:33:27Z",
+      "side": 1,
+      "message": "pkgSize \u003e 1, maintain space. thanks.",
+      "range": {
+        "startLine": 1385,
+        "startChar": 19,
+        "endLine": 1385,
+        "endChar": 28
+      },
+      "revId": "14c57a27975f48ae4c5daddecb42de20817cd0e2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ff4c8b68_8576f73d",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/test/java/org/onap/vnfsdk/marketplace/resource/PackageResourceTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 1433,
+      "author": {
+        "id": 5027
+      },
+      "writtenOn": "2020-07-30T11:33:27Z",
+      "side": 1,
+      "message": "maintain space across all classes",
+      "range": {
+        "startLine": 1433,
+        "startChar": 35,
+        "endLine": 1433,
+        "endChar": 39
+      },
+      "revId": "14c57a27975f48ae4c5daddecb42de20817cd0e2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5d454525_8194b77f",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/test/java/org/onap/vtp/scenario/model/VTPTestScenarioTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5027
+      },
+      "writtenOn": "2020-07-30T11:33:27Z",
+      "side": 1,
+      "message": "new imports should be kept below existing imports. thanks.",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 6
+      },
+      "revId": "14c57a27975f48ae4c5daddecb42de20817cd0e2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
