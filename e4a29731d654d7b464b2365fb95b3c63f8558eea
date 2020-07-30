@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1d4e1824_9ac076db",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vtp/execution/VTPExecutionResource.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 5027
+      },
+      "writtenOn": "2020-07-30T06:23:32Z",
+      "side": 1,
+      "message": "proper indentation should be followed. thanks.",
+      "range": {
+        "startLine": 143,
+        "startChar": 9,
+        "endLine": 162,
+        "endChar": 13
+      },
+      "revId": "e4a29731d654d7b464b2365fb95b3c63f8558eea",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
