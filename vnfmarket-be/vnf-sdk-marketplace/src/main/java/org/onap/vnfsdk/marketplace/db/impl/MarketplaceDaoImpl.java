@@ -142,7 +142,7 @@ public class MarketplaceDaoImpl implements IMarketplaceDao {
             mapper.deletePackageData(csarId);
             session.commit();
         } catch(PersistenceException e) {
-            LOGGER.error(EXCEPTION, e);;
+            LOGGER.error(EXCEPTION, e);
         } finally {
             session.close();
         }

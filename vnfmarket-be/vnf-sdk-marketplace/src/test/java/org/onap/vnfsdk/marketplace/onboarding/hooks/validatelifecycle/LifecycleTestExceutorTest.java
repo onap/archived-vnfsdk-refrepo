@@ -27,6 +27,7 @@ import org.onap.vnfsdk.marketplace.msb.MsbServer;
 import org.onap.vnfsdk.marketplace.onboarding.entity.OnBoradingRequest;
 import org.onap.vnfsdk.marketplace.rest.RestResponse;
 import org.onap.vnfsdk.marketplace.rest.RestfulClient;
+import static org.junit.Assert.assertNotNull;
 
 import static org.mockito.Mockito.mock;
 
@@ -102,7 +103,7 @@ public class LifecycleTestExceutorTest {
         onBoradingRequest.setPackagePath("");
         onBoradingRequest.setPackageName("huawei");
         onBoradingRequest.setCsarIdCatalouge("catalog");
-        LifecycleTestExceutor.uploadPackageToCatalouge(onBoradingRequest);
+        assertNotNull(LifecycleTestExceutor.uploadPackageToCatalouge(onBoradingRequest));
     }
     public void testExeclifecycleTest()
     {

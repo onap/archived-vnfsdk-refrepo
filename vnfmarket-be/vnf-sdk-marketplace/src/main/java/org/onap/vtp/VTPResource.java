@@ -107,7 +107,7 @@ public class VTPResource {
         return this.makeRpcAndGetJson(args, VTP_EXECUTION_GRPC_TIMEOUT);
     }
 
-    protected JsonElement makeRpcAndGetJson(List<String> args, int timeout) throws VTPException, IOException {
+    protected JsonElement makeRpcAndGetJson(List<String> args, int timeout) throws VTPException {
         Result result = this.makeRpc(args, timeout);
         JsonParser jsonParser = new JsonParser();
         return jsonParser.parse(result.getOutput());
