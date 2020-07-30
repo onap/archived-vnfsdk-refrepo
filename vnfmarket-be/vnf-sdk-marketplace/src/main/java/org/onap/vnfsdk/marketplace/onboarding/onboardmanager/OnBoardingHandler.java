@@ -53,7 +53,7 @@ public final class OnBoardingHandler {
 		LifecycleTestHook oLifecycleTestHook = new LifecycleTestHook();
 		int iLifeCycleResponse = oLifecycleTestHook.exec(onBoardingReq);
 		if (EnumResult.SUCCESS.getIndex() != iLifeCycleResponse) {
-			logger.error("Onboarding failed for Package Id during Lifecycle Test:" + onBoardingReq.getCsarId());
+			logger.error("Onboarding failed for Package Id during Lifecycle Test:{}" , onBoardingReq.getCsarId());
 			// Note: We need to continue even if life cycle test fails as this
 			// test is not mandatory
 		}
@@ -63,7 +63,7 @@ public final class OnBoardingHandler {
 		FunctionTestHook oFunctionTestHook = new FunctionTestHook();
 		int iFuncTestResponse = oFunctionTestHook.exec(onBoardingReq);
 		if (EnumResult.SUCCESS.getIndex() != iFuncTestResponse) {
-			logger.error("Onboarding failed for Package Id during Function Test:" + onBoardingReq.getCsarId());
+			logger.error("Onboarding failed for Package Id during Function Test:{}" , onBoardingReq.getCsarId());
 			// Note: We need to continue even if function test fails as this
 			// test is not mandatory
 		}
@@ -72,7 +72,7 @@ public final class OnBoardingHandler {
 		try {
 			PackageManager.getInstance().updateDownloadCount(onBoardingReq.getCsarId());
 		} catch (Exception e) {
-			logger.error("Download count update failed for Package:" + onBoardingReq.getPackagePath(), e);
+			logger.error("Download count update failed for Package:{}" , onBoardingReq.getPackagePath(), e);
 		}
 	}
 

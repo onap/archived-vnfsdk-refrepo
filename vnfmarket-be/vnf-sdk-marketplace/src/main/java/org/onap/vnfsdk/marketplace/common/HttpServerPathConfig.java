@@ -20,7 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class HttpServerPathConfig {
-  public static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
+  public static final Logger logger = LoggerFactory.getLogger(HttpServerPathConfig.class);
 
   protected static String httpServerPath;
 

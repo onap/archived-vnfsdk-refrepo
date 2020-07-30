@@ -29,7 +29,7 @@ public class HttpFileManagerImpl implements FileManager {
   @Override
   public boolean upload(String srcPath, String dstPath) {
     boolean flag = true;
-    LOGGER.info("start upload file.srcPath:" + srcPath + " dstPath" + dstPath);
+    LOGGER.info("start upload file.srcPath:{} dstPath{}" , srcPath , dstPath);
     File srcFile = new File(srcPath);
     if (!srcFile.exists()) {
       LOGGER.error("src file not exist!");
@@ -55,9 +55,9 @@ public class HttpFileManagerImpl implements FileManager {
 
   @Override
   public boolean delete(String srcPath) {
-    LOGGER.info("start delete file from http server.srcPath:" + srcPath);
+    LOGGER.info("start delete file from http server.srcPath:{}" , srcPath);
     boolean flag = ToolUtil.deleteDir(new File(ToolUtil.getHttpServerAbsolutePath() + srcPath));
-    LOGGER.info("delete file from http server end.flag:" + flag);
+    LOGGER.info("delete file from http server end.flag:{}" , flag);
     return flag;
   }
 
