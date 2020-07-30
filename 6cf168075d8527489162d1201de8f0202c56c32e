@@ -22,6 +22,30 @@
       "revId": "6cf168075d8527489162d1201de8f0202c56c32e",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0c5d60ae_e3587ea7",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/test/java/org/onap/vnfsdk/marketplace/onboarding/hooks/validatelifecycle/LifecycleTestExceutorTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 6539
+      },
+      "writtenOn": "2020-07-30T07:04:22Z",
+      "side": 1,
+      "message": "updated new import statement after existing imports",
+      "parentUuid": "dc7946fc_2ec75ad4",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 6
+      },
+      "revId": "6cf168075d8527489162d1201de8f0202c56c32e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
