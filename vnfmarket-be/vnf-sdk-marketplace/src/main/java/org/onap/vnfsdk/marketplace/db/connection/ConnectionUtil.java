@@ -58,7 +58,7 @@ public class ConnectionUtil {
             if(null == sqlSessionFactory) {
                 LOGGER.error("begin generate");
                 sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-                LOGGER.error("end generate = " + sqlSessionFactory);
+                LOGGER.error("end generate = {}" , sqlSessionFactory);
             }
         } catch(FileNotFoundException ex) {
             LOGGER.error("File Not Found Exception caught", ex);

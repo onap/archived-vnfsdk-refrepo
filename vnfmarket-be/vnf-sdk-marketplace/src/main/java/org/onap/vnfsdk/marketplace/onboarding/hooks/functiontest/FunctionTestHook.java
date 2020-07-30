@@ -48,8 +48,8 @@ public class FunctionTestHook {
 	 */
 	public int exec(OnBoradingRequest onBoradingReq) {		
 		
-		logger.info("OnboradingRequest received for Package:" + onBoradingReq.getCsarId() + " Path:"
-				+ onBoradingReq.getPackagePath());
+		logger.info("OnboradingRequest received for Package:{} Path:{}", onBoradingReq.getCsarId()
+				, onBoradingReq.getPackagePath());
 
 		buildResultPath(onBoradingReq);
 
@@ -60,8 +60,8 @@ public class FunctionTestHook {
 		// STEP 1:Check Package Exists
 		// ---------------------------
 		if (!FileUtil.checkFileExists(onBoradingReq.getPackagePath())) {
-			logger.error("Package Not Found at Path:" + onBoradingReq.getPackagePath() + ", Package Id:"
-					+ onBoradingReq.getCsarId());
+			logger.error("Package Not Found at Path:{} Package Id:{}" , onBoradingReq.getPackagePath()
+					, onBoradingReq.getCsarId());
 			oFuncTestResult.setOperFinished(true);
 			oFuncTestResult.setOperStatus(EnumResult.FAIL.getIndex());
 			buildFuncTestResponse(oFuncTestResult, CommonConstant.FunctionTest.FUNCTEST_PACKAGE_EXISTS,
@@ -123,10 +123,10 @@ public class FunctionTestHook {
 			return null;
 		}
 		
-		logger.info("Function Test results request for Package:" + packageData.getCsarId());
+		logger.info("Function Test results request for Package:{}" , packageData.getCsarId());
 		ResultKey keydata = getFuncTestResultKey(packageData);
 		if ((null == keydata) || (keydata.getKey().isEmpty())) {
-			logger.error("Function Test key Not Found for Package Id:", packageData.getCsarId());
+			logger.error("Function Test key Not Found for Package Id:{}", packageData.getCsarId());
 			return null;
 		}
 		return FunctionTestExceutor.getTestResultsByFuncTestKey(keydata.getKey());
@@ -147,8 +147,8 @@ public class FunctionTestHook {
 		filePath.append(File.separator);
 		filePath.append("functestResultKey.json");
 
-		logger.debug("Function test Results Key for Package Id:" + onBoradingReq.getCsarId() + ", Key:" + resultKey
-				+ " Path" + filePath.toString());
+		logger.debug("Function test Results Key for Package Id:{} Key:{} Path{}" , onBoradingReq.getCsarId(), resultKey
+				, filePath);
 
 		ResultKey oResultKey = new ResultKey();
 		oResultKey.setCsarId(onBoradingReq.getCsarId());
@@ -167,8 +167,9 @@ public class FunctionTestHook {
 		// STore Results to DB(Currently we will make JSON and Store JSON to
 		// Package Path)
 		// -------------------------------------------------------------------------------
-		logger.debug("Function test Status for Package Id:" + oFuncTestResult.getCsarId() + ", Result:"
-				+ ToolUtil.objectToString(oFuncTestResult));
+		String jsonoFuncTestResult =  ToolUtil.objectToString(oFuncTestResult);
+		logger.debug("Function test Status for Package Id:{} Result:{}" ,oFuncTestResult.getCsarId()
+				, jsonoFuncTestResult);
 		
 		StringBuilder filePath = new StringBuilder(getResultStorePath());
 		filePath.append(File.separator);
@@ -218,7 +219,7 @@ public class FunctionTestHook {
 		filePath.append(File.separator);
 		filePath.append("functionTest.json");
 
-		logger.info("On Boarding Status for Package Id:" + packageData.getCsarId() + ", Result Path:" + filePath);
+		logger.info("On Boarding Status for Package Id:{} Result Path:{}" ,packageData.getCsarId(), filePath);
 
 		return (OnBoardingResult) FileUtil.readJsonDatafFromFile(filePath.toString(), OnBoardingResult.class);
 	}
@@ -230,7 +231,7 @@ public class FunctionTestHook {
 		fileName.append(File.separator);
 		fileName.append("functestResultKey.json");
 
-		logger.info("Func Test Result key for Package Id:" + packageData.getCsarId() + ", Result Path:" + fileName);
+		logger.info("Func Test Result key for Package Id:{} Result Path:{}" , packageData.getCsarId(),fileName);
 		return (ResultKey) FileUtil.readJsonDatafFromFile(fileName.toString(), ResultKey.class);
 	}
 
