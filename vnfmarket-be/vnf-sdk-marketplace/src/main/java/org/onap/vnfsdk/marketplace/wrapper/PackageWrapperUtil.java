@@ -39,7 +39,6 @@ import org.onap.vnfsdk.marketplace.model.parser.EnumPackageFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 
@@ -116,7 +115,7 @@ public class PackageWrapperUtil {
                 result = packageDataList.get(0);
             }
         } catch(MarketplaceResourceException e1) {
-            LOG.error("query package by csarId from db error ! " + e1.getMessage(), e1);
+            LOG.error("query package by csarId from db error ! {} {}" , e1.getMessage(), e1);
         }
         return result;
     }
@@ -174,7 +173,7 @@ public class PackageWrapperUtil {
             packageList = PackageManager.getInstance().queryPackageByCsarId(csarId);
             downloadUri = packageList.get(0).getDownloadUri();
         } catch(MarketplaceResourceException e1) {
-            LOG.error("Query CSAR package by ID failed ! csarId = " + csarId, e1);
+            LOG.error("Query CSAR package by ID failed ! csarId = {} {}" , csarId, e1);
         }
         return downloadUri;
     }
@@ -294,7 +293,7 @@ public class PackageWrapperUtil {
                 }
             }
         } catch(IOException e1) {
-            LOG.error("judge package type error ! " + e1.getMessage(), e1);
+            LOG.error("judge package type error ! {} {}" , e1.getMessage(), e1);
         }
         if(isXmlCsar) {
             basicInfo.setFormat(CommonConstant.PACKAGE_XML_FORMAT);
@@ -348,9 +347,8 @@ public class PackageWrapperUtil {
                 }
             }
 
-            reader.close();
         } catch(IOException e) {
-            LOG.error("Exception while parsing manifest file" + e, e);
+            LOG.error("Exception while parsing manifest file {}", e);
         }
 
         return basicInfo;
@@ -412,9 +410,8 @@ public class PackageWrapperUtil {
                 }
             }
 
-            reader.close();
         } catch(IOException e) {
-            LOG.error("Exception while parsing manifest file" + e, e);
+            LOG.error("Exception while parsing manifest file {}", e);
         }
 
         return basicInfo;
