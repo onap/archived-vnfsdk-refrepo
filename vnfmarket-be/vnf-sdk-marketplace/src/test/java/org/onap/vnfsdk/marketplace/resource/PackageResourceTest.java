@@ -677,6 +677,7 @@ public class PackageResourceTest {
 
         try {
             response = PackageWrapper.getInstance().getOperResultByOperTypeId(csarID, operTypeId);
+            assertNotNull(response);
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -1009,6 +1010,7 @@ public class PackageResourceTest {
     public void testGetOOprStatusSuccess() {
         try {
             response = packageResource.getOperStatus(null, null);
+            assertNotNull(response);
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -1047,6 +1049,7 @@ public class PackageResourceTest {
         };
         try {
             response = packageResource.updateValidateStatus((HttpServletRequest) mockReq.getMockInstance(), null);
+            assertNotNull(response);
         } catch(Exception e) {
             e.printStackTrace();
         }

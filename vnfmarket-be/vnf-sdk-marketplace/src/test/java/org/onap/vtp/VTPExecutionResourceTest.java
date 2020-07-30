@@ -125,4 +125,9 @@ public class VTPExecutionResourceTest {
         bodyParts.add(formDataBodyPart);
       vtpExecutionResource.executeTestcases(requestId,bodyParts,"exeJson") ;
     }
+
+    @Test(expected = Exception.class)
+    public void testGetTestExecutionLogsHandler() throws Exception {
+        assertNotNull(vtpExecutionResource.getTestExecutionLogsHandler("1234", "action"));
+    }
 }

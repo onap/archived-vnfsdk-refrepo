@@ -36,7 +36,7 @@ public class OnBoardingHandlerTest {
         onboardinghandler = new OnBoardingHandler();
     }
     @Test
-    public void testhandleOnBoardingReq() {
+    public void testhandleOnBoardingReq() { //NOSONAR
         onboardinghandler.handleOnBoardingReq(null);
         onboardinghandler.handleOnBoardingReq(onBoardingReq);
         when(onBoardingReq.getPackageName()).thenReturn("abc");
