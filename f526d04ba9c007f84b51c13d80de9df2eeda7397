@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "00532f33_aba96999",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/common/FileUtil.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5027
+      },
+      "writtenOn": "2020-07-31T12:52:54Z",
+      "side": 1,
+      "message": "it should be, logger.error(\"fail to delete {} {} exception :: {}\", hintInfo, file.getAbsolutePath(), e);",
+      "range": {
+        "startLine": 88,
+        "startChar": 3,
+        "endLine": 88,
+        "endChar": 97
+      },
+      "revId": "f526d04ba9c007f84b51c13d80de9df2eeda7397",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "15293c73_516aeec3",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/common/FileUtil.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 5027
+      },
+      "writtenOn": "2020-07-31T12:52:54Z",
+      "side": 1,
+      "message": "concatenation not required. thanks.",
+      "range": {
+        "startLine": 205,
+        "startChar": 3,
+        "endLine": 205,
+        "endChar": 87
+      },
+      "revId": "f526d04ba9c007f84b51c13d80de9df2eeda7397",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "47b04fd7_27823a75",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/common/ToolUtil.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 5027
+      },
+      "writtenOn": "2020-07-31T12:52:54Z",
+      "side": 1,
+      "message": "make it proper. thanks.",
+      "range": {
+        "startLine": 132,
+        "startChar": 16,
+        "endLine": 132,
+        "endChar": 97
+      },
+      "revId": "f526d04ba9c007f84b51c13d80de9df2eeda7397",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f1747a90_0f5cd65a",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/filemanage/http/ToolUtil.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5027
+      },
+      "writtenOn": "2020-07-31T12:52:54Z",
+      "side": 1,
+      "message": "make it proper. thanks.",
+      "range": {
+        "startLine": 80,
+        "startChar": 8,
+        "endLine": 80,
+        "endChar": 94
+      },
+      "revId": "f526d04ba9c007f84b51c13d80de9df2eeda7397",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f1d49567_d0becb6c",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/filemanage/http/ToolUtil.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 5027
+      },
+      "writtenOn": "2020-07-31T12:52:54Z",
+      "side": 1,
+      "message": "make it proper. thanks.",
+      "range": {
+        "startLine": 164,
+        "startChar": 8,
+        "endLine": 165,
+        "endChar": 7
+      },
+      "revId": "f526d04ba9c007f84b51c13d80de9df2eeda7397",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1752d580_d0a9e50f",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/filemanage/http/ToolUtil.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 5027
+      },
+      "writtenOn": "2020-07-31T12:52:54Z",
+      "side": 1,
+      "message": "make it proper. thanks.",
+      "range": {
+        "startLine": 188,
+        "startChar": 8,
+        "endLine": 188,
+        "endChar": 91
+      },
+      "revId": "f526d04ba9c007f84b51c13d80de9df2eeda7397",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "61899757_bad419f3",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/filemanage/http/ToolUtil.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 5027
+      },
+      "writtenOn": "2020-07-31T12:52:54Z",
+      "side": 1,
+      "message": "make it proper. thanks.",
+      "range": {
+        "startLine": 219,
+        "startChar": 6,
+        "endLine": 219,
+        "endChar": 89
+      },
+      "revId": "f526d04ba9c007f84b51c13d80de9df2eeda7397",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
