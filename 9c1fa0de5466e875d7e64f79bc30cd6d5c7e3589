@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b700033e_70cae5a5",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/common/FileUtil.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5021
+      },
+      "writtenOn": "2020-07-31T09:19:17Z",
+      "side": 1,
+      "message": "can remove ! mark. thanks",
+      "range": {
+        "startLine": 60,
+        "startChar": 9,
+        "endLine": 60,
+        "endChar": 48
+      },
+      "revId": "9c1fa0de5466e875d7e64f79bc30cd6d5c7e3589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "26bc7524_24f05705",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/test/java/org/onap/vnfsdk/marketplace/onboarding/hooks/validatelifecycle/LifecycleTestExceutorTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5021
+      },
+      "writtenOn": "2020-07-31T09:19:17Z",
+      "side": 1,
+      "message": "after existing import. thanks",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 45
+      },
+      "revId": "9c1fa0de5466e875d7e64f79bc30cd6d5c7e3589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7ee47b6e_fde1eb9b",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/test/java/org/onap/vtp/execution/VTPExecutionResourceTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 5021
+      },
+      "writtenOn": "2020-07-31T09:19:17Z",
+      "side": 1,
+      "message": "can use assertEqual. thanks",
+      "range": {
+        "startLine": 322,
+        "startChar": 8,
+        "endLine": 322,
+        "endChar": 21
+      },
+      "revId": "9c1fa0de5466e875d7e64f79bc30cd6d5c7e3589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
