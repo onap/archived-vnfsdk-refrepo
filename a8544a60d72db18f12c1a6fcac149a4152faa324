@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f563e514_c337ed8b",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/filemanage/http/ToolUtil.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 6539
+      },
+      "writtenOn": "2020-07-31T04:21:06Z",
+      "side": 1,
+      "message": "add one space before { across all classes",
+      "range": {
+        "startLine": 77,
+        "startChar": 43,
+        "endLine": 77,
+        "endChar": 44
+      },
+      "revId": "a8544a60d72db18f12c1a6fcac149a4152faa324",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
