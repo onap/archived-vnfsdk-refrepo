@@ -22,6 +22,30 @@
       "revId": "a84f0d3ebaafa87610472f8ced4a4d7ddb3fa0dd",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b41aa3d4_37507db4",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/wrapper/PackageWrapper.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 6539
+      },
+      "writtenOn": "2020-07-31T08:27:41Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "3145e81b_1d5a98d7",
+      "range": {
+        "startLine": 145,
+        "startChar": 94,
+        "endLine": 146,
+        "endChar": 42
+      },
+      "revId": "a84f0d3ebaafa87610472f8ced4a4d7ddb3fa0dd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
