@@ -68,6 +68,29 @@
       "revId": "9c1fa0de5466e875d7e64f79bc30cd6d5c7e3589",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2ff43647_bc87227d",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/test/java/org/onap/vtp/scenario/VTPScenarioResourceTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5027
+      },
+      "writtenOn": "2020-07-31T12:59:58Z",
+      "side": 1,
+      "message": "is it possible to use assertEquals?",
+      "range": {
+        "startLine": 81,
+        "startChar": 8,
+        "endLine": 81,
+        "endChar": 21
+      },
+      "revId": "9c1fa0de5466e875d7e64f79bc30cd6d5c7e3589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
