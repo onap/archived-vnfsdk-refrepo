@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "8313d46e_b32b3639",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/common/FileUtil.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5021
+      },
+      "writtenOn": "2020-07-31T04:08:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dbde37a9_0821ddda",
+      "range": {
+        "startLine": 25,
+        "startChar": 16,
+        "endLine": 25,
+        "endChar": 20
+      },
+      "revId": "f91e96cd8b36e100cba025614a47e0004b6c15ff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "821011be_06a88739",
         "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/common/FileUtil.java",
         "patchSetId": 1
@@ -45,6 +69,30 @@
       "revId": "f91e96cd8b36e100cba025614a47e0004b6c15ff",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a770fa0_b5d6943c",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/common/FileUtil.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5021
+      },
+      "writtenOn": "2020-07-31T04:08:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "821011be_06a88739",
+      "range": {
+        "startLine": 90,
+        "startChar": 76,
+        "endLine": 90,
+        "endChar": 97
+      },
+      "revId": "f91e96cd8b36e100cba025614a47e0004b6c15ff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "882f8b86_8fbe1285",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/common/FileUtil.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 5021
+      },
+      "writtenOn": "2020-07-31T04:08:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c93bab71_6ec1cbaa",
+      "range": {
+        "startLine": 207,
+        "startChar": 66,
+        "endLine": 207,
+        "endChar": 87
+      },
+      "revId": "f91e96cd8b36e100cba025614a47e0004b6c15ff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dcb94d2a_49e16483",
         "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/common/ToolUtil.java",
         "patchSetId": 1
@@ -94,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "ce3f0ec4_f9b9e0ae",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/common/ToolUtil.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5021
+      },
+      "writtenOn": "2020-07-31T04:08:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dcb94d2a_49e16483",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 6
+      },
+      "revId": "f91e96cd8b36e100cba025614a47e0004b6c15ff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "493855a0_95b3726b",
         "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/common/ToolUtil.java",
         "patchSetId": 1
@@ -114,6 +210,30 @@
       "revId": "f91e96cd8b36e100cba025614a47e0004b6c15ff",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a51f61c_1bf249dc",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/common/ToolUtil.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5021
+      },
+      "writtenOn": "2020-07-31T04:08:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "493855a0_95b3726b",
+      "range": {
+        "startLine": 135,
+        "startChar": 76,
+        "endLine": 135,
+        "endChar": 95
+      },
+      "revId": "f91e96cd8b36e100cba025614a47e0004b6c15ff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
