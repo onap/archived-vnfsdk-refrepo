@@ -11,7 +11,8 @@
          <param-name>jersey.config.server.provider.packages</param-name>
          <param-value>io.swagger.jaxrs.listing,
                       org.onap.vnfsdk.marketplace.resource,
-                      org.onap.vtp.error,  
+                      org.onap.vtp.error,
+                      org.onap.vtp.profile,
                       org.onap.vtp.scenario,
                       org.onap.vtp.execution
          </param-value>
