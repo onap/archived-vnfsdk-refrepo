@@ -57,18 +57,23 @@ import io.swagger.annotations.ApiResponses;
 @Api(tags = {"VTP Scenario"})
 public class VTPScenarioResource extends VTPResource{
     private static final String DESCRIPTION = "description";
+    private static final String PRODUCT_ARG="--product";
+    private static final String OPEN_CLI="open-cli";
+    private static final String FORMAT="--format";
+    private static final String IO_EXCEPTION_OCCURS ="IOException occurs";
+    private static final String SERVICE="service";
     public VTPTestScenarioList listTestScenariosHandler() throws VTPException {
         List<String> args = new ArrayList<>();
 
         args.addAll(Arrays.asList(new String[] {
-                "--product", "open-cli", "product-list", "--format", "json"
+                PRODUCT_ARG, OPEN_CLI, "product-list", FORMAT, "json"
                 }));
 
         JsonElement results = null;
         try {
             results = this.makeRpcAndGetJson(args);
         } catch (IOException e) {
-            LOG.error("IOException occurs",e);
+            LOG.error(IO_EXCEPTION_OCCURS,e);
         }
 
         VTPTestScenarioList list = new VTPTestScenarioList();
@@ -81,7 +86,7 @@ public class VTPScenarioResource extends VTPResource{
                     if (n.entrySet().iterator().hasNext()) {
                         String name = n.get("product").getAsString();
 
-                        if ("open-cli".equalsIgnoreCase(name))
+                        if (OPEN_CLI.equalsIgnoreCase(name))
                             continue;
 
                         list.getScenarios().add(new VTPTestScenario().setName(name).setDescription(
@@ -109,14 +114,14 @@ public class VTPScenarioResource extends VTPResource{
         List<String> args = new ArrayList<>();
 
         args.addAll(Arrays.asList(new String[] {
-                "--product", "open-cli", "service-list", "--product", scenario, "--format", "json"
+                PRODUCT_ARG, OPEN_CLI, "service-list", PRODUCT_ARG, scenario, FORMAT, "json"
                 }));
 
         JsonElement results = null;
         try {
             results = this.makeRpcAndGetJson(args);
         } catch (IOException e) {
-            LOG.error("IOException occurs",e);
+            LOG.error(IO_EXCEPTION_OCCURS,e);
         }
 
         VTPTestSuiteList list = new VTPTestSuiteList();
@@ -127,7 +132,7 @@ public class VTPScenarioResource extends VTPResource{
                     JsonElement jsonElement = it.next();
                     JsonObject n = jsonElement.getAsJsonObject();
                     if (n.entrySet().iterator().hasNext()) {
-                        list.getSuites().add(new VTPTestSuite().setName(n.get("service").getAsString()).setDescription(
+                        list.getSuites().add(new VTPTestSuite().setName(n.get(SERVICE).getAsString()).setDescription(
                                 n.get(DESCRIPTION).getAsString()));
                     }
                 }
@@ -154,7 +159,7 @@ public class VTPScenarioResource extends VTPResource{
         List<String> args = new ArrayList<>();
 
         args.addAll(Arrays.asList(new String[] {
-                "--product", "open-cli", "schema-list", "--product", scenario, "--format", "json"
+                PRODUCT_ARG, OPEN_CLI, "schema-list", PRODUCT_ARG, scenario, FORMAT, "json"
                 }));
         if (testSuiteName != null) {
             args.add("--service");
@@ -165,7 +170,7 @@ public class VTPScenarioResource extends VTPResource{
         try {
             results = this.makeRpcAndGetJson(args);
         } catch (IOException e) {
-            LOG.error("IOException occurs",e);
+            LOG.error(IO_EXCEPTION_OCCURS,e);
         }
 
         VTPTestCaseList list = new VTPTestCaseList();
@@ -179,7 +184,7 @@ public class VTPScenarioResource extends VTPResource{
                         list.getTestCases().add(
                                 new VTPTestCase().setTestCaseName(
                                         n.get("command").getAsString()).setTestSuiteName(
-                                                n.get("service").getAsString()));
+                                                n.get(SERVICE).getAsString()));
                 }
         }
 
@@ -205,13 +210,13 @@ public class VTPScenarioResource extends VTPResource{
     public VTPTestCase getTestcaseHandler(String scenario, String testSuiteName, String testCaseName) throws VTPException {
         List<String> args = new ArrayList<>();
         args.addAll(Arrays.asList(new String[] {
-                 "--product", "open-cli", "schema-show", "--product", scenario, "--service", testSuiteName, "--command", testCaseName , "--format", "json"
+                PRODUCT_ARG, OPEN_CLI, "schema-show", PRODUCT_ARG, scenario, "--service", testSuiteName, "--command", testCaseName , FORMAT, "json"
                 }));
         JsonElement results = null;
         try {
             results = this.makeRpcAndGetJson(args);
         } catch (IOException e) {
-            LOG.error("IOException occurs",e);
+            LOG.error(IO_EXCEPTION_OCCURS,e);
         }
 
         JsonObject schema = results.getAsJsonObject().getAsJsonObject("schema");
@@ -219,7 +224,7 @@ public class VTPScenarioResource extends VTPResource{
         VTPTestCase tc = new VTPTestCase();
         tc.setTestCaseName(schema.get("name").getAsString());
         tc.setDescription(schema.get(DESCRIPTION).getAsString());
-        tc.setTestSuiteName(schema.get("service").getAsString());
+        tc.setTestSuiteName(schema.get(SERVICE).getAsString());
         tc.setAuthor(schema.get("author").getAsString());
         JsonElement inputsJson = schema.get("inputs");
         if (inputsJson != null && inputsJson.isJsonArray()) {

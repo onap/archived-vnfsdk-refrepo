@@ -85,6 +85,11 @@ public class VTPExecutionResource  extends VTPResource{
     private static final String INPUT = "input";
     private static final String ERROR = "error";
     private static final String FILE = "file://";
+    private static final String EXCEPTION_OCCURS ="Exception occurs";
+    private static final String PRODUCT_ARG="--product";
+    private static final String OPEN_CLI="open-cli";
+    private static final String FORMAT="--format";
+
     private static Gson gson = new Gson();
 
     public VTPTestExecutionList executeHandler(VTPTestExecutionList executions, String requestId) throws VTPException {
@@ -124,14 +129,14 @@ public class VTPExecutionResource  extends VTPResource{
                 try {
                     execution.setResults(jsonParser.parse(m.get(ERROR)));
                 } catch (Exception e) { //NOSONAR
-                    LOG.error("Exception occurs",e);
+                    LOG.error(EXCEPTION_OCCURS,e);
                 }
             }
             else if (m.containsKey("results")) {
                 try {
                     execution.setResults(jsonParser.parse(m.get("results")));
                 } catch (Exception e) { //NOSONAR
-                    LOG.error("Exception occurs",e);
+                    LOG.error(EXCEPTION_OCCURS,e);
                 }
             }
         }
@@ -210,7 +215,7 @@ public class VTPExecutionResource  extends VTPResource{
             executions.setExecutions(
                         gson.fromJson(executionsJson, new TypeToken<List<VTPTestExecution>>(){}.getType()));
         } catch (Exception e) { //NOSONAR
-            LOG.error("Exception occurs",e);
+            LOG.error(EXCEPTION_OCCURS,e);
         }
 
         executions = this.executeHandler(executions, requestId);
@@ -236,7 +241,7 @@ public class VTPExecutionResource  extends VTPResource{
             String endTime) throws Exception{
         List<String> args = new ArrayList<>();
         args.addAll(Arrays.asList(new String[] {
-                "--product", "open-cli", "execution-list", "--format", "json"
+                PRODUCT_ARG, OPEN_CLI, "execution-list", FORMAT, "json"
                 }));
 
         if (startTime != null && !startTime.isEmpty()) {
@@ -260,7 +265,7 @@ public class VTPExecutionResource  extends VTPResource{
         }
 
         if (scenario != null && !scenario.isEmpty()) {
-            args.add("--product");
+            args.add(PRODUCT_ARG);
             args.add(scenario);
         }
 
@@ -342,7 +347,7 @@ public class VTPExecutionResource  extends VTPResource{
             String executionId) throws Exception{
         List<String> args = new ArrayList<>();
         args.addAll(Arrays.asList(new String[] {
-                "--product", "open-cli", "execution-show", "--execution-id", executionId, "--format", "json"
+                PRODUCT_ARG, OPEN_CLI, "execution-show", "--execution-id", executionId, FORMAT, "json"
                 }));
 
 
@@ -389,7 +394,7 @@ public class VTPExecutionResource  extends VTPResource{
                             resultJson = jsonParser.parse(resultObj.get(OUTPUT).toString());
                         }
                     } catch (Exception e) {
-                        LOG.error("Exception occurs", e);
+                        LOG.error(EXCEPTION_OCCURS, e);
                         JsonObject node = new JsonObject();
                         node.addProperty(ERROR, resultObj.get(OUTPUT).toString());
                         resultJson = node;
@@ -422,7 +427,7 @@ public class VTPExecutionResource  extends VTPResource{
             String executionId, String action) throws VTPException {
         List<String> args = new ArrayList<>();
         args.addAll(Arrays.asList(new String[] {
-                "--product", "open-cli", "execution-show-" + action, "--execution-id", executionId, "--format", "text"
+                PRODUCT_ARG, OPEN_CLI, "execution-show-" + action, "--execution-id", executionId, FORMAT, "text"
                 }));
 
 

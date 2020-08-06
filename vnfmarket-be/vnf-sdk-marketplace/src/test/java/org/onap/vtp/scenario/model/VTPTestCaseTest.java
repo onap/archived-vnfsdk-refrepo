@@ -44,12 +44,12 @@ public class VTPTestCaseTest {
         vtpTestCase.setScenario("abc");
         vtpTestCase.setTestCaseName("abc");
         vtpTestCase.setTestSuiteName("abc");
-        assertEquals(vtpTestCase.getAuthor(),"abc");
-        assertEquals(vtpTestCase.getDescription(),"abc");
+        assertEquals("abc",vtpTestCase.getAuthor());
+        assertEquals("abc",vtpTestCase.getDescription());
         assertNull(vtpTestCase.getInputs());
         assertNull(vtpTestCase.getOutputs());
-        assertEquals(vtpTestCase.getTestCaseName(),"abc");
-        assertEquals(vtpTestCase.getTestSuiteName(),"abc");
+        assertEquals("abc",vtpTestCase.getTestCaseName());
+        assertEquals("abc",vtpTestCase.getTestSuiteName());
 
         VTPTestCase.VTPTestCaseInput vtpTestCaseInput=new VTPTestCase.VTPTestCaseInput();
         vtpTestCaseInput.setDefaultValue("abc");
@@ -59,20 +59,20 @@ public class VTPTestCaseTest {
         vtpTestCaseInput.setMetadata(actualObj);
         vtpTestCaseInput.setName("abc");
         vtpTestCaseInput.setType("abc");
-        assertEquals(vtpTestCaseInput.getDefaultValue(),"abc");
-        assertEquals(vtpTestCaseInput.getDescription(),"abc");
-        assertEquals(vtpTestCaseInput.getIsOptional(),true);
+        assertEquals("abc",vtpTestCaseInput.getDefaultValue());
+        assertEquals("abc",vtpTestCaseInput.getDescription());
+        assertEquals(true,vtpTestCaseInput.getIsOptional());
         assertEquals(vtpTestCaseInput.getMetadata(),actualObj);
-        assertEquals(vtpTestCaseInput.getName(),"abc");
-        assertEquals(vtpTestCaseInput.getType(),"abc");
+        assertEquals("abc",vtpTestCaseInput.getName());
+        assertEquals("abc",vtpTestCaseInput.getType());
 //
         VTPTestCase.VTPTestCaseOutput vtpTestCaseOutput=new VTPTestCase.VTPTestCaseOutput();
         vtpTestCaseOutput.setDescription("abc");
         vtpTestCaseOutput.setName("abc");
         vtpTestCaseOutput.setType("abc");
-        assertEquals(vtpTestCaseOutput.getDescription(),"abc");
-        assertEquals(vtpTestCaseOutput.getName(),"abc");
-        assertEquals(vtpTestCaseOutput.getType(),"abc");
+        assertEquals("abc",vtpTestCaseOutput.getDescription());
+        assertEquals("abc",vtpTestCaseOutput.getName());
+        assertEquals("abc",vtpTestCaseOutput.getType());
 
     }
 }

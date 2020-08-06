@@ -30,8 +30,8 @@ public class MsbServerTest {
     public void testSetterGetter()
     {
         msbServer.setHost("csi");
-        assertEquals(msbServer.getHost(),"csi");
+        assertEquals("csi",msbServer.getHost());
         msbServer.setPort("123");
-        assertEquals(msbServer.getPort(),"123");
+        assertEquals("123",msbServer.getPort());
     }
 }
