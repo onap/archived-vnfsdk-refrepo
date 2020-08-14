@@ -129,7 +129,7 @@
         <dependency>
 	    <groupId>commons-codec</groupId>
 	    <artifactId>commons-codec</artifactId>
-	    <version>1.13</version>
+	    <version>1.14</version>
         </dependency>
         <!-- jetty -->
 <!-- Updated jetty-util,jetty-http,jetty-servlet and jetty-server
@@ -176,7 +176,7 @@ due to Security Issues:- CVE-2019-10241,CVE-2019-10247,CVE-2019-10246
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.5</version>
+            <version>42.2.13</version>
         </dependency>
         <dependency>
             <groupId>org.mybatis</groupId>
