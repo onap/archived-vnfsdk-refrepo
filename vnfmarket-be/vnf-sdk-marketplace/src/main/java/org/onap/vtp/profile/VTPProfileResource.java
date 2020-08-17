@@ -67,7 +67,7 @@ public class VTPProfileResource extends VTPResource {
                 "--product", "open-cli", "profile-list", "--format", "json"
                 }));
 
-        JsonObject results = this.makeRpcAndGetJson(args).getAsJsonObject();
+        JsonArray results = this.makeRpcAndGetJson(args).getAsJsonArray();
 
         VTPTestProfileList list = new VTPTestProfileList();
 
@@ -100,7 +100,7 @@ public class VTPProfileResource extends VTPResource {
         args.addAll(Arrays.asList(new String[] {
                  "--product", "open-cli", "profile-show", "--profile", profileName, "--format", "json"
                 }));
-        JsonObject results = this.makeRpcAndGetJson(args).getAsJsonObject();
+        JsonArray results = this.makeRpcAndGetJson(args).getAsJsonArray();
 
         VTPTestProfile profile = new VTPTestProfile();
         profile.setName(profileName);
