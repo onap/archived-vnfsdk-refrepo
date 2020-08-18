@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e70836e0_20a8a12e",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vtp/profile/VTPProfileResource.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-08-18T07:04:18Z",
+      "side": 1,
+      "message": "did you check this correction?\nare there any tests which cover this case?",
+      "revId": "2a4ead598b998a71b36cfbaef023090c95c31737",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
