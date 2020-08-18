@@ -75,6 +75,8 @@ import org.onap.vnfsdk.marketplace.wrapper.PackageWrapper;
 import org.onap.vnfsdk.marketplace.wrapper.PackageWrapperUtil;
 import org.open.infc.grpc.Result;
 import org.open.infc.grpc.client.OpenRemoteCli;
+import javax.servlet.ServletRequest;
+import mockit.Mocked;
 
 import mockit.Mock;
 import mockit.MockUp;
@@ -1016,8 +1018,8 @@ public class PackageResourceTest {
     }
 
     @Test
-    public void testUpdateStatusSuccess() {
-        MockUp mockReq = new MockUp<HttpServletRequest>() {
+    public void testUpdateStatusSuccess(@Mocked HttpServletRequest request) {
+        new MockUp<ServletRequest>() {
 
             @Mock
             public ServletInputStream getInputStream() throws IOException {
@@ -1047,7 +1049,7 @@ public class PackageResourceTest {
 
         };
         try {
-            response = packageResource.updateValidateStatus((HttpServletRequest) mockReq.getMockInstance(), null);
+            response = packageResource.updateValidateStatus(request, null);
         } catch(Exception e) {
             e.printStackTrace();
         }

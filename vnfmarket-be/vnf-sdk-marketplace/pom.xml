@@ -26,11 +26,17 @@
         <maven.test.skip>false</maven.test.skip>
         <maven.test.failure.ignore>false</maven.test.failure.ignore>
         <swagger-ui.version>3.12.0</swagger-ui.version>
+        <jmockit.version>1.43</jmockit.version>
     </properties>
 
 
 
     <dependencies>
+          <dependency>
+             <groupId>javax.xml.bind</groupId>
+             <artifactId>jaxb-api</artifactId>
+             <version>2.3.1</version>
+          </dependency>
     <!--  oclip -->
           <dependency>
             <groupId>org.onap.cli</groupId>
@@ -205,7 +211,7 @@ due to Security Issues:- CVE-2019-10241,CVE-2019-10247,CVE-2019-10246
         <dependency>
             <groupId>org.jmockit</groupId>
             <artifactId>jmockit</artifactId>
-            <version>1.19</version>
+            <version>${jmockit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -264,7 +270,10 @@ due to Security Issues:- CVE-2019-10241,CVE-2019-10247,CVE-2019-10246
                 <version>2.20</version>
                 <configuration>
                     <forkMode>always</forkMode>
-                    <argLine>${surefireArgLine}</argLine>
+                    <argLine>
+                        -javaagent:${settings.localRepository}/org/jmockit/jmockit/${jmockit.version}/jmockit-${jmockit.version}.jar
+                        <!--${surefireArgLine}-->
+                    </argLine>
                     <skip>${maven.test.skip}</skip>
                     <testFailureIgnore>${maven.test.failure.ignore}</testFailureIgnore>
                     <!-- Excludes integration tests when unit tests are run. -->
