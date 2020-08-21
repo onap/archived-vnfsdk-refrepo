@@ -3,6 +3,7 @@
 
     Copyright (C) 2018, Huawei Technologies, Ltd.
     Copyright (C) 2017 CMCC, Inc. and others. All rights reserved.
+    Copyright (C) 2020 Nokia
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -31,8 +32,9 @@
     <version>1.5.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>vnfsdk-refrepo</name>
-	
+
 	<properties>
+        <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.language>java</sonar.language>
         <sonar.surefire.reportsPath>${project.build.directory}/surefire-reports</sonar.surefire.reportsPath>
@@ -42,10 +44,10 @@
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
     </properties>
 
-    <modules>     
+    <modules>
         <module>vnfmarket-be</module>
     </modules>
-	
+
 	<build>
         <plugins>
             <plugin>
@@ -82,5 +84,5 @@
             </properties>
         </profile>
     </profiles>
-	
+
 </project>
