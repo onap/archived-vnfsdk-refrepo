@@ -1,4 +1,5 @@
 # Copyright 2020 Huawei Technologies Co., Ltd.
+# Copyright 2020 Nokia
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,7 +30,7 @@ WORKDIR /service
 
 
 
-ENV JAVA_VERSION_MAJOR=8 \
+ENV JAVA_VERSION_MAJOR=11 \
     JAVA_VERSION_MINOR=111 \
     JAVA_HOME=/usr/lib/jvm/default-jvm \
     PATH=${PATH}:/usr/lib/jvm/default-jvm/bin/
@@ -44,11 +45,11 @@ RUN add-apt-repository ppa:openjdk-r/ppa -y && \
     # upgrade OS
     apt-get -y dist-upgrade && \
     # Make info file about this build
-    printf "Build of java:openjdk-8-jre-headless, date: %s\n"  `date -u +"%Y-%m-%dT%H:%M:%SZ"` > /service/java && \
+    printf "Build of java:openjdk-11-jre-headless, date: %s\n"  `date -u +"%Y-%m-%dT%H:%M:%SZ"` > /service/java && \
     # install application
-    apt-get install -y --no-install-recommends openjdk-8-jre-headless && \
+    apt-get install -y --no-install-recommends openjdk-11-jre-headless && \
     # fix default setting
-    ln -s java-8-openjdk-amd64  /usr/lib/jvm/default-jvm && \
+    ln -s java-11-openjdk-amd64  /usr/lib/jvm/default-jvm && \
     # remove apt cache from image
     apt-get clean all
 

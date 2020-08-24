@@ -40,3 +40,34 @@ Docker image building
 ```
     mvn clean package -Pdocker -Dpush.docker.image=false
 ```
+
+Run refrepo locally
+======================
+```
+    docker run --name refrepo -p 8702:8702 nexus3.onap.org:10003/onap/vnfsdk/refrepo:latest
+```
+
+Refrepo container - important folders
+=====================================
+To browse folder you must enter to the refrepo container, so first run docker container locally (see above section) then execute
+```
+    docker exec -it refrepo bash
+```
+
+In the running container you will find a few important folders:
+- /service/logs - it contains vnfmarket application logs
+- /opt/vtp/logs - it contains oclip logs
+- /opt/vtp/lib - it contains oclip dependencies, such as: validation-csar-XXX.jar file
+
+Verify validation logic 
+=============================
+If you want to verify validation logic (validation-csar project), first you need to build validation-csar project,
+next remove existing validation-csar.jar from /opt/vpt/lib folder in the container 
+and then copy the new validation-csar jar file into the /opt/vpt/lib folder in the container and restart this container.
+
+```
+    1. docker exec -it refrepo bash
+    2. Inside the container: rm /opt/vtp/lib/ validation-csar-XXX.jar
+    3. docker cp validation-csar.jar refrepo:/opt/vtp/lib
+    4. docker restart refrepo
+```

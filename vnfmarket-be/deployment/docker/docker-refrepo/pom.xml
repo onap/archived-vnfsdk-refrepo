@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Copyright 2017 Huawei Technologies Co., Ltd.
+    Copyright 2020 Nokia
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -68,7 +69,18 @@
                                 </resource>
                             </resources>
                         </configuration>
-
+                        <dependencies>
+                            <dependency>
+                                <groupId>javax.activation</groupId>
+                                <artifactId>javax.activation-api</artifactId>
+                                <version>${javax.activation-api.version}</version>
+                            </dependency>
+                            <dependency>
+                                <groupId>javax.xml.bind</groupId>
+                                <artifactId>jaxb-api</artifactId>
+                                <version>${jaxb-api.version}</version>
+                            </dependency>
+                        </dependencies>
                         <executions>
                             <execution>
                                 <id>build-image</id>
