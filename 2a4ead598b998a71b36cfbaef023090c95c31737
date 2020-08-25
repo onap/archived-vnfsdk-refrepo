@@ -34,6 +34,24 @@
       "revId": "2a4ead598b998a71b36cfbaef023090c95c31737",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8fa3f024_29adf5da",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vtp/profile/VTPProfileResource.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-08-25T06:02:32Z",
+      "side": 1,
+      "message": "so, maybe it is worth to add it. What do you think? Is it a lot of work to add missing tests?",
+      "parentUuid": "be644b73_4ae4af1e",
+      "revId": "2a4ead598b998a71b36cfbaef023090c95c31737",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
