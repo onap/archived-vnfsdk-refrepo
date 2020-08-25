@@ -52,6 +52,24 @@
       "revId": "2a4ead598b998a71b36cfbaef023090c95c31737",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6c2f7ef3_7d39f8d5",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vtp/profile/VTPProfileResource.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5021
+      },
+      "writtenOn": "2020-08-25T06:06:18Z",
+      "side": 1,
+      "message": "ok, i will add.",
+      "parentUuid": "8fa3f024_29adf5da",
+      "revId": "2a4ead598b998a71b36cfbaef023090c95c31737",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
