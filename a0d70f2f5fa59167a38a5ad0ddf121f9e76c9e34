@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "d5735748_1f5e6e60",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/test/java/org/onap/vtp/profile/VTPProfileResourceTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5021
+      },
+      "writtenOn": "2020-08-26T13:13:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "905db8da_b198e549",
+      "revId": "a0d70f2f5fa59167a38a5ad0ddf121f9e76c9e34",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "375db654_0f395b1f",
         "filename": "vnfmarket-be/vnf-sdk-marketplace/src/test/java/org/onap/vtp/profile/VTPProfileResourceTest.java",
         "patchSetId": 2
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "1ceafdfd_6510c7d0",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/test/java/org/onap/vtp/profile/VTPProfileResourceTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5021
+      },
+      "writtenOn": "2020-08-26T13:13:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "375db654_0f395b1f",
+      "revId": "a0d70f2f5fa59167a38a5ad0ddf121f9e76c9e34",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "27972bd1_981c35c6",
         "filename": "vnfmarket-be/vnf-sdk-marketplace/src/test/java/org/onap/vtp/profile/VTPProfileResourceTest.java",
         "patchSetId": 2
@@ -50,6 +86,24 @@
       "revId": "a0d70f2f5fa59167a38a5ad0ddf121f9e76c9e34",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e7f6a634_33aa6c4d",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/test/java/org/onap/vtp/profile/VTPProfileResourceTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5021
+      },
+      "writtenOn": "2020-08-26T13:13:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "27972bd1_981c35c6",
+      "revId": "a0d70f2f5fa59167a38a5ad0ddf121f9e76c9e34",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
