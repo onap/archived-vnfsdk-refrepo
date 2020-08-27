@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c9e452df_24d50082",
+        "filename": "vnfmarket-be/deployment/docker/docker-refrepo/src/main/docker/instance-run.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2020-08-27T10:16:10Z",
+      "side": 1,
+      "message": "is it intentional?",
+      "revId": "3a0cabd49731b9597ad876138f088944dbdd46f4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
