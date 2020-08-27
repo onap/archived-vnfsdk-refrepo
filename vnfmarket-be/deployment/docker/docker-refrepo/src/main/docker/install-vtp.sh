@@ -17,14 +17,15 @@
 
 export _PWD=`pwd`
 
-echo ################ Check for java
+echo ################ Make sure that mandatory libraries are installed
+sudo apt-get update --fix-missing -y
 sudo apt-get install -y wget unzip
 
 #check for java
 java -version
 if [ $? == 127 ]
 then
-    sudo apt-get install -y openjdk-8-jre
+    sudo apt-get install -y openjdk-11-jre
 fi
 
 echo ################ Install OCLIP

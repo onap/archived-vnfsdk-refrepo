@@ -1,6 +1,7 @@
 #!/bin/bash
 #
 # Copyright 2017 Huawei Technologies Co., Ltd.
+# Copyright 2020 Nokia
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,7 +22,9 @@
 # Start tomcat service
 ./bin/start.sh
 
-service nginx start
+# Start NGINX service
+service nginx start&
+
 # Show log files
 echo Waiting for log file...
 while [ ! -f /service/logs/* ]; do

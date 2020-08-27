@@ -1,6 +1,7 @@
 #!/bin/sh
 #
 # Copyright 2020 Huawei Technologies Co., Ltd.
+# Copyright 2020 Nokia
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,4 +20,5 @@ openssl req -nodes -newkey rsa:2048 -keyout example.key -out example.csr -subj "
 openssl x509 -req -in example.csr -signkey example.key -out cert.crt
 cp -p cert.crt /etc/nginx/ssl/
 cp -p example.key /etc/nginx/ssl/cert.key
-#service nginx start & 
+chmod 644 /etc/nginx/ssl/cert.crt
+chmod 644 /etc/nginx/ssl/cert.key
