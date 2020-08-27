@@ -16,6 +16,24 @@
       "revId": "3a0cabd49731b9597ad876138f088944dbdd46f4",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "20093856_b22ef915",
+        "filename": "vnfmarket-be/deployment/docker/docker-refrepo/src/main/docker/instance-run.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-08-27T10:22:49Z",
+      "side": 1,
+      "message": "Yes. Without \u0027\u0026\u0027 character, started process cannot switch to background. Now nginx is starting at background and logs from Tomcat are display in the container log",
+      "parentUuid": "c9e452df_24d50082",
+      "revId": "3a0cabd49731b9597ad876138f088944dbdd46f4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
