@@ -251,17 +251,10 @@ due to Security Issues:- CVE-2019-10241,CVE-2019-10247,CVE-2019-10246
             <version>1.8.2</version>
             <scope>test</scope>
         </dependency>
-
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>1.3.2</version>
-        </dependency>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.4</version>
+            <version>2.7</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
