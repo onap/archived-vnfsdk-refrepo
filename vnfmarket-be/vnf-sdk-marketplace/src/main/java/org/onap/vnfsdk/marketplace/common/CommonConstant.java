@@ -53,6 +53,8 @@ public class CommonConstant {
 
     public static final String CSAR_SUFFIX = ".csar";
 
+    public static final String YAML_SUFFIX = ".yaml";
+
     public static final String HTTP_HEADER_CONTENT_RANGE = "Content-Range";
 
     public static final String CATALOG_CSAR_DIR_NAME = "/csar";
@@ -102,6 +104,8 @@ public class CommonConstant {
         public static final String CONTENT_TYPE = "Content-Type";
 
         public static final String MEDIA_TYPE_JSON = "application/json;charset=UTF-8";
+
+        public static final String MEDIA_TYPE_YAML = "text/yaml";
 
         public static final String URL = "url";
 
