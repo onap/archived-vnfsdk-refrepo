@@ -71,3 +71,7 @@ and then copy the new validation-csar jar file into the /opt/vpt/lib folder in t
     3. docker cp validation-csar.jar refrepo:/opt/vtp/lib
     4. docker restart refrepo
 ```
+
+VNF Marketplace UI
+==================
+VNF Marketplace UI is available at <http://127.0.0.1:8702/onapui/vnfmarket>
