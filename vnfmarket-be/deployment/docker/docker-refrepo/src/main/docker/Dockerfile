@@ -18,7 +18,7 @@
 
 # 10-basebuild.txt
 
-FROM ubuntu:20.04
+FROM openjdk:11-jre-slim
 ARG DEBIAN_FRONTEND=noninteractive
 
 ENV JAVA_VERSION_MAJOR=11 \
@@ -30,32 +30,19 @@ ENV JAVA_VERSION_MAJOR=11 \
 # Install required libraries
 RUN apt-get update && apt-get install -y \
     curl \
+    procps \
     g++ \
     make \
     nano \
     nginx \
     nodejs \
     npm \
-    software-properties-common \
     sudo \
     unzip \
     wget \
- && rm -rf /var/lib/apt/lists/*
-
-# Install Java
-WORKDIR /service
-RUN add-apt-repository ppa:openjdk-r/ppa -y && \
-    # update data from repositories
-    apt-get update && \
-    # Make info file about this build
-    printf "Build of java:openjdk-11-jre-headless, date: %s\n"  `date -u +"%Y-%m-%dT%H:%M:%SZ"` > /service/java && \
-    # install application
-    apt-get install -y --no-install-recommends openjdk-11-jre-headless && \
-    # fix default setting
-    ln -s java-11-openjdk-amd64  /usr/lib/jvm/default-jvm && \
-    # remove apt cache from image
-    apt-get clean all && \
-    rm -rf /var/lib/apt/lists/*
+ && rm -rf /var/lib/apt/lists/* \
+ && sudo mkdir -p /usr/lib/jvm/default-jvm \
+ && sudo ln -s /usr/local/openjdk-11/* /usr/lib/jvm/default-jvm
 
 # Download and set up Tomcat
 WORKDIR /service
