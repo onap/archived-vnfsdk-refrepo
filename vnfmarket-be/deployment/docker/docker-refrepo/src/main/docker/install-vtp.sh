@@ -17,17 +17,6 @@
 
 export _PWD=`pwd`
 
-echo ################ Make sure that mandatory libraries are installed
-sudo apt-get update --fix-missing -y
-sudo apt-get install -y wget unzip
-
-#check for java
-java -version
-if [ $? == 127 ]
-then
-    sudo apt-get install -y openjdk-11-jre
-fi
-
 echo ################ Install OCLIP
 
 VTP_LATEST_BINARY="https://nexus.onap.org/service/local/artifact/maven/redirect?r=releases&g=org.onap.cli&a=cli-zip&e=zip&v=LATEST"
