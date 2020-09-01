@@ -16,21 +16,24 @@
 
 package org.onap.vtp.scenario;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.io.*;
+import java.text.MessageFormat;
+import java.util.*;
+import java.util.regex.Matcher;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.google.common.collect.Maps;
+import org.apache.commons.io.FileUtils;
+import org.apache.cxf.common.util.CollectionUtils;
 import org.eclipse.jetty.http.HttpStatus;
+import org.glassfish.jersey.media.multipart.BodyPartEntity;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.onap.vnfsdk.marketplace.common.CommonConstant;
+import org.onap.vnfsdk.marketplace.common.ToolUtil;
 import org.onap.vtp.VTPResource;
 import org.onap.vtp.error.VTPError;
 import org.onap.vtp.error.VTPError.VTPException;
@@ -282,5 +285,154 @@ public class VTPScenarioResource extends VTPResource{
                     throws VTPException {
 
         return Response.ok(this.getTestcaseHandler(scenario, testSuiteName, testCaseName).toString(), MediaType.APPLICATION_JSON).build();
+    }
+
+    @Path("/scenarios")
+    @POST
+    @ApiOperation(tags = "VTP Scenario", value = "Create Scenario")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiResponses(value = {
+            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "Failed to perform the operation", response = VTPError.class)})
+    public Response storageScenarios(@ApiParam(value = "file form data body parts", required = true)
+                                     @FormDataParam("files") List<FormDataBodyPart> bodyParts) throws VTPException {
+        bodyParts.forEach(bodyPart -> {
+            BodyPartEntity entity = (BodyPartEntity) bodyPart.getEntity();
+            String fileName = bodyPart.getContentDisposition().getFileName();
+            if (!ToolUtil.isYamlFile(new File(fileName))) {
+                LOG.error("The fileName {} is not yaml !!!", fileName);
+                return;
+            }
+            String scenario = fileName.substring(0, fileName.indexOf("-registry"));
+            File scenarioDir = new File(VTP_YAML_STORE, scenario);
+            File yamlFile = new File(VTP_YAML_STORE, fileName);
+
+            // 1、store the scenario yaml file and create the scenario dir
+            try {
+                FileUtils.deleteQuietly(yamlFile);
+                FileUtils.deleteDirectory(scenarioDir);
+                FileUtils.copyInputStreamToFile(entity.getInputStream(), yamlFile);
+                FileUtils.forceMkdir(scenarioDir);
+            } catch (IOException e) {
+                LOG.error("Save yaml {} failed", fileName, e);
+            }
+
+            // 2、create the testsuits dir and copy the testcase to current scenarios by commands
+            try {
+                Map<String, Object> yamlInfos = Maps.newHashMap();
+                try (FileReader fileReader = new FileReader(yamlFile)) {
+                    yamlInfos = snakeYaml().load(fileReader);
+                }
+                for (Object service : (List) yamlInfos.get("services")) {
+                    Map<String, Object> serviceMap = (Map<String, Object>) service;
+                    String testsuite = serviceMap.get("name").toString();
+                    File testsuiteDir = new File(scenarioDir, testsuite);
+                    FileUtils.forceMkdir(testsuiteDir);
+                    if (!serviceMap.containsKey("commands")) {
+                        continue;
+                    }
+                    for (Object cmd : (List) serviceMap.get("commands")) {
+                        File source = new File(VTP_YAML_STORE, cmd.toString().replaceAll("::", Matcher.quoteReplacement(File.separator)));
+                        if (!cn.hutool.core.io.FileUtil.isFile(source)) {
+                            LOG.error("Source {} is not a yaml file !!!", source.getName());
+                            continue;
+                        }
+                        File dest = new File(testsuiteDir, cmd.toString().substring(cmd.toString().lastIndexOf("::") + 2));
+                        FileUtils.copyFile(source, dest);
+
+                        // 3、modify the testcase scenario and testsuite
+                        Map<String, Object> result = Maps.newHashMap();
+                        try (FileReader fileReader = new FileReader(dest)) {
+                            result = snakeYaml().load(fileReader);
+                        }
+                        Map<String, Object> info = (Map<String, Object>) result.get("info");
+                        info.put("product", scenario);
+                        info.put("service", testsuite);
+                        try (FileWriter fileWriter = new FileWriter(dest)) {
+                            snakeYaml().dump(result, fileWriter);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                LOG.error("Parse testcase yaml failed !!!", e);
+            }
+        });
+        return Response.ok("Save yaml success", MediaType.APPLICATION_JSON).build();
+    }
+
+
+    @Path("/scenarios/{scenarioName}")
+    @DELETE
+    @ApiOperation(tags = "VTP Scenario", value = "Delete yaml string")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiResponses(value = {
+            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "Failed to perform the operation", response = VTPError.class)})
+    public Response deleteScenario(@ApiParam("Test scenario yaml") @PathParam("scenarioName") String scenarioName) throws VTPException {
+        String scenario = scenarioName.substring(0, scenarioName.indexOf("-registry"));
+        File scenarioDir = new File(VTP_YAML_STORE, scenario);
+        List<File> yamls = cn.hutool.core.io.FileUtil.loopFiles(scenarioDir, new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                final String path = pathname.getPath();
+                if (null != path && path.endsWith(CommonConstant.YAML_SUFFIX)) {
+                    return true;
+                }
+                return false;
+            }
+        });
+        if (!CollectionUtils.isEmpty(yamls)) {
+            LOG.error("The scenario yaml {} has sub testcase yamls, delete failed", scenarioName);
+            throw new VTPException(
+                    new VTPError().setMessage(MessageFormat.format("The scenario yaml {0} has sub testcase yamls, delete failed !!!", scenarioName))
+                            .setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR_500));
+        }
+
+        try {
+            FileUtils.deleteQuietly(new File(VTP_YAML_STORE, scenarioName));
+            FileUtils.deleteDirectory(scenarioDir);
+        } catch (IOException e) {
+            LOG.error("Delete scenario yaml {} failed", scenarioName, e);
+            throw new VTPException(
+                    new VTPError().setMessage("Delete yaml failed !!!").setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR_500));
+        }
+        return Response.ok("Delete yaml success", MediaType.APPLICATION_JSON).build();
+    }
+
+    @Path("/testcases")
+    @POST
+    @ApiOperation(tags = "VTP Scenario", value = "Create test case")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiResponses(value = {
+            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "Failed to perform the operation", response = VTPError.class)})
+    public Response storageTestcases(@ApiParam(value = "file form data body parts", required = true)
+                                     @FormDataParam("files") List<FormDataBodyPart> bodyParts) throws VTPException {
+        bodyParts.forEach(bodyPart -> {
+            BodyPartEntity entity = (BodyPartEntity) bodyPart.getEntity();
+            String fileName = bodyPart.getContentDisposition().getFileName();
+            if (ToolUtil.isYamlFile(new File(fileName))) {
+                // 1、store the testcase yaml file
+                Map<String, Object> result = snakeYaml().load(entity.getInputStream());
+                Map<String, Object> info = (Map<String, Object>) result.get("info");
+
+                File yamlFile = new File(VTP_YAML_STORE, info.get("product") + File.separator + info.get("service") + File.separator + fileName);
+                try {
+                    FileUtils.deleteQuietly(yamlFile);
+                    FileUtils.copyInputStreamToFile(entity.getInputStream(), yamlFile);
+                } catch (IOException e) {
+                    LOG.error("Save testcase yaml {} failed", yamlFile.getName(), e);
+                }
+            } else {
+                // 2、store the testcase script file
+                File scriptFile = new File(VTP_SCRIPT_STORE, fileName);
+                try {
+                    FileUtils.deleteQuietly(scriptFile);
+                    FileUtils.copyInputStreamToFile(entity.getInputStream(), scriptFile);
+                } catch (IOException e) {
+                    LOG.error("Save testcase script {} failed", scriptFile.getName(), e);
+                }
+            }
+        });
+        return Response.ok("Save success", MediaType.APPLICATION_JSON).build();
     }
 }

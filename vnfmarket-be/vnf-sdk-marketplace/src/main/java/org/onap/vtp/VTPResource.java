@@ -39,6 +39,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
 
 public class VTPResource {
 
@@ -50,6 +52,8 @@ public class VTPResource {
     protected static String VTP_ARTIFACT_STORE;  // NOSONAR
     protected static String VTP_EXECUTION_TEMP_STORE;  // NOSONAR
     protected static int VTP_EXECUTION_GRPC_TIMEOUT;  // NOSONAR
+    protected static String VTP_YAML_STORE;  // NOSONAR
+    protected static String VTP_SCRIPT_STORE;  // NOSONAR
 
     protected static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);  // NOSONAR
 
@@ -64,6 +68,8 @@ public class VTPResource {
             VTP_ARTIFACT_STORE = prp.getProperty("vtp.artifact.store");
             VTP_EXECUTION_TEMP_STORE = prp.getProperty("vtp.file.store");
             VTP_EXECUTION_GRPC_TIMEOUT = Integer.parseInt(prp.getProperty("vtp.grpc.timeout")) * 1000 ;
+            VTP_YAML_STORE = prp.getProperty("vtp.yaml.store");
+            VTP_SCRIPT_STORE = prp.getProperty("vtp.script.store");
         } catch (Exception e) {  // NOSONAR
             LOG.error(e.getMessage());
         }
@@ -137,5 +143,17 @@ public class VTPResource {
         }
 
         return output;
+    }
+
+    /**
+     * Build SnakeYaml instance
+     * @return
+     */
+    protected Yaml snakeYaml() {
+        DumperOptions dumperOptions = new DumperOptions();
+        dumperOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+        dumperOptions.setDefaultScalarStyle(DumperOptions.ScalarStyle.PLAIN);
+        dumperOptions.setPrettyFlow(false);
+        return new Yaml(dumperOptions);
     }
 }
