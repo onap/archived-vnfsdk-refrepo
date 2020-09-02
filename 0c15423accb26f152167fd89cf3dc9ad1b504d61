@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "929d054e_ad625bd0",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2020-09-02T02:23:22Z",
+      "side": 1,
+      "message": "can you pls check the vulnerability of this package, otherwise it will get reported in CLM?",
+      "revId": "0c15423accb26f152167fd89cf3dc9ad1b504d61",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
