@@ -15,12 +15,7 @@
  */
 package org.onap.vnfsdk.marketplace.common;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -30,8 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
-import java.io.FileWriter;
-import java.io.FileReader;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -245,5 +239,41 @@ public final class FileUtil {
         }
 
         return true;
+    }
+
+    /**
+     * Search file in folder
+     * @param folder
+     * @param keyword
+     * @return
+     */
+    public static List<File> searchFiles(File folder,  String keyword) {
+        List<File> result = new ArrayList<File>();
+        if (folder.isFile())
+            result.add(folder);
+
+        File[] subFolders = folder.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                if (file.isDirectory()) {
+                    return true;
+                }
+                if (file.getName().toLowerCase().contains(keyword)) {
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        if (subFolders != null) {
+            for (File file : subFolders) {
+                if (file.isFile()) {
+                    result.add(file);
+                } else {
+                    result.addAll(searchFiles(file, keyword));
+                }
+            }
+        }
+        return result;
     }
 }

@@ -33,6 +33,7 @@ import org.glassfish.jersey.media.multipart.BodyPartEntity;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.onap.vnfsdk.marketplace.common.CommonConstant;
+import org.onap.vnfsdk.marketplace.common.FileUtil;
 import org.onap.vnfsdk.marketplace.common.ToolUtil;
 import org.onap.vtp.VTPResource;
 import org.onap.vtp.error.VTPError;
@@ -311,8 +312,8 @@ public class VTPScenarioResource extends VTPResource{
             try {
                 FileUtils.deleteQuietly(yamlFile);
                 FileUtils.deleteDirectory(scenarioDir);
-                FileUtils.copyInputStreamToFile(entity.getInputStream(), yamlFile);
                 FileUtils.forceMkdir(scenarioDir);
+                FileUtils.copyInputStreamToFile(entity.getInputStream(), yamlFile);
             } catch (IOException e) {
                 LOG.error("Save yaml {} failed", fileName, e);
             }
@@ -333,7 +334,7 @@ public class VTPScenarioResource extends VTPResource{
                     }
                     for (Object cmd : (List) serviceMap.get("commands")) {
                         File source = new File(VTP_YAML_STORE, cmd.toString().replaceAll("::", Matcher.quoteReplacement(File.separator)));
-                        if (!cn.hutool.core.io.FileUtil.isFile(source)) {
+                        if (!source.isFile()) {
                             LOG.error("Source {} is not a yaml file !!!", source.getName());
                             continue;
                         }
@@ -370,16 +371,7 @@ public class VTPScenarioResource extends VTPResource{
     public Response deleteScenario(@ApiParam("Test scenario yaml") @PathParam("scenarioName") String scenarioName) throws VTPException {
         String scenario = scenarioName.substring(0, scenarioName.indexOf("-registry"));
         File scenarioDir = new File(VTP_YAML_STORE, scenario);
-        List<File> yamls = cn.hutool.core.io.FileUtil.loopFiles(scenarioDir, new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                final String path = pathname.getPath();
-                if (null != path && path.endsWith(CommonConstant.YAML_SUFFIX)) {
-                    return true;
-                }
-                return false;
-            }
-        });
+        List<File> yamls =  FileUtil.searchFiles(scenarioDir, CommonConstant.YAML_SUFFIX);
         if (!CollectionUtils.isEmpty(yamls)) {
             LOG.error("The scenario yaml {} has sub testcase yamls, delete failed", scenarioName);
             throw new VTPException(
