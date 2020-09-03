@@ -17,7 +17,9 @@
 package org.onap.vtp.execution;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -87,6 +89,7 @@ public class VTPExecutionResource  extends VTPResource{
     private static final String PRODUCT_ARG="--product";
     private static final String OPEN_CLI="open-cli";
     private static final String FORMAT="--format";
+    protected static String PATH_TO_EXECUTIONS = "/opt/vtp/data/executions/";
 
     private static Gson gson = new Gson();
 
@@ -316,6 +319,8 @@ public class VTPExecutionResource  extends VTPResource{
                         if (n.get(STATUS) != null)
                             exec.setStatus(n.get(STATUS).getAsString());
 
+                        exec.setResults(getExecutionOutputsFromFile(requestId));
+
                         list.getExecutions().add(exec);
                     }
 
@@ -323,6 +328,25 @@ public class VTPExecutionResource  extends VTPResource{
         }
 
         return list;
+    }
+
+    private JsonElement getExecutionOutputsFromFile(String requestId) throws IOException {
+        JsonElement outputData;
+        File directoryWithExecutionsData = new File(PATH_TO_EXECUTIONS);
+        File[] directoryWithThisExecutionsData = directoryWithExecutionsData.listFiles((dir, name) -> name.startsWith(requestId));
+        if(directoryWithThisExecutionsData != null && directoryWithThisExecutionsData.length >= 1) {
+            File directoryWithThisExecutionData = directoryWithThisExecutionsData[0];
+            File executionOutputs = new File(directoryWithThisExecutionData.getAbsolutePath()+"/output");
+            if(executionOutputs.exists()) {
+                String outputFileContent = Files.readString(executionOutputs.toPath());
+                outputData = gson.fromJson(outputFileContent, JsonArray.class);
+            } else {
+                outputData = gson.fromJson("{ \"errors\": \"no output file\"}", JsonObject.class);
+            }
+        } else {
+            outputData = gson.fromJson("{ \"errors\": \"no output file\"}", JsonObject.class);
+        }
+        return outputData;
     }
 
     @Path("/executions")
