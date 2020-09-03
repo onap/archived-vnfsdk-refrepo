@@ -18,14 +18,17 @@ package org.onap.vtp.execution;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
@@ -87,6 +90,8 @@ public class VTPExecutionResource  extends VTPResource{
     private static final String PRODUCT_ARG="--product";
     private static final String OPEN_CLI="open-cli";
     private static final String FORMAT="--format";
+    public static final String SUB_PATH_TO_EXECUTION_OUTPUT = "/output";
+    protected static String PATH_TO_EXECUTIONS = "/opt/vtp/data/executions/";
 
     private static Gson gson = new Gson();
 
@@ -295,8 +300,10 @@ public class VTPExecutionResource  extends VTPResource{
                         if (n.get(END_TIME) != null)
                             exec.setEndTime(n.get(END_TIME).getAsString());
 
-                        if (n.get(EXECUTION_ID) != null)
+                        if (n.get(EXECUTION_ID) != null) {
                             exec.setExecutionId(n.get(EXECUTION_ID).getAsString());
+                            exec.setResults(getExecutionOutputsFromFile(exec.getExecutionId()));
+                        }
 
                         if (n.get(REQUEST_ID) != null)
                             exec.setRequestId(n.get(REQUEST_ID).getAsString());
@@ -316,6 +323,7 @@ public class VTPExecutionResource  extends VTPResource{
                         if (n.get(STATUS) != null)
                             exec.setStatus(n.get(STATUS).getAsString());
 
+
                         list.getExecutions().add(exec);
                     }
 
@@ -323,6 +331,43 @@ public class VTPExecutionResource  extends VTPResource{
         }
 
         return list;
+    }
+
+    private JsonElement getExecutionOutputsFromFile(String executionId) {
+        File directoryWithExecutionFiles = new File(PATH_TO_EXECUTIONS);
+        return getExecutionFilesForGivenRequest(executionId, directoryWithExecutionFiles)
+            .map(this::getOutputOfLatestExecutionFile)
+            .orElse(createNoOutputFileErrorMessageInJsonFormat());
+    }
+
+    private Optional<File[]> getExecutionFilesForGivenRequest(String requestId, File directoryWithExecutionsData) {
+        return Optional.ofNullable(
+            directoryWithExecutionsData.listFiles((dir, name) -> name.startsWith(requestId))
+        );
+    }
+
+    private JsonElement getOutputOfLatestExecutionFile(File[] directoriesWithExecutionsData) {
+        return Arrays.stream(directoriesWithExecutionsData)
+            .max(Comparator.comparing(File::lastModified))
+            .map(file->new File(file.getAbsolutePath()+SUB_PATH_TO_EXECUTION_OUTPUT))
+            .filter(File::exists)
+            .map(this::loadOutputJsonFromFile)
+            .orElse(createNoOutputFileErrorMessageInJsonFormat());
+    }
+
+    private JsonArray loadOutputJsonFromFile(File file) {
+        String outputJson;
+        try {
+            outputJson = Files.readString(file.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+            outputJson = "[{ \"error\": \"fail to load output file\",\"reason\":\""+e.getMessage()+"\"}]";
+        }
+        return gson.fromJson(outputJson, JsonArray.class);
+    }
+
+    private JsonArray createNoOutputFileErrorMessageInJsonFormat() {
+        return gson.fromJson("[{ \"error\": \"no output file\"}]", JsonArray.class);
     }
 
     @Path("/executions")
