@@ -295,7 +295,7 @@ due to Security Issues:- CVE-2019-10241,CVE-2019-10247,CVE-2019-10246
                     <forkMode>always</forkMode>
                     <argLine>
                         -javaagent:${settings.localRepository}/org/jmockit/jmockit/${jmockit.version}/jmockit-${jmockit.version}.jar
-                        <!--${surefireArgLine}-->
+                        ${surefireArgLine}
                     </argLine>
                     <skip>${maven.test.skip}</skip>
                     <testFailureIgnore>${maven.test.failure.ignore}</testFailureIgnore>
