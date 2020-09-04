@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "264435a2_b9a165d8",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/common/FileUtil.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2020-09-04T03:45:47Z",
+      "side": 1,
+      "message": "can you add only required classes here",
+      "range": {
+        "startLine": 18,
+        "startChar": 15,
+        "endLine": 18,
+        "endChar": 16
+      },
+      "revId": "f9b0cb31143e483cf257226a9f94c4b15b54bd26",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
