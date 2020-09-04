@@ -16,12 +16,26 @@
 
 package org.onap.vtp.scenario;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -33,6 +47,7 @@ import org.glassfish.jersey.media.multipart.BodyPartEntity;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.onap.vnfsdk.marketplace.common.CommonConstant;
+import org.onap.vnfsdk.marketplace.common.FileUtil;
 import org.onap.vnfsdk.marketplace.common.ToolUtil;
 import org.onap.vtp.VTPResource;
 import org.onap.vtp.error.VTPError;
@@ -70,7 +85,7 @@ public class VTPScenarioResource extends VTPResource{
 
         args.addAll(Arrays.asList(
                 PRODUCT_ARG, OPEN_CLI, "product-list", FORMAT, "json"
-                ));
+        ));
 
 
         JsonElement results = null;
@@ -84,18 +99,18 @@ public class VTPScenarioResource extends VTPResource{
 
         if (results != null && results.isJsonArray() && results.getAsJsonArray().size()>0) {
             JsonArray resultsArray = results.getAsJsonArray();
-                for (Iterator<JsonElement> it = resultsArray.iterator(); it.hasNext();) {
-                    JsonElement jsonElement = it.next();
-                    JsonObject n = jsonElement.getAsJsonObject();
-                    if (n.entrySet().iterator().hasNext()) {
-                        String name = n.get("product").getAsString();
+            for (Iterator<JsonElement> it = resultsArray.iterator(); it.hasNext();) {
+                JsonElement jsonElement = it.next();
+                JsonObject n = jsonElement.getAsJsonObject();
+                if (n.entrySet().iterator().hasNext()) {
+                    String name = n.get("product").getAsString();
 
-                        if (OPEN_CLI.equalsIgnoreCase(name))
-                            continue;
+                    if (OPEN_CLI.equalsIgnoreCase(name))
+                        continue;
 
-                        list.getScenarios().add(new VTPTestScenario().setName(name).setDescription(
-                                n.get(DESCRIPTION).getAsString()));
-                    }
+                    list.getScenarios().add(new VTPTestScenario().setName(name).setDescription(
+                            n.get(DESCRIPTION).getAsString()));
+                }
             }
         }
 
@@ -119,7 +134,7 @@ public class VTPScenarioResource extends VTPResource{
 
         args.addAll(Arrays.asList(
                 PRODUCT_ARG, OPEN_CLI, "service-list", PRODUCT_ARG, scenario, FORMAT, "json"
-                ));
+        ));
 
         JsonElement results = null;
         try {
@@ -132,14 +147,14 @@ public class VTPScenarioResource extends VTPResource{
 
         if (results != null && results.isJsonArray() && results.getAsJsonArray().size()>0) {
             JsonArray resultsArray = results.getAsJsonArray();
-                for (Iterator<JsonElement> it = resultsArray.iterator(); it.hasNext();) {
-                    JsonElement jsonElement = it.next();
-                    JsonObject n = jsonElement.getAsJsonObject();
-                    if (n.entrySet().iterator().hasNext()) {
-                        list.getSuites().add(new VTPTestSuite().setName(n.get(SERVICE).getAsString()).setDescription(
-                                n.get(DESCRIPTION).getAsString()));
-                    }
+            for (Iterator<JsonElement> it = resultsArray.iterator(); it.hasNext();) {
+                JsonElement jsonElement = it.next();
+                JsonObject n = jsonElement.getAsJsonObject();
+                if (n.entrySet().iterator().hasNext()) {
+                    list.getSuites().add(new VTPTestSuite().setName(n.get(SERVICE).getAsString()).setDescription(
+                            n.get(DESCRIPTION).getAsString()));
                 }
+            }
         }
 
         return list;
@@ -164,7 +179,7 @@ public class VTPScenarioResource extends VTPResource{
 
         args.addAll(Arrays.asList(
                 PRODUCT_ARG, OPEN_CLI, "schema-list", PRODUCT_ARG, scenario, FORMAT, "json"
-                ));
+        ));
         if (testSuiteName != null) {
             args.add("--service");
             args.add(testSuiteName);
@@ -181,15 +196,15 @@ public class VTPScenarioResource extends VTPResource{
 
         if (results != null && results.isJsonArray() && results.getAsJsonArray().size()>0) {
             JsonArray resultsArray = results.getAsJsonArray();
-                for (Iterator<JsonElement> it = resultsArray.iterator(); it.hasNext();) {
-                    JsonElement jsonElement = it.next();
-                    JsonObject n = jsonElement.getAsJsonObject();
-                    if (n.entrySet().iterator().hasNext())
-                        list.getTestCases().add(
-                                new VTPTestCase().setTestCaseName(
-                                        n.get("command").getAsString()).setTestSuiteName(
-                                                n.get(SERVICE).getAsString()));
-                }
+            for (Iterator<JsonElement> it = resultsArray.iterator(); it.hasNext();) {
+                JsonElement jsonElement = it.next();
+                JsonObject n = jsonElement.getAsJsonObject();
+                if (n.entrySet().iterator().hasNext())
+                    list.getTestCases().add(
+                            new VTPTestCase().setTestCaseName(
+                                    n.get("command").getAsString()).setTestSuiteName(
+                                    n.get(SERVICE).getAsString()));
+            }
         }
 
         return list;
@@ -204,9 +219,9 @@ public class VTPScenarioResource extends VTPResource{
                     message = "Failed to perform the operation",
                     response = VTPError.class) })
     public Response listTestcases(
-             @ApiParam("Test scenario name") @PathParam("scenario") String scenario,
-             @ApiParam("Test suite name") @QueryParam("testSuiteName") String testSuiteName
-             ) throws VTPException {
+            @ApiParam("Test scenario name") @PathParam("scenario") String scenario,
+            @ApiParam("Test suite name") @QueryParam("testSuiteName") String testSuiteName
+    ) throws VTPException {
 
         return Response.ok(this.listTestcasesHandler(testSuiteName, scenario).getTestCases().toString(), MediaType.APPLICATION_JSON).build();
     }
@@ -215,7 +230,7 @@ public class VTPScenarioResource extends VTPResource{
         List<String> args = new ArrayList<>();
         args.addAll(Arrays.asList(
                 PRODUCT_ARG, OPEN_CLI, "schema-show", PRODUCT_ARG, scenario, "--service", testSuiteName, "--command", testCaseName , FORMAT, "json"
-                ));
+        ));
         JsonElement results = null;
         try {
             results = this.makeRpcAndGetJson(args);
@@ -282,7 +297,7 @@ public class VTPScenarioResource extends VTPResource{
             @ApiParam("Test scenario name") @PathParam("scenario") String scenario,
             @ApiParam(value = "Test case name") @PathParam("testSuiteName") String testSuiteName,
             @ApiParam(value = "Test case name") @PathParam("testCaseName") String testCaseName)
-                    throws VTPException {
+            throws VTPException {
 
         return Response.ok(this.getTestcaseHandler(scenario, testSuiteName, testCaseName).toString(), MediaType.APPLICATION_JSON).build();
     }
@@ -311,8 +326,8 @@ public class VTPScenarioResource extends VTPResource{
             try {
                 FileUtils.deleteQuietly(yamlFile);
                 FileUtils.deleteDirectory(scenarioDir);
-                FileUtils.copyInputStreamToFile(entity.getInputStream(), yamlFile);
                 FileUtils.forceMkdir(scenarioDir);
+                FileUtils.copyInputStreamToFile(entity.getInputStream(), yamlFile);
             } catch (IOException e) {
                 LOG.error("Save yaml {} failed", fileName, e);
             }
@@ -333,7 +348,7 @@ public class VTPScenarioResource extends VTPResource{
                     }
                     for (Object cmd : (List) serviceMap.get("commands")) {
                         File source = new File(VTP_YAML_STORE, cmd.toString().replaceAll("::", Matcher.quoteReplacement(File.separator)));
-                        if (!cn.hutool.core.io.FileUtil.isFile(source)) {
+                        if (!source.isFile()) {
                             LOG.error("Source {} is not a yaml file !!!", source.getName());
                             continue;
                         }
@@ -370,16 +385,7 @@ public class VTPScenarioResource extends VTPResource{
     public Response deleteScenario(@ApiParam("Test scenario yaml") @PathParam("scenarioName") String scenarioName) throws VTPException {
         String scenario = scenarioName.substring(0, scenarioName.indexOf("-registry"));
         File scenarioDir = new File(VTP_YAML_STORE, scenario);
-        List<File> yamls = cn.hutool.core.io.FileUtil.loopFiles(scenarioDir, new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                final String path = pathname.getPath();
-                if (null != path && path.endsWith(CommonConstant.YAML_SUFFIX)) {
-                    return true;
-                }
-                return false;
-            }
-        });
+        List<File> yamls =  FileUtil.searchFiles(scenarioDir, CommonConstant.YAML_SUFFIX);
         if (!CollectionUtils.isEmpty(yamls)) {
             LOG.error("The scenario yaml {} has sub testcase yamls, delete failed", scenarioName);
             throw new VTPException(

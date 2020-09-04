@@ -17,8 +17,11 @@ package org.onap.vnfsdk.marketplace.common;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -30,8 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
-import java.io.FileWriter;
-import java.io.FileReader;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -73,12 +75,12 @@ public final class FileUtil {
         boolean isFileDeleted=false;
         try {
             if (file.exists()){
-            Files.delete(Paths.get(file.getPath()));
-            fileAbsPath = file.getAbsolutePath();
-            logger.info("delete {} {}" ,hintInfo, fileAbsPath);
+                Files.delete(Paths.get(file.getPath()));
+                fileAbsPath = file.getAbsolutePath();
+                logger.info("delete {} {}" ,hintInfo, fileAbsPath);
             }
             else{
-                 logger.info("file not exist. no need delete {} {}" ,hintInfo , fileAbsPath);
+                logger.info("file not exist. no need delete {} {}" ,hintInfo , fileAbsPath);
             }
             isFileDeleted=true;
 
@@ -118,7 +120,7 @@ public final class FileUtil {
                 }
 
                 try (InputStream input = zipFile.getInputStream(entry);
-                        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));) {
+                     BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));) {
                     int length = 0;
                     while ((length = input.read(buffer)) != -1) {
                         bos.write(buffer, 0, length);
@@ -188,7 +190,7 @@ public final class FileUtil {
 
     public static boolean deleteDirectory(File file) {
         if (!file.exists()) {
-             return true;
+            return true;
         }
         if (file.isDirectory()) {
             for (File f : file.listFiles()) {
@@ -245,5 +247,41 @@ public final class FileUtil {
         }
 
         return true;
+    }
+
+    /**
+     * Search file in folder
+     * @param folder
+     * @param keyword
+     * @return
+     */
+    public static List<File> searchFiles(File folder,  String keyword) {
+        List<File> result = new ArrayList<File>();
+        if (folder.isFile())
+            result.add(folder);
+
+        File[] subFolders = folder.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                if (file.isDirectory()) {
+                    return true;
+                }
+                if (file.getName().toLowerCase().contains(keyword)) {
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        if (subFolders != null) {
+            for (File file : subFolders) {
+                if (file.isFile()) {
+                    result.add(file);
+                } else {
+                    result.addAll(searchFiles(file, keyword));
+                }
+            }
+        }
+        return result;
     }
 }
