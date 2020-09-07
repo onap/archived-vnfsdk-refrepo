@@ -25,6 +25,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.onap.vtp.execution.VTPExecutionResource;
 import org.onap.vtp.scenario.VTPScenarioResource;
 
 import java.util.ArrayList;
@@ -84,5 +85,23 @@ public class VTPScenarioResourceTest {
     public void testGetTestcaseHandler() throws Exception
     {
         vtpScenarioResource.getTestcaseHandler("open-cli","testsuit","testcase");
+    }
+
+    @Test(expected = Exception.class)
+    public void testStorageScenarios() throws Exception
+    {
+        vtpScenarioResource.storageScenarios(null);
+    }
+
+    @Test(expected = Exception.class)
+    public void testDeleteScenario() throws Exception
+    {
+        vtpScenarioResource.deleteScenario(null);
+    }
+
+    @Test(expected = Exception.class)
+    public void testStorageTestcases() throws Exception
+    {
+        vtpScenarioResource.storageTestcases(null);
     }
 }
