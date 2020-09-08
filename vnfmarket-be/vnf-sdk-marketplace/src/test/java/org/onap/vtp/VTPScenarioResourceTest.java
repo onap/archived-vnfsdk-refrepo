@@ -17,22 +17,44 @@ package org.onap.vtp;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import org.apache.commons.io.FileUtils;
+import org.glassfish.jersey.media.multipart.BodyPartEntity;
+import org.glassfish.jersey.media.multipart.ContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
+import org.glassfish.jersey.message.internal.HttpHeaderReader;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.jvnet.mimepull.MIMEMessage;
+import org.jvnet.mimepull.MIMEPart;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.onap.vtp.error.VTPError;
 import org.onap.vtp.execution.VTPExecutionResource;
 import org.onap.vtp.scenario.VTPScenarioResource;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
 
+import javax.ws.rs.core.MediaType;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+
 //@RunWith(MockitoJUnitRunner.class)
 public class VTPScenarioResourceTest {
 
@@ -90,18 +112,36 @@ public class VTPScenarioResourceTest {
     @Test(expected = Exception.class)
     public void testStorageScenarios() throws Exception
     {
-        vtpScenarioResource.storageScenarios(null);
+        List<FormDataBodyPart> bodyParts = new ArrayList<>();
+        FormDataContentDisposition fileDetail = FormDataContentDisposition.name("fileName").fileName("demo-registry.yaml").build();
+        FormDataBodyPart bodyPart = new FormDataBodyPart(fileDetail, new BodyPartEntity(null), MediaType.APPLICATION_OCTET_STREAM_TYPE);
+        bodyParts.add(bodyPart);
+        vtpScenarioResource.storageScenarios(bodyParts);
     }
 
-    @Test(expected = Exception.class)
+    @Test
     public void testDeleteScenario() throws Exception
     {
-        vtpScenarioResource.deleteScenario(null);
+        vtpScenarioResource.deleteScenario("demo-registry.yaml");
     }
 
     @Test(expected = Exception.class)
-    public void testStorageTestcases() throws Exception
+    public void testStorageTestcases_yaml() throws Exception
     {
-        vtpScenarioResource.storageTestcases(null);
+        List<FormDataBodyPart> bodyParts = new ArrayList<>();
+        FormDataContentDisposition fileDetail = FormDataContentDisposition.name("fileName").fileName("demo.yaml").build();
+        FormDataBodyPart bodyPart = new FormDataBodyPart(fileDetail, new BodyPartEntity(null), MediaType.APPLICATION_OCTET_STREAM_TYPE);
+        bodyParts.add(bodyPart);
+        vtpScenarioResource.storageTestcases(bodyParts);
+    }
+
+    @Test(expected = Exception.class)
+    public void testStorageTestcases_script() throws Exception
+    {
+        List<FormDataBodyPart> bodyParts = new ArrayList<>();
+        FormDataContentDisposition fileDetail = FormDataContentDisposition.name("fileName").fileName("demo.py").build();
+        FormDataBodyPart bodyPart = new FormDataBodyPart(fileDetail, new BodyPartEntity(null), MediaType.APPLICATION_OCTET_STREAM_TYPE);
+        bodyParts.add(bodyPart);
+        vtpScenarioResource.storageTestcases(bodyParts);
     }
 }
