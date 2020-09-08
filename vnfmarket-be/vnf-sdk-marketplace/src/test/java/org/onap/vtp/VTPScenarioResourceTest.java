@@ -17,6 +17,8 @@ package org.onap.vtp;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import org.glassfish.jersey.media.multipart.ContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,6 +38,12 @@ import static org.mockito.Mockito.*;
 public class VTPScenarioResourceTest {
 
     VTPScenarioResource vtpScenarioResource;
+
+    @Mock
+    FormDataBodyPart formDataBodyPart;
+    @Mock
+    ContentDisposition contentDisposition;
+
 
     @Before
     public void setUp() throws Exception {
@@ -84,5 +92,33 @@ public class VTPScenarioResourceTest {
     public void testGetTestcaseHandler() throws Exception
     {
         vtpScenarioResource.getTestcaseHandler("open-cli","testsuit","testcase");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testStorageScenarios() throws Exception
+    {
+        List<FormDataBodyPart> bodyParts = new ArrayList<>();
+        formDataBodyPart.setName("abc");
+        formDataBodyPart.setValue("123");
+        formDataBodyPart.setContentDisposition(contentDisposition);
+        bodyParts.add(formDataBodyPart);
+        vtpScenarioResource.storageScenarios(bodyParts);
+    }
+
+    @Test
+    public void testDeleteScenario() throws Exception
+    {
+        vtpScenarioResource.deleteScenario("demo-registry.yaml");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testStorageTestcases() throws Exception
+    {
+        List<FormDataBodyPart> bodyParts = new ArrayList<>();
+        formDataBodyPart.setName("abc");
+        formDataBodyPart.setValue("123");
+        formDataBodyPart.setContentDisposition(contentDisposition);
+        bodyParts.add(formDataBodyPart);
+        vtpScenarioResource.storageTestcases(bodyParts);
     }
 }
