@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ebbebed1_47d259d1",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/test/java/org/onap/vtp/VTPExecutionResourceTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-09-08T14:11:23Z",
+      "side": 0,
+      "message": "remove asterisk",
+      "revId": "0c15423accb26f152167fd89cf3dc9ad1b504d61",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "33625a96_6025f401",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/test/java/org/onap/vtp/VTPExecutionResourceTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-09-08T14:11:23Z",
+      "side": 0,
+      "message": "remove asterisk",
+      "revId": "0c15423accb26f152167fd89cf3dc9ad1b504d61",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}

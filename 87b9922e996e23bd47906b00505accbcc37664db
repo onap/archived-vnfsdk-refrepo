@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c6dc1125_27c75eba",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vtp/execution/VTPExecutionResource.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-09-08T14:11:23Z",
+      "side": 1,
+      "message": "pls extract this logic to separate class, for example: OperationResultsSupplier",
+      "revId": "87b9922e996e23bd47906b00505accbcc37664db",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a5a63f29_6fac000a",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vtp/execution/VTPExecutionResource.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-09-08T14:11:23Z",
+      "side": 1,
+      "message": "is there any logger available in project? If yes, then pls use it.",
+      "revId": "87b9922e996e23bd47906b00505accbcc37664db",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd4f82f4_9cd3c9d9",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vtp/execution/VTPExecutionResource.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-09-08T14:11:23Z",
+      "side": 1,
+      "message": "fail to load operation results\n\nuser is interested about operation results, not that there was a problem with output file",
+      "revId": "87b9922e996e23bd47906b00505accbcc37664db",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ac2489c8_abb7cef3",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vtp/execution/VTPExecutionResource.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-09-08T14:11:23Z",
+      "side": 1,
+      "message": "unable to find operation results",
+      "revId": "87b9922e996e23bd47906b00505accbcc37664db",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "147ba3ca_363cc5b0",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/test/java/org/onap/vtp/VTPExecutionResourceTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-09-08T14:11:23Z",
+      "side": 1,
+      "message": "method must start from lower case.",
+      "revId": "87b9922e996e23bd47906b00505accbcc37664db",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "223ad758_a229848e",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/test/java/org/onap/vtp/VTPExecutionResourceTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-09-08T14:11:23Z",
+      "side": 1,
+      "message": "as above",
+      "revId": "87b9922e996e23bd47906b00505accbcc37664db",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62189be4_da3b0c6b",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/test/java/org/onap/vtp/VTPExecutionResourceTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-09-08T14:11:23Z",
+      "side": 1,
+      "message": "as above",
+      "revId": "87b9922e996e23bd47906b00505accbcc37664db",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
