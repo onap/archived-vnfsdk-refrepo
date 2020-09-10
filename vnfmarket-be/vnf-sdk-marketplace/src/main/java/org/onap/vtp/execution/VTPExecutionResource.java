@@ -1,5 +1,6 @@
 /**
  * Copyright 2018 Huawei Technologies Co., Ltd.
+ * Copyright 2020 Nokia.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -87,8 +88,9 @@ public class VTPExecutionResource  extends VTPResource{
     private static final String PRODUCT_ARG="--product";
     private static final String OPEN_CLI="open-cli";
     private static final String FORMAT="--format";
+    private static final Gson gson = new Gson();
 
-    private static Gson gson = new Gson();
+    protected static String pathToExecutions = "/opt/vtp/data/executions/";
 
     public VTPTestExecutionList executeHandler(VTPTestExecutionList executions, String requestId) throws VTPException {
         if (requestId == null) {
@@ -295,8 +297,13 @@ public class VTPExecutionResource  extends VTPResource{
                         if (n.get(END_TIME) != null)
                             exec.setEndTime(n.get(END_TIME).getAsString());
 
-                        if (n.get(EXECUTION_ID) != null)
+                        if (n.get(EXECUTION_ID) != null) {
                             exec.setExecutionId(n.get(EXECUTION_ID).getAsString());
+                            exec.setResults(
+                                new VTPExecutionResultsSupplier(pathToExecutions)
+                                    .getExecutionOutputsFromFile(exec.getExecutionId())
+                            );
+                        }
 
                         if (n.get(REQUEST_ID) != null)
                             exec.setRequestId(n.get(REQUEST_ID).getAsString());
@@ -316,6 +323,7 @@ public class VTPExecutionResource  extends VTPResource{
                         if (n.get(STATUS) != null)
                             exec.setStatus(n.get(STATUS).getAsString());
 
+
                         list.getExecutions().add(exec);
                     }
 
@@ -324,6 +332,7 @@ public class VTPExecutionResource  extends VTPResource{
 
         return list;
     }
+
 
     @Path("/executions")
     @GET
