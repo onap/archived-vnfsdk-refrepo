@@ -100,8 +100,13 @@
                                 </goals>
                                 <configuration>
                                     <image>onap/vnfsdk/refrepo</image>
+<<<<<<< HEAD   (5d0772 Release 1.5.2 docker refrepo)
                                     <newName>${docker.push.registry}/onap/vnfsdk/refrepo:latest</newName>
                                     <pushImage>true</pushImage>
+=======
+                                    <newName>${docker.push.registry}/onap/vnfsdk/refrepo:${project.version}-STAGING-latest</newName>
+                                    <pushImage>${push.docker.image}</pushImage>
+>>>>>>> CHANGE (9ab74f Add STAGING tag to latest image.)
                                     <skipDockerTag>false</skipDockerTag>
                                 </configuration>
                             </execution>
