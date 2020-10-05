@@ -1,0 +1,283 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a4579534_fdf8ee6c",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/common/ToolUtil.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2020-10-05T13:21:22Z",
+      "side": 1,
+      "message": "Make single return statement from method instead of two.",
+      "revId": "87b5c19eb2f0cfed951141cef7bd7148d8d10bf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6501d23c_c21b6915",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/db/resource/PackageManager.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2020-10-05T13:21:22Z",
+      "side": 1,
+      "message": "Do not overwrite method argument, instead create new String object.\nIt\u0027s good practice to keep objects as immutable as possible.",
+      "revId": "87b5c19eb2f0cfed951141cef7bd7148d8d10bf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e40d8c4_5cfdb080",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/db/resource/PackageManager.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2020-10-05T13:21:22Z",
+      "side": 1,
+      "message": "Do not overwrite method argument, instead create new String objects.\nIt\u0027s good practice to keep objects as immutable as possible.",
+      "revId": "87b5c19eb2f0cfed951141cef7bd7148d8d10bf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ce556d2_49aa3418",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/db/resource/PackageManager.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2020-10-05T13:21:22Z",
+      "side": 1,
+      "message": "Do not overwrite method argument, instead create new String object.\nIt\u0027s good practice to keep objects as immutable as possible.",
+      "revId": "87b5c19eb2f0cfed951141cef7bd7148d8d10bf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "909689f5_850df0c9",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/db/resource/PackageManager.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2020-10-05T13:21:22Z",
+      "side": 1,
+      "message": "Split this method for two seperate methods.\nOne for step 1 and another for step 2.",
+      "revId": "87b5c19eb2f0cfed951141cef7bd7148d8d10bf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "425be7cb_d9b5bf00",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/db/resource/PackageManager.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2020-10-05T13:21:22Z",
+      "side": 1,
+      "message": "Do not overwrite method argument, instead create new String object.\nIt\u0027s good practice to keep objects as immutable as possible.",
+      "revId": "87b5c19eb2f0cfed951141cef7bd7148d8d10bf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9f107f76_e1117a37",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/db/wrapper/PackageHandler.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2020-10-05T13:21:22Z",
+      "side": 1,
+      "message": "Fix indentation\n\nDo not overwrite method argument, instead create new String object.\nIt\u0027s good practice to keep objects as immutable as possible.",
+      "revId": "87b5c19eb2f0cfed951141cef7bd7148d8d10bf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7916ffdf_1710907a",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/filemanage/http/HttpFileManagerImpl.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2020-10-05T13:21:22Z",
+      "side": 1,
+      "message": "Do not overwrite method argument, instead create new String object.\nIt\u0027s good practice to keep objects as immutable as possible.",
+      "revId": "87b5c19eb2f0cfed951141cef7bd7148d8d10bf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a7e14b61_8c9ff478",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/wrapper/PackageWrapper.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2020-10-05T13:21:22Z",
+      "side": 1,
+      "message": "Do not overwrite method argument, instead create new String objects.\nIt\u0027s good practice to keep objects as immutable as possible.",
+      "range": {
+        "startLine": 142,
+        "startChar": 27,
+        "endLine": 147,
+        "endChar": 44
+      },
+      "revId": "87b5c19eb2f0cfed951141cef7bd7148d8d10bf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "800101b6_ac109b3a",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/wrapper/PackageWrapper.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2020-10-05T13:21:22Z",
+      "side": 1,
+      "message": "Do not overwrite method argument, instead create new String object.\nIt\u0027s good practice to keep objects as immutable as possible.",
+      "revId": "87b5c19eb2f0cfed951141cef7bd7148d8d10bf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62bd3cd0_8d805391",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/wrapper/PackageWrapper.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2020-10-05T13:21:22Z",
+      "side": 1,
+      "message": "Do not overwrite method argument, instead create new String object.\nIt\u0027s good practice to keep objects as immutable as possible.",
+      "range": {
+        "startLine": 294,
+        "startChar": 10,
+        "endLine": 296,
+        "endChar": 60
+      },
+      "revId": "87b5c19eb2f0cfed951141cef7bd7148d8d10bf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8d809cd3_da7f92ae",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/wrapper/PackageWrapper.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2020-10-05T13:21:22Z",
+      "side": 1,
+      "message": "Do not overwrite method argument, instead create new String object.\nIt\u0027s good practice to keep objects as immutable as possible.",
+      "revId": "87b5c19eb2f0cfed951141cef7bd7148d8d10bf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d66bfc0b_94822551",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/wrapper/PackageWrapper.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2020-10-05T13:21:22Z",
+      "side": 1,
+      "message": "Do not overwrite method argument, instead create new String object.\nIt\u0027s good practice to keep objects as immutable as possible.",
+      "revId": "87b5c19eb2f0cfed951141cef7bd7148d8d10bf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5176ec0c_bb423f58",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/wrapper/PackageWrapper.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2020-10-05T13:21:22Z",
+      "side": 1,
+      "message": "Do not overwrite method argument, instead create new String object.\nIt\u0027s good practice to keep objects as immutable as possible.",
+      "range": {
+        "startLine": 520,
+        "startChar": 91,
+        "endLine": 523,
+        "endChar": 48
+      },
+      "revId": "87b5c19eb2f0cfed951141cef7bd7148d8d10bf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "331deb4d_12be8856",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/wrapper/PackageWrapper.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 580,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2020-10-05T13:21:22Z",
+      "side": 1,
+      "message": "Do not overwrite method argument, instead create new String object.\nIt\u0027s good practice to keep objects as immutable as possible.",
+      "range": {
+        "startLine": 578,
+        "startChar": 82,
+        "endLine": 580,
+        "endChar": 56
+      },
+      "revId": "87b5c19eb2f0cfed951141cef7bd7148d8d10bf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
