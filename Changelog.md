@@ -8,4 +8,4 @@ All notable changes to this project will be documented in this file.
 - Update java to 11 in the refrepo image 
     - https://jira.onap.org/browse/VNFSDK-646
 
-
+## [1.6.1]
