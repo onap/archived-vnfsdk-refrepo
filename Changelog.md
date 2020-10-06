@@ -9,4 +9,4 @@ All notable changes to this project will be documented in this file.
     - https://jira.onap.org/browse/VNFSDK-646
 - Update certs expiration date from default 30 days to 730 days (2 years)
 
-
+## [1.6.1]
