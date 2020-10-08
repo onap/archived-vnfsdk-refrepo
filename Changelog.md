@@ -11,3 +11,7 @@ All notable changes to this project will be documented in this file.
     - https://jira.onap.org/browse/VNFSDK-650
 
 ## [1.6.1]
+
+### Fix
+- Fix JSON parsing error returned from GET request
+  - https://jira.onap.org/browse/VNFSDK-697 

@@ -19,6 +19,7 @@ package org.onap.vtp.execution;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,21 +66,21 @@ public class VTPExecutionResultsSupplier {
             .orElse(createNoOutputFileErrorMessageInJsonFormat());
     }
 
-    private JsonArray loadOutputJsonFromFile(File file) {
-        JsonArray outputJson;
+    private JsonElement loadOutputJsonFromFile(File file) {
+        JsonElement outputJson;
         try {
             String executionResult = Files.readString(file.toPath());
-            outputJson = gson.fromJson(executionResult, JsonArray.class);
+            outputJson = gson.fromJson(executionResult, JsonElement.class);
         } catch (IOException | JsonParseException e) {
             logger.error(e.getMessage(),e);
             String errorMessage = "" +
-                "[{ \"error\": \"fail to load execution result\",\"reason\":\"" + e.getMessage() + "\"}]";
-            outputJson = gson.fromJson(errorMessage, JsonArray.class);
+                "{ \"error\": \"fail to load execution result\",\"reason\":\"" + e.getMessage() + "\"}";
+            outputJson = gson.fromJson(errorMessage, JsonObject.class);
         }
         return outputJson;
     }
 
-    private JsonArray createNoOutputFileErrorMessageInJsonFormat() {
-        return gson.fromJson("[{ \"error\": \"unable to find execution results\"}]", JsonArray.class);
+    private JsonElement createNoOutputFileErrorMessageInJsonFormat() {
+        return gson.fromJson("{ \"error\": \"unable to find execution results\"}", JsonObject.class);
     }
 }

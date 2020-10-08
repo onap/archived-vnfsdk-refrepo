@@ -20,6 +20,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.glassfish.jersey.media.multipart.ContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
@@ -153,12 +154,12 @@ public class VTPExecutionResourceTest {
         String testProduct = "VTP Scenario 2";
         String testCommand = "s1.ts1.testcase-2";
         String testSuiteName = "testsuite-2";
-        String testRequestId = "test-02-request-id";
+        String testRequestId = "test-wrong-request-id";
         String testExecutionId = testRequestId + "-execution-id";
         String testProfile = "open-cli-schema";
         String expectedStatus = "FAIL";
         JsonElement expectedResult = new Gson().fromJson("" +
-            "[{ \"error\": \"unable to find execution results\"}]", JsonArray.class);
+            "{ \"error\": \"unable to find execution results\"}", JsonObject.class);
 
         prepareMockRpcMethods(
             testStartTime, testEndTime, testProduct, testCommand, testSuiteName,
@@ -193,11 +194,11 @@ public class VTPExecutionResourceTest {
         String testProfile = "open-cli-schema";
         String expectedStatus = "FAIL";
         JsonElement expectedResult = new Gson().fromJson("" +
-                "[{ " +
+                "{ " +
                 "\"error\": \"fail to load execution result\"," +
-                "\"reason\":\"Expected a com.google.gson.JsonArray but was com.google.gson.JsonPrimitive\"" +
-                "}]",
-            JsonArray.class
+                "\"reason\":\"com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 8 path $\"" +
+                "}",
+            JsonObject.class
         );
 
         prepareMockRpcMethods(

@@ -19,6 +19,7 @@ package org.onap.vtp.execution;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -28,7 +29,7 @@ public class VTPExecutionResultsSupplierTest {
     private static final String TEST_PATH_TO_EXECUTION = "src/test/resources/executions";
 
     @Test
-    public void whenGetExecutionOutputsFromFileIsCalledWithPathToCorrectFileThenContentShouldBeLoadedAsJson() {
+    public void whenGetExecutionOutputsFromFileIsCalledWithPathToCorrectFileThenContentShouldBeLoadedAsJsonArray() {
         // given
         VTPExecutionResultsSupplier vtpExecutionResultsSupplier =
             new VTPExecutionResultsSupplier(TEST_PATH_TO_EXECUTION);
@@ -48,20 +49,40 @@ public class VTPExecutionResultsSupplierTest {
     }
 
     @Test
-    public void whenGetExecutionOutputsFromFileIsCalledWithPathToNonExistingFileThenProperMessageShouldBeReturned() {
+    public void whenGetExecutionOutputsFromFileIsCalledWithPathToCorrectFileThenContentShouldBeLoadedAsJsonObject() {
         // given
         VTPExecutionResultsSupplier vtpExecutionResultsSupplier =
             new VTPExecutionResultsSupplier(TEST_PATH_TO_EXECUTION);
         String pathToCorrectFile = "test-02-request-id-execution-id";
-        JsonElement expectedErrorMessage = new Gson().fromJson("" +
-            "[{ \"error\": \"unable to find execution results\"}]", JsonArray.class);
+        JsonElement expectedResult = new Gson().fromJson("" +
+            "{" +
+            "\"test_1\": \"error01\"," +
+            "\"test_2\": \"error02\" " +
+            "}", JsonObject.class);
 
         // when
         JsonElement executionOutputsFromFile =
             vtpExecutionResultsSupplier.getExecutionOutputsFromFile(pathToCorrectFile);
 
         // then
-        assertEquals(executionOutputsFromFile, expectedErrorMessage);
+        assertEquals(executionOutputsFromFile, expectedResult);
+    }
+
+    @Test
+    public void whenGetExecutionOutputsFromFileIsCalledWithPathToNonExistingFileThenProperMessageShouldBeReturned() {
+        // given
+        VTPExecutionResultsSupplier vtpExecutionResultsSupplier =
+            new VTPExecutionResultsSupplier(TEST_PATH_TO_EXECUTION);
+        String pathToCorrectFile = "test-wrong-request-id-execution-id";
+        JsonElement expectedErrorMessage = new Gson().fromJson("" +
+            "{ \"error\": \"unable to find execution results\"}", JsonObject.class);
+
+        // when
+        JsonElement executionOutputsFromFile =
+            vtpExecutionResultsSupplier.getExecutionOutputsFromFile(pathToCorrectFile);
+
+        // then
+        assertEquals(expectedErrorMessage, executionOutputsFromFile);
     }
 
     @Test
@@ -71,11 +92,11 @@ public class VTPExecutionResultsSupplierTest {
             new VTPExecutionResultsSupplier(TEST_PATH_TO_EXECUTION);
         String pathToCorrectFile = "test-incorrect-request-id-execution-id-data";
         JsonElement expectedErrorMessage = new Gson().fromJson("" +
-            "[{ " +
+            "{ " +
                 "\"error\": \"fail to load execution result\"," +
-                "\"reason\":\"Expected a com.google.gson.JsonArray but was com.google.gson.JsonPrimitive\"" +
-                "}]",
-            JsonArray.class
+                "\"reason\":\"com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 8 path $\"" +
+                "}",
+            JsonObject.class
         );
 
         // when
@@ -83,6 +104,6 @@ public class VTPExecutionResultsSupplierTest {
             vtpExecutionResultsSupplier.getExecutionOutputsFromFile(pathToCorrectFile);
 
         // then
-        assertEquals(executionOutputsFromFile, expectedErrorMessage);
+        assertEquals(expectedErrorMessage, executionOutputsFromFile);
     }
 }
