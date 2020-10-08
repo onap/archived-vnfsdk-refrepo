@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "461d44aa_78185b9c",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vtp/execution/VTPExecutionResultsSupplier.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-10-08T11:08:08Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "7ee966aa_5b26d032",
+      "revId": "15c39f44fb16ca5e16b522b32eea79b4f73193c3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5d792b83_ad95a67c",
         "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vtp/execution/VTPExecutionResultsSupplier.java",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "15c39f44fb16ca5e16b522b32eea79b4f73193c3",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4d47ea03_660ad847",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vtp/execution/VTPExecutionResultsSupplier.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-10-08T11:08:08Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "5d792b83_ad95a67c",
+      "revId": "15c39f44fb16ca5e16b522b32eea79b4f73193c3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
