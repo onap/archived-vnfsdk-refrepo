@@ -30,7 +30,8 @@ fi
 
 echo ################ Install OCLIP
 
-VTP_LATEST_BINARY="https://nexus.onap.org/service/local/artifact/maven/redirect?r=releases&g=org.onap.cli&a=cli-zip&e=zip&v=LATEST"
+OCLIP_VERSION="5.0.3"
+VTP_LATEST_BINARY="https://nexus.onap.org/service/local/artifact/maven/redirect?r=releases&g=org.onap.cli&a=cli-zip&e=zip&v=$OCLIP_VERSION"
 VTP_INSTALL_DIR=/opt/vtp
 VTP_ZIP=vtp.zip
 
