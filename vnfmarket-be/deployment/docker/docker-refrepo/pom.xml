@@ -24,14 +24,14 @@
     <parent>
         <groupId>org.onap.vnfsdk.refrepo</groupId>
         <artifactId>vnfmarket-deployment</artifactId>
-        <version>1.6.1-SNAPSHOT</version>
+        <version>1.6.1</version>
         <relativePath>../..</relativePath>
     </parent>
 
     <artifactId>vnfmarket-docker-refrepo</artifactId>
     <name>vnfmarket/deployment/docker/refrepo</name>
     <packaging>pom</packaging>
-    <version>1.6.1-SNAPSHOT</version>
+    <version>1.6.1</version>
 
   <properties>
         <maven.build.timestamp.format>yyyyMMdd'T'HHmmss'Z'</maven.build.timestamp.format>
