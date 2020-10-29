@@ -24,3 +24,5 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Updated validation version to 1.2.14
+
+## [1.6.3]
