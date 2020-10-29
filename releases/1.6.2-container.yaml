@@ -1,0 +1,9 @@
+---
+distribution_type: container
+container_release_tag: '1.6.2'
+project: 'vnfsdk-refrepo'
+log_dir: 'vnfsdk-refrepo-maven-docker-stage-master/524'
+ref: 65639ae1c34066f4cd82f378c31d06a4f6c9e27f
+containers:
+  - name: vnfsdk/refrepo
+    version: 1.6.2
