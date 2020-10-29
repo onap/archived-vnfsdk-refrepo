@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cae5c0c5_42a36539",
+        "filename": "vnfmarket-be/deployment/docker/docker-refrepo/src/main/docker/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-10-29T12:47:10Z",
+      "side": 1,
+      "message": "pls revert this change\n\nWe do not want to increase number of layers during image creation.",
+      "range": {
+        "startLine": 85,
+        "startChar": 13,
+        "endLine": 85,
+        "endChar": 20
+      },
+      "revId": "6c6550015766d5c6e33db5317e5acd3dedeb50bd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
