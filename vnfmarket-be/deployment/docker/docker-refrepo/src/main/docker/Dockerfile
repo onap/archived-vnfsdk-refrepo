@@ -69,8 +69,8 @@ RUN mkdir -p /etc/nginx/ssl && \
     chown -R www-data:www-data /var/lib/nginx
 
 # Generate certificates
-RUN chmod +x /service/certgen.sh  && \
-    /service/certgen.sh
+RUN chmod +x /service/certgen.sh
+RUN /service/certgen.sh
 
 # Set up microservice
 ADD ./STAGE  /service
@@ -81,8 +81,8 @@ RUN chmod +x /service/bin/*.sh && \
 
 # VTP setup
 RUN chmod a+x /service/install-vtp.sh && \
-    chmod a+x /service/vtp-tc.sh && \
-    /service/install-vtp.sh
+    chmod a+x /service/vtp-tc.sh
+RUN /service/install-vtp.sh
 
 # Create group and user
 RUN groupadd -r vnfadmin && useradd -m --no-log-init -r -g vnfadmin vnfadmin && \
