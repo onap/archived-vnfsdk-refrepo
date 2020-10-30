@@ -59,7 +59,7 @@ export VTP_STAGE_DIR=/opt/vtp_stage
 export OPEN_CLI_HOME=/opt/oclip
 export PATH=$OPEN_CLI_HOME/bin:$PATH
 export CATALINA_HOME=/opt/controller
-export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
 #export ONAP_VVP_HOME=$VTP_STAGE_DIR/vvp-validation-scripts/ice_validator
 export VTP_TRACK_MARK=+++++++++++++++++++++++++++++++++++
 
@@ -119,7 +119,7 @@ function vtp_download() {
 
     if [ ! -d $JAVA_HOME ]
     then
-        apt-get install -y openjdk-8-jre
+        apt-get install -y openjdk-11-jre
     else
         echo $VTP_TRACK_MARK JAVA already installed
     fi
@@ -164,6 +164,7 @@ function vtp_csar_validation_install() {
         cp $VTP_STAGE_DIR/CSAR-VALIDATE/validation-csar*.jar $OPEN_CLI_HOME/lib
         cp $VTP_STAGE_DIR/CSAR-VALIDATE/bcpkix-jdk15on-1.61.jar $OPEN_CLI_HOME/lib
         cp $VTP_STAGE_DIR/CSAR-VALIDATE/bcprov-jdk15on-1.61.jar $OPEN_CLI_HOME/lib
+        cp $VTP_STAGE_DIR/CSAR-VALIDATE/snakeyaml-1.26.jar $OPEN_CLI_HOME/lib
     else
         echo "CSAR Validation Test cases (TOSCA & HEAT) already installed"
     fi
