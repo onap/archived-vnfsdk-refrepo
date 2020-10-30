@@ -30,7 +30,7 @@ fi
 
 echo ################ Install OCLIP
 
-OCLIP_VERSION="5.0.3"
+OCLIP_VERSION="6.0.0"
 VTP_LATEST_BINARY="https://nexus.onap.org/service/local/artifact/maven/redirect?r=releases&g=org.onap.cli&a=cli-zip&e=zip&v=$OCLIP_VERSION"
 VTP_INSTALL_DIR=/opt/vtp
 VTP_ZIP=vtp.zip
@@ -78,6 +78,7 @@ cp csarvalidator/validation-csar*.jar $VTP_INSTALL_DIR/lib/
 cp csarvalidator/bcpkix-jdk15on-1.61.jar $VTP_INSTALL_DIR/lib/
 cp csarvalidator/bcprov-jdk15on-1.61.jar $VTP_INSTALL_DIR/lib/
 cp csarvalidator/commons-collections*.jar $VTP_INSTALL_DIR/lib/
+cp csarvalidator/snakeyaml-1.26.jar $VTP_INSTALL_DIR/lib/
 rm -rf csarvalidator $CSARVAL_ZIP $VTP_ZIP
 cd -
 
