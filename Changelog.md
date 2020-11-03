@@ -20,7 +20,11 @@ All notable changes to this project will be documented in this file.
 
 ### Fix
 - Fix OCLIP version used during docker image build, by setting it to 5.0.3
-  - https://jira.onap.org/browse/VNFSDK-698
-
+  - https://jira.onap.org/browse/VNFSDK-698 
+- Fix oclip issue and updated OCLIP version used during docker image build, back to 6.0.0
+  - https://jira.onap.org/browse/CLI-325
+  
 ### Added
 - Updated validation version to 1.2.14
+
+## [1.6.3]
