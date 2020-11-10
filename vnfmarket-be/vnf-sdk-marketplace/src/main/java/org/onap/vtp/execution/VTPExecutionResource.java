@@ -400,7 +400,7 @@ public class VTPExecutionResource  extends VTPResource{
                     JsonParser jsonParser = new JsonParser();
                     JsonElement resultJson = null;
                     try {
-                        resultJson = jsonParser.parse(resultObj.get(OUTPUT).getAsString());
+                        resultJson = resultObj.get(OUTPUT);
 
                     //workarround, sometimes its null.
                         if (resultJson == null || resultJson.isJsonNull()) {

@@ -106,4 +106,24 @@ public class VTPExecutionResultsSupplierTest {
         // then
         assertEquals(expectedErrorMessage, executionOutputsFromFile);
     }
+    
+    @Test
+    public void testLoadOutputJsonFromFile() {
+        // given
+        VTPExecutionResultsSupplier vtpExecutionResultsSupplier =
+            new VTPExecutionResultsSupplier(TEST_PATH_TO_EXECUTION);
+        String pathToCorrectFile = "test-02-request-id-execution-id";
+        JsonElement expectedResult = new Gson().fromJson("" +
+            "{" +
+            "\"test_1\": \"error01\"," +
+            "\"test_2\": \"error02\" " +
+            "}", JsonElement.class);
+
+        // when
+        JsonElement executionOutputsFromFile =
+            vtpExecutionResultsSupplier.getExecutionOutputsFromFile(pathToCorrectFile);
+
+        // then
+        assertEquals(executionOutputsFromFile, expectedResult);
+    }
 }
