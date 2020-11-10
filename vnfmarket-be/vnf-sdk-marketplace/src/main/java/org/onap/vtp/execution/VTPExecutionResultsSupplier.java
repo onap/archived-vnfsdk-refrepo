@@ -30,6 +30,7 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Optional;
+import com.google.gson.JsonParser;
 
 public class VTPExecutionResultsSupplier {
 
@@ -70,7 +71,8 @@ public class VTPExecutionResultsSupplier {
         JsonElement outputJson;
         try {
             String executionResult = Files.readString(file.toPath());
-            outputJson = gson.fromJson(executionResult, JsonElement.class);
+            JsonParser jsonParser = new JsonParser();
+            outputJson = jsonParser.parse(executionResult);
         } catch (IOException | JsonParseException e) {
             logger.error(e.getMessage(),e);
             String errorMessage = "" +
