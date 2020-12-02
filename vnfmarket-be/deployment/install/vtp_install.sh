@@ -161,10 +161,11 @@ function vtp_csar_validation_install() {
         unzip $VTP_STAGE_DIR/CSAR-VALIDATE.zip -d $VTP_STAGE_DIR/CSAR-VALIDATE
         cp $VTP_STAGE_DIR/csar-validate.jar $OPEN_CLI_HOME/lib
         cp $VTP_STAGE_DIR/CSAR-VALIDATE/commons-lang3*.jar $OPEN_CLI_HOME/lib
-        cp $VTP_STAGE_DIR/CSAR-VALIDATE/validation-csar*.jar $OPEN_CLI_HOME/lib
         cp $VTP_STAGE_DIR/CSAR-VALIDATE/bcpkix-jdk15on-1.61.jar $OPEN_CLI_HOME/lib
         cp $VTP_STAGE_DIR/CSAR-VALIDATE/bcprov-jdk15on-1.61.jar $OPEN_CLI_HOME/lib
         cp $VTP_STAGE_DIR/CSAR-VALIDATE/snakeyaml-1.26.jar $OPEN_CLI_HOME/lib
+        cp $VTP_STAGE_DIR/CSAR-VALIDATE/validation-csar*.jar $OPEN_CLI_HOME/lib
+        cp $VTP_STAGE_DIR/CSAR-VALIDATE/validation-pmdictionary*.jar $OPEN_CLI_HOME/lib
     else
         echo "CSAR Validation Test cases (TOSCA & HEAT) already installed"
     fi

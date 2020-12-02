@@ -28,3 +28,7 @@ All notable changes to this project will be documented in this file.
 - Updated validation version to 1.2.14
 
 ## [1.6.3]
+
+### Added
+- Add validation-pmdictionary*.jar to docker container
+  - https://jira.onap.org/browse/VNFSDK-713
