@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a2825ac9_50bf083c",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vtp/execution/VTPExecutionResource.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-12-04T06:56:33Z",
+      "side": 1,
+      "message": "in multi place there is repeated reasultJson featching: resultObj.get(OUTPUT).\nPls extract to final variable and reuse it. Good place for this variable is line 398.",
+      "revId": "f7b5c22ba67cbf280d3fc9002c2dc27b75caac93",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "73f2b047_2ca20975",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vtp/execution/VTPExecutionResultsSupplier.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-12-04T06:56:33Z",
+      "side": 1,
+      "message": "pls move this declaration to line 41, below Gson gson \u003d new Gson(), mark it as final",
+      "revId": "f7b5c22ba67cbf280d3fc9002c2dc27b75caac93",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "da4fc35a_9bbe95a6",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/test/java/org/onap/vtp/execution/VTPExecutionResultsSupplierTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-12-04T06:56:33Z",
+      "side": 1,
+      "message": "name of commit is \"json parsing fix for /executions/{execution-id}\"\n\nwhere is a test which cover this correction?",
+      "revId": "f7b5c22ba67cbf280d3fc9002c2dc27b75caac93",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}

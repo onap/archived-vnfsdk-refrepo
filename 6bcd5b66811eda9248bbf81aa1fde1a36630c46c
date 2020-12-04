@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "01c0f1bf_d28a2f11",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vtp/execution/VTPExecutionResource.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-12-04T06:56:33Z",
+      "side": 0,
+      "message": "how it could be a null if in line 399 we are checking this value?",
+      "revId": "6bcd5b66811eda9248bbf81aa1fde1a36630c46c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
