@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "6b35ed29_4e29a8ab",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vtp/execution/VTPExecutionResultsSupplier.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5027
+      },
+      "writtenOn": "2020-12-08T04:50:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73f2b047_2ca20975",
+      "revId": "f7b5c22ba67cbf280d3fc9002c2dc27b75caac93",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "da4fc35a_9bbe95a6",
         "filename": "vnfmarket-be/vnf-sdk-marketplace/src/test/java/org/onap/vtp/execution/VTPExecutionResultsSupplierTest.java",
         "patchSetId": 2
@@ -47,6 +65,24 @@
       "writtenOn": "2020-12-04T06:56:33Z",
       "side": 1,
       "message": "name of commit is \"json parsing fix for /executions/{execution-id}\"\n\nwhere is a test which cover this correction?",
+      "revId": "f7b5c22ba67cbf280d3fc9002c2dc27b75caac93",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c73eb286_5168e0b6",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/test/java/org/onap/vtp/execution/VTPExecutionResultsSupplierTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 5027
+      },
+      "writtenOn": "2020-12-08T04:50:49Z",
+      "side": 1,
+      "message": "I noticed unexpected output for GET request mentioned as commit name, \nThis test case is to cover code change made on VTPExecutionResultsSupplier:line 75",
+      "parentUuid": "da4fc35a_9bbe95a6",
       "revId": "f7b5c22ba67cbf280d3fc9002c2dc27b75caac93",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
