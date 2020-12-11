@@ -77,7 +77,8 @@ cp csarvalidator/commons-lang3*.jar $VTP_INSTALL_DIR/lib/
 cp csarvalidator/bcpkix-jdk15on-1.61.jar $VTP_INSTALL_DIR/lib/
 cp csarvalidator/bcprov-jdk15on-1.61.jar $VTP_INSTALL_DIR/lib/
 cp csarvalidator/commons-collections*.jar $VTP_INSTALL_DIR/lib/
-cp csarvalidator/snakeyaml-1.26.jar $VTP_INSTALL_DIR/lib/
+cp csarvalidator/gson-*.jar $VTP_INSTALL_DIR/lib/
+cp csarvalidator/snakeyaml-*.jar $VTP_INSTALL_DIR/lib/
 cp csarvalidator/validation-csar*.jar $VTP_INSTALL_DIR/lib/
 cp csarvalidator/validation-pmdictionary*.jar $VTP_INSTALL_DIR/lib/
 rm -rf csarvalidator $CSARVAL_ZIP $VTP_ZIP
