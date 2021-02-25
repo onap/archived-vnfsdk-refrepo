@@ -52,6 +52,24 @@
       "revId": "480871cadb9428c26994cc066d67a07d1bc5793a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d92c420f_c56d8d3b",
+        "filename": "vnfmarket-be/deployment/docker/docker-refrepo/src/main/docker/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2021-02-25T09:53:32Z",
+      "side": 1,
+      "message": "@Kanagaraj: python 2.7 was added by apt during npm and nodejs installation. To remove python 2.7 we needed to change npm and nodejs procedure installation. That is why we have added this section.",
+      "parentUuid": "c2551cc1_0ba1a679",
+      "revId": "480871cadb9428c26994cc066d67a07d1bc5793a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
