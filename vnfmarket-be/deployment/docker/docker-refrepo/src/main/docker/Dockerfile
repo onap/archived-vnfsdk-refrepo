@@ -35,14 +35,22 @@ RUN apt-get update && apt-get install -y \
     make \
     nano \
     nginx \
-    nodejs \
-    npm \
     sudo \
     unzip \
     wget \
  && rm -rf /var/lib/apt/lists/* \
  && sudo mkdir -p /usr/lib/jvm/default-jvm \
  && sudo ln -s /usr/local/openjdk-11/* /usr/lib/jvm/default-jvm
+
+# Installing Node
+ENV NVM_DIR /usr/local/nvm
+ENV NODE_VERSION 14.16.0
+SHELL ["/bin/bash", "--login", "-i", "-c"]
+RUN mkdir -p $NVM_DIR && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | NVM_DIR=$NVM_DIR bash
+RUN source /root/.bashrc && nvm install $NODE_VERSION
+SHELL ["/bin/bash", "--login", "-c"]
+ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
+ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
 # Download and set up Tomcat
 WORKDIR /service
