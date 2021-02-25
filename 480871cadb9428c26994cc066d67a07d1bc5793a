@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ef9ff36_cd899a5d",
+        "filename": "vnfmarket-be/deployment/docker/docker-refrepo/src/main/docker/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2021-02-25T09:42:14Z",
+      "side": 1,
+      "message": "why do we need this change?",
+      "revId": "480871cadb9428c26994cc066d67a07d1bc5793a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
