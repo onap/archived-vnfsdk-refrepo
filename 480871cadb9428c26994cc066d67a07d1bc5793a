@@ -34,6 +34,24 @@
       "revId": "480871cadb9428c26994cc066d67a07d1bc5793a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "66f1fd89_396e85b8",
+        "filename": "vnfmarket-be/deployment/docker/docker-refrepo/src/main/docker/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 7439
+      },
+      "writtenOn": "2021-02-25T09:52:31Z",
+      "side": 1,
+      "message": "installing node via apt always require python2.7 in dependecy",
+      "parentUuid": "c2551cc1_0ba1a679",
+      "revId": "480871cadb9428c26994cc066d67a07d1bc5793a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
