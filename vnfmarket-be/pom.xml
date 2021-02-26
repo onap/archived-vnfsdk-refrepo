@@ -19,7 +19,7 @@
     <parent>
         <groupId>org.onap.vnfsdk.refrepo</groupId>
         <artifactId>vnfmarket</artifactId>
-        <version>1.6.3-SNAPSHOT</version>
+        <version>1.6.4-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
