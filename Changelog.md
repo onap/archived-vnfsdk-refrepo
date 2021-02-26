@@ -32,3 +32,11 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Add validation-pmdictionary*.jar to docker container
   - https://jira.onap.org/browse/VNFSDK-713
+- Add cli to pmdictionary validation
+  - https://jira.onap.org/browse/VNFSDK-715
+- Updated OCLIP version used during docker image build to 6.0.1
+  - https://jira.onap.org/browse/VNFSDK-731
+- Remove python 2.7 from the refrepo image
+  - https://jira.onap.org/browse/VNFSDK-647
+
+## [1.6.4]
