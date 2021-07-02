@@ -107,7 +107,7 @@ public class VTPProfileResource extends VTPResource {
         VTPTestProfile profile = new VTPTestProfile();
         profile.setName(profileName);
 
-        if (results != null && results.isJsonArray() && results.getAsJsonArray().size() > 0) {
+        if (results != null && results.size() > 1 && results.isJsonArray() && results.getAsJsonArray().size() > 0) {
           	 JsonArray resultsArray = results.getAsJsonArray();
                for (Iterator<JsonElement> it = resultsArray.iterator(); it.hasNext();) {
                    JsonElement jsonElement = it.next();
@@ -128,9 +128,12 @@ public class VTPProfileResource extends VTPResource {
 
                     profile.getProperties().add(prp);
             }
+            return profile;
         }
-
-        return profile;
+        else {
+             throw new VTPException(
+                    new VTPError().setMessage("Test profile does not exist").setHttpStatus(HttpStatus.NOT_FOUND_404));
+        }
     }
 
     @Path("/profiles/{profileName}")
