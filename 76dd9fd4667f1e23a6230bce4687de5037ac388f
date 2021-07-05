@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bbd5d84d_84ceedc6",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vtp/profile/VTPProfileResource.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2021-07-05T03:37:55Z",
+      "side": 1,
+      "message": "I think if profile.getProperties are empty then you can call it as profile not found.",
+      "revId": "76dd9fd4667f1e23a6230bce4687de5037ac388f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
