@@ -16,12 +16,18 @@
  */
 package org.onap.vtp;
 
-import com.google.common.collect.Lists;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Properties;
+import java.util.UUID;
+
+import javax.ws.rs.client.Client;
+
 import org.glassfish.jersey.media.multipart.ContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.junit.Before;
@@ -34,14 +40,22 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.onap.vtp.error.VTPError;
 import org.onap.vtp.execution.VTPExecutionResource;
 import org.onap.vtp.execution.model.VTPTestExecution;
+import org.onap.vtp.execution.model.VTPTestExecution.VTPTestExecutionList;
+import org.onap.vtp.manager.DistManager;
+import org.onap.vtp.manager.model.Tester;
+import org.open.infc.grpc.Result;
+import org.open.infc.grpc.client.OpenInterfaceGrpcClient;
+import org.open.infc.grpc.client.OpenInterfaceGrpcClient.OpenInterfaceGrpcTimeoutExecption;
+import org.open.infc.grpc.client.OpenRemoteCli;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import com.google.common.collect.Lists;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import mockit.MockUp;
 
 @RunWith(MockitoJUnitRunner.class)
 public class VTPExecutionResourceTest {
@@ -72,6 +86,8 @@ public class VTPExecutionResourceTest {
     FormDataBodyPart formDataBodyPart;
     @Mock
     ContentDisposition contentDisposition;
+    @Mock
+    DistManager distManager;
     String requestId;
     VTPExecutionResourceForTests vtpExecutionResource;
     @Before
@@ -131,10 +147,51 @@ public class VTPExecutionResourceTest {
             testRequestId, testExecutionId, testProfile, expectedStatus
         );
 
+        new MockUp<DistManager>(){
+            @mockit.Mock
+            protected JsonElement getExecutionJson(int count, int index) {
+                String values = "[{\"tester_id\":\"1\", \"end-time\":\"end-time\", " +
+                        "\"id\":\"2\", \"product\":\"product\"," +
+                        "\"service\":\"service\", \"command\":\"command\", " +
+                        "\"profile\":\"profile\", \"status\":\"status\", \"execution_id\":\"test-01-request-id-execution-id\"}]";
+                JsonParser jsonParser = new JsonParser();
+                return jsonParser.parse(values);
+            }
+        };
+
+        new MockUp<DistManager>(){
+            @mockit.Mock
+            protected JsonElement getResponseFromTester(Client client, String managerURL, String testerPath) {
+                String values = "{\"tester_id\":\"1\", \"end-time\":\"end-time\", " +
+                        "\"iP\":\"localhost\", \"port\":\"55130\"," +
+                        "\"service\":\"service\", \"command\":\"command\", " +
+                        "\"profile\":\"profile\", \"status\":\"status\", \"execution-id\":\"123456\"}";
+                JsonParser jsonParser = new JsonParser();
+                return jsonParser.parse(values);
+            }
+        };
+
+        new MockUp<DistManager>(){
+            @mockit.Mock
+            protected Result getExecutionDetails(String vtpTestCenterIp, int vtpTestCenterPort, List<String> args, int timeout) throws VTPError.VTPException {
+                     Result result = Result.newBuilder().build();
+                     return result;
+                 }
+             };
+             new MockUp<Result>(){
+                 @mockit.Mock
+                 public String getOutput() {
+                     return "{\"start-time\":\"2019-03-12T11:49:52.845\", \"end-time\":\"2020-03-12T11:49:52.845\",\"request-id\":\"test-01-request-id\", " +
+                             "\"product\":\"VTP Scenario 1\", \"command\":\"s1.ts1.testcase-1\"," +
+                             "\"service\":\"testsuite-1\", \"profile\":\"open-cli-schema\", " +
+                             "\"status\":\"SUCCESS\", \"execution-id\":\"test-01-request-id-execution-id\"}";
+                 }
+             };
+
         // when
         VTPTestExecution.VTPTestExecutionList testExecutionResponse =
             vtpExecutionResource.listTestExecutionsHandler(
-                testRequestId, testProduct, testSuiteName, testCommand, testProfile, testStartTime, testEndTime
+                testRequestId, testProduct, testSuiteName, testCommand, testProfile, testStartTime, testEndTime,1,0
             );
 
         // then
@@ -166,10 +223,54 @@ public class VTPExecutionResourceTest {
             testRequestId, testExecutionId, testProfile, expectedStatus
         );
 
+        new MockUp<Result>(){
+            @mockit.Mock
+            public String getOutput() {
+                return "{\"start-time\":\"2020-08-09T08:49:52.845\", \"end-time\":\"2020-08-10T08:49:55.845\","
+                        + "\"request-id\":\"test-wrong-request-id\", " +
+                        "\"product\":\"VTP Scenario 2\", \"command\":\"s1.ts1.testcase-2\"," +
+                        "\"service\":\"testsuite-2\", \"profile\":\"open-cli-schema\", " +
+                        "\"status\":\"FAIL\", \"execution-id\":\"test-wrong-request-id-execution-id\"}";
+            }
+        };
+
+
+        new MockUp<DistManager>(){
+            @mockit.Mock
+            protected JsonElement getExecutionJson(int count, int index) {
+                String values = "[{\"tester_id\":\"1\", \"end-time\":\"end-time\", " +
+                        "\"id\":\"2\", \"product\":\"product\"," +
+                        "\"service\":\"service\", \"command\":\"command\", " +
+                        "\"profile\":\"profile\", \"status\":\"status\", \"execution_id\":\"test-01-request-id-execution-id\"}]";
+                JsonParser jsonParser = new JsonParser();
+                return jsonParser.parse(values);
+            }
+        };
+
+        new MockUp<DistManager>(){
+            @mockit.Mock
+            protected JsonElement getResponseFromTester(Client client, String managerURL, String testerPath) {
+                String values = "{\"tester_id\":\"1\", \"end-time\":\"end-time\", " +
+                        "\"iP\":\"localhost\", \"port\":\"55130\"," +
+                        "\"service\":\"service\", \"command\":\"command\", " +
+                        "\"profile\":\"profile\", \"status\":\"status\", \"execution-id\":\"123456\"}";
+                JsonParser jsonParser = new JsonParser();
+                return jsonParser.parse(values);
+            }
+        };
+
+        new MockUp<DistManager>(){
+            @mockit.Mock
+            protected Result getExecutionDetails(String vtpTestCenterIp, int vtpTestCenterPort, List<String> args, int timeout) throws VTPError.VTPException {
+                     Result result = Result.newBuilder().build();
+                     return result;
+                 }
+             };
+
         // when
         VTPTestExecution.VTPTestExecutionList testExecutionResponse =
             vtpExecutionResource.listTestExecutionsHandler(
-                testRequestId, testProduct, testSuiteName, testCommand, testProfile, testStartTime, testEndTime
+                testRequestId, testProduct, testSuiteName, testCommand, testProfile, testStartTime, testEndTime,1,0
             );
 
         // then
@@ -205,11 +306,51 @@ public class VTPExecutionResourceTest {
             testStartTime, testEndTime, testProduct, testCommand, testSuiteName,
             testRequestId, testExecutionId, testProfile, expectedStatus
         );
+        new MockUp<Result>(){
+            @mockit.Mock
+            public String getOutput() {
+                return "{\"start-time\":\"2020-08-09T08:49:52.845\", \"end-time\":\"2020-08-10T08:49:55.845\","
+                        + "\"request-id\":\"test-incorrect-request-id\", " +
+                        "\"product\":\"VTP Scenario 3\", \"command\":\"s1.ts1.testcase-3\"," +
+                        "\"service\":\"testsuite-3\", \"profile\":\"open-cli-schema\", " +
+                        "\"status\":\"FAIL\", \"execution-id\":\"test-incorrect-request-id-execution-id\"}";
+            }
+        };
+        new MockUp<DistManager>(){
+            @mockit.Mock
+            protected JsonElement getExecutionJson(int count, int index) {
+                String values = "[{\"tester_id\":\"1\", \"end-time\":\"end-time\", " +
+                        "\"id\":\"2\", \"product\":\"product\"," +
+                        "\"service\":\"service\", \"command\":\"command\", " +
+                        "\"profile\":\"profile\", \"status\":\"status\", \"execution_id\":\"test-01-request-id-execution-id\"}]";
+                JsonParser jsonParser = new JsonParser();
+                return jsonParser.parse(values);
+            }
+        };
+        new MockUp<DistManager>(){
+            @mockit.Mock
+            protected JsonElement getResponseFromTester(Client client, String managerURL, String testerPath) {
+                String values = "{\"tester_id\":\"1\", \"end-time\":\"end-time\", " +
+                        "\"iP\":\"localhost\", \"port\":\"55130\"," +
+                        "\"service\":\"service\", \"command\":\"command\", " +
+                        "\"profile\":\"profile\", \"status\":\"status\", \"execution-id\":\"123456\"}";
+                JsonParser jsonParser = new JsonParser();
+                return jsonParser.parse(values);
+            }
+        };
+
+        new MockUp<DistManager>(){
+            @mockit.Mock
+            protected Result getExecutionDetails(String vtpTestCenterIp, int vtpTestCenterPort, List<String> args, int timeout) throws VTPError.VTPException {
+                     Result result = Result.newBuilder().build();
+                     return result;
+                 }
+             };
 
         // when
         VTPTestExecution.VTPTestExecutionList testExecutionResponse =
             vtpExecutionResource.listTestExecutionsHandler(
-                testRequestId, testProduct, testSuiteName, testCommand, testProfile, testStartTime, testEndTime
+                testRequestId, testProduct, testSuiteName, testCommand, testProfile, testStartTime, testEndTime,1,0
             );
 
         // then
@@ -229,18 +370,50 @@ public class VTPExecutionResourceTest {
         // given
         String testStartTime = "2020-08-10T08:50:20.845";
         String testEndTime = "2020-08-11T08:51:50.845";
+        String testRequestId = "test-03-request-id";
         String testProduct = "VTP Scenario 3";
         String testCommand = "s1.ts1.testcase-3";
         String testSuiteName = "testsuite-3";
-        String testRequestId = "test-03-request-id";
         String testProfile = "open-cli-schema";
 
-        // when
-        exceptionRule.expect(VTPError.VTPException.class);
-        exceptionRule.expectMessage("Timed out. Please use request-id to track the progress.");
-        vtpExecutionResource.listTestExecutionsHandler(
-            testRequestId, testProduct, testSuiteName, testCommand, testProfile, testStartTime, testEndTime
+        new MockUp<DistManager>(){
+            @mockit.Mock
+            protected JsonElement getExecutionJson(int count, int index) {
+                String values = "[{\"tester_id\":\"1\", \"end-time\":\"end-time\", " +
+                        "\"id\":\"2\", \"product\":\"product\"," +
+                        "\"service\":\"service\", \"command\":\"command\", " +
+                        "\"profile\":\"profile\", \"status\":\"status\", \"execution_id\":\"test-01-request-id-execution-id\"}]";
+                JsonParser jsonParser = new JsonParser();
+                return jsonParser.parse(values);
+            }
+        };
+        new MockUp<DistManager>(){
+            @mockit.Mock
+            protected JsonElement getResponseFromTester(Client client, String managerURL, String testerPath) {
+                String values = "{\"tester_id\":\"1\", \"end-time\":\"end-time\", " +
+                        "\"iP\":\"localhost\", \"port\":\"55130\"," +
+                        "\"service\":\"service\", \"command\":\"command\", " +
+                        "\"profile\":\"profile\", \"status\":\"status\", \"execution-id\":\"123456\"}";
+                JsonParser jsonParser = new JsonParser();
+                return jsonParser.parse(values);
+            }
+        };
+
+        new MockUp<OpenRemoteCli>(){
+            @mockit.Mock
+            protected Result run(String vtpTestCenterIp, int vtpTestCenterPort, List<String> args, int timeout) throws  OpenInterfaceGrpcTimeoutExecption {
+                  throw new OpenInterfaceGrpcClient.OpenInterfaceGrpcTimeoutExecption("Timed Out");
+                 }
+             };
+
+        /*
+         * // when exceptionRule.expect(VTPError.VTPException.class); exceptionRule.
+         * expectMessage("Timed out. Please use request-id to track the progress.");
+         */
+             VTPTestExecutionList list =     vtpExecutionResource.listTestExecutionsHandler(
+            testRequestId, testProduct, testSuiteName, testCommand, testProfile, testStartTime, testEndTime,1,0
         );
+             assertEquals(0, list.getExecutions().size());// during exception the list size is empty
 
     }
 
@@ -319,7 +492,7 @@ public class VTPExecutionResourceTest {
     @Test(expected = Exception.class)
     public void testListTestExecutions() throws Exception
     {
-        vtpExecutionResource.listTestExecutions(requestId, "abc", "abc", "abc", "abc", "123", "123");
+        vtpExecutionResource.listTestExecutions(requestId, "abc", "abc", "abc", "abc", "123", "123",1,0);
     }
     @Test(expected = Exception.class)
     public void testGetTestExecution() throws Exception
@@ -350,5 +523,51 @@ public class VTPExecutionResourceTest {
     @Test(expected = Exception.class)
     public void testGetTestExecutionLogsHandler() throws Exception {
         assertNotNull(vtpExecutionResource.getTestExecutionLogsHandler("1234", "action"));
+    }
+
+    @Test
+    public void testGetTestExecutionLogsHandlerSuccess() throws Exception {
+        new MockUp<DistManager>() {
+            @mockit.Mock
+            protected Tester httpRequestExecutions(String executionId) {
+                Tester tester= new Tester();
+                tester.setId("1");
+                tester.setIp("localhost");
+                tester.setPort(50051);
+                tester.setTesterId("123");
+                return tester;
+            }
+        };
+          new MockUp<OpenRemoteCli>(){
+                @mockit.Mock
+                protected Result run(List<String> args) throws  Exception {
+                    Result result = Result.newBuilder().build();
+                    return result;
+                }
+                 };
+        assertNotNull(vtpExecutionResource.getTestExecutionLogsHandler("1234-", "action"));
+    }
+
+    @Test
+    public void testGetTestExecutionLogsHandlerSuccess_2() throws Exception {
+        new MockUp<DistManager>() {
+            @mockit.Mock
+            protected Tester httpRequestExecutions(String executionId) {
+                Tester tester= new Tester();
+                tester.setId("1");
+                tester.setIp("localhost");
+                tester.setPort(50051);
+                tester.setTesterId("123");
+                return tester;
+            }
+        };
+          new MockUp<OpenRemoteCli>(){
+                @mockit.Mock
+                protected Result run(List<String> args) throws  Exception {
+                    Result result = Result.newBuilder().build();
+                    return result;
+                }
+                 };
+        assertNotNull(vtpExecutionResource.getTestExecutionLogsHandler("1234", "schema-show"));
     }
 }

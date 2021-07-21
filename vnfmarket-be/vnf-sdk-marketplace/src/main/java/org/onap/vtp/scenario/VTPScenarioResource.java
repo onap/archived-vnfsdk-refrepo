@@ -52,6 +52,7 @@ import org.onap.vnfsdk.marketplace.common.ToolUtil;
 import org.onap.vtp.VTPResource;
 import org.onap.vtp.error.VTPError;
 import org.onap.vtp.error.VTPError.VTPException;
+import org.onap.vtp.manager.DistManager;
 import org.onap.vtp.scenario.model.VTPTestCase;
 import org.onap.vtp.scenario.model.VTPTestScenario;
 import org.onap.vtp.scenario.model.VTPTestSuite;
@@ -80,6 +81,7 @@ public class VTPScenarioResource extends VTPResource{
     private static final String FORMAT="--format";
     private static final String IO_EXCEPTION_OCCURS ="IOException occurs";
     private static final String SERVICE="service";
+    private DistManager distManager = new DistManager();
     public VTPTestScenarioList listTestScenariosHandler() throws VTPException {
         List<String> args = new ArrayList<>();
 
@@ -89,10 +91,16 @@ public class VTPScenarioResource extends VTPResource{
 
 
         JsonElement results = null;
-        try {
-            results = this.makeRpcAndGetJson(args);
-        } catch (IOException e) {
-            LOG.error(IO_EXCEPTION_OCCURS,e);
+        if (isDistMode()) {
+            String endPoint="/manager/scenarios";
+            return  distManager.getScenarioListFromManager(endPoint);
+        }
+        else{
+            try {
+                results = this.makeRpcAndGetJson(args);
+            } catch (IOException e) {
+                LOG.error(IO_EXCEPTION_OCCURS, e);
+            }
         }
 
         VTPTestScenarioList list = new VTPTestScenarioList();
@@ -137,10 +145,15 @@ public class VTPScenarioResource extends VTPResource{
         ));
 
         JsonElement results = null;
-        try {
-            results = this.makeRpcAndGetJson(args);
-        } catch (IOException e) {
-            LOG.error(IO_EXCEPTION_OCCURS,e);
+        if (isDistMode()) {
+            String url="/manager/scenarios/"+scenario+"/testsuites";
+            return distManager.getSuiteListFromManager(url);
+        }else {
+            try {
+                results = this.makeRpcAndGetJson(args);
+            } catch (IOException e) {
+                LOG.error(IO_EXCEPTION_OCCURS,e);
+            }
         }
 
         VTPTestSuiteList list = new VTPTestSuiteList();
@@ -186,10 +199,15 @@ public class VTPScenarioResource extends VTPResource{
         }
 
         JsonElement results = null;
-        try {
-            results = this.makeRpcAndGetJson(args);
-        } catch (IOException e) {
-            LOG.error(IO_EXCEPTION_OCCURS,e);
+        if (isDistMode()) {
+            String url = "/manager/scenarios/" + scenario + "/testcases";
+            return distManager.getTestCaseListFromManager(url);
+        } else {
+            try {
+                results = this.makeRpcAndGetJson(args);
+            } catch (IOException e) {
+                LOG.error(IO_EXCEPTION_OCCURS, e);
+            }
         }
 
         VTPTestCaseList list = new VTPTestCaseList();

@@ -103,6 +103,7 @@ public class VTPExecutionResource  extends VTPResource{
 
             //Run execution
             Output output = this.makeRpc(
+                    execution.getTestSuiteName(),
                     execution.getScenario(),
                     requestId,
                     execution.getProfile(),
@@ -244,7 +245,9 @@ public class VTPExecutionResource  extends VTPResource{
             String testCaseName,
             String profile, //NOSONAR
             String startTime,
-            String endTime) throws VTPException, IOException {
+            String endTime,
+            int count,
+            int index) throws VTPException, IOException {
         List<String> args = new ArrayList<>();
         args.addAll(Arrays.asList(
                 PRODUCT_ARG, OPEN_CLI, "execution-list", FORMAT, "json"
@@ -279,8 +282,15 @@ public class VTPExecutionResource  extends VTPResource{
             args.add("--command");
             args.add(testCaseName);
         }
-
-        JsonElement results = this.makeRpcAndGetJson(args);
+        JsonElement results =null;
+        if (isDistMode() && !(count==0 && index==0) ){
+            List<String> argsDistMode = new ArrayList<>(Arrays.asList(
+                    PRODUCT_ARG, OPEN_CLI, "execution-show", "--execution-id", null, FORMAT, "json"
+            ));
+            results = this.makeRpcAndGetJson(argsDistMode,count,index);
+        }else{
+            results = this.makeRpcAndGetJson(args);
+        }
 
         VTPTestExecutionList list = new VTPTestExecutionList();
 
@@ -349,11 +359,13 @@ public class VTPExecutionResource  extends VTPResource{
              @ApiParam("Test case name") @QueryParam("testcaseName") String testcaseName,
              @ApiParam("Test profile name") @QueryParam("profileName") String profileName,
              @ApiParam("Test execution start time") @QueryParam("startTime") String startTime,
-             @ApiParam("Test execution end time") @QueryParam("endTime") String endTime
+             @ApiParam("Test execution end time") @QueryParam("endTime") String endTime,
+             @ApiParam(value = "count", required = false) @QueryParam("count") int count,
+             @ApiParam(value = "index", required = false) @QueryParam("index") int index
              ) throws VTPException, IOException  {
 
         return Response.ok(this.listTestExecutionsHandler(
-                requestId, scenario, testsuiteName, testcaseName, profileName, startTime, endTime).getExecutions().toString(), MediaType.APPLICATION_JSON).build();
+                requestId, scenario, testsuiteName, testcaseName, profileName, startTime, endTime,count,index).getExecutions().toString(), MediaType.APPLICATION_JSON).build();
     }
 
     public VTPTestExecution getTestExecutionHandler(

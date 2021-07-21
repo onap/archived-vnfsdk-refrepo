@@ -77,7 +77,7 @@ public class VTPProfileResource extends VTPResource {
                 JsonElement jsonElement = it.next();
                 JsonObject n = jsonElement.getAsJsonObject();
                 if (n.has("profile")){
-                    list.getTestProfiles().add(new VTPTestProfile().setName(n.get("profile").getAsString()));
+                        list.getTestProfiles().add(new VTPTestProfile().setName(n.get("profile").getAsString()));
                 }
             }
         }
