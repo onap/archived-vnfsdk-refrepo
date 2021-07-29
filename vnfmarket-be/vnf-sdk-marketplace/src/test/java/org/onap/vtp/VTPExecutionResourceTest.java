@@ -370,50 +370,20 @@ public class VTPExecutionResourceTest {
         // given
         String testStartTime = "2020-08-10T08:50:20.845";
         String testEndTime = "2020-08-11T08:51:50.845";
-        String testRequestId = "test-03-request-id";
         String testProduct = "VTP Scenario 3";
         String testCommand = "s1.ts1.testcase-3";
         String testSuiteName = "testsuite-3";
+        String testRequestId = "test-03-request-id";
         String testProfile = "open-cli-schema";
 
-        new MockUp<DistManager>(){
-            @mockit.Mock
-            protected JsonElement getExecutionJson(int count, int index) {
-                String values = "[{\"tester_id\":\"1\", \"end-time\":\"end-time\", " +
-                        "\"id\":\"2\", \"product\":\"product\"," +
-                        "\"service\":\"service\", \"command\":\"command\", " +
-                        "\"profile\":\"profile\", \"status\":\"status\", \"execution_id\":\"test-01-request-id-execution-id\"}]";
-                JsonParser jsonParser = new JsonParser();
-                return jsonParser.parse(values);
-            }
-        };
-        new MockUp<DistManager>(){
-            @mockit.Mock
-            protected JsonElement getResponseFromTester(Client client, String managerURL, String testerPath) {
-                String values = "{\"tester_id\":\"1\", \"end-time\":\"end-time\", " +
-                        "\"iP\":\"localhost\", \"port\":\"55130\"," +
-                        "\"service\":\"service\", \"command\":\"command\", " +
-                        "\"profile\":\"profile\", \"status\":\"status\", \"execution-id\":\"123456\"}";
-                JsonParser jsonParser = new JsonParser();
-                return jsonParser.parse(values);
-            }
-        };
 
-        new MockUp<OpenRemoteCli>(){
-            @mockit.Mock
-            protected Result run(String vtpTestCenterIp, int vtpTestCenterPort, List<String> args, int timeout) throws  OpenInterfaceGrpcTimeoutExecption {
-                  throw new OpenInterfaceGrpcClient.OpenInterfaceGrpcTimeoutExecption("Timed Out");
-                 }
-             };
 
         /*
-         * // when exceptionRule.expect(VTPError.VTPException.class); exceptionRule.
-         * expectMessage("Timed out. Please use request-id to track the progress.");
+        exceptionRule.expect(VTPError.VTPException.class);
+        exceptionRule.expectMessage("Timed out. Please use request-id to track the progress.");
          */
-             VTPTestExecutionList list =     vtpExecutionResource.listTestExecutionsHandler(
-            testRequestId, testProduct, testSuiteName, testCommand, testProfile, testStartTime, testEndTime,1,0
-        );
-             assertEquals(0, list.getExecutions().size());// during exception the list size is empty
+        vtpExecutionResource.listTestExecutionsHandler(
+                testRequestId, testProduct, testSuiteName, testCommand, testProfile, testStartTime, testEndTime, 1, 0);
 
     }
 
