@@ -296,39 +296,10 @@ public class VTPExecutionResourceTest {
                 return result;
             }
         };
-        new MockUp<VTPResource>(){
-            @mockit.Mock
-            protected Result makeRpc(List<String> args,int count,int index) throws VTPError.VTPException {
-                Result result = Result.newBuilder().build();
-                return result;
-            }
-        };
-        new MockUp<VTPResource>(){
-            @mockit.Mock
-            protected JsonElement makeRpcAndGetJson(List<String> args,int count,int index, int timeout) throws VTPError.VTPException {
-                  String values = "[{\"start-time\":\"start-time\", \"end-time\":\"end-time\", " +
-                          "\"request-id\":\"request-id\", \"product\":\"product\"," +
-                          "\"service\":\"service\", \"command\":\"command\", " +
-                          "\"profile\":\"profile\", \"status\":\"status\", \"execution-id\":\"execution-id\"}]";
-                  JsonParser jsonParser = new JsonParser();
-                  return jsonParser.parse(values);
-            }
-        };
-        new MockUp<VTPResource>(){
-            @mockit.Mock
-            protected JsonElement makeRpcAndGetJson(List<String> args,int count,int index) throws VTPError.VTPException {
-                  String values = "[{\"start-time\":\"start-time\", \"end-time\":\"end-time\", " +
-                          "\"request-id\":\"request-id\", \"product\":\"product\"," +
-                          "\"service\":\"service\", \"command\":\"command\", " +
-                          "\"profile\":\"profile\", \"status\":\"status\", \"execution-id\":\"execution-id\"}]";
-                  JsonParser jsonParser = new JsonParser();
-                  return jsonParser.parse(values);
-            }
-        };
         new MockUp<Result>(){
             @mockit.Mock
             public String getOutput() {
-                return "{\"product\":\"tutorial\"}";
+                return "[{\"product\":\"tutorial\"}]";
             }
         };
         VTPTestExecution.VTPTestExecutionList vtpTestExecutionList = vtpExecutionResource1.listTestExecutionsHandler(requestId,"tutorial","ut","list-users","abc","123","123",1,0);
