@@ -17,6 +17,7 @@
 package org.onap.vtp.scenario;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -81,7 +82,8 @@ public class VTPScenarioResource extends VTPResource{
     private static final String FORMAT="--format";
     private static final String IO_EXCEPTION_OCCURS ="IOException occurs";
     private static final String SERVICE="service";
-    private DistManager distManager = new DistManager();
+    private static final String PRODUCT = "product";
+    private DistManager distManagerVtpScenarioResource = new DistManager();
     public VTPTestScenarioList listTestScenariosHandler() throws VTPException {
         List<String> args = new ArrayList<>();
 
@@ -93,7 +95,7 @@ public class VTPScenarioResource extends VTPResource{
         JsonElement results = null;
         if (isDistMode()) {
             String endPoint="/manager/scenarios";
-            return  distManager.getScenarioListFromManager(endPoint);
+            return  distManagerVtpScenarioResource.getScenarioListFromManager(endPoint);
         }
         else{
             try {
@@ -111,7 +113,7 @@ public class VTPScenarioResource extends VTPResource{
                 JsonElement jsonElement = it.next();
                 JsonObject n = jsonElement.getAsJsonObject();
                 if (n.entrySet().iterator().hasNext()) {
-                    String name = n.get("product").getAsString();
+                    String name = n.get(PRODUCT).getAsString();
 
                     if (OPEN_CLI.equalsIgnoreCase(name))
                         continue;
@@ -147,7 +149,7 @@ public class VTPScenarioResource extends VTPResource{
         JsonElement results = null;
         if (isDistMode()) {
             String url="/manager/scenarios/"+scenario+"/testsuites";
-            return distManager.getSuiteListFromManager(url);
+            return distManagerVtpScenarioResource.getSuiteListFromManager(url);
         }else {
             try {
                 results = this.makeRpcAndGetJson(args);
@@ -201,7 +203,7 @@ public class VTPScenarioResource extends VTPResource{
         JsonElement results = null;
         if (isDistMode()) {
             String url = "/manager/scenarios/" + scenario + "/testcases";
-            return distManager.getTestCaseListFromManager(url);
+            return distManagerVtpScenarioResource.getTestCaseListFromManager(url);
         } else {
             try {
                 results = this.makeRpcAndGetJson(args);
@@ -265,25 +267,7 @@ public class VTPScenarioResource extends VTPResource{
         tc.setAuthor(schema.get("author").getAsString());
         JsonElement inputsJson = schema.get("inputs");
         if (inputsJson != null && inputsJson.isJsonArray()) {
-            for (final JsonElement jsonElement: inputsJson.getAsJsonArray()) {
-                JsonObject inputJson  = jsonElement.getAsJsonObject();
-                VTPTestCaseInput input = new VTPTestCaseInput();
-
-                input.setName(inputJson.get("name").getAsString());
-                input.setDescription(inputJson.get(DESCRIPTION).getAsString());
-                input.setType(inputJson.get("type").getAsString());
-
-                if (inputJson.get("is_optional") != null)
-                    input.setIsOptional(inputJson.get("is_optional").getAsBoolean());
-
-                if (inputJson.get("default_value") != null)
-                    input.setDefaultValue(inputJson.get("default_value").getAsString());
-
-                if (inputJson.get("metadata") != null)
-                    input.setMetadata(inputJson.get("metadata"));
-
-                tc.getInputs().add(input);
-            }
+            formatResponseData(tc, inputsJson);
         }
 
         JsonElement outputsJson = schema.get("outputs");
@@ -301,6 +285,28 @@ public class VTPScenarioResource extends VTPResource{
 
         return tc;
     }
+
+	private void formatResponseData(VTPTestCase tc, JsonElement inputsJson) {
+		for (final JsonElement jsonElement: inputsJson.getAsJsonArray()) {
+		    JsonObject inputJson  = jsonElement.getAsJsonObject();
+		    VTPTestCaseInput input = new VTPTestCaseInput();
+
+		    input.setName(inputJson.get("name").getAsString());
+		    input.setDescription(inputJson.get(DESCRIPTION).getAsString());
+		    input.setType(inputJson.get("type").getAsString());
+
+		    if (inputJson.get("is_optional") != null)
+		        input.setIsOptional(inputJson.get("is_optional").getAsBoolean());
+
+		    if (inputJson.get("default_value") != null)
+		        input.setDefaultValue(inputJson.get("default_value").getAsString());
+
+		    if (inputJson.get("metadata") != null)
+		        input.setMetadata(inputJson.get("metadata"));
+
+		    tc.getInputs().add(input);
+		}
+	}
 
     @Path("/scenarios/{scenario}/testsuites/{testSuiteName}/testcases/{testCaseName}")
     @GET
@@ -357,34 +363,7 @@ public class VTPScenarioResource extends VTPResource{
                     yamlInfos = snakeYaml().load(fileReader);
                 }
                 for (Object service : (List) yamlInfos.get("services")) {
-                    Map<String, Object> serviceMap = (Map<String, Object>) service;
-                    String testsuite = serviceMap.get("name").toString();
-                    File testsuiteDir = new File(scenarioDir, testsuite);
-                    FileUtils.forceMkdir(testsuiteDir);
-                    if (!serviceMap.containsKey("commands")) {
-                        continue;
-                    }
-                    for (Object cmd : (List) serviceMap.get("commands")) {
-                        File source = new File(VTP_YAML_STORE, cmd.toString().replaceAll("::", Matcher.quoteReplacement(File.separator)));
-                        if (!source.isFile()) {
-                            LOG.error("Source {} is not a yaml file !!!", source.getName());
-                            continue;
-                        }
-                        File dest = new File(testsuiteDir, cmd.toString().substring(cmd.toString().lastIndexOf("::") + 2));
-                        FileUtils.copyFile(source, dest);
-
-                        // 3、modify the testcase scenario and testsuite
-                        Map<String, Object> result = Maps.newHashMap();
-                        try (FileReader fileReader = new FileReader(dest)) {
-                            result = snakeYaml().load(fileReader);
-                        }
-                        Map<String, Object> info = (Map<String, Object>) result.get("info");
-                        info.put("product", scenario);
-                        info.put("service", testsuite);
-                        try (FileWriter fileWriter = new FileWriter(dest)) {
-                            snakeYaml().dump(result, fileWriter);
-                        }
-                    }
+                    processCurrentScenarioCommands(scenario, scenarioDir, service);
                 }
             } catch (Exception e) {
                 LOG.error("Parse testcase yaml failed !!!", e);
@@ -392,6 +371,38 @@ public class VTPScenarioResource extends VTPResource{
         });
         return Response.ok("Save yaml success", MediaType.APPLICATION_JSON).build();
     }
+
+	private void processCurrentScenarioCommands(String scenario, File scenarioDir, Object service)
+			throws IOException, FileNotFoundException {
+		Map<String, Object> serviceMap = (Map<String, Object>) service;
+		String testsuite = serviceMap.get("name").toString();
+		File testsuiteDir = new File(scenarioDir, testsuite);
+		FileUtils.forceMkdir(testsuiteDir);
+		if (!serviceMap.containsKey("commands")) {
+		    return;
+		}
+		for (Object cmd : (List) serviceMap.get("commands")) {
+		    File source = new File(VTP_YAML_STORE, cmd.toString().replaceAll("::", Matcher.quoteReplacement(File.separator)));
+		    if (!source.isFile()) {
+		        LOG.error("Source {} is not a yaml file !!!", source.getName());
+		        continue;
+		    }
+		    File dest = new File(testsuiteDir, cmd.toString().substring(cmd.toString().lastIndexOf("::") + 2));
+		    FileUtils.copyFile(source, dest);
+
+		    // 3、modify the testcase scenario and testsuite
+		    Map<String, Object> result = Maps.newHashMap();
+		    try (FileReader fileReader = new FileReader(dest)) {
+		        result = snakeYaml().load(fileReader);
+		    }
+		    Map<String, Object> info = (Map<String, Object>) result.get("info");
+		    info.put(PRODUCT, scenario);
+		    info.put(SERVICE, testsuite);
+		    try (FileWriter fileWriter = new FileWriter(dest)) {
+		        snakeYaml().dump(result, fileWriter);
+		    }
+		}
+	}
 
 
     @Path("/scenarios/{scenarioName}")
@@ -439,7 +450,7 @@ public class VTPScenarioResource extends VTPResource{
                 Map<String, Object> result = snakeYaml().load(entity.getInputStream());
                 Map<String, Object> info = (Map<String, Object>) result.get("info");
 
-                File yamlFile = new File(VTP_YAML_STORE, info.get("product") + File.separator + info.get("service") + File.separator + fileName);
+                File yamlFile = new File(VTP_YAML_STORE, info.get(PRODUCT) + File.separator + info.get(SERVICE) + File.separator + fileName);
                 try {
                     FileUtils.deleteQuietly(yamlFile);
                     FileUtils.copyInputStreamToFile(entity.getInputStream(), yamlFile);
