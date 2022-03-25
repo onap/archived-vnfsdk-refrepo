@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "aed053ff_bd5e9618",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vtp/scenario/VTPScenarioResource.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2022-03-25T04:03:59Z",
+      "side": 1,
+      "message": "revert back the execption handling",
+      "revId": "a9406774e7be82d909e366efacbe4a7a0e691adb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0597b8c6_af9dafb7",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vtp/scenario/VTPScenarioResource.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2022-03-25T04:03:59Z",
+      "side": 1,
+      "message": "remove whitespaces",
+      "revId": "a9406774e7be82d909e366efacbe4a7a0e691adb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d4b9f467_f7b4e433",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vtp/scenario/VTPScenarioResource.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2022-03-25T04:03:59Z",
+      "side": 1,
+      "message": "why is it not fixable?",
+      "revId": "a9406774e7be82d909e366efacbe4a7a0e691adb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
