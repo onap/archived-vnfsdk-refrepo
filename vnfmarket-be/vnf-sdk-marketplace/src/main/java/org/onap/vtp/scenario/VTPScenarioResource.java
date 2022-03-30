@@ -73,29 +73,30 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @Path("/vtp")
-@Api(tags = {"VTP Scenario"})
-public class VTPScenarioResource extends VTPResource{
+@Api(tags = {
+    "VTP Scenario"
+})
+public class VTPScenarioResource extends VTPResource {
     private static final String DESCRIPTION = "description";
-    private static final String PRODUCT_ARG="--product";
-    private static final String OPEN_CLI="open-cli";
-    private static final String FORMAT="--format";
-    private static final String IO_EXCEPTION_OCCURS ="IOException occurs";
-    private static final String SERVICE="service";
+    private static final String PRODUCT_ARG = "--product";
+    private static final String OPEN_CLI = "open-cli";
+    private static final String FORMAT = "--format";
+    private static final String IO_EXCEPTION_OCCURS = "IOException occurs";
+    private static final String SERVICE = "service";
     private DistManager distManager = new DistManager();
     public VTPTestScenarioList listTestScenariosHandler() throws VTPException {
-        List<String> args = new ArrayList<>();
+        List < String > args = new ArrayList < > ();
 
         args.addAll(Arrays.asList(
-                PRODUCT_ARG, OPEN_CLI, "product-list", FORMAT, "json"
+            PRODUCT_ARG, OPEN_CLI, "product-list", FORMAT, "json"
         ));
 
 
         JsonElement results = null;
         if (isDistMode()) {
-            String endPoint="/manager/scenarios";
-            return  distManager.getScenarioListFromManager(endPoint);
-        }
-        else{
+            String endPoint = "/manager/scenarios";
+            return distManager.getScenarioListFromManager(endPoint);
+        } else {
             try {
                 results = this.makeRpcAndGetJson(args);
             } catch (IOException e) {
@@ -105,9 +106,9 @@ public class VTPScenarioResource extends VTPResource{
 
         VTPTestScenarioList list = new VTPTestScenarioList();
 
-        if (results != null && results.isJsonArray() && results.getAsJsonArray().size()>0) {
+        if (results != null && results.isJsonArray() && results.getAsJsonArray().size() > 0) {
             JsonArray resultsArray = results.getAsJsonArray();
-            for (Iterator<JsonElement> it = resultsArray.iterator(); it.hasNext();) {
+            for (Iterator < JsonElement > it = resultsArray.iterator(); it.hasNext();) {
                 JsonElement jsonElement = it.next();
                 JsonObject n = jsonElement.getAsJsonObject();
                 if (n.entrySet().iterator().hasNext()) {
@@ -117,7 +118,7 @@ public class VTPScenarioResource extends VTPResource{
                         continue;
 
                     list.getScenarios().add(new VTPTestScenario().setName(name).setDescription(
-                            n.get(DESCRIPTION).getAsString()));
+                        n.get(DESCRIPTION).getAsString()));
                 }
             }
         }
@@ -130,42 +131,43 @@ public class VTPScenarioResource extends VTPResource{
     @ApiOperation(tags = "VTP Scenario", value = " List available test scenarios", response = VTPTestScenario.class, responseContainer = "List")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiResponses(value = {
-            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500,
-                    message = "Failed to perform the operation",
-                    response = VTPError.class) })
+        @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500,
+            message = "Failed to perform the operation",
+            response = VTPError.class)
+    })
     public Response listTestScenarios() throws VTPException {
         return Response.ok(this.listTestScenariosHandler().getScenarios().toString(), MediaType.APPLICATION_JSON).build();
     }
 
     public VTPTestSuiteList listTestSutiesHandler(String scenario) throws VTPException {
-        List<String> args = new ArrayList<>();
+        List < String > args = new ArrayList < > ();
 
         args.addAll(Arrays.asList(
-                PRODUCT_ARG, OPEN_CLI, "service-list", PRODUCT_ARG, scenario, FORMAT, "json"
+            PRODUCT_ARG, OPEN_CLI, "service-list", PRODUCT_ARG, scenario, FORMAT, "json"
         ));
 
         JsonElement results = null;
         if (isDistMode()) {
-            String url="/manager/scenarios/"+scenario+"/testsuites";
+            String url = "/manager/scenarios/" + scenario + "/testsuites";
             return distManager.getSuiteListFromManager(url);
-        }else {
+        } else {
             try {
                 results = this.makeRpcAndGetJson(args);
             } catch (IOException e) {
-                LOG.error(IO_EXCEPTION_OCCURS,e);
+                LOG.error(IO_EXCEPTION_OCCURS, e);
             }
         }
 
         VTPTestSuiteList list = new VTPTestSuiteList();
 
-        if (results != null && results.isJsonArray() && results.getAsJsonArray().size()>0) {
+        if (results != null && results.isJsonArray() && results.getAsJsonArray().size() > 0) {
             JsonArray resultsArray = results.getAsJsonArray();
-            for (Iterator<JsonElement> it = resultsArray.iterator(); it.hasNext();) {
+            for (Iterator < JsonElement > it = resultsArray.iterator(); it.hasNext();) {
                 JsonElement jsonElement = it.next();
                 JsonObject n = jsonElement.getAsJsonObject();
                 if (n.entrySet().iterator().hasNext()) {
                     list.getSuites().add(new VTPTestSuite().setName(n.get(SERVICE).getAsString()).setDescription(
-                            n.get(DESCRIPTION).getAsString()));
+                        n.get(DESCRIPTION).getAsString()));
                 }
             }
         }
@@ -175,23 +177,24 @@ public class VTPScenarioResource extends VTPResource{
 
     @Path("/scenarios/{scenario}/testsuites")
     @GET
-    @ApiOperation(tags = "VTP Scenario",  value = " List available test suties in given scenario", response = VTPTestSuite.class, responseContainer = "List")
+    @ApiOperation(tags = "VTP Scenario", value = " List available test suties in given scenario", response = VTPTestSuite.class, responseContainer = "List")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiResponses(value = {
-            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500,
-                    message = "Failed to perform the operation",
-                    response = VTPError.class) })
+        @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500,
+            message = "Failed to perform the operation",
+            response = VTPError.class)
+    })
     public Response listTestSuties(
-            @ApiParam("Test scenario name") @PathParam("scenario") String scenario) throws VTPException {
+        @ApiParam("Test scenario name") @PathParam("scenario") String scenario) throws VTPException {
 
         return Response.ok(this.listTestSutiesHandler(scenario).getSuites().toString(), MediaType.APPLICATION_JSON).build();
     }
 
     public VTPTestCaseList listTestcasesHandler(String testSuiteName, String scenario) throws VTPException {
-        List<String> args = new ArrayList<>();
+        List < String > args = new ArrayList < > ();
 
         args.addAll(Arrays.asList(
-                PRODUCT_ARG, OPEN_CLI, "schema-list", PRODUCT_ARG, scenario, FORMAT, "json"
+            PRODUCT_ARG, OPEN_CLI, "schema-list", PRODUCT_ARG, scenario, FORMAT, "json"
         ));
         if (testSuiteName != null) {
             args.add("--service");
@@ -212,16 +215,16 @@ public class VTPScenarioResource extends VTPResource{
 
         VTPTestCaseList list = new VTPTestCaseList();
 
-        if (results != null && results.isJsonArray() && results.getAsJsonArray().size()>0) {
+        if (results != null && results.isJsonArray() && results.getAsJsonArray().size() > 0) {
             JsonArray resultsArray = results.getAsJsonArray();
-            for (Iterator<JsonElement> it = resultsArray.iterator(); it.hasNext();) {
+            for (Iterator < JsonElement > it = resultsArray.iterator(); it.hasNext();) {
                 JsonElement jsonElement = it.next();
                 JsonObject n = jsonElement.getAsJsonObject();
                 if (n.entrySet().iterator().hasNext())
                     list.getTestCases().add(
-                            new VTPTestCase().setTestCaseName(
-                                    n.get("command").getAsString()).setTestSuiteName(
-                                    n.get(SERVICE).getAsString()));
+                        new VTPTestCase().setTestCaseName(
+                            n.get("command").getAsString()).setTestSuiteName(
+                            n.get(SERVICE).getAsString()));
             }
         }
 
@@ -233,27 +236,28 @@ public class VTPScenarioResource extends VTPResource{
     @ApiOperation(tags = "VTP Scenario", value = " List available test cases", response = VTPTestCase.class, responseContainer = "List")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiResponses(value = {
-            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500,
-                    message = "Failed to perform the operation",
-                    response = VTPError.class) })
+        @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500,
+            message = "Failed to perform the operation",
+            response = VTPError.class)
+    })
     public Response listTestcases(
-            @ApiParam("Test scenario name") @PathParam("scenario") String scenario,
-            @ApiParam("Test suite name") @QueryParam("testSuiteName") String testSuiteName
+        @ApiParam("Test scenario name") @PathParam("scenario") String scenario,
+        @ApiParam("Test suite name") @QueryParam("testSuiteName") String testSuiteName
     ) throws VTPException {
 
         return Response.ok(this.listTestcasesHandler(testSuiteName, scenario).getTestCases().toString(), MediaType.APPLICATION_JSON).build();
     }
 
     public VTPTestCase getTestcaseHandler(String scenario, String testSuiteName, String testCaseName) throws VTPException {
-        List<String> args = new ArrayList<>();
+        List < String > args = new ArrayList < > ();
         args.addAll(Arrays.asList(
-                PRODUCT_ARG, OPEN_CLI, "schema-show", PRODUCT_ARG, scenario, "--service", testSuiteName, "--command", testCaseName , FORMAT, "json"
+            PRODUCT_ARG, OPEN_CLI, "schema-show", PRODUCT_ARG, scenario, "--service", testSuiteName, "--command", testCaseName, FORMAT, "json"
         ));
         JsonElement results = null;
         try {
             results = this.makeRpcAndGetJson(args);
         } catch (IOException e) {
-            LOG.error(IO_EXCEPTION_OCCURS,e);
+            LOG.error(IO_EXCEPTION_OCCURS, e);
         }
 
         JsonObject schema = results.getAsJsonObject().getAsJsonObject("schema");
@@ -266,7 +270,7 @@ public class VTPScenarioResource extends VTPResource{
         JsonElement inputsJson = schema.get("inputs");
         if (inputsJson != null && inputsJson.isJsonArray()) {
             for (final JsonElement jsonElement: inputsJson.getAsJsonArray()) {
-                JsonObject inputJson  = jsonElement.getAsJsonObject();
+                JsonObject inputJson = jsonElement.getAsJsonObject();
                 VTPTestCaseInput input = new VTPTestCaseInput();
 
                 input.setName(inputJson.get("name").getAsString());
@@ -287,7 +291,7 @@ public class VTPScenarioResource extends VTPResource{
         }
 
         JsonElement outputsJson = schema.get("outputs");
-        if (outputsJson != null && outputsJson.isJsonArray() && outputsJson.getAsJsonArray().size()>0) {
+        if (outputsJson != null && outputsJson.isJsonArray() && outputsJson.getAsJsonArray().size() > 0) {
             for (final JsonElement jsonElement: outputsJson.getAsJsonArray()) {
                 JsonObject outputJson = jsonElement.getAsJsonObject();
                 VTPTestCaseOutput output = new VTPTestCaseOutput();
@@ -304,32 +308,34 @@ public class VTPScenarioResource extends VTPResource{
 
     @Path("/scenarios/{scenario}/testsuites/{testSuiteName}/testcases/{testCaseName}")
     @GET
-    @ApiOperation(tags = "VTP Scenario",  value = "Retrieve test cases details like inputs outputs and test suite name", response = VTPTestCase.class)
+    @ApiOperation(tags = "VTP Scenario", value = "Retrieve test cases details like inputs outputs and test suite name", response = VTPTestCase.class)
     @Produces(MediaType.APPLICATION_JSON)
     @ApiResponses(value = {
-            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500,
-                    message = "Failed to perform the operation", response = VTPError.class),
-            @ApiResponse(code = HttpStatus.NOT_FOUND_404,
-                    message = "Test case does not exist", response = VTPError.class)})
+        @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500,
+            message = "Failed to perform the operation", response = VTPError.class),
+        @ApiResponse(code = HttpStatus.NOT_FOUND_404,
+            message = "Test case does not exist", response = VTPError.class)
+    })
     public Response getTestcase(
-            @ApiParam("Test scenario name") @PathParam("scenario") String scenario,
-            @ApiParam(value = "Test case name") @PathParam("testSuiteName") String testSuiteName,
-            @ApiParam(value = "Test case name") @PathParam("testCaseName") String testCaseName)
-            throws VTPException {
+        @ApiParam("Test scenario name") @PathParam("scenario") String scenario,
+        @ApiParam(value = "Test case name") @PathParam("testSuiteName") String testSuiteName,
+        @ApiParam(value = "Test case name") @PathParam("testCaseName") String testCaseName)
+    throws VTPException {
 
         return Response.ok(this.getTestcaseHandler(scenario, testSuiteName, testCaseName).toString(), MediaType.APPLICATION_JSON).build();
     }
-
+    @SuppressWarnings("rawtypes")
     @Path("/scenarios")
     @POST
     @ApiOperation(tags = "VTP Scenario", value = "Create Scenario")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     @ApiResponses(value = {
-            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "Failed to perform the operation", response = VTPError.class)})
-    public Response storageScenarios(@ApiParam(value = "file form data body parts", required = true)
-                                     @FormDataParam("files") List<FormDataBodyPart> bodyParts) throws VTPException {
-        bodyParts.forEach(bodyPart -> {
+        @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "Failed to perform the operation", response = VTPError.class)
+    })
+    public Response storageScenarios(
+        @ApiParam(value = "file form data body parts", required = true) @FormDataParam("files") List < FormDataBodyPart > bodyParts) {
+        bodyParts.forEach(bodyPart - > {
             BodyPartEntity entity = (BodyPartEntity) bodyPart.getEntity();
             String fileName = bodyPart.getContentDisposition().getFileName();
             if (!ToolUtil.isYamlFile(new File(fileName))) {
@@ -350,41 +356,15 @@ public class VTPScenarioResource extends VTPResource{
                 LOG.error("Save yaml {} failed", fileName, e);
             }
 
-            // 2、create the testsuits dir and copy the testcase to current scenarios by commands
+            // 2、create the testsuits dir and copy the testcase to current scenarios by
+            // commands
             try {
-                Map<String, Object> yamlInfos = Maps.newHashMap();
+                Map < String, Object > yamlInfos = Maps.newHashMap();
                 try (FileReader fileReader = new FileReader(yamlFile)) {
                     yamlInfos = snakeYaml().load(fileReader);
                 }
-                for (Object service : (List) yamlInfos.get("services")) {
-                    Map<String, Object> serviceMap = (Map<String, Object>) service;
-                    String testsuite = serviceMap.get("name").toString();
-                    File testsuiteDir = new File(scenarioDir, testsuite);
-                    FileUtils.forceMkdir(testsuiteDir);
-                    if (!serviceMap.containsKey("commands")) {
-                        continue;
-                    }
-                    for (Object cmd : (List) serviceMap.get("commands")) {
-                        File source = new File(VTP_YAML_STORE, cmd.toString().replaceAll("::", Matcher.quoteReplacement(File.separator)));
-                        if (!source.isFile()) {
-                            LOG.error("Source {} is not a yaml file !!!", source.getName());
-                            continue;
-                        }
-                        File dest = new File(testsuiteDir, cmd.toString().substring(cmd.toString().lastIndexOf("::") + 2));
-                        FileUtils.copyFile(source, dest);
-
-                        // 3、modify the testcase scenario and testsuite
-                        Map<String, Object> result = Maps.newHashMap();
-                        try (FileReader fileReader = new FileReader(dest)) {
-                            result = snakeYaml().load(fileReader);
-                        }
-                        Map<String, Object> info = (Map<String, Object>) result.get("info");
-                        info.put("product", scenario);
-                        info.put("service", testsuite);
-                        try (FileWriter fileWriter = new FileWriter(dest)) {
-                            snakeYaml().dump(result, fileWriter);
-                        }
-                    }
+                for (Object service: (List) yamlInfos.get("services")) {
+                    copyTestCasesByCommands(scenario, scenarioDir, service);
                 }
             } catch (Exception e) {
                 LOG.error("Parse testcase yaml failed !!!", e);
@@ -393,31 +373,75 @@ public class VTPScenarioResource extends VTPResource{
         return Response.ok("Save yaml success", MediaType.APPLICATION_JSON).build();
     }
 
+    @SuppressWarnings("rawtypes")
+    private void copyTestCasesByCommands(String scenario, File scenarioDir, Object service) throws IOException {
+        @SuppressWarnings("unchecked")
+        Map < String, Object > serviceMap = (Map < String, Object > ) service;
+        String testsuite = serviceMap.get("name").toString();
+        File testsuiteDir = new File(scenarioDir, testsuite);
+        FileUtils.forceMkdir(testsuiteDir);
+        if (!serviceMap.containsKey("commands")) {
+            return;
+        }
+        for (Object cmd: (List) serviceMap.get("commands")) {
+            String command = cmd.toString().replaceAll("::", Matcher.quoteReplacement(File.separator));
+            File source = new File(VTP_YAML_STORE,
+                cmd.toString().replaceAll("::", Matcher.quoteReplacement(File.separator)));
+            if (!source.isFile()) {
+                LOG.error("Source {} is not a yaml file !!!", source.getName());
+                continue;
+            }
+            File dest = new File(testsuiteDir, cmd.toString().substring(cmd.toString().lastIndexOf("::") + 2));
+            FileUtils.copyFile(source, dest);
+
+            // 3、modify the testcase scenario and testsuite
+            Map < String, Object > result = Maps.newHashMap();
+            try (FileReader fileReader = new FileReader(dest)) {
+                result = snakeYaml().load(fileReader);
+            }
+            @SuppressWarnings("unchecked")
+            Map < String, Object > info = (Map < String, Object > ) result.get("info");
+            info.put(PRODUCT, scenario);
+            info.put(SERVICE, testsuite);
+            try (FileWriter fileWriter = new FileWriter(dest)) {
+                snakeYaml().dump(result, fileWriter);
+            }
+        }
+    }
 
     @Path("/scenarios/{scenarioName}")
     @DELETE
     @ApiOperation(tags = "VTP Scenario", value = "Delete yaml string")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiResponses(value = {
-            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "Failed to perform the operation", response = VTPError.class)})
-    public Response deleteScenario(@ApiParam("Test scenario yaml") @PathParam("scenarioName") String scenarioName) throws VTPException {
+        @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "Failed to perform the operation", response = VTPError.class)
+    })
+    public Response deleteScenario(@ApiParam("Test scenario yaml") @PathParam("scenarioName") String scenarioName)
+    throws VTPException {
         String scenario = scenarioName.substring(0, scenarioName.indexOf("-registry"));
         File scenarioDir = new File(VTP_YAML_STORE, scenario);
-        List<File> yamls =  FileUtil.searchFiles(scenarioDir, CommonConstant.YAML_SUFFIX);
+        File fileUnsafe = new File(VTP_YAML_STORE, scenarioName);
+        List < File > yamls = FileUtil.searchFiles(scenarioDir, CommonConstant.YAML_SUFFIX);
         if (!CollectionUtils.isEmpty(yamls)) {
             LOG.error("The scenario yaml {} has sub testcase yamls, delete failed", scenarioName);
             throw new VTPException(
-                    new VTPError().setMessage(MessageFormat.format("The scenario yaml {0} has sub testcase yamls, delete failed !!!", scenarioName))
-                            .setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR_500));
+                new VTPError()
+                .setMessage(MessageFormat.format(
+                    "The scenario yaml {0} has sub testcase yamls, delete failed !!!", scenarioName))
+                .setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR_500));
         }
 
         try {
-            FileUtils.deleteQuietly(new File(VTP_YAML_STORE, scenarioName));
-            FileUtils.deleteDirectory(scenarioDir);
+            if (Files.exists(Paths.get(scenarioDir.getCanonicalPath())) ||
+                Files.exists(Paths.get(fileUnsafe.getCanonicalPath()))) {
+                FileUtils.deleteQuietly(fileUnsafe);
+                FileUtils.deleteDirectory(scenarioDir);
+            }
+
         } catch (IOException e) {
             LOG.error("Delete scenario yaml {} failed", scenarioName, e);
-            throw new VTPException(
-                    new VTPError().setMessage("Delete yaml failed !!!").setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR_500));
+            throw new VTPException(new VTPError().setMessage("Delete yaml failed !!!")
+                .setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR_500));
         }
         return Response.ok("Delete yaml success", MediaType.APPLICATION_JSON).build();
     }
@@ -428,18 +452,21 @@ public class VTPScenarioResource extends VTPResource{
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     @ApiResponses(value = {
-            @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "Failed to perform the operation", response = VTPError.class)})
-    public Response storageTestcases(@ApiParam(value = "file form data body parts", required = true)
-                                     @FormDataParam("files") List<FormDataBodyPart> bodyParts) throws VTPException {
-        bodyParts.forEach(bodyPart -> {
+        @ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = "Failed to perform the operation", response = VTPError.class)
+    })
+    public Response storageTestcases(
+        @ApiParam(value = "file form data body parts", required = true) @FormDataParam("files") List < FormDataBodyPart > bodyParts) {
+        bodyParts.forEach(bodyPart - > {
             BodyPartEntity entity = (BodyPartEntity) bodyPart.getEntity();
             String fileName = bodyPart.getContentDisposition().getFileName();
             if (ToolUtil.isYamlFile(new File(fileName))) {
                 // 1、store the testcase yaml file
-                Map<String, Object> result = snakeYaml().load(entity.getInputStream());
-                Map<String, Object> info = (Map<String, Object>) result.get("info");
+                Map < String, Object > result = snakeYaml().load(entity.getInputStream());
+                @SuppressWarnings("unchecked")
+                Map < String, Object > info = (Map < String, Object > ) result.get("info");
 
-                File yamlFile = new File(VTP_YAML_STORE, info.get("product") + File.separator + info.get("service") + File.separator + fileName);
+                File yamlFile = new File(VTP_YAML_STORE,
+                    info.get(PRODUCT) + File.separator + info.get(SERVICE) + File.separator + fileName);
                 try {
                     FileUtils.deleteQuietly(yamlFile);
                     FileUtils.copyInputStreamToFile(entity.getInputStream(), yamlFile);
