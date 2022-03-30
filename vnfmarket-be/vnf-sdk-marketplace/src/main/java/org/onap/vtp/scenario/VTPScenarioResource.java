@@ -81,7 +81,8 @@ public class VTPScenarioResource extends VTPResource{
     private static final String FORMAT="--format";
     private static final String IO_EXCEPTION_OCCURS ="IOException occurs";
     private static final String SERVICE="service";
-    private DistManager distManager = new DistManager();
+    private static final String PRODUCT = "product";
+    private DistManager distManagerVtpScenarioResource = new DistManager();
     public VTPTestScenarioList listTestScenariosHandler() throws VTPException {
         List<String> args = new ArrayList<>();
 
@@ -93,7 +94,7 @@ public class VTPScenarioResource extends VTPResource{
         JsonElement results = null;
         if (isDistMode()) {
             String endPoint="/manager/scenarios";
-            return  distManager.getScenarioListFromManager(endPoint);
+            return  distManagerVtpScenarioResource.getScenarioListFromManager(endPoint);
         }
         else{
             try {
@@ -111,7 +112,7 @@ public class VTPScenarioResource extends VTPResource{
                 JsonElement jsonElement = it.next();
                 JsonObject n = jsonElement.getAsJsonObject();
                 if (n.entrySet().iterator().hasNext()) {
-                    String name = n.get("product").getAsString();
+                    String name = n.get(PRODUCT).getAsString();
 
                     if (OPEN_CLI.equalsIgnoreCase(name))
                         continue;
@@ -147,7 +148,7 @@ public class VTPScenarioResource extends VTPResource{
         JsonElement results = null;
         if (isDistMode()) {
             String url="/manager/scenarios/"+scenario+"/testsuites";
-            return distManager.getSuiteListFromManager(url);
+            return distManagerVtpScenarioResource.getSuiteListFromManager(url);
         }else {
             try {
                 results = this.makeRpcAndGetJson(args);
@@ -201,7 +202,7 @@ public class VTPScenarioResource extends VTPResource{
         JsonElement results = null;
         if (isDistMode()) {
             String url = "/manager/scenarios/" + scenario + "/testcases";
-            return distManager.getTestCaseListFromManager(url);
+            return distManagerVtpScenarioResource.getTestCaseListFromManager(url);
         } else {
             try {
                 results = this.makeRpcAndGetJson(args);
@@ -265,25 +266,7 @@ public class VTPScenarioResource extends VTPResource{
         tc.setAuthor(schema.get("author").getAsString());
         JsonElement inputsJson = schema.get("inputs");
         if (inputsJson != null && inputsJson.isJsonArray()) {
-            for (final JsonElement jsonElement: inputsJson.getAsJsonArray()) {
-                JsonObject inputJson  = jsonElement.getAsJsonObject();
-                VTPTestCaseInput input = new VTPTestCaseInput();
-
-                input.setName(inputJson.get("name").getAsString());
-                input.setDescription(inputJson.get(DESCRIPTION).getAsString());
-                input.setType(inputJson.get("type").getAsString());
-
-                if (inputJson.get("is_optional") != null)
-                    input.setIsOptional(inputJson.get("is_optional").getAsBoolean());
-
-                if (inputJson.get("default_value") != null)
-                    input.setDefaultValue(inputJson.get("default_value").getAsString());
-
-                if (inputJson.get("metadata") != null)
-                    input.setMetadata(inputJson.get("metadata"));
-
-                tc.getInputs().add(input);
-            }
+            formatResponseData(tc, inputsJson);
         }
 
         JsonElement outputsJson = schema.get("outputs");
@@ -301,6 +284,28 @@ public class VTPScenarioResource extends VTPResource{
 
         return tc;
     }
+
+	private void formatResponseData(VTPTestCase tc, JsonElement inputsJson) {
+		for (final JsonElement jsonElement: inputsJson.getAsJsonArray()) {
+		    JsonObject inputJson  = jsonElement.getAsJsonObject();
+		    VTPTestCaseInput input = new VTPTestCaseInput();
+
+		    input.setName(inputJson.get("name").getAsString());
+		    input.setDescription(inputJson.get(DESCRIPTION).getAsString());
+		    input.setType(inputJson.get("type").getAsString());
+
+		    if (inputJson.get("is_optional") != null)
+		        input.setIsOptional(inputJson.get("is_optional").getAsBoolean());
+
+		    if (inputJson.get("default_value") != null)
+		        input.setDefaultValue(inputJson.get("default_value").getAsString());
+
+		    if (inputJson.get("metadata") != null)
+		        input.setMetadata(inputJson.get("metadata"));
+
+		    tc.getInputs().add(input);
+		}
+	}
 
     @Path("/scenarios/{scenario}/testsuites/{testSuiteName}/testcases/{testCaseName}")
     @GET
