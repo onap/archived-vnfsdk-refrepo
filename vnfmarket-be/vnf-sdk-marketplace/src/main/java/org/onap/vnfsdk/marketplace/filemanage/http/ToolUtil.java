@@ -19,8 +19,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.Comparator;
+import java.util.stream.Stream;
+
 import org.onap.vnfsdk.marketplace.common.HttpServerPathConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +51,9 @@ public class ToolUtil {
       throws IOException
   {
     File srcDir = new File(srcDirName);
-    File[] files = srcDir.listFiles();
+
+    if (Files.exists(srcDir.toPath())) {
+       File[] files = srcDir.listFiles();
     for (int i = 0; i < files.length; i++) {
         boolean flag = false;
         if (files[i].isFile()) {
@@ -64,6 +71,10 @@ public class ToolUtil {
      return true;
   }
 
+  return false;
+
+}
+
   /**
    * create destDir
    * @param destDirName destination directory name
@@ -76,13 +87,27 @@ public class ToolUtil {
     if (destDir.exists() && overlay) {
       String fileAbsPath = destDir.getAbsolutePath();
       try {
+        if (Files.exists(Paths.get(destDirName))) {
         Files.delete(Paths.get(destDirName));
+        }
+
       } catch (IOException e) {
         LOGGER.error("fail to delete {} {} " , fileAbsPath, e);
       }
     } else if (destDir.exists() && !overlay) {
         return false;
+  } else {
+      if (!Files.exists(Paths.get(destDirName))) {
+        try {
+          Files.createDirectories(Paths.get(destDirName));
+          return true;
+        } catch (IOException e) {
+
+          LOGGER.error("fail to create {} {} ", destDirName, e);
+          return false;
+        }
     }
+  }
 
     return destDir.mkdirs();
   }
@@ -123,17 +148,10 @@ public class ToolUtil {
    */
   public static boolean copyByte(File srcFile,  File destFile)
   {
-    try (
-          InputStream in = new FileInputStream(srcFile);
-          OutputStream out = new FileOutputStream(destFile);
-      ) {
-
-      byte[] buffer = new byte[1024];
-
-      for (int byteread = 0; (byteread = in.read(buffer)) != -1;) {
-        out.write(buffer, 0, byteread);
-      }
-
+   try {
+      Path sourcePath = srcFile.toPath();
+      Path destnPath = destFile.toPath();
+      Files.copy(sourcePath, destnPath, StandardCopyOption.REPLACE_EXISTING);
       return true;
     } catch (IOException e) {
       LOGGER.error("IOException in copyFile", e);
@@ -161,13 +179,21 @@ public class ToolUtil {
     if (destFile.exists() && overlay) {
       String fileAbsPath = destFile.getAbsolutePath();
       try {
+        if (Files.exists(Paths.get(destFileName))) {
         Files.delete(Paths.get(destFileName));
+        }
       } catch (IOException e) {
         LOGGER.error("fail to delete {} {} ", fileAbsPath, e);
       }
-    } else if (!destFile.exists() && !destFile.getParentFile().exists() && !destFile.getParentFile().mkdirs()) {
-        return false;
-    }
+    } else
+      try {
+        if (!destFile.exists() && !destFile.getParentFile().exists()&& !Files.exists(Files.createDirectories(Paths.get(destFile.getParentFile().getPath())))) {
+          return false;
+        }
+
+      } catch (IOException e) {
+        LOGGER.error("fail to delete {} {} ", destFile.getAbsoluteFile(), e);
+      }
 
     return copyByte(srcFile,  destFile);
   }
@@ -206,19 +232,24 @@ public class ToolUtil {
    */
   public static boolean deleteDir(File dir) {
     if (dir.isDirectory()) {
-      String[] children = dir.list();
-      for (int i = 0; i < children.length; i++) {
-        boolean success = deleteDir(new File(dir, children[i]));
-        if (!success) {
-          return false;
-        }
+      Path pathDir = Paths.get(dir.getPath());
+
+      try (Stream<Path> walk = Files.walk(pathDir)) {
+        walk.sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+        return true;
+      } catch (IOException e) {
+
+        LOGGER.error("fail to delete {} {} ", dir.getAbsolutePath(), e);
+        return false;
       }
     }
     boolean isFileDeleted=false;
     String fileAbsPath = dir.getAbsolutePath();
     try {
+      if (Files.exists(Paths.get(dir.getPath()))) {
       Files.delete(Paths.get(dir.getPath()));
       isFileDeleted=true;
+        }
     } catch (IOException e) {
       LOGGER.error("fail to delete {} {} ", fileAbsPath, e);
     }
@@ -230,4 +261,3 @@ public class ToolUtil {
       return Thread.currentThread().getContextClassLoader().getResource("/").getPath();
   }
 }
-
