@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ed5629e4_f3a1833a",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vnfsdk/marketplace/filemanage/http/ToolUtil.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2022-04-12T04:25:00Z",
+      "side": 1,
+      "message": "why this additional check required",
+      "range": {
+        "startLine": 99,
+        "startChar": 4,
+        "endLine": 109,
+        "endChar": 5
+      },
+      "revId": "e883a4ac1be6c7380863c5af48364ccf0dda3987",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
