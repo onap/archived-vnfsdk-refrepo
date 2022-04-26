@@ -17,7 +17,9 @@ package org.onap.vnfsdk.marketplace.db.wrapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
 import org.onap.vnfsdk.marketplace.db.common.MarketplaceResourceType;
 import org.onap.vnfsdk.marketplace.db.entity.PackageData;
 import org.onap.vnfsdk.marketplace.db.exception.MarketplaceResourceException;
@@ -74,11 +76,18 @@ public class PackageHandler extends BaseHandler<PackageData> {
      * @return PackageData list
      * @throws MarketplaceResourceException e
      */
+    private String loggerPatternBreaking(String loggerInput) {
+return Objects.nonNull(loggerInput) ? loggerInput.replaceAll("[\n\r\t]", "_") : StringUtils.EMPTY;
+
+}
+
     public List<PackageData> queryByID(String csarID)
             throws MarketplaceResourceException {
         logger.info("packageHandler:start query package info.");
         List<PackageData> data = new ArrayList<>();
-        logger.info("packageHandler:start query data .info:{}" , csarID);
+        if (logger.isInfoEnabled()) {
+        logger.info("packageHandler:start query data .info:{}" , loggerPatternBreaking(csarID));
+        }
         IMarketplaceDao dao = new MarketplaceDaoImpl();
         Object result = dao.getPackageData(csarID);
         if (result != null) {
@@ -96,4 +105,3 @@ public class PackageHandler extends BaseHandler<PackageData> {
         throw new UnsupportedOperationException();
     }
 }
-
