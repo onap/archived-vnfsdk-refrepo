@@ -23,7 +23,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.UUID;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
@@ -73,11 +75,16 @@ public class ToolUtil {
      * @return String
      * @throws IOException e
      */
+    private static  String loggerPatternBreaking(String loggerInput) {
+        return Objects.nonNull(loggerInput) ? loggerInput.replaceAll("[\n\r\t]", "_") : StringUtils.EMPTY;
+    }
     public static String storeChunkFileInLocal(String dirName, String fileName, InputStream uploadedInputStream)
             throws IOException {
         File tmpDir = new File(dirName);
         dirName = File.separator + dirName;
-        LOG.info("tmpdir = {}" , dirName);
+        if(LOG.isInfoEnabled()) {
+            LOG.info("tmpdir = {}" , loggerPatternBreaking(dirName));
+        }
         if(!tmpDir.exists()) {
             tmpDir.mkdirs();
         }

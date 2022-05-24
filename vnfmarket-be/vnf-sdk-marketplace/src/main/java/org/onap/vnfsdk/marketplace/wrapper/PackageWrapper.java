@@ -314,7 +314,9 @@ public class PackageWrapper {
         }
 
         String fileLocation = ToolUtil.storeChunkFileInLocal(localDirName, fileName, uploadedInputStream);
-        LOG.info("the fileLocation when upload package is :{}" , fileLocation);
+        if(LOG.isInfoEnabled()) {
+            LOG.info("the fileLocation when upload package is :{}", loggerPatternBreaking(fileLocation));
+        }
 
         uploadedInputStream.close();
 

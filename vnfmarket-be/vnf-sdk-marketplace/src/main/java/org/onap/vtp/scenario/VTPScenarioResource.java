@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 
 import javax.ws.rs.Consumes;
@@ -42,6 +43,7 @@ import javax.ws.rs.core.Response;
 
 import com.google.common.collect.Maps;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.common.util.CollectionUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.glassfish.jersey.media.multipart.BodyPartEntity;
@@ -125,6 +127,9 @@ public class VTPScenarioResource extends VTPResource{
         }
 
         return list;
+    }
+    private String loggerPatternBreaking(String loggerInput) {
+        return Objects.nonNull(loggerInput) ? loggerInput.replaceAll("[\n\r\t]", "_") : StringUtils.EMPTY;
     }
 
     @Path("/scenarios")
@@ -416,6 +421,9 @@ public class VTPScenarioResource extends VTPResource{
         File scenarioDir = new File(VTP_YAML_STORE, scenario);
         List<File> yamls =  FileUtil.searchFiles(scenarioDir, CommonConstant.YAML_SUFFIX);
         if (!CollectionUtils.isEmpty(yamls)) {
+        if (LOG.isInfoEnabled()) {
+            LOG.error("The scenario yaml {} has sub testcase yamls, delete failed", loggerPatternBreaking(scenarioName));
+        }
             LOG.error("The scenario yaml {} has sub testcase yamls, delete failed", scenarioName);
             throw new VTPException(
                     new VTPError().setMessage(MessageFormat.format("The scenario yaml {0} has sub testcase yamls, delete failed !!!", scenarioName))
