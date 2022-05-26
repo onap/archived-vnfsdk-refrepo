@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "035d710b_6578413d",
+        "filename": "vnfmarket-be/vnf-sdk-marketplace/src/main/java/org/onap/vtp/scenario/VTPScenarioResource.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 427,
+      "author": {
+        "id": 6213
+      },
+      "writtenOn": "2022-05-26T13:08:49Z",
+      "side": 1,
+      "message": "this line has to be deleted",
+      "revId": "0bf80c915d8c4e7b2dabee463459d8198fdeacc6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
