@@ -108,9 +108,11 @@ public class VTPScenarioResourceTest {
     @Test
     public void testDeleteScenario() throws Exception
     {
+        String yamlStore = vtpScenarioResource.VTP_YAML_STORE;
+        vtpScenarioResource.VTP_YAML_STORE = "/tmp";
         vtpScenarioResource.deleteScenario("demo-registry.yaml");
+        vtpScenarioResource.VTP_YAML_STORE = yamlStore;
     }
-
     @Test(expected = NullPointerException.class)
     public void testStorageTestcases() throws Exception
     {

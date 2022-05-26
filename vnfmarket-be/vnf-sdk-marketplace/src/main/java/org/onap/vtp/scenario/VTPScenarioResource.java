@@ -431,8 +431,12 @@ public class VTPScenarioResource extends VTPResource{
         }
 
         try {
-            FileUtils.deleteQuietly(new File(VTP_YAML_STORE, scenarioName));
-            FileUtils.deleteDirectory(scenarioDir);
+            if(FileUtils.directoryContains(new File(VTP_YAML_STORE), new File(scenarioName))) {
+                FileUtils.deleteQuietly(new File(VTP_YAML_STORE, scenarioName));
+            }
+            if(FileUtils.directoryContains(new File(VTP_YAML_STORE), scenarioDir)) {
+                FileUtils.deleteDirectory(scenarioDir);
+            }
         } catch (IOException e) {
             LOG.error("Delete scenario yaml {} failed", scenarioName, e);
             throw new VTPException(
