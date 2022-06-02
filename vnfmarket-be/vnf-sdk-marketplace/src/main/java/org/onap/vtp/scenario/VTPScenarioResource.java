@@ -432,7 +432,7 @@ public class VTPScenarioResource extends VTPResource{
 
         try {
             if(FileUtils.directoryContains(new File(VTP_YAML_STORE), new File(scenarioName))) {
-                FileUtils.deleteQuietly(new File(VTP_YAML_STORE, scenarioName));
+                FileUtils.deleteQuietly(new File(VTP_YAML_STORE, scenarioName));//test
             }
             if(FileUtils.directoryContains(new File(VTP_YAML_STORE), scenarioDir)) {
                 FileUtils.deleteDirectory(scenarioDir);
