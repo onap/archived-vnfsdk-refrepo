@@ -21,6 +21,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
@@ -47,6 +48,7 @@ import org.open.infc.grpc.Result;
 import org.open.infc.grpc.client.OpenInterfaceGrpcClient;
 import org.open.infc.grpc.client.OpenInterfaceGrpcClient.OpenInterfaceGrpcTimeoutExecption;
 import org.open.infc.grpc.client.OpenRemoteCli;
+import org.yaml.snakeyaml.Yaml;
 
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
@@ -90,9 +92,11 @@ public class VTPExecutionResourceTest {
     DistManager distManager;
     String requestId;
     VTPExecutionResourceForTests vtpExecutionResource;
+    VTPResource vTPResource;
     @Before
     public void setUp() {
         vtpExecutionResource= new VTPExecutionResourceForTests();
+        vTPResource = new VTPResource();
         requestId = UUID.randomUUID().toString();
     }
     @Test(expected = Exception.class)
@@ -202,6 +206,81 @@ public class VTPExecutionResourceTest {
         );
     }
 
+    @Test
+    public void whenListTestExecutionsHandlerIsCalledWithProperParametersThenCorrectExecutionDataIsReturned_2()
+        throws IOException, VTPError.VTPException {
+        String testStartTime = "2019-03-12T11:49:52.845";
+        String testEndTime = "2020-03-12T11:49:52.845";
+        String testProduct = "VTP Scenario 1";
+        String testCommand = "s1.ts1.testcase-1";
+        String testSuiteName = "testsuite-1";
+        String testRequestId = "test-01-request-id";
+        String testExecutionId = testRequestId + "-execution-id";
+        String testProfile = "open-cli-schema";
+        String expectedStatus = "SUCCESS";
+        prepareMockRpcMethods(
+	    testStartTime, testEndTime, testProduct, testCommand, testSuiteName,
+	    testRequestId, testExecutionId, testProfile, expectedStatus
+	);
+        List<String> args = new ArrayList<>();
+        args.addAll(Arrays.asList("--product", "open-cli", "execution-list", "--format", "json"));
+        if (testStartTime != null && !testStartTime.isEmpty()) {
+            args.add("--start-time");
+            args.add(testStartTime);
+        }
+        if (testEndTime != null && !testEndTime.isEmpty()) {
+            args.add("--end-time");
+            args.add(testEndTime);
+        }
+        if (requestId != null && !requestId.isEmpty()) {
+            args.add("--request-id");
+            args.add(requestId);
+        }
+        if (testSuiteName != null && !testSuiteName.isEmpty()) {
+            args.add("--service");
+            args.add(testSuiteName);
+        }
+        new MockUp<DistManager>(){
+            @mockit.Mock
+            protected JsonElement getExecutionJson(int count, int index) {
+                String values = "[{\"tester_id\":\"1\", \"end-time\":\"end-time\", "+
+	                "\"id\":\"2\", \"product\":\"product\","+
+			"\"service\":\"service\", \"command\":\"command\", "+
+			"\"profile\":\"profile\", \"status\":\"status\", \"execution_id\":\"test-01-request-id-execution-id\"}]";
+                JsonParser jsonParser = new JsonParser();
+                return jsonParser.parse(values);
+            }
+        };
+        new MockUp<DistManager>(){
+            @mockit.Mock
+            protected JsonElement getResponseFromTester(Client client, String managerURL, String testerPath) {
+                String values = "{\"tester_id\":\"1\", \"end-time\":\"end-time\", "+
+		        "\"iP\":\"localhost\", \"port\":\"55130\","+
+			"\"service\":\"service\", \"command\":\"command\", "+
+			"\"profile\":\"profile\", \"status\":\"status\", \"execution-id\":\"123456\"}";
+                JsonParser jsonParser = new JsonParser();
+                return jsonParser.parse(values);
+            }
+        };
+        new MockUp<DistManager>(){
+            @mockit.Mock
+            protected Result getExecutionDetails(String vtpTestCenterIp, int vtpTestCenterPort, List<String> args,int timeout) throws VTPError.VTPException {
+                     Result result = Result.newBuilder().build();
+                     return result;
+                 }
+             };
+        new MockUp<Result>(){
+            @mockit.Mock
+            public String getOutput() {
+                return "{\"start-time\":\"2019-03-12T11:49:52.845\", \"end-time\":\"2020-03-12T11:49:52.845\",\"request-id\":\"test-01-request-id\", "
+			+ "\"product\":\"VTP Scenario 1\", \"command\":\"s1.ts1.testcase-1\","+
+		        "\"service\":\"testsuite-1\", \"profile\":\"open-cli-schema\", "+
+		        "\"status\":\"SUCCESS\", \"execution-id\":\"test-01-request-id-execution-id\"}";
+            }
+        };
+        JsonElement respData = vTPResource.makeRpcAndGetJson(args, 1, 1);
+        assertNotNull(respData);
+    }
     @Test
     public void whenListTestExecutionsHandlerIsCalledWithIdThatDoesNotMatchAnyExecutionFileThenResultContainsProperInformation()
         throws IOException, VTPError.VTPException {
@@ -484,6 +563,20 @@ public class VTPExecutionResourceTest {
         formDataBodyPart.getContentDisposition().getFileName();
         bodyParts.add(formDataBodyPart);
       vtpExecutionResource.executeTestcases(requestId,bodyParts,"exeJson") ;
+    }
+
+    @Test
+    public void snakeYamlTest()
+    {
+        Yaml yaml = vTPResource.snakeYaml();
+        assertNotNull(yaml);
+    }
+
+    @Test
+    public void getStorePathTest()
+    {
+        String storePath = VTPResource.getStorePath();
+        assertNotNull(storePath);
     }
 
     @Test(expected = Exception.class)
