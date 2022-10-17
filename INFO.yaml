@@ -4,11 +4,11 @@ project_creation_date: '2016-08-08'
 project_category: ''
 lifecycle_state: 'Incubation'
 project_lead: &onap_vnfsdk_ptl
-    name: 'Kanagaraj Manickam'
-    email: 'kanagaraj.manickam@huawei.com'
+    name: 'Dan Xu'
+    email: 'xudan16@huawei.com'
     company: 'Huawei'
-    id: 'mkr1481'
-    timezone: 'Asia/Kolkata'
+    id: 'xudan'
+    timezone: 'Asia/Shanghai'
 primary_contact: *onap_vnfsdk_ptl
 issue_tracking:
     type: 'jira'
@@ -61,6 +61,11 @@ committers:
       company: 'Huawei'
       id: 'g310497'
       timezone: 'Asia/Shanghai'
+    - name: 'Kanagaraj Manickam'
+      email: 'kanagaraj.manickam@huawei.com'
+      company: 'Huawei'
+      id: 'mkr1481'
+      timezone: 'Asia/Kolkata'
 tsc:
     approval: 'https://lists.onap.org/pipermail/onap-tsc'
     changes:
@@ -115,3 +120,7 @@ tsc:
         - type: 'Addition'
           name: 'Bogumil Zebek'
           link: 'https://lists.onap.org/g/ONAP-TSC/message/6230'
+        - type: 'Addition'
+          name: 'Dan Xu'
+          # new PTL
+          link: 'https://wiki.onap.org/display/Meetings/TSC+2022-09-01'
